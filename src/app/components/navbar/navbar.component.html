@@ -1,0 +1,50 @@
+<nav>
+    <div class="row w-100">
+        <div class="col-6 header pt-3">
+            <img src="assets/img/escudo-misiones.svg" alt="Escudo misiones" width="50px">
+            <h4>Dirección general <br>de catastro</h4>
+            <div class="btn-collapsed" >
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <h1>{{ header  | titlecase}}</h1>
+        </div>
+        <div class="col-6">
+            <div class="items">
+                <a (click)="show('Aviso')">
+                    <p *ngIf="avisos != null" class="icon-notice">{{avisos}}</p>
+                    <i class="fal fa-bell"></i>
+                    <div class="box-message box-aviso" *ngIf="showAviso">
+                        <div class="item">
+                            <i class="fas fa-check-circle"></i>
+                            <p>Estás al día</p>
+                        </div>
+                    </div>
+                </a>
+                <a (click)="show('Msj')">
+                    <p *ngIf="mensajes != null" class="icon-notice">{{mensajes}}</p>
+                    <i class="fal fa-envelope"></i>
+                    <div class="box-message box-msj" *ngIf="showMsj">
+                        <!-- <div>
+                            <i class="fas fa-check-circle"></i>
+                            <p> No tenés mensajes nuevos</p>
+                        </div> -->
+                        <div class="item">
+                            <i class="fas fa-check-circle"></i>
+                            <p>Título del mensaje nuevo</p>
+                        </div>
+                        <div class="item">
+                            <i class="fas fa-check-circle"></i>
+                            <p> No tenés mensajes nuevos</p>
+                        </div>
+
+                    </div>
+                </a>
+                <a>
+                    Cerrar sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

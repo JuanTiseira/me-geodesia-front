@@ -1,0 +1,133 @@
+/* Styles */
+
+.sidebar {
+    width: 16rem;
+    background-color: #dcdcdc;
+    height: 100%;
+    position: fixed;
+    font-family: 'Roboto Regular' !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 4;
+    -webkit-transition: left 0.4s ease-in-out;
+    -moz-transition: left 0.4s ease-in-out;
+    -ms-transition: left 0.4s ease-in-out;
+    -o-transition: left 0.4s ease-in-out;
+    transition: left 0.4s ease-in-out;
+}
+
+// .sidebar-content {
+//     padding: 30px;
+// }
+
+.sidebar .sidebar-content a {
+    width: 100%;
+    display: block;
+    padding: 12px 2.5rem;
+    color: #000000;
+    text-decoration: none;
+    display: -webkit-inline-box;
+}
+
+.sidebar .sidebar-content button {
+    padding: 0px;
+    text-align: initial;
+}
+
+.sidebar .sidebar-content .active {
+    background-color: #ffffff;
+    font-weight: 700;
+}
+
+.sidebar .sidebar-content a i,
+.sidebar .sidebar-content button i {
+    font-size: 22px;
+    margin-right: 10px;
+    width: 35px;
+    float: left;
+    text-align: center;
+}
+
+.sidebar .sidebar-content a:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.sidebar .brand {
+    padding: 21px;
+    text-align: center;
+    background-color: white;
+}
+
+.sidebar .brand img {
+    width: 180px;
+}
+
+
+/* Menu desplegables */
+
+.sidebar .accordion-button {
+    border: none;
+}
+
+.sidebar .accordion-collapse {
+    border: none;
+}
+
+.sidebar .accordion-collapse a {
+    margin-left: 45px;
+}
+
+.sidebar .accordion-collapse .active {
+    font-weight: 700;
+}
+
+.sidebar .accordion-collapse .active+.sidebar .accordion-button {
+    background-color: tomato;
+}
+
+.sidebar .accordion-button::after {
+    background: none;
+}
+
+.sidebar .accordion-button:not(.collapsed) {
+    color: #53BAAB;
+    font-weight: 700;
+    background-color: transparent !important;
+}
+
+.sidebar .accordion-button:focus {
+    box-shadow: none;
+}
+
+
+
+
+
+/* Responsive*/
+
+@media (max-width: 1366px) {
+    .sidebar {
+        width: 250px;
+    }
+
+    .sidebar .sidebar-content a i,
+    .sidebar .sidebar-content button i {
+        font-size: 18px;
+    }
+    .sidebar .sidebar-content a {
+        font-size: 12px;
+    }
+    .sidebar .brand img {
+        width: 150px;
+    }
+}
+
+
+/*Mobile*/
+
+@media (max-width: 991px) {
+    .sidebar {
+        left: -250px;
+    }
+}

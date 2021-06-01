@@ -1,0 +1,259 @@
+/*Styles*/
+
+nav {
+    overflow: hidden;
+    display: flex;
+    background-color: #333333;
+}
+
+nav .items {
+    width: 100%;
+    line-height: 50px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav .items a i {
+    cursor: pointer;
+}
+
+nav .items a img{
+    cursor: pointer;
+}
+
+nav .items .icon-notice {
+    /* position: absolute; */
+    line-height: 15px;
+    /* margin-bottom: 0px; */
+    margin-bottom: -15px;
+    font-size: 10px;
+    border-radius: 20px;
+    height: 15px;
+    width: 15px;
+    background-color: #F9B233;
+    font-weight: 700;
+}
+
+nav .items a:nth-of-type(1) .icon-notice {
+    transform: translate(8px, 8px);
+}
+
+nav .items a:nth-of-type(2) .icon-notice {
+    transform: translate(13px, 8px);
+}
+
+nav a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 16px 16px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+nav a img {
+    width: 40px;
+}
+
+nav a:hover {
+    color: #eee;
+}
+
+nav .header {
+    padding-left: 50px;
+}
+
+nav .header h1 {
+    color: white;
+    margin-bottom: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 200;
+    font-size: 30px;
+}
+
+nav .btn-collapsed {
+    /* position: absolute; */
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    margin-top: 0.2rem;
+    display: inline-block;
+    vertical-align: middle
+    /* margin-top: 1.7rem;
+    margin-left: -0.5rem;
+    float:left; */
+}
+
+nav .btn-collapsed span {
+    width: 25px;
+    border: 1.5px solid white;
+    background-color: white;
+    border-radius: 10px;
+    margin: 5px 2px;
+    display: block;
+    position: relative;
+    transform: rotate(180deg)
+}
+
+
+nav div .col-6 img{
+    float: left;
+    margin-right: 1rem;
+}
+
+nav div .col-6 h4{
+    color:#fff;
+    margin-bottom: 0;
+}
+
+.dark-coat {
+    z-index: 3;
+    /* transition: all 0.5s ease 0s;
+    -webkit-transition: all 0.5s ease 0s; */
+    -webkit-transition: left 0.5s ease-in-out;
+    -moz-transition: left 0.5s ease-in-out;
+    -ms-transition: left 0.5s ease-in-out;
+    -o-transition: left 0.5s ease-in-out;
+    transition: all 0.5s ease 0s;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0, 0.5);
+    position: absolute;
+}
+
+
+/*Message Box appear */
+
+.box-message {
+    background-color: white;
+    position: absolute;
+    display: grid;
+    color: black;
+    font-size: 15px;
+    -webkit-box-shadow: 0px 5px 6px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 5px 6px 3px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    top: 75px;
+}
+
+.box-message .item {
+    display: flex;
+    padding: 8px 15px;
+    border-bottom: 0.2px solid rgb(204, 204, 204);
+}
+
+.box-message div ul li:hover {
+    transition: 100ms;
+    background-color: #eee;
+}
+
+.box-message div i {
+    line-height: inherit;
+    color: #53BAAB;
+}
+
+.box-message div p {
+    margin-bottom: 0px;
+    margin-left: 10px;
+}
+
+.box-message div i,
+.box-message div p {
+    line-height: 25px;
+}
+
+.box-aviso {
+    right: 150px;
+}
+
+.box-msj {
+    right: 88px;
+}
+
+.box-perfil {
+    right: 27px;
+}
+
+.box-perfil .perfil-header {
+    line-height: normal;
+    text-align: left;
+    padding: 10px 15px;
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.box-perfil .perfil-header h4 {
+    margin-bottom: 0px;
+    color: #717171;
+    font-weight: 700;
+}
+
+.box-perfil .perfil-header small {
+    color: rgb(204, 204, 204);
+}
+
+.box-perfil .list ul {
+    list-style: none;
+    display: grid;
+    padding: 10px;
+    margin: 0px;
+    width: 100%;
+}
+
+.box-perfil .list ul li a {
+    color: #53BAAB;
+    padding: 5px;
+    font-size: 11px;
+    line-height: 10px;
+}
+
+.box-perfil .list ul li a:hover {
+    cursor: pointer;
+}
+
+.box-message:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid white;
+    right: 10%;
+    top: -20px;
+}
+
+
+/* Responsive*/
+
+@media (max-width: 1366px) {
+    nav .header h1 {
+        font-size: 23px;
+    }
+    nav a {
+        padding: 13px 16px;
+    }
+}
+
+@media (max-width: 991px) {
+    nav .header h1 {
+        margin-left: 30px;
+    }
+
+    
+}
+
+@media (max-width: 500px) {
+    nav .header h1 {
+        display: none;
+    }
+
+}
+
+@media (min-width: 991px){
+    nav .btn-collapsed {
+        display: none;
+    }
+}

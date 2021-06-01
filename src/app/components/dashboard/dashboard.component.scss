@@ -1,0 +1,29 @@
+.content {
+    margin-left: 20rem;
+    font-family: 'Roboto Regular' !important;
+    padding-right: 3rem;
+    padding-bottom: 1rem;
+}
+
+
+/* Responsive*/
+
+@media (max-width: 1366px) {
+    .content {
+        margin-left: 17rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content {
+        margin-left: 20rem;
+        padding-right: 30px;
+    }
+}
+
+@media (max-width: 991px) {
+    .content {
+        margin-left: 0px;
+        padding-left: 30px;
+    }
+}

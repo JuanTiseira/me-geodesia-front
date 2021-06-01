@@ -1,0 +1,172 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); */
+@import url('./assets/css/loading.min.css');
+
+@font-face {
+    font-family: Roboto Regular;
+    src: url(./assets/fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Roboto Bold;
+    src: url(./assets/fonts/Roboto-Bold.ttf);
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    font-family: 'Roboto Regular' !important;
+}
+
+
+/*Sidebar*/
+
+.open-sidebar {
+    /* transition: all 0.5s ease 0s; */
+    /* -webkit-transition: all 0.5s ease 0s; */
+    -webkit-transition: left 0.5s ease-in-out;
+    -moz-transition: left 0.5s ease-in-out;
+    -ms-transition: left 0.5s ease-in-out;
+    -o-transition: left 0.5s ease-in-out;
+    transition: all 0.5s ease 0s;
+    left: 0px !important;
+}
+
+.opacity {
+    /* transition: all 0.5s ease 0s; */
+    /* -webkit-transition: all 0.5s ease 0s; */
+    -webkit-transition: left 0.5s ease-in-out;
+    -moz-transition: left 0.5s ease-in-out;
+    -ms-transition: left 0.5s ease-in-out;
+    -o-transition: left 0.5s ease-in-out;
+    transition: all 0.5s ease 0s;
+    display: block !important;
+}
+
+
+/* Cards */
+
+.card {
+    border: 0px;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0px 0px;
+    background-color: white;
+    border-bottom: 2px solid #eee;
+}
+
+.card-header h4 {
+    margin-bottom: 0px;
+    color: #717171;
+    font-size: 18px;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.card-body p {
+    font-size: 12px;
+    color: #717171;
+}
+
+
+/* Buttons */
+
+.btn {
+    padding: 10px 20px !important;
+    border-radius: 0.5rem !important;
+    color: white !important;
+    background: #4a4a4a !important;
+}
+
+.btn-green {
+    /* padding: 10px 20px !important;
+    border: 1px solid rgb(204, 204, 204) !important; */
+    font-size: 16px !important;
+    background: #53BAAB !important;
+    border-radius: 0.5rem !important;
+    color: white !important;
+}
+
+.btn-red {
+    /* padding: 10px 20px !important;
+    border: 1px solid rgb(204, 204, 204) !important; */
+    font-size: 16px !important;
+    border-radius: 0.5rem !important;
+}
+
+.btn-white{
+    font-size: 16px !important;
+    border-radius: 0.5rem !important;
+}
+
+
+/* Animate Styles CSS */
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.fast {
+    -webkit-animation-duration: 0.4s;
+    animation-duration: 0.4s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.slow {
+    -webkit-animation-duration: 1.2s;
+    animation-duration: 1.2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto Regular, "Helvetica Neue", sans-serif; }
+
+
+/* progressbar */
+.material-progress-bar-div{
+    margin-right: -3rem;
+    margin-top: -3rem;
+    margin-left: -2rem;
+}
+
+
+.mat-progress-bar-fill::after{
+    background-color: #53BAAB;
+  }
+
+.validacion-error{
+    color: #f95b5b;
+    font-family: Roboto Regular;
+}
+
+.bg-gray{
+    background-color: #53BAAB;
+}
+
+

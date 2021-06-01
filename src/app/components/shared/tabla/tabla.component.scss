@@ -1,0 +1,111 @@
+/**Tables */
+
+.table-container {
+    background-color: white;
+    padding: 0px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+.table-header {
+    padding: 10px 0px 10px 0px;
+    border-bottom: 1px rgb(204, 204, 204) solid;
+}
+
+.table-header h6 {
+    margin-bottom: 0px;
+    font-weight: 700;
+    color: #717171;
+}
+
+.table-body {
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+}
+
+table {
+    background-color: white;
+    font-size: 13px;
+    font-family: 'Roboto Regular' !important;
+    width: 100%;
+}
+
+table thead tr th{
+    background: #4a4a4a;
+    color: white;
+    font-weight: 200;
+}
+
+table tbody tr:nth-child(1n+1) {
+    background: white;
+}
+
+table tbody tr:nth-child(2n+1) {
+    background: #eee;
+}
+
+table tbody th {
+    font-weight: 100;
+}
+
+table .target {
+    color: white;
+    padding: 2px 4px;
+    width: 100px;
+    text-align: center;
+}
+
+table .success {
+    background-color: limegreen;
+}
+
+table .error {
+    background-color: orangered;
+}
+
+table button {
+    color: white;
+    border: none;
+    padding: 3px 6px;
+    margin-left: 10px;
+}
+
+table .btn-details {
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.7rem;
+    background-color: #53BAAB;
+}
+
+table .btn-delete {
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.7rem;
+    background-color: #f74d40;
+}
+
+table,
+td,
+th,
+thead,
+tr {
+    border: none !important;
+    white-space: nowrap;
+}
+
+
+/* Responsive */
+
+@media (max-width: 991px) {
+    table {
+        width: 880px;
+    }
+    /* table tr th:first-of-type {
+        position: sticky;
+        left: -1px;
+        background-color: inherit;
+    } */
+    table .detalles {
+        position: sticky;
+        right: -1px;
+        background-color: inherit;
+    }
+}

@@ -1,0 +1,60 @@
+<div >
+    <div class="table-header">
+        <h6>{{ mensajeResultado || "Ningún Resultado" }}</h6>
+    </div>
+    <div class="table-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th *ngIf="indiceItems" class="text-wrap" scope="col">
+                        Expediente
+                    </th>
+                    <th *ngFor="let head of displayedColumns" class="text-wrap" scope="col">{{ head }} </th>
+                    <th class="detalles" *ngIf="showVerDetalles" scope="col">Detalles</th>
+                    <th class="text-wrap" *ngIf="functionCliente" scope="col"> Generar token</th>
+                    <th  *ngIf="functionUsuarios" scope="col"> Editar</th>
+                    <th  *ngIf="functionUsuarios" scope="col"> Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let datos of dataSource; index as i;">
+                    <td *ngIf="indiceItems">
+                        <div>{{i+1}}</div>
+                    </td>
+
+                    <td *ngFor="let head of displayedColumnsSearch; let i = index">
+                        <div [ngClass]="{ 'target': head == 'estado',  'error': datos[head] == 'ADEUDADA', 'success': datos[head] == 'ACREDITADA'}">{{ datos[head]||"-" }}</div>
+                    </td>
+
+                     <!--Detalles Transacción-->
+                     <td class="detalles" *ngIf="showVerDetalles">
+                        <button class="btn-details" (click)="verDetalles(datos['numero'])">
+                            <i class="fal fa-search-plus"></i>
+                        </button>   
+                    </td>
+                    <!-- Cliente -->
+                    <!--Crear token-->
+                    <td *ngIf="functionCliente">
+                        <button class="btn-details" (click)="modalButtonToken(datos['id'])">
+                            <i class="fad fa-sync-alt"></i>
+                        </button>
+                    </td>
+                    <!--Usuarios-->
+                    <!--Editar Usuario-->
+                    <td *ngIf="functionUsuarios">
+                        <button class="btn-details" (click)="modalEdit(datos['id'])">
+                            <i class="fal fa-user-edit"></i>
+                        </button>
+                    </td>
+                    <!--Eliminar Usuario-->
+                    <td *ngIf="functionUsuarios">
+                        <button class="btn-delete" (click)="modalDelete(datos['id'])">
+                            <i class="fal fa-user-times"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

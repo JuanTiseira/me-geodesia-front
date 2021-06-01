@@ -1,0 +1,219 @@
+/* Styles*/
+
+.brand {
+    text-align: center;
+}
+
+.brand img {
+    width: 250px;
+}
+
+
+/*Card*/
+
+.card {
+    // border: 1rem;
+    border-radius: 10px !important;
+    /* color: #1b1464; */
+    color: #717171;
+    padding: 20px;
+}
+
+.card-header {
+    background-color: white;
+    border: 0px;
+}
+
+.card-header h4 {
+    font-family: 'Roboto Bold' !important;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 36px;
+}
+
+.card-body form input[type=text],
+.card-body form input[type=email],
+.card-body form input[type=password] {
+    border-radius: 10px;
+    border: 1px solid black;
+    font-size: 16px;
+    padding: 10px 15px;
+    color: black;
+}
+
+
+/*Form*/
+
+.form-check-input:checked {
+    background-color: #646464;
+    ;
+    border-color: #646464;
+    ;
+}
+
+.form-check label {
+    font-size: 14px;
+}
+
+form .form-password small {
+    color: #646464;
+    float: right;
+}
+
+.create-account-text a {
+    color: #646464;
+    text-decoration: none;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.spinner-border {
+    position: relative;
+    top: -2px;
+}
+
+
+/*Buton submit */
+
+.btn-submit {
+    background: #646464;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0px;
+}
+
+.btn-submit:hover {
+    background: #bbbbbb;
+}
+
+.btn-submit:active {
+    background: #646464;
+}
+
+.btn-submit:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/*Copy*/
+
+.copy {
+    width: 100%;
+    margin-top: 40px;
+    text-align: center;
+    color: #717171;
+    font-size: 13px;
+}
+
+.copy span {
+    font-size: 18px;
+    vertical-align: -0.2rem;
+}
+
+
+/* Responsive*/
+
+@media (min-width: 1600px) {
+    .column {
+        flex: 0 0 auto;
+        width: 25%;
+    }
+}
+
+@media (max-width: 1600px) {
+    .column {
+        flex: 0 0 auto;
+        width: 30%;
+    }
+}
+
+@media (max-width: 1280px) {
+    .column {
+        flex: 0 0 auto;
+        width: 35%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .column {
+        flex: 0 0 auto;
+        width: 40%;
+    }
+}
+
+@media (max-width: 991px) {
+    .column {
+        flex: 0 0 auto;
+        width: 45%;
+    }
+}
+
+@media (max-width: 767px) {
+    .column {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+
+@media (min-width: 700px) {
+    .form-email input::placeholder,
+    .form-password input::placeholder {
+        color: white;
+    }
+}
+
+@media (max-width: 700px) {
+    .form-password label,
+    .form-email label {
+        display: none;
+    }
+    .form-email {
+        margin-bottom: 0px !important;
+    }
+    .form-email input::placeholder,
+    .form-password input::placeholder {
+        color: #717171;
+    }
+    .form-password {
+        text-align: center;
+    }
+    .form-password small {
+        float: initial !important;
+        line-height: 35px;
+    }
+}
+
+@media (max-width: 600px) {
+    .column {
+        flex: 0 0 auto;
+        width: 65%;
+    }
+}
+
+@media (max-width: 500px) {
+    .column {
+        flex: 0 0 auto;
+        width: 75%;
+    }
+}
+
+@media (max-width: 450px) {
+    .column {
+        flex: 0 0 auto;
+        width: 85%;
+    }
+    .card-header h4 {
+        font-size: 25px;
+        line-height: 28px;
+    }
+}
+
+@media (max-width: 375px) {
+    .column {
+        flex: 0 0 auto;
+        width: 90%;
+    }
+}
