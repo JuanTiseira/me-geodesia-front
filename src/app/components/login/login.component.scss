@@ -1,5 +1,11 @@
 /* Styles*/
 
+body {
+    overflow-x: hidden;
+    font-family: 'Roboto Regular' !important;
+    background-image: url(https://posadas.gov.ar/planurbano/wp-content/uploads/2012/07/IMG_9602.jpg); background-size: cover !important;
+}
+
 .brand {
     text-align: center;
 }
@@ -29,6 +35,11 @@
     font-size: 1.5rem;
     text-align: center;
     line-height: 36px;
+    color: rgb(53, 52, 52);
+    padding: 20px;
+    line-height: 1;
+    font-weight: 900;
+
 }
 
 .card-body form input[type=text],
@@ -78,7 +89,7 @@ form .form-password small {
 /*Buton submit */
 
 .btn-submit {
-    background: #646464;
+    
     border: none;
     border-radius: 8px;
     padding: 10px 0px;

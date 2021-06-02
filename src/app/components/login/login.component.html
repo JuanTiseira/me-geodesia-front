@@ -1,12 +1,10 @@
-<div classs="container">
+<div class="container-fluid" style="margin: 7% auto; ">
     <div class="row justify-content-center">
         <div class="column">
-            <div class="brand mt-5 mb-5">
-                <img src=".." alt="">
-            </div>
             <div class="card">
-                <div class="card-header">
-                    <h4><b>Dirección general de catastro</b></h4>
+                <div class="card-header text-center text-white">
+                    <img src="assets/img/EscudoMisiones.png" alt="Escudo misiones" width="60px">
+                    <h4 style="font-weight: 800;">DIRECCION GENERAL DE CATASTRO</h4>
                 </div>
                 <div class="card-body">
                     <!-- <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div> -->
@@ -30,9 +28,9 @@
                             <label class="form-check-label" for="checkSesion">Mantener la sesión inciada en este equipo</label>
                         </div> -->
                         <div class="d-flex justify-content-center mt-5">
-                            <button type="button" class="btn btn-submit btn-primary w-100 mb-3" (click)="onSubmit(loginForm.value)">
+                            <button type="button" class="btn btn-primary w-100 mb-3" (click)="onSubmit(loginForm.value)">
                                 <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
-                                Ingresar</button>
+                                Iniciar Sesion</button>
                         </div>
                     </form>
 

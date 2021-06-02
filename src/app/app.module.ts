@@ -19,7 +19,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     DashboardComponent,
     SearchPipe,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+
   ],
   imports: [
     BrowserModule,

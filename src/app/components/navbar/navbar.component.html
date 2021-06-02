@@ -2,7 +2,7 @@
     <div class="row w-100">
         <div class="col-6 header pt-3">
             <img src="assets/img/escudo-misiones.svg" alt="Escudo misiones" width="50px">
-            <h4>Dirección general <br>de catastro</h4>
+            <h4>DIRECCION GENERAL <br>DE CATASTRO</h4>
             <div class="btn-collapsed" >
                 <span></span>
                 <span></span>
@@ -41,8 +41,24 @@
 
                     </div>
                 </a>
-                <a>
-                    Cerrar sesión
+                <a (click)="show('Perfil')">
+                    
+                    <p class=""> Usuario DGC</p>
+                    <div class="box-message box-perfil" *ngIf="showPerfil">
+                        <!-- <div>
+                            <i class="fas fa-check-circle"></i>
+                            <p> No tenés mensajes nuevos</p>
+                        </div> -->
+                        <div class="item">
+                            
+                            <p>Mi perfil</p>
+                        </div>
+                        <div class="item">
+                           
+                            <p>Cerrar Sesion</p>
+                        </div>
+
+                    </div>
                 </a>
             </div>
         </div>

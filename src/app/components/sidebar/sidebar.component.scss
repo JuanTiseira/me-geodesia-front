@@ -2,7 +2,7 @@
 
 .sidebar {
     width: 16rem;
-    background-color: #dcdcdc;
+    background-color: #ffffff00;
     height: 100%;
     position: fixed;
     font-family: 'Roboto Regular' !important;
@@ -16,9 +16,9 @@
     transition: left 0.4s ease-in-out;
 }
 
-// .sidebar-content {
-//     padding: 30px;
-// }
+.sidebar-content {
+    padding: 30px;
+}
 
 .sidebar .sidebar-content a {
     width: 100%;
@@ -35,9 +35,12 @@
 }
 
 .sidebar .sidebar-content .active {
-    background-color: #ffffff;
+    background-color: #3766e7;
+    border-radius: 5px;
     font-weight: 700;
+    
 }
+
 
 .sidebar .sidebar-content a i,
 .sidebar .sidebar-content button i {
