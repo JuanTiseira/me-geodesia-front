@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-expedientes',
-  templateUrl: './expedientes.component.html',
-  styleUrls: ['./expedientes.component.scss']
+  selector: 'app-buscar',
+  templateUrl: './buscar.component.html',
+  styles: [
+  ]
 })
-export class ExpedientesComponent implements OnInit {
+export class BuscarComponent implements OnInit {
 
   displayedColumnsDetalles = ["1", "2", "3"];
   displayedColumnsSearchDetalles = ["1", "2", "3"];

@@ -1,9 +1,9 @@
 /* Styles*/
 
-body {
-    overflow-x: hidden;
-    font-family: 'Roboto Regular' !important;
+.contenedor {
+    background-size: cover;
     background-image: url(https://posadas.gov.ar/planurbano/wp-content/uploads/2012/07/IMG_9602.jpg); background-size: cover !important;
+    height: 100vh; 
 }
 
 .brand {

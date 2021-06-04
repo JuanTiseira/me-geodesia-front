@@ -18,7 +18,7 @@ import { TablaComponent } from './tabla/tabla.component';
     BotonComponent,
     PaginadorComponent,
     FiltroComponent,
-    ComboBoxComponent
+    ComboBoxComponent,
   ],
   imports: [
     CommonModule

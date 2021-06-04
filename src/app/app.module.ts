@@ -12,6 +12,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { PruebaComponent } from './prueba/prueba.component';
+import { CrearComponent } from './admin/expedientes/pages/crear/crear.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +22,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     SearchPipe,
     SidebarComponent,
     NavbarComponent,
+    PruebaComponent,
+    CrearComponent,
 
   ],
   imports: [

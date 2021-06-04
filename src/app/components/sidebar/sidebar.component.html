@@ -1,8 +1,8 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-content">
 
-        <a class="link" *ngIf="true">
-            Administrador</a>
+        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('home')" [routerLink]="['home']">
+            <i class="fal fa-file-alt"></i>Inicio</a>
         
         <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['expedientes']">
             <i class="fal fa-file-alt"></i>Expedientes</a>
@@ -12,6 +12,5 @@
 
         <a routerLinkActive="active" (click)="cambioUrl('estadisticas')" *ngIf="true" [routerLink]="['usuarios']">
             <i class="fad fa-users"></i>Usuarios</a>
-
     </div>
 </div>

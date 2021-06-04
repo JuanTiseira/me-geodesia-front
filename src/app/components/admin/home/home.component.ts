@@ -7,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  items = [1,2,3,4,5,6,7,8,9]
+  items = []
   constructor() { 
     
   }
 
   ngOnInit(): void {
-    this.items = [1,2,3,4,5,6,7,8,9]
+    this.items = [1,2,3,4,5,6]
   }
 
 }
