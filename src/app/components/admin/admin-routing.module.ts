@@ -10,6 +10,10 @@ import { HistorialComponent } from './historial/historial.component';
 export const APP_ROUTES: Routes = [
   { path: 'usuarios', component: UsuariosComponent},
 
+  {path: 'expediente/buscar', component: BuscarComponent},
+
+  {path: 'expediente/agregar', component: AgregarComponent},
+  
   { path: 'historial', component: HistorialComponent},
   
   { path: 'home', component: HomeComponent}

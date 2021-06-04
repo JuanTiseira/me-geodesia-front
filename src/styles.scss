@@ -82,9 +82,12 @@ body {
 /* Buttons */
 
 .btn {
-    padding: 10px 20px !important;
+    margin: 15px !important;
+    
+    width: 30%;
     border-radius: 0.5rem !important;
     color: white !important;
+    background-color: #217ae6 !important;
 }
 
 .btn-green {

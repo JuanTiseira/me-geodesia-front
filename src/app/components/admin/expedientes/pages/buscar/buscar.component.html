@@ -1,1 +1,75 @@
-<p>buscar works!</p>
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-4">
+                <label for="username" class="form-label">Consultar por</label>   
+                <select name="" id="" class="form-control">
+                    <option value="">HOLA</option>
+                </select>
+          
+        </div>
+        <div class="col-md-4">
+            <label for="username" class="form-label">Número de Expediente</label>
+            <input formControlName="username" type="text" class="form-control" placeholder="Buscar" id="filtro" autocomplete="off">
+
+
+        </div>
+        
+        <div class="col-md-4">
+            <div class="mt-3">
+                <button type="button" class="btn btn-primary">Buscar</button>
+                <button type="button" class="btn btn-primary">Nuevo</button>
+            </div>
+                
+        </div>
+    </div>
+
+
+    <hr />
+
+    <div class="row" >
+        <div class="col-md-4 col-sm-12 mt-3" *ngFor="let item of items; index as i">
+            <div class="mb-3 form-email">
+                <label for="estado" class="form-label">Filtro {{i}}</label>
+                <select formControlName="estado" class="form-select">
+                    <option>Opcion 1</option>
+                    <option>Opcion 2</option>
+                    <option>Opcion 3</option>
+                    <option>Opcion 4</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="mt-3">
+               
+                <button type="button" class="btn btn-primary">Consultar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+
+
+
+    <div >
+        <app-tabla [indiceItems]="true"  [displayedColumns]="displayedColumnsDetalles" [displayedColumnsSearch]="displayedColumnsSearchDetalles" [dataSource]="dataSourceDetalles" [mensajeResultado]="mensajeResultadoDetalles"></app-tabla>
+        <!-- <div class="col-lg-12">
+            <button [ngClass]="{'disabled': btnActive == false}" class="btn buttons btn-green m-1" type="button" (click)="confirmar()">Confirmar</button>
+            <div class="btn buttons m-1">
+                Total: ${{ (totalImporte/100).toFixed(2) }}
+            </div>
+        </div> -->
+
+        <div class="col-md-4">
+            <div class="mt-3">
+               
+                <button type="button" class="btn btn-primary float-right">Limpiar</button>
+            </div>
+        </div>
+    </div> 
+
+</div>
+
+

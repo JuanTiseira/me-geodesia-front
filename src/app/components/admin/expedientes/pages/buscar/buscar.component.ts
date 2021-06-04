@@ -4,6 +4,12 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-buscar',
   templateUrl: './buscar.component.html',
   styles: [
+    `
+      hr {
+        margin-bottom: 50px;
+        margin-top: 50px;
+      } 
+    `
   ]
 })
 export class BuscarComponent implements OnInit {
@@ -12,6 +18,7 @@ export class BuscarComponent implements OnInit {
   displayedColumnsSearchDetalles = ["1", "2", "3"];
   dataSourceDetalles = ["1", "2", "3"];
   mensajeResultadoDetalles = "Resultados";
+  items = [1,2, 3, 4, 5]
 
   constructor() { }
 
