@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { Role } from 'src/app/models/role.models';
 import { AuthService } from 'src/app/services/auth.service';
-
+import * as $ from 'JQuery';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit{
   @ViewChild('failSwal') failSwal: SwalComponent
+  Role = Role;
   loginForm: FormGroup;
+  loading = false;
 
   constructor(private router: Router,
     private authService: AuthService, 
@@ -26,17 +29,24 @@ export class LoginComponent implements OnInit{
   }
 
   onSubmit(formData: {email: string, password: string}) {
+
+    this.loading = true;
+    $("#btn-login").toggleClass('disabled');
     this.authService.login(formData.email, formData.password)
     .then(response => {
+      
       if(response){
+        
         this.router.navigate(['home']);
       }else{
-            // this.failSwal.fire();
+            this.failSwal.fire();
       }
     })
     .catch(error => {
-      console.log(error)
-      // this.failSwal.fire();
+      
+      $("#btn-login").removeClass('disabled');
+      this.loading = false;
+      this.failSwal.fire();
     });   
   }
 }

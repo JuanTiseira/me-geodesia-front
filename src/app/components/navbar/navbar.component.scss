@@ -1,5 +1,8 @@
 /*Styles*/
+h4 {
 
+    font-weight: bold;
+}
 nav {
     overflow: hidden;
     display: flex;
@@ -139,9 +142,15 @@ nav div .col-6 h4{
 }
 
 .box-message .item {
+    cursor: pointer;
     display: flex;
     padding: 8px 15px;
     border-bottom: 0.2px solid rgb(204, 204, 204);
+}
+
+.box-message .item:hover {
+    
+    background-color:rgba(155, 164, 255, 0.872);
 }
 
 .box-message div ul li:hover {

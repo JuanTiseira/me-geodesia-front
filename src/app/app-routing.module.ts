@@ -6,6 +6,8 @@ import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
+
+
   { path: '', component: DashboardComponent, 
     canLoad: [AuthGuard], 
     canActivate: [AuthGuard],
@@ -17,6 +19,8 @@ const routes: Routes = [
       // { path: 'contacto', component: ContactoComponent}
     ]
   },
+
+  
   { path: '', component: DashboardComponent, 
     canLoad: [AuthGuard], 
     canActivate: [AuthGuard],

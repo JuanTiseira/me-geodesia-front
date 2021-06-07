@@ -1,0 +1,129 @@
+
+.xxl-text {
+  font-size: 3rem;
+}
+
+.xl-text {
+  font-size: 2rem;
+}
+
+.lg-text {
+  font-size: 1.5rem;
+}
+
+.md-text {
+  font-size: 1rem;
+}
+
+.block {
+  height: 10rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: .5rem solid;
+  min-width: 17.5rem;
+  padding: 1%;
+}
+
+.icon {
+  font-size: 2rem;
+  min-width: 2rem;
+  position: inherit;
+}
+
+.progress {
+  height: 0.6rem;
+}
+
+.signature {
+  position: absolute;
+  bottom: 10px;
+}
+
+body {
+    background-color: #f9f9fa
+}
+
+.flex {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto
+}
+
+@media (max-width:991.98px) {
+    .padding {
+        padding: 1.5rem
+    }
+}
+
+@media (max-width:767.98px) {
+    .padding {
+        padding: 1rem
+    }
+}
+
+.padding {
+    padding: 1rem
+}
+
+.block {
+    background: #fff;
+    border-width: 0;
+    border-radius: .25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+    margin-bottom: 1.5rem
+}
+
+.avatar {
+    position: relative;
+    line-height: 1;
+    border-radius: 500px;
+    white-space: nowrap;
+    font-weight: 700;
+    border-radius: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    border-radius: 500px;
+    box-shadow: 0 5px 10px 0 rgba(50, 50, 50, .15)
+}
+
+.avatar img {
+    border-radius: inherit;
+    width: 100%
+}
+
+.no-shadow {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important
+}
+
+.w-56 {
+    width: 56px !important;
+    height: 56px !important
+}
+
+.gd-success {
+    color: #fff;
+    border: none;
+    background: #31c971 linear-gradient(45deg, #31c971, #3dc931)
+}
+
+.card-body {
+    padding: 20px !important;
+}
+
+.card {
+
+    margin: 10px !important;
+
+}
+
+.text-success {
+    font-size: 40px;
+    font-weight: bold;
+    color: black !important;
+}
