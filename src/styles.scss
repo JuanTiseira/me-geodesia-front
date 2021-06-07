@@ -2,6 +2,7 @@
 
 
 /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); */
+
 @import url('./assets/css/loading.min.css');
 
 @font-face {
@@ -21,8 +22,13 @@ html {
 body {
     overflow-x: hidden;
     font-family: 'Roboto Regular' !important;
-    
+    background-color: rgb(240, 240, 240) !important;
 }
+
+hr {
+  margin-bottom: 50px;
+  margin-top: 50px;
+} 
 
 
 /*Sidebar*/
@@ -84,7 +90,7 @@ body {
 .btn {
     margin: 15px !important;
     
-    width: 30%;
+    
     border-radius: 0.5rem !important;
     color: white !important;
     background-color: #217ae6 !important;

@@ -15,7 +15,6 @@ export class SidebarComponent implements OnInit {
   }
 
   cambioUrl(url: string){
-    console.log(url)
     this.url = url;
   }
 

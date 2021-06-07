@@ -11,6 +11,7 @@ export class ApiService {
 
   private url: string;
   private urlLogin: string;
+  private res: string;
 
   constructor(
     private http: HttpClient,
@@ -26,6 +27,14 @@ export class ApiService {
     data.append('username', username);
     data.append('password', password);
     return this.http.post(this.urlLogin, data).toPromise();
+  }
+
+  setExpediente() {
+
+    this.res = 'hola'
+
+    return this.res
+
   }
 
 

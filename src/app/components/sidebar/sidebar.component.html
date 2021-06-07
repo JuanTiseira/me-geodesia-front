@@ -4,13 +4,13 @@
         <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('home')" [routerLink]="['home']">
             <i class="fal fa-file-alt"></i>Inicio</a>
         
-        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['expediente/buscar']">
+        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('expedientes')" [routerLink]="['expediente/buscar']">
             <i class="fal fa-file-alt"></i>Expedientes</a>
         
-        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('clientes')" [routerLink]="['historial']">
+        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('historial')" [routerLink]="['historial']">
             <i class="fal fa-file-alt"></i>Historial</a>
 
-        <a routerLinkActive="active" (click)="cambioUrl('estadisticas')" *ngIf="true" [routerLink]="['usuarios']">
+        <a routerLinkActive="active" (click)="cambioUrl('usuarios')" *ngIf="true" [routerLink]="['usuarios']">
             <i class="fad fa-users"></i>Usuarios</a>
     </div>
 </div>

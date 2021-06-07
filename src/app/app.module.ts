@@ -12,6 +12,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -21,9 +22,9 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     SearchPipe,
     SidebarComponent,
     NavbarComponent,
-
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,

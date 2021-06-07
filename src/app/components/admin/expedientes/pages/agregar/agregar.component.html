@@ -1,1 +1,76 @@
-<p>agregar works!</p>
+
+
+<div class="container">
+
+    <h2 style="font-weight: bold;">Crear Nuevo Expediente</h2>
+
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+        <form  (ngSubmit)="guardar()" autocomplete="off" >
+            <div class=".form-row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <input [(ngModel)]="expediente.numero" name="numero_expediente"  class="form-control" type="text" placeholder="codigo de organismo">
+                    </div>
+        
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Cuerpo">
+                    </div>
+        
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Año">
+                    </div>
+        
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Agrimensor">
+                    </div>
+    
+                    <button class="btn btn-primary" >Volver</button>
+
+                </div>
+
+                 
+
+                <div class="col-lg-6">
+
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Numero Correlativo">
+                    </div>
+        
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Fecha">
+                    </div>
+        
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Iniciador">
+                    </div>
+        
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Propietario">
+                    </div>
+    
+                    <button class="btn btn-light">Limpiar</button>
+                    <button type="button"
+                    class="btn btn-primary float-end"
+                   
+                    (click)="guardar()">
+                    Guardar
+                    </button>
+            
+           
+                </div>
+              
+        
+            </div>
+                      
+            </form>   
+    </div>
+
+    </div>
+    
+    <hr>
+
+
+</div>

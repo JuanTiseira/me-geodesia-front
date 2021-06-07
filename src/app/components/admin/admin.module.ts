@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { HistorialComponent } from './historial/historial.component';
 import { AgregarComponent } from './expedientes/pages/agregar/agregar.component';
 import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,10 @@ import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
   ],
   imports: [
     RouterModule.forChild(APP_ROUTES),
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
+
 export class AdminModule { }

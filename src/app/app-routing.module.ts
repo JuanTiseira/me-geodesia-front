@@ -6,7 +6,9 @@ import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: '', component: DashboardComponent, canLoad: [AuthGuard], canActivate: [AuthGuard],
+  { path: '', component: DashboardComponent, 
+    canLoad: [AuthGuard], 
+    canActivate: [AuthGuard],
     children:[
       // { path: 'miCuenta', component: MiCuentaComponent},
       // { path: 'movimientos', component: MiCuentaComponent},
