@@ -12,7 +12,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ValidatorInterceptorService } from './services/validator-interceptor.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,7 @@ import { CommonModule } from '@angular/common';
     SearchPipe,
     SidebarComponent,
     NavbarComponent,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,
@@ -31,9 +36,14 @@ import { CommonModule } from '@angular/common';
     SharedModule,
     ReactiveFormsModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    BrowserAnimationsModule,
+    MatProgressBarModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ValidatorInterceptorService, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

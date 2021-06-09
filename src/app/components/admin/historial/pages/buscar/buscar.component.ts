@@ -5,11 +5,16 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './buscar.component.html',
   styleUrls: ['./buscar.component.scss']
 })
-export class BuscarComponent implements OnInit {
+export class BuscarHistorialComponent implements OnInit {
+
+  
+  displayedColumnsDetalles = ["1", "2", "3"];
+  displayedColumnsSearchDetalles = ["1", "2", "3"];
+  dataSourceDetalles = ["1", "2", "3"];
+  mensajeResultadoDetalles = "Resultados";
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

@@ -6,13 +6,27 @@ import { AgregarComponent } from './expedientes/pages/agregar/agregar.component'
 import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_ROUTES } from './admin-routing.module';
+import { TiposComponent } from './tipos/tipos.component';
+import { InmueblesComponent } from './inmuebles/inmuebles.component';
+import { DocumentosComponent } from './documentos/documentos.component';
+import { TramitesComponent } from './tramites/tramites.component';
+import { ObservacionesComponent } from './observaciones/observaciones.component';
+import { AgrimensoresComponent } from './agrimensores/agrimensores.component';
+import { GestoresComponent } from './gestores/gestores.component';
 
 @NgModule({
   declarations: [
    
     HomeComponent,
     AgregarComponent,
-    BuscarComponent
+    BuscarComponent,
+    TiposComponent,
+    InmueblesComponent,
+    DocumentosComponent,
+    TramitesComponent,
+    ObservacionesComponent,
+    AgrimensoresComponent,
+    GestoresComponent
   ],
   imports: [
     RouterModule.forChild(APP_ROUTES),

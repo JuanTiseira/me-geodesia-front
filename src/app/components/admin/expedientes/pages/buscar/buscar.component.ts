@@ -13,6 +13,9 @@ export class BuscarComponent implements OnInit {
   mensajeResultadoDetalles = "Resultados";
   items = [1,2, 3, 4, 5]
 
+  
+  loading: boolean;
+
   constructor() { }
 
   ngOnInit(): void {

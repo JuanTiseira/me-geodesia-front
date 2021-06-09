@@ -11,7 +11,7 @@ export class ValidatorInterceptorService implements HttpInterceptor {
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const Authorization = `Token ${this._tokenService.getToken()}`;
     const userName = this._tokenService.getUserName();
-    //si no hay usuario no modifica la petición (si intercepta sin modificar )
+    // si no hay usuario no modifica la petición (si intercepta sin modificar )
     if(userName != null){
       return next.handle(httpRequest.clone({ 
         headers: httpRequest.headers.set('Authorization', Authorization)

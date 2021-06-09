@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class AgregarComponent implements OnInit {
+export class AgregarUsuarioComponent implements OnInit {
 
   constructor() { }
 

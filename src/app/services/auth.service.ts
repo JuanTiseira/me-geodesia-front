@@ -4,17 +4,20 @@ import { User } from '../models/user.models';
 import { TokenService } from './token.service';
 
 import { ApiService } from './api.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  
   private usert: User;
+  private data = {}
 
   constructor(private _apiService: ApiService,
-    private _tokenService: TokenService
+    private _tokenService: TokenService,
+    private router: Router
     ) { }
 
 
@@ -33,7 +36,7 @@ export class AuthService {
   }
 
   hasRole(role: Role) {
-      return this.isAuthorized() && this.usert.authorities[0].authority === Role.ROL_ADMIN;
+      return this.isAuthorized() && this.usert.authorities[0].authority === role;
   }
 
 
@@ -44,8 +47,6 @@ export class AuthService {
         this._tokenService.setData(response);              
         this.usert = response['user'];
         log = true;
-
-        //alert('entra')
         return log;
         }  
       )
@@ -58,7 +59,9 @@ export class AuthService {
 
 
   logout() {
-    
+     
     this.usert = null; 
+    this._tokenService.setData(this.data);
+    this.router.navigate(['login']);
   }
 }

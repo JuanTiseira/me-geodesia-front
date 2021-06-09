@@ -1,3 +1,6 @@
+<div class="material-progress-bar-div mb-3" *ngIf="loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
 <div class="container">
 
     <div class="row">
@@ -10,7 +13,8 @@
         <div class="col-md-4">
                 <label for="username" class="form-label">Consultar por</label>   
                 <select name="" id="" class="form-control">
-                    <option value="">HOLA</option>
+                    <option value="">Numero</option>
+                    
                 </select>
           
         </div>
@@ -32,9 +36,9 @@
     <hr />
 
     <div class="row" >
-        <div class="col-md-4 col-sm-12 mt-3" *ngFor="let item of items; index as i">
+        <div class="col-md-4 col-sm-12 mt-3" >
             <div class="mb-3 form-email">
-                <label for="estado" class="form-label">Filtro {{i}}</label>
+                <label for="estado" class="form-label">Agrimensor</label>
                 <select  class="form-select">
                     <option>Opcion 1</option>
                     <option>Opcion 2</option>
@@ -44,9 +48,21 @@
             </div>
         </div>
 
+        <div class="col-md-4 col-sm-12 mt-3" >
+            <div class="mb-3 form-email">
+                <label for="estado" class="form-label">Propietario</label>
+                <select  class="form-select">
+                    <option>Opcion 1</option>
+                    <option>Opcion 2</option>
+                    <option>Opcion 3</option>
+                    <option>Opcion 4</option>
+                </select>
+            </div>
+        </div>
+
+
         <div class="col-md-4">
             <div class="mt-3">
-               
                 <button type="button" class="btn btn-primary">Consultar</button>
             </div>
         </div>
