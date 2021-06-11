@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,  NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from '../../services/token.service';
 
 declare var jQuery: any;
 
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit {
 
   constructor( 
     private router: Router,
-    private _authService: AuthService) { 
+    private _authService: AuthService,
+    private _tokenService: TokenService) { 
     //Si cambia de ruta el menú desplegable se cierra
     this.router.events.subscribe((ev) => {
           if (ev instanceof NavigationEnd) { 
@@ -43,10 +45,13 @@ export class NavbarComponent implements OnInit {
     this.showMsj = false;
     this.showAviso = false;
 
+    var user = this._tokenService.getUserName();
+    this.header= `Hola, ${user}`;
+
   }
 
   logOut(){
-     this._authService.logout()
+     this._tokenService.logOut()
   }
 
   notificar(){

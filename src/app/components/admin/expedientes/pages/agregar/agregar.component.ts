@@ -40,10 +40,10 @@ export class AgregarComponent implements OnInit {
     agrimensor: new FormControl(''),
   });
   
-  constructor(private router: Router,
+  constructor(
               private _apiService: ApiService,
               private _functionService: FunctionsService,
-              private formBuilder:FormBuilder) { }
+              ) { }
 
   ngOnInit(): void {
 

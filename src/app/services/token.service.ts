@@ -44,7 +44,7 @@ export class TokenService {
   }
 
   public getAuthorities(): Authority[] {
-    this._functionService.imprimirMensaje(this._localService.getJsonValue("dato"), "dato en localstorage, getAuthorities")
+    //this._functionService.imprimirMensaje(this._localService.getJsonValue("dato"), "dato en localstorage, getAuthorities")
 
     
     var dato: LoginUser = this._localService.getJsonValue("dato");

@@ -88,12 +88,10 @@ hr {
 /* Buttons */
 
 .btn {
-    margin: 15px !important;
-    
-    
+    margin: 2px !important;
     border-radius: 0.5rem !important;
     color: white !important;
-    background-color: #217ae6 !important;
+    margin-top: 12px !important;
 }
 
 .btn-green {
@@ -182,3 +180,6 @@ body { margin: 0; font-family: Roboto Regular, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

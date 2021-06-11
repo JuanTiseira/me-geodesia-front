@@ -21,3 +21,5 @@ export interface Result {
     agrimensor:     string;
     gestor:         string;
 }
+
+

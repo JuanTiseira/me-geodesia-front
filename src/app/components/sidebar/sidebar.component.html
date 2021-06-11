@@ -10,7 +10,15 @@
         <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('historial')" [routerLink]="['historial/buscar']">
             <i class="fal fa-file-alt"></i>Historial</a>
 
-        <a routerLinkActive="active" *ngIf="isAdmin" (click)="cambioUrl('usuarios')" [routerLink]="['usuario/buscar']">
+        <a  *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['usuario/buscar']">
             <i class="fad fa-users"></i>Usuarios</a>
+
+        <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('documentos')" [routerLink]="['abm/documentos']">
+            <i class="fad fa-file"></i>Documentos</a>
+        
+
+        <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('tipos')" [routerLink]="['abm/tipos']">
+            <i class="fad fa-file"></i>Tipo Expediente</a>
+
     </div>
 </div>

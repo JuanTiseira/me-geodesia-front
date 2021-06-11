@@ -14,9 +14,9 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private activateRoute: ActivatedRoute) { }
 
-    get isAuthorized() {
-      return this.authService.isAuthorized();
-    }
+    // get isAuthorized() {
+    //   return this.authService.isAuthorized();
+    // }
   
     get isAdmin() {
       return this.authService.hasRole(Role.ROL_ADMIN);

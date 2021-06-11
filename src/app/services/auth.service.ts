@@ -63,5 +63,6 @@ export class AuthService {
     this.usert = null; 
     this._tokenService.setData(this.data);
     this.router.navigate(['login']);
+    
   }
 }

@@ -14,9 +14,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ValidatorInterceptorService } from './services/validator-interceptor.service';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { MatTableModule } from '@angular/material/table'  
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     NotFoundComponent,
   ],
   imports: [
+    MatPaginatorModule,
+    MatTableModule,
     CommonModule,
     BrowserModule,
     AppRoutingModule,
@@ -38,7 +43,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     HttpClientModule,
     SweetAlert2Module.forRoot(),
     BrowserAnimationsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ValidatorInterceptorService, multi: true },

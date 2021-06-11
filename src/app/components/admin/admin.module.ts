@@ -13,6 +13,9 @@ import { TramitesComponent } from './tramites/tramites.component';
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { AgrimensoresComponent } from './agrimensores/agrimensores.component';
 import { GestoresComponent } from './gestores/gestores.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 
 @NgModule({
   declarations: [
@@ -26,13 +29,16 @@ import { GestoresComponent } from './gestores/gestores.component';
     TramitesComponent,
     ObservacionesComponent,
     AgrimensoresComponent,
-    GestoresComponent
+    GestoresComponent,
+    DetalleComponent
   ],
   imports: [
+    NgxPaginationModule,
     RouterModule.forChild(APP_ROUTES),
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatPaginatorModule
   ]
 })
 
