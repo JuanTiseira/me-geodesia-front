@@ -4,6 +4,8 @@ import { AuthGuard } from './auth/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { Role } from './models/role.models';
+import { BuscarComponent } from './components/admin/expedientes/pages/buscar/buscar.component';
+import { HomeComponent } from './components/admin/home/home.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -13,9 +15,9 @@ const routes: Routes = [
     canLoad: [AuthGuard], 
     canActivate: [AuthGuard],
     children:[
-      // { path: 'home', component: MiCuentaComponent},
-      // { path: 'expedientes', component: MiCuentaComponent},
-      // { path: 'historial', component: SaldosComponent},
+      {path: 'home', component: HomeComponent},
+      {path: 'expediente/buscar', component: BuscarComponent},
+      {path: 'historial/buscar', component: BuscarComponent},
       // { path: 'pagos', component: PagosComponent},
       // { path: 'contacto', component: ContactoComponent}
     ]
@@ -27,12 +29,27 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('../app/components/admin/admin.module').then(m => m.AdminModule),
     data: {
-      // roles: [
-      //   Role.ROL_ADMIN,
-      // ]
+      roles: [
+        Role.ROL_ADMIN,
+      ]
     }
   
-},
+  },
+
+  { path: '', component: DashboardComponent, 
+    canLoad: [AuthGuard], 
+    canActivate: [AuthGuard],
+    loadChildren: () => import('../app/components/admin/empleado.module').then(m => m.EmpleadoModule),
+    data: {
+      roles: [
+        Role.ROL_USER,
+      ]
+    }
+  
+  },
+
+
+
 {
   path:'**', component: LoginComponent
 }
@@ -43,3 +60,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+

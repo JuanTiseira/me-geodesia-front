@@ -17,4 +17,6 @@ export class BuscarHistorialComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  
 }

@@ -1,1 +1,142 @@
-<p>detalle works!</p>
+
+
+<div class="container">
+
+    <h2 style="font-weight: bold;">Detalle Expediente</h2>
+
+    <br>
+
+    <div class="row">
+        <div class="col-12" *ngIf="expediente">
+          <form class="row g-3" [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="numero" class="form-label">Numero</label>
+                <input type="number" formControlName="numero" class="form-control" id="numero" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                  <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="año" class="form-label">Año</label>
+                <input type="number" formControlName="anio" class="form-control" id="anio" required [ngClass]="{ 'is-invalid': submitted && f.anio.errors }">
+                <div *ngIf="submitted && f.anio.errors" class="invalid-feedback">
+                  <div *ngIf="f.anio.errors.required">Este campo es obligatorio</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo" class="form-label">Tipo</label>
+                <select *ngIf="tipos_expedientes" formControlName="tipo_expediente" name="" class="form-control" id="">
+                  <option  disabled>Seleccione una Opcion</option>
+                  <option [value]="dato.url" *ngFor="let dato of tipos_expedientes.results">{{dato.descripcion}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="inmueble" class="form-label">Inmueble</label>
+                <select *ngIf="inmuebles" formControlName="inmueble" name="" class="form-control" id="">
+                  <option  disabled>Seleccione una Opcion</option>
+                  <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="propietario" class="form-label">Propietario</label>
+                <select *ngIf="usuarios" formControlName="propietario"  name="" class="form-control" id="">
+                  <option  disabled>Seleccione una Opcion</option>
+                  <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                </select>
+              </div>
+                <div class="col-12">
+                  <button type="button" class="btn btn-primary">Volver</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+              <div class="form-group">
+                
+                <label for="abreviatura" class="form-label">Abreviatura</label>
+                <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4">
+
+
+              </div>
+              
+                <div class="form-group">
+                  <label for="documento" class="form-label">Documento</label>
+                  <select formControlName="documento" *ngIf="documentos"  name="" class="form-control" id="">
+                    <option value="" disabled>Seleccione una Opcion</option>
+                    <option [value]="dato.url" *ngFor="let dato of documentos.results" value="">{{dato.descripcion}}</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="tramite" class="form-label">Tramite</label>
+                  <select formControlName="tramite" *ngIf="tramites"  name="" class="form-control" id="">
+                    <option value="" disabled>Seleccione una Opcion</option>
+                    <option [value]="dato.url" *ngFor="let dato of tramites.results" value="">{{dato.numero}}</option>
+                  </select>
+
+                </div>
+
+                <div class="form-group">
+                  <label for="observacion" class="form-label">Observacion</label>
+                  <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-control" id="">
+                    <option value="" disabled>Seleccione una Opcion</option>
+                    <option [value]="dato.url" *ngFor="let dato of observaciones.results" value="">{{dato.descripcion}}</option>
+                  </select>
+
+                  
+
+                </div>
+
+                <div class="form-group">
+                  <label for="agrimensor" class="form-label">Agrimensor</label>
+                  <select *ngIf="usuarios" formControlName="agrimensor"  name="" class="form-control" id="">
+                    <option value="" disabled>Seleccione una Opcion</option>
+                    <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="gestor" class="form-label">Gestor</label>
+                  <select formControlName="gestor" *ngIf="usuarios"  name="" class="form-control" id="">
+                    <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                  </select>
+
+                </div>
+             
+                <button type="button" class="btn btn-primary">Cancelar</button>
+                <!-- <button type="submit" class="btn btn-primary" >Guardar</button> -->
+                <button [disabled]="loading" class="btn btn-primary">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                  Guardar
+                </button>
+                
+            </div>
+           
+            
+          </form>  
+                
+            <div class="row">
+
+                <div class="col-3">
+                   
+                </div>
+
+                <div class="col-3">
+                    
+                </div>
+
+
+            </div>
+                
+                    
+    </div>
+
+    
+
+
+</div>

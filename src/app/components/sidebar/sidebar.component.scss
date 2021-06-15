@@ -3,7 +3,7 @@
 
 .sidebar {
     width: 300px;
-    background-color: #ffffff00;
+    background-color: #ffffff;
     height: 100%;
     position: fixed;
     font-family: 'Roboto Regular' !important;
@@ -112,7 +112,7 @@
 
 @media (max-width: 1366px) {
     .sidebar {
-        width:  px;
+        width:  250px;
     }
 
     .sidebar .sidebar-content a i,

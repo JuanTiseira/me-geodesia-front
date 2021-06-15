@@ -42,11 +42,29 @@ export class ApiService {
     return this.http.get(this.url+'/expedientes/').toPromise();
   }
 
+  getExpediente(id){
+    return this.http.get(this.url+`/expedientes/${id}`).toPromise();
+  }
+
   setExpediente(expediente) {
     console.warn(expediente);
 
     return this.http.post(this.url+'/expedientes/', expediente).toPromise();
   }
+
+  editExpediente(expediente) {
+    console.warn(expediente);
+
+    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
+  }
+
+  deleteExpediente(expediente) {
+    console.warn(expediente);
+
+    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
+  }
+
+
 
   //TIPO EXPETIENTE 
   

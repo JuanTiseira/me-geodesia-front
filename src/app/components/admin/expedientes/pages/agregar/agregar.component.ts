@@ -1,14 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
-import { FormsModule } from '@angular/forms';
-import { Expediente } from 'src/app/models/expediente.model';
 import { FunctionsService } from '../../../../../services/functions.service';
-import { TipoExpediente } from 'src/app/models/tipo_expediente.model';
-
-
+import Swal from 'sweetalert2'
 @Component({
   selector: 'app-agregar',
   templateUrl: './agregar.component.html',
@@ -16,7 +11,7 @@ import { TipoExpediente } from 'src/app/models/tipo_expediente.model';
 })
 export class AgregarComponent implements OnInit {
 
-  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+  // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
   public tipos_expedientes: any;
   public documentos: any; 
@@ -24,29 +19,49 @@ export class AgregarComponent implements OnInit {
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
-
-  expedienteForm = new FormGroup({
-
-    numero: new FormControl(''),
-    anio: new FormControl(''),
-    tipoexpediente: new FormControl(''),
-    inmueble: new FormControl(''),
-    documento: new FormControl(''),
-    propietario: new FormControl(''),
-    gestor: new FormControl(''),
-    tramite: new FormControl(''),
-    observacion: new FormControl(''),
-    abreviatura: new FormControl(''),
-    agrimensor: new FormControl(''),
-  });
+  expedienteForm : FormGroup
+  form: FormGroup;
+  id: string;
+  isAddMode: boolean;
+  loading = false;
+  submitted = false;
   
+
   constructor(
-              private _apiService: ApiService,
-              private _functionService: FunctionsService,
-              ) { }
+    private _apiService: ApiService,
+    private _functionService: FunctionsService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    ) { }
 
   ngOnInit(): void {
+   
+    this.id = this.route.snapshot.params['id'];
+    this.isAddMode = !this.id;
 
+    this.expedienteForm = this.formBuilder.group({
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      tipo_expediente: ['', Validators.required],
+      inmueble: ['', [Validators.required]],
+      documento: ['', Validators.required],
+      propietario: ['', Validators.required],
+      gestor: ['', Validators.required],
+      tramite: ['', Validators.required],
+      observacion: ['', Validators.required],
+      abreviatura: ['', Validators.required],
+      agrimensor: ['', Validators.required],
+      }, {
+         
+      });
+
+
+      if (!this.isAddMode) {
+        this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+        .then(x => this.form.patchValue(x));
+    }
+    
 
     this._apiService.getTipoExpedientes().then(response => {
       
@@ -81,11 +96,56 @@ export class AgregarComponent implements OnInit {
 
   
   }
+
+  get f() { return this.expedienteForm.controls; }
+
   
   onSubmit() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.expedienteForm.invalid) {
+        return;
+    }
+
+    this.loading = true;
+    if (this.isAddMode) {
+        this.createExpediente();
+    } else {
+        this.updateExpediente();
+    }
+}
+  
+  createExpediente() {
     
     
     this._apiService.setExpediente(this.expedienteForm.value)
+    .then(() =>{
+      console.warn(this.expedienteForm.value);
+      Swal.fire({
+        title: 'Exito',
+        text: 'Se registro correctamente',
+        icon: 'error',
+        confirmButtonText: 'Cool',
+      })
+    })
+    .catch((e)=>{
+     Swal.fire({
+        title: 'Error!',
+        text: 'No se guardo correctamente',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+      this.loading = false;
+    });
+    
+    // this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  updateExpediente() {
+    
+    
+    this._apiService.editExpediente(this.expedienteForm.value)
     .then(() =>{
       console.warn(this.expedienteForm.value);
       //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");

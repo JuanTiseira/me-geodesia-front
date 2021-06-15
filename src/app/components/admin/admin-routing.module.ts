@@ -5,19 +5,37 @@ import { HomeComponent } from './home/home.component';
 import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.component';
 import { BuscarUsuarioComponent } from './usuarios/pages/buscar/buscar.component';
 import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.component';
+import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
+import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
 
 
 export const APP_ROUTES: Routes = [
+
+  //EXPEDIENTES 
 
   {path: 'expediente/buscar', component: BuscarComponent},
 
   {path: 'expediente/agregar', component: AgregarComponent},
 
+  {path: 'expediente/editar/:id', component: AgregarComponent },
+
+  {path: 'expediente/:id', component: DetalleComponent },
+
+  
+
+  //USUARIOS
+
   {path: 'usuario/agregar', component: AgregarUsuarioComponent},
 
   {path: 'usuario/buscar', component: BuscarUsuarioComponent},
 
+
+
+  //HISTORIAL
+
   {path: 'historial/buscar', component: BuscarHistorialComponent},
+
+  {path: 'historial/:id', component: DetalleHistorialComponent},
   
   {path: 'home', component: HomeComponent}
 

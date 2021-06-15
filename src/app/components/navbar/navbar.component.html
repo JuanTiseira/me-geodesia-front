@@ -3,7 +3,7 @@
         <div class="col-6 header pt-3">
             <img src="assets/img/escudo-misiones.svg" alt="Escudo misiones" width="50px">
             <h4> DIRECCION GENERAL <br>DE CATASTRO</h4>
-            <div class="btn-collapsed" >
+            <div class="btn-collapsed" (click)="touchButton()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -12,7 +12,7 @@
         </div>
         <div class="col-6">
             <div class="items">
-                <a (click)="show('Aviso')">
+                <!-- <a (click)="show('Aviso')">
                     <p *ngIf="avisos != null" class="icon-notice">{{avisos}}</p>
                     <i class="fal fa-bell"></i>
                     <div class="box-message box-aviso" *ngIf="showAviso">
@@ -21,7 +21,7 @@
                             <p>Estás al día</p>
                         </div>
                     </div>
-                </a>
+                </a> -->
               
                 <a (click)="show('Perfil')">
                     

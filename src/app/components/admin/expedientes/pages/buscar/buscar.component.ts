@@ -35,6 +35,7 @@ export class BuscarComponent implements OnInit {
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
+  public tipo_consulta: any;
 
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
@@ -54,6 +55,7 @@ export class BuscarComponent implements OnInit {
     observacion: new FormControl(''),
     abreviatura: new FormControl(''),
     agrimensor: new FormControl(''),
+    tipo_consulta: new FormControl('')
   });
 
   open(content, id) {

@@ -108,9 +108,9 @@
                     <td> {{ exp.gestor.nombre }} {{ exp.gestor.apellido }}</td> 
                     <td> <b>Estado</b></td>
                     <td>
-                        <button type="button" class="btn btn-info" (click)="open(content, exp.id)"><i class="fa fa-info"></i></button>
+                        <button type="button" class="btn btn-info" [routerLink]="['/expediente/', exp.id ]"><i class="fa fa-info"></i></button>
                         <button type="button" class="btn btn-danger" [routerLink]="['/expediente/eliminar', exp.url ]"><i class="fa fa-close"></i></button>
-                        <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button>
+                        <!-- <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button> -->
                     </td>
                 </tr>
             </tbody>

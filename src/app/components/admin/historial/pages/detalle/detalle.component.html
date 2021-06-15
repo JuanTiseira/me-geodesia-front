@@ -1,0 +1,71 @@
+
+
+<div class="container">
+
+    <h2 style="font-weight: bold;">Detalle Expediente</h2>
+
+    <br>
+
+    
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped" >
+               
+                <tbody>
+                    <tr>
+                        <th>Numero</th>
+                            <td>{{ expediente.numero }}</td>
+                    </tr>
+                    <tr>
+                        <th>Año</th>
+                            <td>{{ expediente.anio }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Agrimensor</th>
+                            <td>{{ expediente.agrimensor.nombre }} {{ expediente.agrimensor.apellido }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Gestor</th>
+                            <td>{{ expediente.gestor.nombre }} {{ expediente.gestor.apellido }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Imueble</th>
+                            <td>{{ expediente.inmueble.datos }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Propietario</th>
+                            <td>{{ expediente.propietario.nombre }} {{ expediente.propietario.apellido }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Tipo </th>
+                            <td>{{ expediente.tipo_expediente.descripcion }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Tramite</th>
+                            <td>{{ expediente.tipo_expediente.nombre }}</td>
+                    </tr>
+                        <!-- <th>{{ expediente.anio }}</th>
+                        <th> </th> 
+                        <th> <b>Estado</b></th> -->
+                       
+                   
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-info" [routerLink]="['/historial/buscar']">Volver</button>
+
+    </div>
+
+    </div>
+    
+    <hr>
+
+
+</div>

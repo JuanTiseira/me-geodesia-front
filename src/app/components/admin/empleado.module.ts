@@ -17,31 +17,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
-import { Select2Module } from "ng-select2-component";
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 
 
 @NgModule({
   declarations: [
    
-    HomeComponent,
-    AgregarComponent,
-    BuscarComponent,
-    TiposComponent,
-    InmueblesComponent,
-    DocumentosComponent,
-    TramitesComponent,
-    ObservacionesComponent,
-    AgrimensoresComponent,
-    GestoresComponent,
-    DetalleComponent,
-    DetalleHistorialComponent
+ 
    
   ],
   imports: [
- 
-    SweetAlert2Module,
-    Select2Module,
     NgxPaginationModule,
     RouterModule.forChild(APP_ROUTES),
     SharedModule,
@@ -51,4 +36,4 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
   ]
 })
 
-export class AdminModule { }
+export class EmpleadoModule { }

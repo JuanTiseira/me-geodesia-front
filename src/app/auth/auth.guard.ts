@@ -24,29 +24,29 @@ export class AuthGuard implements CanActivate, CanLoad {
         return false;
     }
 
-    // const roles = route.data.roles as Role[];
-    // if (roles && !roles.some(r => this.authService.hasRole(r))) {
-    //     console.log("redirecciona");
-    //     this.router.navigate(['login']);
-    //     return false;
-    // }
+    const roles = route.data.roles as Role[];
+    if (roles && !roles.some(r => this.authService.hasRole(r))) {
+        console.log("redirecciona");
+        this.router.navigate(['login']);
+        return false;
+    }
 
     return true;
 }
 
 canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
  
-    // if (!this.authService.isAuthorized()) {
+    if (!this.authService.isAuthorized()) {
       
-    //     this.router.navigate(['login']);
-    //     return false;
-    // }
+        this.router.navigate(['login']);
+        return false;
+    }
 
-    // const roles = route.data && route.data.roles as Role[];
-    // if (roles && !roles.some(r => this.authService.hasRole(r))) {
-    //     this.router.navigate(['login']);
-    //     return false;
-    // }
+    const roles = route.data && route.data.roles as Role[];
+    if (roles && !roles.some(r => this.authService.hasRole(r))) {
+        this.router.navigate(['login']);
+        return false;
+    }
 
     return true;
 }
