@@ -6,6 +6,7 @@ import { Role } from 'src/app/models/role.models';
 import { AuthService } from 'src/app/services/auth.service';
 import * as $ from 'JQuery';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit{
       
       $("#btn-login").removeClass('disabled');
       this.loading = false;
-      this.failSwal.fire();
+      console.log(error)
     });   
   }
 }

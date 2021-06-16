@@ -1,7 +1,9 @@
 /* Styles*/
 
 .contenedor {
-    background-image: url(https://southcentralus1-mediap.svc.ms/transform/thumbnail?provider=spo&inputFormat=jpg&cs=fFNQTw&docid=https%3A%2F%2Frelexsrl-my.sharepoint.com%3A443%2F_api%2Fv2.0%2Fdrives%2Fb!DzLTLujX7kCHIWP1gfM_54gGscrdWn9Lnbv6GM0Qe4ObukHqwnlsSZ76mbk9PMwz%2Fitems%2F014JMII6XKQTAKOICFTBBZDA7L4XRMROGW%3Fversion%3DPublished&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvcmVsZXhzcmwtbXkuc2hhcmVwb2ludC5jb21AMWM0N2MzZDEtZTEyZi00NzBiLWFjNzktZjc1ZDhiMWNjYzIwIiwiaXNzIjoiMDAwMDAwMDMtMDAwMC0wZmYxLWNlMDAtMDAwMDAwMDAwMDAwIiwibmJmIjoiMTYyMzY4MjgwMCIsImV4cCI6IjE2MjM3MDQ0MDAiLCJlbmRwb2ludHVybCI6IjRnN0xESVhzS3Bnb3NoUmI0MC9mTGJhWHBKdmZXZW5JZUh0cThpdFE4T009IiwiZW5kcG9pbnR1cmxMZW5ndGgiOiIxMTgiLCJpc2xvb3BiYWNrIjoiVHJ1ZSIsInZlciI6Imhhc2hlZHByb29mdG9rZW4iLCJzaXRlaWQiOiJNbVZrTXpNeU1HWXRaRGRsT0MwME1HVmxMVGczTWpFdE5qTm1OVGd4WmpNelptVTMiLCJzaWduaW5fc3RhdGUiOiJbXCJrbXNpXCJdIiwibmFtZWlkIjoiMCMuZnxtZW1iZXJzaGlwfG1hcmNvc0ByZWxleC5jb20uYXIiLCJuaWkiOiJtaWNyb3NvZnQuc2hhcmVwb2ludCIsImlzdXNlciI6InRydWUiLCJjYWNoZWtleSI6IjBoLmZ8bWVtYmVyc2hpcHwxMDAzMjAwMTQ4MTY3ZTZjQGxpdmUuY29tIiwidHQiOiIwIiwidXNlUGVyc2lzdGVudENvb2tpZSI6IjMifQ.UXBraXQ3Q1RVZE04NThla01RRkxCaFZvQURwVGdQOEpERFM5NllWUnNrUT0&encodeFailures=1&width=1182&height=893&srcWidth=3839&srcHeight=2902); 
+    background-image: url('../../../assets/img/casa.jpg');
+    background-color: rgba(0,0,0,0.8);
+    
     background-size: contain !important;
     height: 100vh; 
 }
@@ -23,6 +25,7 @@
     /* color: #1b1464; */
     color: #717171;
     padding: 20px;
+    z-index: 10;
 }
 
 .card-header {

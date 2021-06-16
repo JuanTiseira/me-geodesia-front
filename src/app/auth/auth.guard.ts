@@ -3,7 +3,7 @@ import { CanActivate, Router, ActivatedRouteSnapshot, CanLoad, Route } from '@an
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Role } from 'src/app/models/role.models';
-
+import Swal from 'sweetalert2'
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +19,12 @@ export class AuthGuard implements CanActivate, CanLoad {
     
     if (!this.authService.isAuthorized()) {
         console.log("no está autorizado");
-        alert('no autorizado')
+        Swal.fire({
+          title: 'No Autorizado',
+          text: 'No autorizado',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+        })
         this.router.navigate(['login']);
         return false;
     }

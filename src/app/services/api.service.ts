@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { Expediente } from '../models/expediente.model';
 
 
 @Injectable({
@@ -16,7 +15,8 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    
     ) { 
       this.url  =  environment.endpoint;
       this.urlLogin = this.url + '/auth/';
@@ -39,7 +39,11 @@ export class ApiService {
   //EXPEDIENTES 
 
   getExpedientes(){
-    return this.http.get(this.url+'/expedientes/').toPromise();
+    return this.http.get(this.url+'/expedientes/').toPromise().catch(()=>
+    { 
+        console.log("ERRORRRRR.");
+        this.router.navigate(['login']);
+    });
   }
 
   getExpediente(id){

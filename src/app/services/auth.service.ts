@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Role } from '../models/role.models';
 import { User } from '../models/user.models';
 import { TokenService } from './token.service';
-
+import Swal from 'sweetalert2'
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 
@@ -30,6 +30,7 @@ export class AuthService {
     if(this.usert.user_name != null){
       return this.usert;
     }else{
+      
       return false;
     }
     return true;
@@ -52,6 +53,7 @@ export class AuthService {
       )
       .catch(error =>{
         console.log("login error: ",error);
+        this.logout()
         return log;
       })     
   }

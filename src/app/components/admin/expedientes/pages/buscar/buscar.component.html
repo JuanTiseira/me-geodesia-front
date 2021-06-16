@@ -32,7 +32,7 @@
 
         <hr />
 
-        <div class="row">
+        <div class="row" *ngIf="isAdmin">
             <div class="col-md-4">
                     <label for="username" class="form-label">Agrimensor</label>   
                     <select formControlName="agrimensor" class="form-select" *ngIf="usuarios">
@@ -85,6 +85,12 @@
     </form>
     
    
+
+
+
+
+
+    
     <hr/>
 
 

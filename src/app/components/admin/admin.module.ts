@@ -35,7 +35,7 @@ import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.compon
     DetalleComponent,
     DetalleHistorialComponent,
     BuscarUsuarioComponent,
-    BuscarHistorialComponent
+    BuscarHistorialComponent,
    
   ],
   imports: [

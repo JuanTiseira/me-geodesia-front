@@ -35,9 +35,9 @@
                 </select>
               </div>
 
-              <select [compareWith]="compareFn"  [formControl]="tipo_expediente">
-                <option *ngFor="let country of countries" [ngValue]="country">
-                    {{country.name}}
+              <select [compareWith]="compareFn"  formControlName="tipo_expediente">
+                <option *ngFor="let dato of tipos_expedientes.results" [ngValue]="dato.url">
+                    {{dato.descripcion}}
                 </option>
               </select>
 
@@ -57,8 +57,12 @@
                 </select>
               </div>
                 <div class="col-12">
-                  <button type="button" class="btn btn-primary">Volver</button>
+                  <button type="button" class="btn btn-primary">Imprimir Solapa</button>
+                  <button type="button" class="btn btn-primary">Imprimir Etiqueta</button>
                 </div>
+                
+                  
+                
             </div>
             <div class="col-md-6">
 

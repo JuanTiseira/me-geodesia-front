@@ -1,6 +1,10 @@
 <div class="page-content page-container" id="page-content">
     <div class="padding">
-        <div class="row">
+        
+        
+        
+        
+        <div class="row" *ngIf="isAdmin">
 
             <div class="col-md-3 d-flex">
                 <div class="card flex" data-sr-id="10" style="visibility: visible; transform: none; opacity: 1; transition: none 0s ease 0s; background-color: rgba(127, 255, 212, 0.644);">
@@ -24,7 +28,7 @@
                            
                                 <div class="px-4 flex">
                                     <div class="text-success mt-2">500<i class="fa fa-file-alt icon"></i></div>
-                                    <div class="md-text">Expedientes en el sistema</div>   
+                                    <div class="md-text">Expedientes Aprobados</div>   
                                 </div>
                                 
                         </div>
@@ -38,7 +42,7 @@
                            
                                 <div class="px-4 flex">
                                     <div class="text-success mt-2">500<i class="fa fa-file-alt icon"></i></div>
-                                    <div class="md-text">Expedientes en el sistema</div>   
+                                    <div class="md-text">Expedientes Pendientes</div>   
                                 </div>
                                 
                         </div>
@@ -53,7 +57,7 @@
                            
                                 <div class="px-4 flex">
                                     <div class="text-success mt-2">500<i class="fa fa-file-alt icon"></i></div>
-                                    <div class="md-text">Expedientes en el sistema</div>   
+                                    <div class="md-text">Expedientes Cancelados</div>   
                                 </div>
                                 
                         </div>
@@ -68,7 +72,7 @@
                            
                                 <div class="px-4 flex">
                                     <div class="text-success mt-2">500<i class="fa fa-file-alt icon"></i></div>
-                                    <div class="md-text">Expedientes en el sistema</div>   
+                                    <div class="md-text">Usuarios en el sistema</div>   
                                 </div>
                                 
                         </div>
@@ -77,6 +81,36 @@
             </div>
 
 
+        </div>
+
+
+        <div class="row" *ngIf="isEmpleado">
+            <div class="container">
+                
+                <div class="row">
+                    <h1 style="font-weight: bold;">Consulta de Expediente</h1>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-3 col-sm-12">
+                        <label for="username" class="form-label">Número de Expediente</label>
+                        <input maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
+    
+                        
+                    </div>
+    
+                    <div class="col-lg-6 col-md-3 col-sm-12">
+                        
+                        <button class="btn btn-primary">Buscar</button>
+                    </div>
+
+                </div>
+              
+                
+
+
+                <br>
         </div>
       
         

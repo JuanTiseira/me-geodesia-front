@@ -6,7 +6,8 @@ import { FunctionsService } from '../../../../../services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
+import { Role } from 'src/app/models/role.models';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -39,7 +40,8 @@ export class BuscarHistorialComponent implements OnInit {
 
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
-                private modalService: NgbModal) { }
+                private modalService: NgbModal,
+                private authService: AuthService,) { }
 
 
   consultaForm = new FormGroup({
@@ -121,6 +123,9 @@ export class BuscarHistorialComponent implements OnInit {
 
   }
 
+  get isAdmin() {
+    return this.authService.hasRole(Role.ROL_ADMIN);
+  }
 
   buscar () {
     alert('buscado')

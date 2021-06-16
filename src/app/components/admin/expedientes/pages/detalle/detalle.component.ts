@@ -74,7 +74,7 @@ export class DetalleComponent implements OnInit {
   }
 
   compareFn(c1, c2): boolean {
-    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+    return c1 && c2 ? c1.url === c2.url : c1 === c2;
 }
 
 }

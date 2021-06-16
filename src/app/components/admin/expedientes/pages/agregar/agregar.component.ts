@@ -148,16 +148,22 @@ export class AgregarComponent implements OnInit {
     this._apiService.editExpediente(this.expedienteForm.value)
     .then(() =>{
       console.warn(this.expedienteForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
+      Swal.fire({
+        title: 'Exito',
+        text: 'Se registro correctamente',
+        icon: 'error',
+        confirmButtonText: 'Cool',
+      })
     })
-    .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
+    .catch((e)=>{
+     Swal.fire({
+        title: 'Error!',
+        text: 'No se guardo correctamente',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+      this.loading = false;
     });
-  }
 
+  }
 }
