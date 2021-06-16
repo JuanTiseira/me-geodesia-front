@@ -15,10 +15,15 @@
 
         <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('documentos')" [routerLink]="['abm/documentos']">
             <i class="fad fa-file"></i>Documentos</a>
-        
 
         <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('tipos')" [routerLink]="['abm/tipos']">
             <i class="fad fa-file"></i>Tipo Expediente</a>
+
+        <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('tramites')" [routerLink]="['abm/tramites']">
+            <i class="fad fa-file"></i>Tramites</a>
+
+        <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('inmuebles')" [routerLink]="['abm/inmuebles']">
+            <i class="fad fa-file"></i>Inmuebles</a>  
 
     </div>
 </div>

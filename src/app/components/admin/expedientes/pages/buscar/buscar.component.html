@@ -35,14 +35,14 @@
         <div class="row">
             <div class="col-md-4">
                     <label for="username" class="form-label">Agrimensor</label>   
-                    <select formControlName="agrimensor" class="form-select">
+                    <select formControlName="agrimensor" class="form-select" *ngIf="usuarios">
                         <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                     </select>
             
             </div>
             <div class="col-md-4">
                 <label for="username" class="form-label">Propietario</label>
-                <select formControlName="propietario" class="form-select">
+                <select formControlName="propietario" class="form-select" *ngIf="usuarios">
                     <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                 </select>
             </div>
@@ -50,28 +50,28 @@
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Gestor</label>
-                <select formControlName="gestor" class="form-select">
+                <select formControlName="gestor" class="form-select" *ngIf="usuarios">
                     <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                 </select>
             </div>
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Documento</label>
-                <select formControlName="documento" *ngIf="documentos"  name="" class="form-select" id="">
+                <select formControlName="documento" *ngIf="documentos" class="form-select" >
                     <option [value]="dato.url" *ngFor="let dato of documentos.results" value="">{{dato.descripcion}}</option>
                   </select>
             </div>
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Inmueble</label>
-                <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="">
+                <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
                     <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
                   </select>
             </div>
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Observacion</label>
-                <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-select" id="">
+                <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-select">
                     <option [value]="dato.url" *ngFor="let dato of observaciones.results" value="">{{dato.descripcion}}</option>
                   </select>
             </div>
@@ -89,7 +89,7 @@
 
 
 
-    <div >
+    <div *ngIf="expedientes">
         <table class="table table-striped" >
             <thead>
                 <tr>

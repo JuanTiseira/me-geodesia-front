@@ -1,11 +1,4 @@
-export interface Expediente {
-    count:    number;
-    next:     null;
-    previous: null;
-    results:  Result[];
-}
-
-export interface Result {
+export class Expediente {
     id:              number;
     url:             string;
     tramite_urgente: boolean;
@@ -22,7 +15,7 @@ export interface Result {
     gestor:          Agrimensor;
 }
 
-export interface Agrimensor {
+export class Agrimensor {
     id:               number;
     url:              string;
     rol:              string;
@@ -37,7 +30,7 @@ export interface Agrimensor {
     telefono:         string;
 }
 
-export interface Documento {
+export class Documento {
     id:             number;
     url:            string;
     descripcion:    string;
@@ -45,7 +38,7 @@ export interface Documento {
     retiro:         string;
 }
 
-export interface Inmueble {
+export class Inmueble {
     id:             number;
     url:            string;
     numero_partida: number;
@@ -59,14 +52,14 @@ export interface Inmueble {
     departamento:   string;
 }
 
-export interface Observacion {
+export class Observacion {
     id:          number;
     url:         string;
     descripcion: string;
     nombre?:     string;
 }
 
-export interface Tramite {
+export class Tramite {
     id:                  number;
     url:                 string;
     numero:              number;

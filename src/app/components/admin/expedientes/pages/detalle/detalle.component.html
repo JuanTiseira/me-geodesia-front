@@ -35,6 +35,12 @@
                 </select>
               </div>
 
+              <select [compareWith]="compareFn"  [formControl]="tipo_expediente">
+                <option *ngFor="let country of countries" [ngValue]="country">
+                    {{country.name}}
+                </option>
+              </select>
+
               <div class="form-group">
                 <label for="inmueble" class="form-label">Inmueble</label>
                 <select *ngIf="inmuebles" formControlName="inmueble" name="" class="form-control" id="">

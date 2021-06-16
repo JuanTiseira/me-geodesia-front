@@ -118,7 +118,7 @@ export class AgregarComponent implements OnInit {
   
   createExpediente() {
     
-    
+    console.log(this.expedienteForm.value)
     this._apiService.setExpediente(this.expedienteForm.value)
     .then(() =>{
       console.warn(this.expedienteForm.value);

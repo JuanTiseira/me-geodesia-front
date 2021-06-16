@@ -21,14 +21,12 @@ export const APP_ROUTES: Routes = [
 
   {path: 'expediente/:id', component: DetalleComponent },
 
-  
 
   //USUARIOS
 
   {path: 'usuario/agregar', component: AgregarUsuarioComponent},
 
   {path: 'usuario/buscar', component: BuscarUsuarioComponent},
-
 
 
   //HISTORIAL
