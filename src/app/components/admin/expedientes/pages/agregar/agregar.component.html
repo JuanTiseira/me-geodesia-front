@@ -66,23 +66,6 @@
                   </div>
                   
                     <div class="form-group">
-                      <label for="documento" class="form-label">Documento</label>
-                      <select formControlName="documento" *ngIf="documentos"  name="" class="form-control" id="">
-                        <option value="" disabled>Seleccione una Opcion</option>
-                        <option [ngValue]="dato" *ngFor="let dato of documentos.results" value="">{{dato.descripcion}}</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="tramite" class="form-label">Tramite</label>
-                      <select formControlName="tramite" *ngIf="tramites"  name="" class="form-control" id="">
-                        <option value="" disabled>Seleccione una Opcion</option>
-                        <option [ngValue]="dato" *ngFor="let dato of tramites.results" value="">{{dato.numero}}</option>
-                      </select>
-  
-                    </div>
-
-                    <div class="form-group">
                       <label for="observacion" class="form-label">Observacion</label>
                       <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-control" id="">
                         <option value="" disabled>Seleccione una Opcion</option>

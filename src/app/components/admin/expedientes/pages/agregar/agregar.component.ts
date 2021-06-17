@@ -68,17 +68,7 @@ export class AgregarComponent implements OnInit {
       this.tipos_expedientes = response
       //this.tipos_expedientes = response
     })
-
-    this._apiService.getTramites().then(response => {
-      this.tramites = response
-      this._functionService.imprimirMensaje(response, "tramites")
-    })
-
-    this._apiService.getDocumentos().then(response => {
-      this.documentos = response
-      this._functionService.imprimirMensaje(response, "documentos")
-    })
-
+    
     this._apiService.getInmuebles().then(response => {
       this.inmuebles = response
       this._functionService.imprimirMensaje(response, "inmuebles")

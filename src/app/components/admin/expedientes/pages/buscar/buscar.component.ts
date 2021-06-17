@@ -8,6 +8,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
+import Swal from 'sweetalert2';
 
 
 
@@ -92,20 +93,10 @@ export class BuscarComponent implements OnInit {
       })
 
       this._apiService.getTipoExpedientes().then(response => {
-      
         this.tipos_expedientes = response
         //this.tipos_expedientes = response
       })
   
-      this._apiService.getTramites().then(response => {
-        this.tramites = response
-        this._functionService.imprimirMensaje(response, "tramites")
-      })
-  
-      this._apiService.getDocumentos().then(response => {
-        this.documentos = response
-        this._functionService.imprimirMensaje(response, "documentos")
-      })
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
@@ -127,6 +118,26 @@ export class BuscarComponent implements OnInit {
 
   buscar () {
     alert('buscado')
+  }
+
+  eliminar (id) {
+    Swal.fire({
+      title: 'Esta Seguro?',
+      text: "No podra revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar Expediente!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Eliminado!',
+          'El expediente fue eliminado.',
+          'success'
+        )
+      }
+    })
   }
 
   buscarSiguiente() {

@@ -9,22 +9,28 @@
     
     <form [formGroup]="consultaForm">
         <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-12">
+            <div class="col-lg-4 col-md-4 col-sm-12">
                     <label for="username" class="form-label">Consultar por</label>   
                     <select formControlName="tipo_consulta" class="form-select" aria-label="Default select example">
                         <option selected>Numero</option>
                     </select>
             </div>
 
-            <div class="col-lg-6 col-md-4 col-sm-12">
+            <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de Expediente</label>
                 <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
             </div>
             
             <div class="col-md-4">
                 <div class="mt-3">
-                    <button type="button" class="btn btn-primary">Buscar</button>
-                    <button routerLink="/expediente/agregar" type="button" class="btn btn-primary">Nuevo</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-primary">Buscar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button routerLink="/expediente/agregar" type="button" class="btn btn-primary">Nuevo</button>
+                        </div>
+                    </div>
                 </div> 
             </div>
         </div>
@@ -33,12 +39,23 @@
         <hr />
 
         <div class="row" *ngIf="isAdmin">
+
+
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label for="username" class="form-label">Número de Expediente</label>
+                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label for="Año" class="form-label">Año</label>
+                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Año" class="form-control" autocomplete="off">
+            </div>
+
             <div class="col-md-4">
                     <label for="username" class="form-label">Agrimensor</label>   
                     <select formControlName="agrimensor" class="form-select" *ngIf="usuarios">
                         <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                     </select>
-            
             </div>
             <div class="col-md-4">
                 <label for="username" class="form-label">Propietario</label>
@@ -55,12 +72,6 @@
                 </select>
             </div>
 
-            <div class="col-md-4">
-                <label for="username" class="form-label">Documento</label>
-                <select formControlName="documento" *ngIf="documentos" class="form-select" >
-                    <option [value]="dato.url" *ngFor="let dato of documentos.results" value="">{{dato.descripcion}}</option>
-                  </select>
-            </div>
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Inmueble</label>
@@ -69,13 +80,6 @@
                   </select>
             </div>
 
-            <div class="col-md-4">
-                <label for="username" class="form-label">Observacion</label>
-                <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-select">
-                    <option [value]="dato.url" *ngFor="let dato of observaciones.results" value="">{{dato.descripcion}}</option>
-                  </select>
-            </div>
-            
             <div class="col-md-4 ">
                 <div class="mt-3">
                     <button type="button" class="btn btn-primary">Consultar</button>
@@ -115,7 +119,7 @@
                     <td> <b>Estado</b></td>
                     <td>
                         <button type="button" class="btn btn-info" [routerLink]="['/expediente/', exp.id ]"><i class="fa fa-info"></i></button>
-                        <button type="button" class="btn btn-danger" [routerLink]="['/expediente/eliminar', exp.url ]"><i class="fa fa-close"></i></button>
+                        <button type="button" class="btn btn-danger" (click)="eliminar(exp.id)"><i class="fa fa-close"></i></button>
                         <!-- <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button> -->
                     </td>
                 </tr>

@@ -19,9 +19,27 @@ export class DetalleComponent implements OnInit {
   message = '';
   expedienteForm: FormGroup;
   id: string;
-  isAddMode: boolean;
+  isEditMode: boolean;
   loading = false;
   submitted = false;
+  selecteditem: string;
+  selectedinmueble: string;
+  selecteddocumento: string;
+  selectedtramite: string;
+  selectedobservacion: string;
+  selectedgestor: string; 
+  selectedpropietario: string; 
+  selectedagrimensor: string;
+
+
+  public tipos_expedientes: any;
+  public documentos: any; 
+  public tramites: any;
+  public inmuebles: any;
+  public observaciones: any;
+  public usuarios: any;
+
+
 
   constructor(
     private _apiService: ApiService,
@@ -35,46 +53,92 @@ export class DetalleComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this.id = this.route.snapshot.params['id'];
-    this.isAddMode = !this.id;
+    
 
+    this.id = this.route.snapshot.params['id'];
+
+    this.isEditMode = false;
+    
     this.expedienteForm = this.formBuilder.group({
-      numero: ['', Validators.required],
-      anio: ['', Validators.required],
-      tipo_expediente: ['', Validators.required],
-      inmueble: ['', [Validators.required]],
-      documento: ['', Validators.required],
-      propietario: ['', Validators.required],
-      gestor: ['', Validators.required],
-      tramite: ['', Validators.required],
-      observacion: ['', Validators.required],
-      abreviatura: ['', Validators.required],
-      agrimensor: ['', Validators.required],
+      numero: [{value: '', disabled: !this.isEditMode}, Validators.required],
+      anio: [{value: '', }, Validators.required],
+      tipo_expediente: [{value: '', }, Validators.required],
+      inmueble: [{value: '', }, Validators.required],
+      documento: [{value: '', }, Validators.required],
+      propietario: [{value: '', }, Validators.required],
+      gestor: [{value: '', }, Validators.required],
+      tramite: [{value: '', }, Validators.required],
+      observacion: [{value: '', }, Validators.required],
+      abreviatura: [{value: '', }, Validators.required],
+      agrimensor: [{value: '', }, Validators.required],
       }, {
          
       });
 
+      this.expedienteForm.disable();
 
-      if (!this.isAddMode) {
-        this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-        .then(x => this.expedienteForm.patchValue(x));
-    }
+
+      
     this.message = '';
     
     this.idEdit = false
 
     this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-    .then(response => {
+      .then(response => {
       this.expediente = response
+      this.expedienteForm.patchValue(response)
+
+
+      this.selecteditem = this.expediente.tipo_expediente
+      this.selectedinmueble = this.expediente.inmueble
+      this.selecteddocumento = this.expediente.documento
+      this.selectedobservacion = this.expediente.observacion
+      this.selectedpropietario = this.expediente.propietario
+      this.selectedgestor = this.expediente.gestor
+      this.selectedagrimensor = this.expediente.agrimensor
+      this.selectedtramite = this.expediente.tramite
+
+
       this._functionService.imprimirMensaje(response, "expediente")
+    })
+
+    this._apiService.getTipoExpedientes().then(response => {
+      
+      this.tipos_expedientes = response
+      //this.tipos_expedientes = response
+    })
+
+    this._apiService.getTramites().then(response => {
+      this.tramites = response
+      this._functionService.imprimirMensaje(response, "tramites")
+    })
+
+    this._apiService.getInmuebles().then(response => {
+      this.inmuebles = response
+      this._functionService.imprimirMensaje(response, "inmuebles")
+    })
+
+    this._apiService.getObservaciones().then(response => {
+      this.observaciones = response
+      this._functionService.imprimirMensaje(response, "observaciones")
+    })
+
+    this._apiService.getUsuarios().then(response => {
+      this.usuarios = response
+      this._functionService.imprimirMensaje(response, "usuarios")
     })
 
 
     
   }
 
-  compareFn(c1, c2): boolean {
-    return c1 && c2 ? c1.url === c2.url : c1 === c2;
+  compareFn(value, option): boolean {
+    return value.id === option.id;
 }
+
+  editar (){
+    this.isEditMode = true
+    this.expedienteForm.enable();
+  }
 
 }
