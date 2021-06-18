@@ -52,7 +52,6 @@ export class ApiService {
 
   setExpediente(expediente) {
     console.warn(expediente);
-
     return this.http.post(this.url+'/expedientes/', expediente).toPromise();
   }
 
@@ -64,8 +63,7 @@ export class ApiService {
 
   deleteExpediente(expediente) {
     console.warn(expediente);
-
-    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
+    return this.http.delete(this.url+'/expedientes/', expediente).toPromise();
   }
 
 

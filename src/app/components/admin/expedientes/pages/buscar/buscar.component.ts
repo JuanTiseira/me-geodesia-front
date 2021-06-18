@@ -40,6 +40,10 @@ export class BuscarComponent implements OnInit {
   public usuarios: any;
   public tipo_consulta: any;
 
+  expediente: string
+  tramite: string
+  param_busqueda: string
+
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
@@ -61,6 +65,7 @@ export class BuscarComponent implements OnInit {
     abreviatura: new FormControl(''),
     agrimensor: new FormControl(''),
     tipo_consulta: new FormControl('')
+
   });
 
   open(content, id) {
@@ -131,11 +136,15 @@ export class BuscarComponent implements OnInit {
       confirmButtonText: 'Si, eliminar Expediente!'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
+        this._apiService.deleteExpediente(id)
+        .then(() =>{ 
+          Swal.fire(
           'Eliminado!',
           'El expediente fue eliminado.',
           'success'
-        )
+        ) })
+
+        
       }
     })
   }

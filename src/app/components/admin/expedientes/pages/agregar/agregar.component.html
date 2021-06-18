@@ -14,7 +14,7 @@
 
                   <div class="form-group">
                     <label for="numero" class="form-label">Numero</label>
-                    <input type="number" formControlName="numero" class="form-control" id="numero" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                    <input type="number" formControlName="numero" class="form-control" id="numero" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }" >
                     <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
                       <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -30,28 +30,37 @@
 
                   <div class="form-group">
                     <label for="tipo" class="form-label">Tipo</label>
-                    <select *ngIf="tipos_expedientes" formControlName="tipo_expediente" name="" class="form-control" id="">
+                    <select *ngIf="tipos_expedientes" formControlName="tipo_expediente" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
                       <option [ngValue]="dato" *ngFor="let dato of tipos_expedientes.results">{{dato.descripcion}}</option>
                     </select>
+                    <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                      <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                    </div>
                   </div>
 
                   <div class="form-group">
                     <label for="inmueble" class="form-label">Inmueble</label>
-                    <select *ngIf="inmuebles" formControlName="inmueble" name="" class="form-control" id="">
+                    <select *ngIf="inmuebles" formControlName="inmueble" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
                       <option [ngValue]="dato" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
                     </select>
+                    <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                      <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                    </div>
                   </div>
 
                   <div class="form-group">
                     <label for="propietario" class="form-label">Propietario</label>
-                    <select *ngIf="usuarios" formControlName="propietario"  name="" class="form-control" id="">
+                    <select *ngIf="usuarios" formControlName="propietario"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
                       <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                     </select>
+                    <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                      <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                    </div>
                   </div>
-                    <div class="col-12">
+                    <div class="col-3">
                       <button type="button" class="btn btn-primary">Volver</button>
                     </div>
                 </div>
@@ -60,45 +69,62 @@
                   <div class="form-group">
                     
                     <label for="abreviatura" class="form-label">Abreviatura</label>
-                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4">
-
+                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                    <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                      <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                    </div>
 
                   </div>
                   
                     <div class="form-group">
                       <label for="observacion" class="form-label">Observacion</label>
-                      <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-control" id="">
+                      <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
                         <option value="" disabled>Seleccione una Opcion</option>
                         <option [ngValue]="dato" *ngFor="let dato of observaciones.results" value="">{{dato.descripcion}}</option>
                       </select>
 
-                      
-  
+                      <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                        <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                      </div>
+
                     </div>
 
                     <div class="form-group">
                       <label for="agrimensor" class="form-label">Agrimensor</label>
-                      <select *ngIf="usuarios" formControlName="agrimensor"  name="" class="form-control" id="">
+                      <select *ngIf="usuarios" formControlName="agrimensor"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                        <option value="" disabled>Seleccione una Opcion</option>
+                        <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                      </select>
+                      <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                        <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gestor" class="form-label">Gestor</label>
+                      <select *ngIf="usuarios" formControlName="gestor"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
                         <option value="" disabled>Seleccione una Opcion</option>
                         <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label for="gestor" class="form-label">Gestor</label>
-                      <select formControlName="gestor" *ngIf="usuarios"  name="" class="form-control" id="">
-                        <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                      </select>
-  
-                    </div>
-                 
-                    <button type="button" class="btn btn-primary">Cancelar</button>
-                    <!-- <button type="submit" class="btn btn-primary" >Guardar</button> -->
-                    <button [disabled]="loading" class="btn btn-primary">
-                      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                      Guardar
-                    </button>
-                    
+                    <div class="row">
+
+                      <div class="col-md-6">
+                        <button type="button" class="btn btn-primary">Cancelar</button>
+                        <!-- <button type="submit" class="btn btn-primary" >Guardar</button> -->
+                      </div>
+
+                      <div class="col-md-6">
+
+                        <button type="submit" [disabled]="loading" class="btn btn-primary">
+                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                          Guardar
+                        </button>
+
+                      </div>
+                      
+                    </div>  
                 </div>
                
                 

@@ -4,6 +4,9 @@ import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import Swal from 'sweetalert2'
+
+
+
 @Component({
   selector: 'app-agregar',
   templateUrl: './agregar.component.html',
@@ -41,14 +44,12 @@ export class AgregarComponent implements OnInit {
     this.isAddMode = !this.id;
 
     this.expedienteForm = this.formBuilder.group({
-      numero: ['', Validators.required],
-      anio: ['', Validators.required],
+      numero: ['', [Validators.required]],
+      anio: ['', [Validators.required]],
       tipo_expediente: ['', Validators.required],
       inmueble: ['', [Validators.required]],
-      documento: ['', Validators.required],
       propietario: ['', Validators.required],
-      gestor: ['', Validators.required],
-      tramite: ['', Validators.required],
+      gestor: [''],
       observacion: ['', Validators.required],
       abreviatura: ['', Validators.required],
       agrimensor: ['', Validators.required],
@@ -92,18 +93,16 @@ export class AgregarComponent implements OnInit {
   
   onSubmit() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.expedienteForm.invalid) {
+        alert('errores')
+        console.log(this.expedienteForm)
         return;
     }
 
-    this.loading = true;
-    if (this.isAddMode) {
-        this.createExpediente();
-    } else {
-        this.updateExpediente();
-    }
+    this.loading = true;    
+    this.createExpediente();
+  
 }
   
   createExpediente() {
@@ -115,21 +114,22 @@ export class AgregarComponent implements OnInit {
       Swal.fire({
         title: 'Exito',
         text: 'Se registro correctamente',
-        icon: 'error',
+        icon: 'success',
         confirmButtonText: 'Cool',
       })
+      this.router.navigate(['/expediente/buscar'])
     })
     .catch((e)=>{
      Swal.fire({
         title: 'Error!',
-        text: 'No se guardo correctamente',
+        text: 'No se pudo registrar',
         icon: 'error',
         confirmButtonText: 'Cool'
       })
       this.loading = false;
     });
     
-    // this.router.navigate(['../'], { relativeTo: this.route });
+    
   }
 
   updateExpediente() {

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 
 @Component({
@@ -13,7 +14,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 
+
 export class DetalleComponent implements OnInit {
+
+  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+
+  
   idEdit: boolean
   expediente = null;
   message = '';
@@ -135,6 +141,12 @@ export class DetalleComponent implements OnInit {
   compareFn(value, option): boolean {
     return value.id === option.id;
 }
+
+  imprimirEtiqueta(){
+    
+    this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Etiqueta`, "success", "Aceptar", "", false, "", "")
+    this.mensajeSwal.fire()
+  }
 
   editar (){
     this.isEditMode = true
