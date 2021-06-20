@@ -9,6 +9,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 
 
@@ -42,12 +43,18 @@ export class BuscarComponent implements OnInit {
 
   expediente: string
   tramite: string
-  param_busqueda: string
+  param_busqueda: ''
+
+  categories = [
+    {id: 1, name: 'expediente'},
+    {id: 2, name: 'tramite'},
+  ]
 
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
                 private authService: AuthService,
+                private router: Router,
                 ) { }
 
 
@@ -162,11 +169,37 @@ export class BuscarComponent implements OnInit {
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
+
+  buscarExpediente() {
+
+    var numero = this.consultaForm.value.numero
+
+    this._apiService.getExpedienteNumero(numero)
+    .then((x:any) =>{
+
+      console.warn(x);
+      this.router.navigate(['/expediente/', x.id ]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+      
+      //this.router.navigate(['/expediente'], { queryParams: { order: 'popular', 'price-range': 'not-cheap' } });
+      
+
+      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
+      // this.mensajeSwal.fire().finally(()=> {
+      //   this.ngOnInit();
+      //   //this.mostrarLista();
+      // });
+    })
+    .catch(()=>{
+     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
+      //this.mensajeSwal.fire();
+    });
+
+  }
   
   onSubmit() {
     
     
-    this._apiService.setExpediente(this.consultaForm.value)
+    this._apiService.getExpediente(this.consultaForm.value)
     .then(() =>{
       console.warn(this.consultaForm.value);
       //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");

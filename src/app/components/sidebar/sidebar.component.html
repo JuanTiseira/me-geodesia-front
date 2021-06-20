@@ -2,18 +2,18 @@
     <div class="sidebar-content">
 
         <a class="link" routerLinkActive="active" (click)="cambioUrl('home')" [routerLink]="['home']">
-            <i class="fal fa-file-alt"></i>Inicio</a>
+            <i class="fal fa-home-alt"></i>Inicio</a>
         
         <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('expedientes')" [routerLink]="['expediente/buscar']">
-            <i class="fal fa-file-alt"></i>Expedientes</a>
+            <i class="far fa-file"></i>Expedientes</a>
         
         <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('historial')" [routerLink]="['historial/buscar']">
-            <i class="fal fa-file-alt"></i>Historial</a>
+            <i class="fas fa-history"></i>Historial</a>
 
         <a  *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['usuario/buscar']">
             <i class="fad fa-users"></i>Usuarios</a>
 
-        <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('documentos')" [routerLink]="['abm/documentos']">
+        <!-- <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('documentos')" [routerLink]="['abm/documentos']">
             <i class="fad fa-file"></i>Documentos</a>
 
         <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('tipos')" [routerLink]="['abm/tipos']">
@@ -23,7 +23,7 @@
             <i class="fad fa-file"></i>Tramites</a>
 
         <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('inmuebles')" [routerLink]="['abm/inmuebles']">
-            <i class="fad fa-file"></i>Inmuebles</a>  
+            <i class="fad fa-file"></i>Inmuebles</a>   -->
 
     </div>
 </div>

@@ -42,6 +42,13 @@ export class HomeComponent implements OnInit {
         })
       }
 
+      this._apiService.getExpedientes()
+      .then(response => {
+        this.expedientes = response
+        this._functionService.imprimirMensaje(response, "expedientes")
+      })
+
+
      
   }
 

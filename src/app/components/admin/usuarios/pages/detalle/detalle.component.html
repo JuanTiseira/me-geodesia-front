@@ -130,7 +130,7 @@
                     Guardar
                   </button>
   
-                  <button *ngIf="!isEditMode && isAdmin" (click)="editar()"  [disabled]="loading" type="button" class="btn btn-primary">
+                  <button *ngIf="!isEditMode" (click)="editar()" [disabled]="loading" type="button" class="btn btn-primary">
                     <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
                     Editar
                   </button>

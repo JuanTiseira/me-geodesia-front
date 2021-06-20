@@ -93,9 +93,10 @@
         <table class="table table-striped" >
             <thead>
                 <tr>
-                    <th >Numero</th>
-                    <th >Nombre</th>
-                    <th>Gestor Iniciador</th>
+                    <th>Numero</th>
+                    <th>Año</th>
+                    <th>Gestor / Iniciador</th>
+                    <th>Propietario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
@@ -105,11 +106,14 @@
 
                     <td>{{ exp.numero }}</td>
                     <td>{{ exp.anio }}</td>
-                    <td> {{ exp.gestor.nombre }} {{ exp.gestor.apellido }}</td> 
-                    <td> <b>Estado</b></td>
+                    <td *ngIf="exp.gestor.nombre"> {{ exp.gestor.nombre }} {{ exp.gestor.apellido }}</td> 
+                    <td *ngIf="!exp.gestor.nombre"> {{ exp.profesional.nombre }} {{ exp.profesional.apellido }}</td> 
+                    <td> {{ exp.propietario.nombre }} {{ exp.propietario.apellido }}</td>
+                    <td><b>Estado</b></td>
                     <td>
-                        <button type="button" class="btn btn-info" [routerLink]="['/expediente/', exp.id ]"><i class="fa fa-info"></i></button>
-                        <button type="button" class="btn btn-danger" [routerLink]="['/expediente/eliminar', exp.url ]"><i class="fa fa-close"></i></button>
+                       
+                        <i [routerLink]="['/expediente/', exp.id ]" class="fa fa-info" style="background-color: black; padding: 10px; border-radius: 50px; color: white; margin-left: 10pc; margin-right: 10px;"></i>
+                        <i (click)="eliminar(exp.id)" class="fas fa-times" style="color: red;"></i>
                         <!-- <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button> -->
                     </td>
                 </tr>

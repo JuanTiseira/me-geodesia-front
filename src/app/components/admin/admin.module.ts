@@ -12,13 +12,14 @@ import { DocumentosComponent } from './documentos/documentos.component';
 import { TramitesComponent } from './tramites/tramites.component';
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
 import { Select2Module } from "ng-select2-component";
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { BuscarUsuarioComponent } from './usuarios/pages/buscar/buscar.component';
 import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.component';
+import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.compon
     DetalleHistorialComponent,
     BuscarUsuarioComponent,
     BuscarHistorialComponent,
+    AgregarUsuarioComponent
    
   ],
   imports: [

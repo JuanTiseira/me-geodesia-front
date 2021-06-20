@@ -6,27 +6,30 @@
     </div>
     
     <br>
+
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <label for="username" class="form-label">Consultar por</label>   
+        <select  [(ngModel)]="param_busqueda" class="form-select" aria-label="Default select example" #name="ngModel">
+            <option *ngFor="let cat of categories" [ngValue]="cat">{{cat.name}}</option>
+        </select>
+    </div>
+
+   
     
     <form [formGroup]="consultaForm">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                    <label for="username" class="form-label">Consultar por</label>   
-                    <select  ([ngModel])="param_busqueda" class="form-select" aria-label="Default select example">
-                        <option [value]="expediente" [selected]>Numero Expediente</option>
-                        <option [value]="tramite">Numero de Tramite</option>
-                    </select>
-            </div>
+           
 
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label" >Número de {{param_busqueda}}</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
+            <div class="col-lg-4 col-md-4 col-sm-12" *ngIf="param_busqueda">
+                <label for="username" class="form-label">Número de {{param_busqueda.name}}</label>
+                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
             </div>
             
             <div class="col-md-4">
                 <div class="mt-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-primary">Buscar</button>
+                            <button type="button" (click)="buscarExpediente()" class="btn btn-primary">Buscar</button>
                         </div>
                         <div class="col-md-6">
                             <button routerLink="/expediente/agregar" type="button" class="btn btn-primary">Nuevo</button>
@@ -49,7 +52,19 @@
 
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="Año" class="form-label">Año</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Año" class="form-control" autocomplete="off">
+                <input  formControlName="anio" maxlength="5" inputmode="numeric" placeholder="Año" class="form-control" autocomplete="off">
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label for="Año" class="form-label">Abreviatura</label>
+                <input  formControlName="abreviatura" maxlength="5" inputmode="text" placeholder="Abreviatura" class="form-control" autocomplete="off">
+            </div>
+
+            <div class="col-md-4">
+                <label for="username" class="form-label">Tipo de Expediente</label>   
+                <select formControlName="tipoexpediente" class="form-select" *ngIf="tipos_expedientes">
+                    <option [value]="dato.url" *ngFor="let dato of tipos_expedientes.results" value="">{{dato.nombre}}</option>
+                </select>
             </div>
 
             <div class="col-md-4">
@@ -89,24 +104,16 @@
         </div>
     </form>
     
-   
-
-
-
-
-
-    
     <hr/>
-
-
 
     <div *ngIf="expedientes">
         <table class="table table-striped" >
             <thead>
                 <tr>
-                    <th >Numero</th>
-                    <th >Nombre</th>
-                    <th>Gestor Iniciador</th>
+                    <th>Numero</th>
+                    <th>Año</th>
+                    <th>Gestor / Iniciador</th>
+                    <th>Propietario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
@@ -118,10 +125,12 @@
                     <td>{{ exp.anio }}</td>
                     <td *ngIf="exp.gestor.nombre"> {{ exp.gestor.nombre }} {{ exp.gestor.apellido }}</td> 
                     <td *ngIf="!exp.gestor.nombre"> {{ exp.profesional.nombre }} {{ exp.profesional.apellido }}</td> 
+                    <td> {{ exp.propietario.nombre }} {{ exp.propietario.apellido }}</td>
                     <td><b>Estado</b></td>
                     <td>
-                        <button type="button" class="btn btn-table btn-gris" [routerLink]="['/expediente/', exp.id ]"><i class="fa fa-info"></i></button>
-                        <button type="button" class="btn btn-table btn-danger" (click)="eliminar(exp.id)"><i class="fa fa-close"></i></button>
+                       
+                        <i [routerLink]="['/expediente/', exp.id ]" class="fa fa-info" style="background-color: black; padding: 10px; border-radius: 50px; color: white; margin-left: 10pc; margin-right: 10px;"></i>
+                        <i (click)="eliminar(exp.id)" class="fas fa-times" style="color: red;"></i>
                         <!-- <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button> -->
                     </td>
                 </tr>

@@ -6,25 +6,35 @@
     </div>
     
     <br>
+
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <label for="username" class="form-label">Consultar por</label>   
+        <select  [(ngModel)]="param_busqueda" class="form-select" aria-label="Default select example" #name="ngModel">
+            <option *ngFor="let cat of categories" [ngValue]="cat">{{cat.name}}</option>
+        </select>
+    </div>
+
+   
     
     <form [formGroup]="consultaForm">
         <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-12">
-                    <label for="username" class="form-label">Consultar por</label>   
-                    <select formControlName="tipo_consulta" class="form-select" aria-label="Default select example">
-                        <option selected>Documento</option>
-                    </select>
-            </div>
+           
 
-            <div class="col-lg-6 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Documento</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Documento" class="form-control" autocomplete="off">
+            <div class="col-lg-4 col-md-4 col-sm-12" *ngIf="param_busqueda">
+                <label for="username" class="form-label">Número de {{param_busqueda.name}}</label>
+                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
             </div>
             
             <div class="col-md-4">
                 <div class="mt-3">
-                    <button type="button" class="btn btn-primary">Buscar</button>
-                    <button routerLink="/expediente/agregar" type="button" class="btn btn-primary">Nuevo</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" (click)="buscarExpediente()" class="btn btn-primary">Buscar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button routerLink="/usuario/agregar" type="button" class="btn btn-primary">Nuevo</button>
+                        </div>
+                    </div>
                 </div> 
             </div>
         </div>
@@ -32,59 +42,64 @@
 
         <hr />
 
-        <div class="row">
-            <div class="col-md-4">
-                    <label for="username" class="form-label">Nombre</label>   
-                    <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Nombre" class="form-control" autocomplete="off">
-            
-            </div>
-            <div class="col-md-4">
-                <label for="username" class="form-label">Apellido</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Apellido" class="form-control" autocomplete="off">
+        <div class="row" *ngIf="isAdmin">
+
+
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label for="username" class="form-label">Número de Expediente</label>
+                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de usrediente" class="form-control" autocomplete="off">
             </div>
             
 
             <div class="col-md-4">
-                <label for="username" class="form-label">Profesion</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Profesion" class="form-control" autocomplete="off">
+                <label for="username" class="form-label">ROL</label>
+                <select formControlName="gestor" class="form-select" *ngIf="usuarios">
+                    <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                </select>
             </div>
 
-            
+
+            <div class="col-md-4">
+                <label for="username" class="form-label">Inmueble</label>
+                <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
+                    <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
+                  </select>
+            </div>
+
             <div class="col-md-4 ">
                 <div class="mt-3">
-                    <button type="button" class="btn btn-primary">Consultar</button>
+                    <button type="button" [type]="submit" class="btn btn-primary">Consultar</button>
                 </div>
             </div>
         </div>
     </form>
     
-   
     <hr/>
-
-
 
     <div *ngIf="usuarios">
         <table class="table table-striped" >
             <thead>
                 <tr>
                     <th>Nombre y Apellido</th>
-                    <th>Matricula</th>
-                    <th>Rol</th>
-                    <th>Mail</th>
+                    <th>CUIT</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let exp of usuarios.results">
+                <tr *ngFor="let usr of usuarios.results">
 
-                    <td> {{ exp.nombre }} {{ exp.apellido }}</td>
-                    <td>{{ exp.matricula }}</td>
-                    <td>{{ exp.rol.nombre }}</td> 
-                    <td><b>{{exp.email}}</b></td>
+                    <td>{{ usr.nombre }} {{ usr.apellido }}</td>
+                    <td>{{ usr.cuit }}</td>
+                    <td>{{ usr.email }}</td>
+                    <td>{{ usr.telefono }}</td>
+                    
+                    <td><b>Estado</b></td>
                     <td>
-                        <button type="button" class="btn btn-info" [routerLink]="['/usuario/', exp.id ]"><i class="fa fa-info"></i></button>
-                        <button type="button" class="btn btn-danger" [routerLink]="['/usuario/eliminar', exp.url ]"><i class="fa fa-close"></i></button>
-                        <!-- <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button> -->
+                        <button type="button" class="btn btn-table btn-gris" [routerLink]="['/usrediente/', usr.id ]"><i class="fa fa-info"></i></button>
+                        <button type="button" class="btn btn-table btn-danger" (click)="eliminar(usr.id)"><i class="fa fa-close"></i></button>
+                        <!-- <button type="button" class="btn btn-warning" [routerLink]="['/usrediente/detalles', usr.url ]"><i class="fa fa-pencil"></i></button> -->
                     </td>
                 </tr>
             </tbody>
@@ -113,23 +128,9 @@
 </div>
 
 
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-  </div>
-</ng-template>
-
-
 
 <hr>
 
 <pre>{{ closeResult }}</pre>
+
+<swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>

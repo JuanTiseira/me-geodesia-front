@@ -44,8 +44,7 @@ export class AgregarComponent implements OnInit {
     this.isAddMode = !this.id;
 
     this.expedienteForm = this.formBuilder.group({
-      numero: ['', [Validators.required]],
-      anio: ['', [Validators.required]],
+      
       tipo_expediente: ['', Validators.required],
       inmueble: ['', [Validators.required]],
       propietario: ['', Validators.required],
@@ -132,28 +131,5 @@ export class AgregarComponent implements OnInit {
     
   }
 
-  updateExpediente() {
-    
-    
-    this._apiService.editExpediente(this.expedienteForm.value)
-    .then(() =>{
-      console.warn(this.expedienteForm.value);
-      Swal.fire({
-        title: 'Exito',
-        text: 'Se registro correctamente',
-        icon: 'error',
-        confirmButtonText: 'Cool',
-      })
-    })
-    .catch((e)=>{
-     Swal.fire({
-        title: 'Error!',
-        text: 'No se guardo correctamente',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-      this.loading = false;
-    });
-
-  }
+  
 }

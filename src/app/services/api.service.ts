@@ -50,6 +50,10 @@ export class ApiService {
     return this.http.get(this.url+`/expedientes/${id}`).toPromise();
   }
 
+  getExpedienteNumero(numero) {
+    return this.http.get(this.url+`/expedientes/?numero=${numero}`).toPromise();
+  }
+
   setExpediente(expediente) {
     console.warn(expediente);
     return this.http.post(this.url+'/expedientes/', expediente).toPromise();

@@ -6,8 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
-import { AuthService } from '../../../../../services/auth.service';
-import { Role } from 'src/app/models/role.models';
 
 @Component({
   selector: 'app-detalle',
@@ -55,7 +53,6 @@ export class DetalleComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
    
     ) {}
 
@@ -169,10 +166,6 @@ export class DetalleComponent implements OnInit {
   }
 
   get f() { return this.expedienteForm.controls; }
-
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
 
   updateExpediente() {
     
