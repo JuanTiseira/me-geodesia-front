@@ -16,13 +16,13 @@ export class AgregarUsuarioComponent implements OnInit {
 
   // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
-  public tipos_expedientes: any;
+  public tipos_usuarios: any;
   public documentos: any; 
   public tramites: any;
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
-  expedienteForm : FormGroup
+  usuarioForm : FormGroup
   form: FormGroup;
   id: string;
   isAddMode: boolean;
@@ -43,16 +43,20 @@ export class AgregarUsuarioComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
-    this.expedienteForm = this.formBuilder.group({
+    this.usuarioForm = this.formBuilder.group({
       
-      tipo_expediente: ['', Validators.required],
-      inmueble: ['', [Validators.required]],
-      propietario: ['', Validators.required],
-      gestor: [''],
-      observacion: ['', Validators.required],
-      abreviatura: ['', Validators.required],
-      agrimensor: ['', Validators.required],
-      }, {
+      user: ['', Validators.required],
+      rol: ['', [Validators.required]],
+      nombre: ['', Validators.required],
+      apellido: [''],
+      cuit: ['', Validators.required],
+      dni: ['', Validators.required],
+      matricula: ['', Validators.required],
+      direccion: ['', Validators.required],
+      fecha_nacimiento: ['', Validators.required],
+      email: ['', Validators.required],
+      telefono: ['', Validators.required],  
+    }, {
          
       });
 
@@ -65,8 +69,8 @@ export class AgregarUsuarioComponent implements OnInit {
 
     this._apiService.getTipoExpedientes().then(response => {
       
-      this.tipos_expedientes = response
-      //this.tipos_expedientes = response
+      this.tipos_usuarios = response
+      //this.tipos_usuarios = response
     })
     
     this._apiService.getInmuebles().then(response => {
@@ -87,15 +91,15 @@ export class AgregarUsuarioComponent implements OnInit {
   
   }
 
-  get f() { return this.expedienteForm.controls; }
+  get f() { return this.usuarioForm.controls; }
 
   
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.expedienteForm.invalid) {
+    if (this.usuarioForm.invalid) {
         alert('errores')
-        console.log(this.expedienteForm)
+        console.log(this.usuarioForm)
         return;
     }
 
@@ -106,17 +110,17 @@ export class AgregarUsuarioComponent implements OnInit {
   
   createExpediente() {
     
-    console.log(this.expedienteForm.value)
-    this._apiService.setExpediente(this.expedienteForm.value)
+    console.log(this.usuarioForm.value)
+    this._apiService.setExpediente(this.usuarioForm.value)
     .then(() =>{
-      console.warn(this.expedienteForm.value);
+      console.warn(this.usuarioForm.value);
       Swal.fire({
         title: 'Exito',
         text: 'Se registro correctamente',
         icon: 'success',
         confirmButtonText: 'Cool',
       })
-      this.router.navigate(['/expediente/buscar'])
+      this.router.navigate(['/usuario/buscar'])
     })
     .catch((e)=>{
      Swal.fire({

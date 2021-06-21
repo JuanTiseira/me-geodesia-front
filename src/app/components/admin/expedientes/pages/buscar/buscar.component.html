@@ -128,9 +128,12 @@
                     <td> {{ exp.propietario.nombre }} {{ exp.propietario.apellido }}</td>
                     <td><b>Estado</b></td>
                     <td>
-                       
-                        <i [routerLink]="['/expediente/', exp.id ]" class="fa fa-info" style="background-color: black; padding: 10px; border-radius: 50px; color: white; margin-left: 10pc; margin-right: 10px;"></i>
-                        <i (click)="eliminar(exp.id)" class="fas fa-times" style="color: red;"></i>
+                        
+
+                        <button class="btn btn-table-info"><i [routerLink]="['/expediente/', exp.id ]" class="fa fa-info"></i>
+                        </button>
+                        <button class="btn btn-table-delete"><i (click)="eliminar(exp.id)" class="fas fa-times"></i></button>
+                        
                         <!-- <button type="button" class="btn btn-warning" [routerLink]="['/expediente/detalles', exp.url ]"><i class="fa fa-pencil"></i></button> -->
                     </td>
                 </tr>

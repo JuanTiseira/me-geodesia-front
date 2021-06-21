@@ -83,7 +83,7 @@
                     <th>Nombre y Apellido</th>
                     <th>CUIT</th>
                     <th>Email</th>
-                    <th>Telefono</th>
+                    <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
@@ -93,13 +93,11 @@
                     <td>{{ usr.nombre }} {{ usr.apellido }}</td>
                     <td>{{ usr.cuit }}</td>
                     <td>{{ usr.email }}</td>
-                    <td>{{ usr.telefono }}</td>
-                    
                     <td><b>Estado</b></td>
                     <td>
-                        <button type="button" class="btn btn-table btn-gris" [routerLink]="['/usrediente/', usr.id ]"><i class="fa fa-info"></i></button>
-                        <button type="button" class="btn btn-table btn-danger" (click)="eliminar(usr.id)"><i class="fa fa-close"></i></button>
-                        <!-- <button type="button" class="btn btn-warning" [routerLink]="['/usrediente/detalles', usr.url ]"><i class="fa fa-pencil"></i></button> -->
+                        <button class="btn btn-table-info"><i [routerLink]="['/usuario/', usr.id ]" class="fa fa-info"></i>
+                        </button>
+                        <button class="btn btn-table-delete"><i (click)="eliminar(usr.id)" class="fas fa-times"></i></button>
                     </td>
                 </tr>
             </tbody>
