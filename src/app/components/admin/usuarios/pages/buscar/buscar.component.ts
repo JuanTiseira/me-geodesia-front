@@ -32,7 +32,7 @@ export class BuscarUsuarioComponent implements OnInit {
   public page: number = 0;
   public search: string = '';
   public usuarios: any;
-
+  public roles: any;
   public tipos_usuarios: any;
   public documentos: any; 
   public tramites: any;
@@ -59,17 +59,10 @@ export class BuscarUsuarioComponent implements OnInit {
 
   consultaForm = new FormGroup({
 
-    numero: new FormControl(''),
-    anio: new FormControl(''),
-    tipoexpediente: new FormControl(''),
-    inmueble: new FormControl(''),
-    documento: new FormControl(''),
-    propietario: new FormControl(''),
-    gestor: new FormControl(''),
-    tramite: new FormControl(''),
-    observacion: new FormControl(''),
-    abreviatura: new FormControl(''),
-    agrimensor: new FormControl(''),
+    
+    nombre: new FormControl(''),
+    matricula: new FormControl(''),
+    rol: new FormControl(''),
     tipo_consulta: new FormControl('')
 
   });
@@ -122,6 +115,11 @@ export class BuscarUsuarioComponent implements OnInit {
       this._apiService.getUsuarios().then(response => {
         this.usuarios = response
         this._functionService.imprimirMensaje(response, "usuarios")
+      })
+
+      this._apiService.getRoles().then(response => {
+        this.roles = response
+        this._functionService.imprimirMensaje(response, "roles")
       })
 
   }

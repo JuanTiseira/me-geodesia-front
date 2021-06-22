@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
 
+
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.component.html',
@@ -15,15 +16,15 @@ import Swal from 'sweetalert2'
 
 
 
-export class DetalleComponent implements OnInit {
+export class DetalleUsuarioComponent implements OnInit {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
   
   idEdit: boolean
-  expediente = null;
+  usuario = null;
   message = '';
-  expedienteForm: FormGroup;
+  usuarioForm: FormGroup;
   id: string;
   isEditMode: boolean;
   loading = false;
@@ -38,7 +39,7 @@ export class DetalleComponent implements OnInit {
   selectedagrimensor: string;
 
 
-  public tipos_expedientes: any;
+  public tipos_usuarios: any;
   public documentos: any; 
   public tramites: any;
   public inmuebles: any;
@@ -53,6 +54,7 @@ export class DetalleComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
+    
    
     ) {}
 
@@ -65,8 +67,8 @@ export class DetalleComponent implements OnInit {
 
     this.isEditMode = false;
     
-    this.expedienteForm = this.formBuilder.group({
-      tipo_expediente: [{value: '', }, Validators.required],
+    this.usuarioForm = this.formBuilder.group({
+      tipo_usuario: [{value: '', }, Validators.required],
       inmueble: [{value: '', }, Validators.required],
       documento: [{value: '', }, Validators.required],
       propietario: [{value: '', }, Validators.required],
@@ -79,7 +81,7 @@ export class DetalleComponent implements OnInit {
          
       });
 
-      this.expedienteForm.disable();
+      this.usuarioForm.disable();
 
 
       
@@ -87,29 +89,29 @@ export class DetalleComponent implements OnInit {
     
     this.idEdit = false
 
-    this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+    this._apiService.getUsuario(this.route.snapshot.paramMap.get('id'))
       .then(response => {
-      this.expediente = response
-      this.expedienteForm.patchValue(response)
+      this.usuario = response
+      this.usuarioForm.patchValue(response)
 
 
-      this.selecteditem = this.expediente.tipo_expediente
-      this.selectedinmueble = this.expediente.inmueble
-      this.selecteddocumento = this.expediente.documento
-      this.selectedobservacion = this.expediente.observacion
-      this.selectedpropietario = this.expediente.propietario
-      this.selectedgestor = this.expediente.gestor
-      this.selectedagrimensor = this.expediente.agrimensor
-      this.selectedtramite = this.expediente.tramite
+      this.selecteditem = this.usuario.tipo_usuario
+      this.selectedinmueble = this.usuario.inmueble
+      this.selecteddocumento = this.usuario.documento
+      this.selectedobservacion = this.usuario.observacion
+      this.selectedpropietario = this.usuario.propietario
+      this.selectedgestor = this.usuario.gestor
+      this.selectedagrimensor = this.usuario.agrimensor
+      this.selectedtramite = this.usuario.tramite
 
 
-      this._functionService.imprimirMensaje(response, "expediente")
+      this._functionService.imprimirMensaje(response, "usuario")
     })
 
     this._apiService.getTipoExpedientes().then(response => {
       
-      this.tipos_expedientes = response
-      //this.tipos_expedientes = response
+      this.tipos_usuarios = response
+      //this.tipos_usuarios = response
     })
 
     this._apiService.getTramites().then(response => {
@@ -148,15 +150,15 @@ export class DetalleComponent implements OnInit {
 
   editar (){
     this.isEditMode = true
-    this.expedienteForm.enable();
+    this.usuarioForm.enable();
   }
 
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.expedienteForm.invalid) {
+    if (this.usuarioForm.invalid) {
         alert('errores')
-        console.log(this.expedienteForm)
+        console.log(this.usuarioForm)
         return;
     }
 
@@ -165,14 +167,14 @@ export class DetalleComponent implements OnInit {
   
   }
 
-  get f() { return this.expedienteForm.controls; }
+  get f() { return this.usuarioForm.controls; }
 
   updateExpediente() {
     
     
-    this._apiService.editExpediente(this.expedienteForm.value)
+    this._apiService.editExpediente(this.usuarioForm.value)
     .then(() =>{
-      console.warn(this.expedienteForm.value);
+      console.warn(this.usuarioForm.value);
       Swal.fire({
         title: 'Exito',
         text: 'Se registro correctamente',

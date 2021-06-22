@@ -13,14 +13,26 @@ import { TramitesComponent } from './tramites/tramites.component';
 import { ObservacionesComponent } from './observaciones/observaciones.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
-import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
 import { Select2Module } from "ng-select2-component";
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { BuscarUsuarioComponent } from './usuarios/pages/buscar/buscar.component';
-import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.component';
-import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { CommonModule } from '@angular/common';  
+import { BrowserModule } from '@angular/platform-browser';
 
+
+//EXPEDIENTES 
+import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
+
+
+//HISTORIAL 
+import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.component';
+import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
+
+
+//USUARIOS
+import { BuscarUsuarioComponent } from './usuarios/pages/buscar/buscar.component';
+import { DetalleUsuarioComponent } from './usuarios/pages/detalle/detalle.component';
+import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +53,8 @@ import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.compon
    
   ],
   imports: [
- 
+    CommonModule,
+    NgMultiSelectDropDownModule.forRoot(),
     SweetAlert2Module,
     Select2Module,
     NgxPaginationModule,

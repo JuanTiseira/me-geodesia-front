@@ -7,6 +7,7 @@ import { BuscarUsuarioComponent } from './usuarios/pages/buscar/buscar.component
 import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.component';
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
+import { DetalleUsuarioComponent } from './usuarios/pages/detalle/detalle.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -27,6 +28,8 @@ export const APP_ROUTES: Routes = [
   {path: 'usuario/agregar', component: AgregarUsuarioComponent},
 
   {path: 'usuario/buscar', component: BuscarUsuarioComponent},
+
+  {path: 'usuario/:id', component: DetalleUsuarioComponent},
 
 
   //HISTORIAL

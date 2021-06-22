@@ -22,6 +22,7 @@ export class AgregarUsuarioComponent implements OnInit {
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
+  public roles: any;
   usuarioForm : FormGroup
   form: FormGroup;
   id: string;
@@ -45,10 +46,10 @@ export class AgregarUsuarioComponent implements OnInit {
 
     this.usuarioForm = this.formBuilder.group({
       
-      user: ['', Validators.required],
-      rol: ['', [Validators.required]],
+      // user: ['', Validators.required],
+      rol: ['', Validators.required],
       nombre: ['', Validators.required],
-      apellido: [''],
+      apellido: ['', Validators.required],
       cuit: ['', Validators.required],
       dni: ['', Validators.required],
       matricula: ['', Validators.required],
@@ -61,7 +62,7 @@ export class AgregarUsuarioComponent implements OnInit {
       });
 
 
-      if (!this.isAddMode) {
+    if (!this.isAddMode) {
         this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
         .then(x => this.form.patchValue(x));
     }
@@ -86,6 +87,11 @@ export class AgregarUsuarioComponent implements OnInit {
     this._apiService.getUsuarios().then(response => {
       this.usuarios = response
       this._functionService.imprimirMensaje(response, "usuarios")
+    })
+
+    this._apiService.getRoles().then(response => {
+      this.roles = response
+      this._functionService.imprimirMensaje(response, "roles")
     })
 
   

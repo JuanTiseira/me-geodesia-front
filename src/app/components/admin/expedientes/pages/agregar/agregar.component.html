@@ -44,6 +44,34 @@
                       <div *ngIf="f.propietario.errors.required">Este campo es obligatorio</div>
                     </div>
                   </div>
+
+                  <div *ngIf="documentos" class="form-group">
+                    <label for="propietario" class="form-label">Documentos</label>
+                    <ng-multiselect-dropdown
+                      [placeholder]="'Seleccione una opcion'"
+                      [settings]="dropdownSettings"
+                      [data]="documentos.results"
+                      
+                      (onSelect)="onItemSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+
+
+                    <div *ngIf="submitted && f.propietario.errors" class="invalid-feedback">
+                      <div *ngIf="f.propietario.errors.required">Este campo es obligatorio</div>
+                    </div>
+                  </div>
+
+
+                
+
+
+
+
+
+
+
                     <div class="col-3">
                       <button type="button" class="btn btn-primary">Volver</button>
                     </div>

@@ -4,7 +4,7 @@ import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import Swal from 'sweetalert2'
-
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 
 @Component({
@@ -22,6 +22,11 @@ export class AgregarComponent implements OnInit {
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
+  public docs: any
+  public selectedDocumentos: any 
+  public dropdownSettings: IDropdownSettings;
+
+
   expedienteForm : FormGroup
   form: FormGroup;
   id: string;
@@ -35,7 +40,7 @@ export class AgregarComponent implements OnInit {
     private _functionService: FunctionsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -84,6 +89,23 @@ export class AgregarComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "usuarios")
     })
 
+    this._apiService.getDocumentos().then(response => {
+      this.documentos = response
+
+      
+      this._functionService.imprimirMensaje(response, "documentos")
+    })
+
+
+    this.dropdownSettings=<IDropdownSettings> {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'descripcion',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 10,
+      allowSearchFilter: true
+    };
   
   }
 
@@ -129,6 +151,13 @@ export class AgregarComponent implements OnInit {
     });
     
     
+  }
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 
   

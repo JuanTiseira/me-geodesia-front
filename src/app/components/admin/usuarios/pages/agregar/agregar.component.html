@@ -2,8 +2,8 @@
 
 <div class="container">
 
-    <h2 *ngIf="isAddMode" style="font-weight: bold;">Crear Expediente</h2>
-    <h2 *ngIf="!isAddMode" style="font-weight: bold;">Editar Expediente</h2>
+    <h2 *ngIf="isAddMode" style="font-weight: bold;">Crear Usuario</h2>
+   
 
     <br>
 
@@ -15,7 +15,7 @@
                   <div class="form-group">
                     
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input formControlName="nombre" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+                    <input formControlName="nombre" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
                     <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
                       <div *ngIf="f.nombre.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -25,7 +25,7 @@
                   <div class="form-group">
                     
                     <label for="cuit" class="form-label">Cuit</label>
-                    <input formControlName="cuit" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.cuit.errors }">
+                    <input formControlName="cuit" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.cuit.errors }">
                     <div *ngIf="submitted && f.cuit.errors" class="invalid-feedback">
                       <div *ngIf="f.cuit.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -36,7 +36,7 @@
                   <div class="form-group">
                     
                     <label for="dni" class="form-label">DNI</label>
-                    <input formControlName="dni" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }">
+                    <input formControlName="dni" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }">
                     <div *ngIf="submitted && f.dni.errors" class="invalid-feedback">
                       <div *ngIf="f.dni.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -44,24 +44,13 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="tipo" class="form-label">User</label>
-                    <select *ngIf="tipos_usuarios" formControlName="user" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.user.errors }">
-                      <option value="" disabled>Seleccione una Opcion</option>
-                      <option [ngValue]="dato" *ngFor="let dato of tipos_usuarios.results">{{dato.descripcion}}</option>
-                    </select>
-                    <div *ngIf="submitted && f.user.errors" class="invalid-feedback">
-                      <div *ngIf="f.user.errors.required">Este campo es obligatorio</div>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
                     <label for="rol" class="form-label">Rol</label>
-                    <select *ngIf="inmuebles" formControlName="rol" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
+                    <select *ngIf="roles" formControlName="rol" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
-                      <option [ngValue]="dato" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
+                      <option [ngValue]="dato" *ngFor="let dato of roles.results" value="">{{dato.nombre}}</option>
                     </select>
-                    <div *ngIf="submitted && f.inmueble.errors" class="invalid-feedback">
-                      <div *ngIf="f.inmueble.errors.required">Este campo es obligatorio</div>
+                    <div *ngIf="submitted && f.rol.errors" class="invalid-feedback">
+                      <div *ngIf="f.rol.errors.required">Este campo es obligatorio</div>
                     </div>
                   </div>
 
@@ -75,7 +64,7 @@
                   <div class="form-group">
                     
                     <label for="apellido" class="form-label">Apellido</label>
-                    <input formControlName="apellido" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
+                    <input formControlName="apellido" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
                     <div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
                       <div *ngIf="f.apellido.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -84,40 +73,40 @@
 
                   <div class="form-group">
                     
-                    <label for="marticula" class="form-label">Matricula</label>
-                    <input formControlName="marticula" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.marticula.errors }">
-                    <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                      <div *ngIf="f.marticula.errors.required">Este campo es obligatorio</div>
+                    <label for="matricula" class="form-label">Matricula</label>
+                    <input formControlName="matricula" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
+                    <div *ngIf="submitted && f.matricula.errors" class="invalid-feedback">
+                      <div *ngIf="f.matricula.errors.required">Este campo es obligatorio</div>
                     </div>
 
                   </div>
 
                   <div class="form-group">
                     
-                    <label for="abreviatura" class="form-label">Direccion</label>
-                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
-                    <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                      <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                    <label for="direccion" class="form-label">Direccion</label>
+                    <input formControlName="direccion" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.direccion.errors }">
+                    <div *ngIf="submitted && f.direccion.errors" class="invalid-feedback">
+                      <div *ngIf="f.direccion.errors.required">Este campo es obligatorio</div>
                     </div>
 
                   </div>
 
                   <div class="form-group">
                     
-                    <label for="abreviatura" class="form-label">Fecha de Nacimiento</label>
-                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
-                    <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                      <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                    <input formControlName="fecha_nacimiento" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento.errors }">
+                    <div *ngIf="submitted && f.fecha_nacimiento.errors" class="invalid-feedback">
+                      <div *ngIf="f.fecha_nacimiento.errors.required">Este campo es obligatorio</div>
                     </div>
 
                   </div>
 
                   <div class="form-group">
                     
-                    <label for="abreviatura" class="form-label">Email</label>
-                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
-                    <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                      <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                    <label for="email" class="form-label">Email</label>
+                    <input formControlName="email" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Este campo es obligatorio</div>
                     </div>
 
                   </div>
@@ -127,10 +116,10 @@
 
                   <div class="form-group">
                     
-                    <label for="abreviatura" class="form-label">Telefono</label>
-                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
-                    <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                      <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                    <label for="telefono" class="form-label">Telefono</label>
+                    <input formControlName="telefono" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
+                    <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
+                      <div *ngIf="f.telefono.errors.required">Este campo es obligatorio</div>
                     </div>
 
                   </div>

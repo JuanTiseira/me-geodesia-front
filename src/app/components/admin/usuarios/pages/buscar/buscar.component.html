@@ -46,25 +46,25 @@
 
 
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Número de Expediente</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de usrediente" class="form-control" autocomplete="off">
+                <label for="username" class="form-label">Nombre</label>
+                <input  formControlName="nombre" maxlength="5" inputmode="numeric" placeholder="Nombre de Usuario" class="form-control" autocomplete="off">
             </div>
             
 
             <div class="col-md-4">
                 <label for="username" class="form-label">ROL</label>
-                <select formControlName="gestor" class="form-select" *ngIf="usuarios">
-                    <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                <select formControlName="rol" class="form-select" *ngIf="roles">
+                    <option [value]="dato.url" *ngFor="let dato of roles.results" value="">{{dato.nombre}}</option>
                 </select>
             </div>
 
-
             <div class="col-md-4">
-                <label for="username" class="form-label">Inmueble</label>
-                <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
-                    <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
-                  </select>
+                <label for="username" class="form-label">Matricula</label>
+                <select formControlName="matricula" class="form-select" *ngIf="usuarios">
+                    <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
+                </select>
             </div>
+        
 
             <div class="col-md-4 ">
                 <div class="mt-3">

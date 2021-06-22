@@ -108,5 +108,19 @@ export class ApiService {
     return this.http.get(this.url+'/usuarios/').toPromise();
   }
 
+  //USUARIOS 
+
+  getRoles() {
+    return this.http.get(this.url+'/roles/').toPromise();
+  }
+
+  getUsers() {
+    return this.http.get(this.url+'/roles/').toPromise();
+  }
+
+  getUsuario(id){
+    return this.http.get(this.url+`/usuarios/${id}`).toPromise();
+  }
+
   
 }
