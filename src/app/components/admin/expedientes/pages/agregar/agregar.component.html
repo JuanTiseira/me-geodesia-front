@@ -3,8 +3,6 @@
 <div class="container">
 
     <h2 *ngIf="isAddMode" style="font-weight: bold;">Crear Expediente</h2>
-    <h2 *ngIf="!isAddMode" style="font-weight: bold;">Editar Expediente</h2>
-
     <br>
 
     <div class="row">
@@ -51,7 +49,7 @@
                       [placeholder]="'Seleccione una opcion'"
                       [settings]="dropdownSettings"
                       [data]="documentos.results"
-                      
+                      formControlName="documentos"
                       (onSelect)="onItemSelect($event)"
                       (onSelectAll)="onSelectAll($event)"
                     >
@@ -87,19 +85,19 @@
                     </div>
 
                   </div>
+
+                  <div class="form-group">
+                    
+                    <label for="abreviatura" class="form-label">Tramite Urgente</label>
+                    <input type="checkbox" formControlName="tramite_urgente">
+                   
+                  </div>
                   
-                    <div class="form-group">
-                      <label for="observacion" class="form-label">Observacion</label>
-                      <select formControlName="observacion" *ngIf="observaciones"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.observacion.errors }">
-                        <option value="" disabled>Seleccione una Opcion</option>
-                        <option [ngValue]="dato" *ngFor="let dato of observaciones.results" value="">{{dato.descripcion}}</option>
-                      </select>
-
-                      <div *ngIf="submitted && f.observacion.errors" class="invalid-feedback">
-                        <div *ngIf="f.observacion.errors.required">Este campo es obligatorio</div>
-                      </div>
-
-                    </div>
+                  <div class="form-group" *ngIf="expedienteForm.value.tramite_urgente == true" >
+                    <label for="observacion" class="form-label">Observacion</label>
+                    <textarea name="observaciones" class="form-control" formControlName="observacion" id="observacion" cols="30" rows="1">
+                    </textarea>
+                  </div>
 
                     <div class="form-group">
                       <label for="agrimensor" class="form-label">Agrimensor</label>

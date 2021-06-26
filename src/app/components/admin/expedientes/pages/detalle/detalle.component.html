@@ -7,7 +7,7 @@
     <br>
 
     <div class="row">
-        <div class="col-12" *ngIf="expediente">
+        <div class="col-12" *ngIf="resultado">
           <form class="row g-3" [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
             <div class="col-md-6">
 
@@ -57,6 +57,14 @@
                 </select>
               </div>
 
+
+              <div class="form-group">
+                <label for="inmueble" class="form-label">Observaciones</label>
+                <textarea name="observaciones" class="form-control" formControlName="observacion"  id="observacion" cols="30" rows="5">
+                  {{expedienteForm.value.observacion.descripcion}}
+                </textarea>
+              </div>
+
              
                 <div class="row">
                   <div class="col-md-6">
@@ -77,11 +85,6 @@
                 
             </div>
             <div class="col-md-6">
-
-             
-              
-    
-
                 <div class="form-group" >
                   <label for="agrimensor" class="form-label">Agrimensor</label>
                   <select [compareWith]="compareFn" *ngIf="usuarios" [(value)]="selectedagrimensor" class="form-control" formControlName="agrimensor"  >

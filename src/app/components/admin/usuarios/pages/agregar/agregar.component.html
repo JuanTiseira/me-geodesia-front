@@ -94,7 +94,7 @@
                   <div class="form-group">
                     
                     <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                    <input formControlName="fecha_nacimiento" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento.errors }">
+                    <input formControlName="fecha_nacimiento" type="date" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento.errors }">
                     <div *ngIf="submitted && f.fecha_nacimiento.errors" class="invalid-feedback">
                       <div *ngIf="f.fecha_nacimiento.errors.required">Este campo es obligatorio</div>
                     </div>

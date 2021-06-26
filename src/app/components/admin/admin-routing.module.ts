@@ -34,8 +34,6 @@ export const APP_ROUTES: Routes = [
 
   //HISTORIAL
 
-  {path: 'historial/buscar', component: BuscarHistorialComponent},
-
   {path: 'historial/:id', component: DetalleHistorialComponent},
   
   {path: 'home', component: HomeComponent}

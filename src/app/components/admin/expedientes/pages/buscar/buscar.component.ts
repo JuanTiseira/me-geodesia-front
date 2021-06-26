@@ -6,10 +6,12 @@ import { FunctionsService } from '../../../../../services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { resolve } from 'url';
 
 
 
@@ -25,6 +27,8 @@ import { Router } from '@angular/router';
 
 
 export class BuscarComponent implements OnInit {
+
+  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
   closeResult = '';
   
@@ -59,7 +63,7 @@ export class BuscarComponent implements OnInit {
 
 
   consultaForm = new FormGroup({
-
+    param_busqueda: new FormControl(''),   
     numero: new FormControl(''),
     anio: new FormControl(''),
     tipoexpediente: new FormControl(''),
@@ -98,17 +102,10 @@ export class BuscarComponent implements OnInit {
 
   ngOnInit(): void {
 
-      this._apiService.getExpedientes()
-      .then(response => {
-        this.expedientes = response
-        this._functionService.imprimirMensaje(response, "expedientes")
-      })
-
       this._apiService.getTipoExpedientes().then(response => {
         this.tipos_expedientes = response
         //this.tipos_expedientes = response
       })
-  
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
@@ -149,7 +146,9 @@ export class BuscarComponent implements OnInit {
           'Eliminado!',
           'El expediente fue eliminado.',
           'success'
-        ) })
+        ) 
+        this.router.navigate(['/usuario/buscar']);
+      })
 
         
       }
@@ -171,46 +170,83 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarExpediente() {
-
     var numero = this.consultaForm.value.numero
+    var anio = this.consultaForm.value.anio
 
-    this._apiService.getExpedienteNumero(numero)
-    .then((x:any) =>{
+    if (this.consultaForm.value.param_busqueda == 'expediente') {
 
-      console.warn(x);
-      this.router.navigate(['/expediente/', x.id ]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+      //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
+      alert('buscando por expediente')
+      this._apiService.getExpedienteNumero(numero, anio)
+        .then((x:any) =>{
+
+          console.warn(x);
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          
+      }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
       
-      //this.router.navigate(['/expediente'], { queryParams: { order: 'popular', 'price-range': 'not-cheap' } });
-      
 
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
-    })
-    .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
-    });
+    }else{
+
+      alert('buscando por tramite')
+      //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
+      this._apiService.getExpedienteTramite(numero)
+        .then((x:any) =>{
+
+          console.warn(x);
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          
+      }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
+
+    }
+
+
+   
+    
+
+    
 
   }
+
+  rangeYear () {
+    const max = new Date().getFullYear()
+    const min = max - 100
+    const years = []
   
-  onSubmit() {
-    
-    
-    this._apiService.getExpediente(this.consultaForm.value)
-    .then(() =>{
-      console.warn(this.consultaForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
+    for (let i = max; i >= min; i--) {
+        years.push(i)
+    }
+    return years
+  }
+  
+  buscarExpedientes() {
+    this._apiService.getExpedientesFiltros(this.consultaForm.value)
+    .then((res) =>{
+
+      this.expedientes = res
+     
+      console.log(this.expedientes)
+      
+      if (this.expedientes.count == 0) {
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      }else{
+        this.expedientes = res
+      }
+      
       // this.mensajeSwal.fire().finally(()=> {
       //   this.ngOnInit();
       //   //this.mostrarLista();
       // });
     })
     .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
+      console.log('error')
     });
   }
 

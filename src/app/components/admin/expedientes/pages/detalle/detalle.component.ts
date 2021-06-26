@@ -20,10 +20,9 @@ import { Role } from 'src/app/models/role.models';
 export class DetalleComponent implements OnInit {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
-
   
   idEdit: boolean
-  expediente = null;
+  resultado = null;
   message = '';
   expedienteForm: FormGroup;
   id: string;
@@ -90,24 +89,69 @@ export class DetalleComponent implements OnInit {
     
     this.idEdit = false
 
-    this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-      .then(response => {
-      this.expediente = response
-      this.expedienteForm.patchValue(response)
+
+    this.id = this.route.snapshot.params['id'];
+
+    if (this.route.snapshot.queryParams['anio']) {
+      this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
+        .then((x:any) =>{
+
+          console.warn(x);
+          this.resultado = x.expediente
+
+          this.expedienteForm.patchValue(this.resultado)
+          this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+
+          this.selecteditem = this.resultado.expedientetipo_expediente
+          this.selectedinmueble = this.resultado.expedienteinmueble
+          this.selecteddocumento = this.resultado.expedientedocumento
+          this.selectedobservacion = this.resultado.expedienteobservacion
+          this.selectedpropietario = this.resultado.expedientepropietario
+          this.selectedgestor = this.resultado.expedientegestor
+          this.selectedagrimensor = this.resultado.expedienteagrimensor
+          this.selectedtramite = this.resultado.expedientetramite
 
 
-      this.selecteditem = this.expediente.tipo_expediente
-      this.selectedinmueble = this.expediente.inmueble
-      this.selecteddocumento = this.expediente.documento
-      this.selectedobservacion = this.expediente.observacion
-      this.selectedpropietario = this.expediente.propietario
-      this.selectedgestor = this.expediente.gestor
-      this.selectedagrimensor = this.expediente.agrimensor
-      this.selectedtramite = this.expediente.tramite
+          this._functionService.imprimirMensaje(x, "expediente")
+          
+      }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
+    }else{
+      this._apiService.getExpedienteTramite(this.route.snapshot.queryParams['numero'])
+        .then((x:any) =>{
+
+          console.warn(x);
+          this.resultado = x.expediente
+          
+          this.expedienteForm.patchValue(this.resultado)
+          this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+
+          
 
 
-      this._functionService.imprimirMensaje(response, "expediente")
-    })
+          this.selecteditem = this.resultado.expedientetipo_expediente
+          this.selectedinmueble = this.resultado.expedienteinmueble
+          this.selecteddocumento = this.resultado.expedientedocumento
+          this.selectedpropietario = this.resultado.expedientepropietario
+          this.selectedgestor = this.resultado.expedientegestor
+          this.selectedagrimensor = this.resultado.expedienteagrimensor
+          this.selectedtramite = this.resultado.expedientetramite
+
+
+          this._functionService.imprimirMensaje(x, "expediente")
+          
+      }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
+    }
+    
+    
+    
+      
+    
 
     this._apiService.getTipoExpedientes().then(response => {
       

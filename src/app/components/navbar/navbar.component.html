@@ -11,7 +11,7 @@
             <h1></h1>
         </div>
         <div class="col-6">
-            <div class="items">
+            <div  class="items">
                 <!-- <a (click)="show('Aviso')">
                     <p *ngIf="avisos != null" class="icon-notice">{{avisos}}</p>
                     <i class="fal fa-bell"></i>
@@ -23,7 +23,7 @@
                     </div>
                 </a> -->
               
-                <a (click)="show('Perfil')">
+                <a (click)="show('Perfil')" style="cursor: pointer;">
                     
                     <p class="">{{ header  | titlecase}}</p>
                     <div class="box-message box-perfil" *ngIf="showPerfil">
@@ -34,7 +34,7 @@
                         <div class="item">
                             <p>Mi perfil</p>
                         </div>
-                        <div class="item" style="cursor: pointer;">
+                        <div (click)=logOut() class="item" style="cursor: pointer;">
                             <p (click)=logOut()>Cerrar Sesion</p>
                         </div>
                     </div>

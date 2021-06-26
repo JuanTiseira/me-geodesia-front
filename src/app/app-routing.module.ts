@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { Role } from './models/role.models';
 import { BuscarComponent } from './components/admin/expedientes/pages/buscar/buscar.component';
 import { HomeComponent } from './components/admin/home/home.component';
+import { DetalleComponent } from './components/admin/expedientes/pages/detalle/detalle.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -17,10 +18,18 @@ const routes: Routes = [
     children:[
       {path: 'home', component: HomeComponent},
       {path: 'expediente/buscar', component: BuscarComponent},
-      // {path: 'historial/buscar', component: BuscarComponent},
+      // {path: 'expediente/:id', component: DetalleComponent},
+      {path: 'historial/buscar', component: BuscarComponent},
       // { path: 'pagos', component: PagosComponent},
       // { path: 'contacto', component: ContactoComponent}
-    ]
+    ],
+    data: {
+      roles: [
+        Role.ROL_PROFESIONAL,
+        Role.ROL_ADMIN,
+        Role.ROL_EMPLEADO
+      ]
+    }
   },
 
   
@@ -42,7 +51,7 @@ const routes: Routes = [
     loadChildren: () => import('../app/components/admin/empleado.module').then(m => m.EmpleadoModule),
     data: {
       roles: [
-        Role.ROL_USER,
+        Role.ROL_EMPLEADO,
       ]
     }
   

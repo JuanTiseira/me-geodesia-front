@@ -110,14 +110,14 @@ export class AgregarUsuarioComponent implements OnInit {
     }
 
     this.loading = true;    
-    this.createExpediente();
+    this.createUsuario();
   
 }
   
-  createExpediente() {
+  createUsuario() {
     
     console.log(this.usuarioForm.value)
-    this._apiService.setExpediente(this.usuarioForm.value)
+    this._apiService.setUsuario(this.usuarioForm.value)
     .then(() =>{
       console.warn(this.usuarioForm.value);
       Swal.fire({

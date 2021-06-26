@@ -46,17 +46,44 @@ export class ApiService {
     });
   }
 
+  getExpedientesFiltros(filtros){
+
+    let params: URLSearchParams = new URLSearchParams();
+  
+    params.set('numero', filtros.numero);
+    params.set('anio', filtros.anio);
+    params.set('gestor', filtros.gestor);
+
+    console.log('parametros', params)
+
+    return this.http.get(this.url+'/expedientes/', filtros).toPromise().catch((e)=>
+    { 
+      console.log('error', e);
+      this.router.navigate(['login']);
+
+    });
+  }
+
   getExpediente(id){
     return this.http.get(this.url+`/expedientes/${id}`).toPromise();
   }
 
-  getExpedienteNumero(numero) {
-    return this.http.get(this.url+`/expedientes/?numero=${numero}`).toPromise();
+  getExpedienteNumero(numero, anio) {
+    console.log(numero, anio)
+    return this.http.get(this.url+`/expedientes/1/expediente_tramite/?anio=${anio}&numero=${numero}`).toPromise();
+  }
+
+  getExpedienteTramite(numero){
+    return this.http.get(this.url+`/expedientes/1/expediente_tramite/?tramite=${numero}`).toPromise();
   }
 
   setExpediente(expediente) {
     console.warn(expediente);
-    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
+    return this.http.post(this.url+'/expedientes/', expediente).toPromise().catch((e)=>
+    { 
+      console.log('error', e);
+    
+    }); 
   }
 
   editExpediente(expediente) {
@@ -67,7 +94,7 @@ export class ApiService {
 
   deleteExpediente(expediente) {
     console.warn(expediente);
-    return this.http.delete(this.url+'/expedientes/', expediente).toPromise();
+    return this.http.delete(this.url+`/expedientes/${expediente}/`).toPromise();
   }
 
 
@@ -102,6 +129,10 @@ export class ApiService {
     return this.http.get(this.url+'/inmuebles/').toPromise();
   }
 
+  getInmueblesDisponibles () {
+    return this.http.get(this.url+'/inmuebles/?disponibles=1234').toPromise();
+  }
+
   //PROPIETARIO
 
   getUsuarios () {
@@ -121,6 +152,22 @@ export class ApiService {
   getUsuario(id){
     return this.http.get(this.url+`/usuarios/${id}`).toPromise();
   }
+
+  setUsuario(usuario) {
+    console.warn(usuario);
+    return this.http.post(this.url+'/usuarios/', usuario).toPromise().catch((e)=>
+    { 
+      console.log('error', e);
+     
+
+    }); 
+  }
+
+  deleteUsuario(usuario) {
+    console.warn(usuario);
+    return this.http.delete(this.url+`/usuarios/${usuario}/`).toPromise();
+  }
+
 
   
 }

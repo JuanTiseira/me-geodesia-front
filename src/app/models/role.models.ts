@@ -3,5 +3,6 @@ export enum Role {
     ROL_ADMIN = 'ROL_ADMIN',
     ROL_PROFESIONAL = 'ROL_PROFESIONAL',
     ROL_CLIENTE = 'ROL_CLIENTE',
+    ROL_EMPLEADO = 'ROL_EMPLEADO'
   }
   

@@ -25,6 +25,8 @@ export class AgregarComponent implements OnInit {
   public docs: any
   public selectedDocumentos: any 
   public dropdownSettings: IDropdownSettings;
+  public selectedItems: any
+  public tramite_urgente: boolean
 
 
   expedienteForm : FormGroup
@@ -47,7 +49,7 @@ export class AgregarComponent implements OnInit {
    
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
-
+    this.selectedItems = []
     this.expedienteForm = this.formBuilder.group({
       
       tipo_expediente: ['', Validators.required],
@@ -57,16 +59,11 @@ export class AgregarComponent implements OnInit {
       observacion: ['', Validators.required],
       abreviatura: ['', Validators.required],
       agrimensor: ['', Validators.required],
-      }, {
-         
+      tramite_urgente: [''],
+      documentos: ['', Validators.required]
+
+      
       });
-
-
-      if (!this.isAddMode) {
-        this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-        .then(x => this.form.patchValue(x));
-    }
-    
 
     this._apiService.getTipoExpedientes().then(response => {
       
@@ -74,10 +71,11 @@ export class AgregarComponent implements OnInit {
       //this.tipos_expedientes = response
     })
     
-    this._apiService.getInmuebles().then(response => {
+    this._apiService.getInmueblesDisponibles().then(response => {
       this.inmuebles = response
       this._functionService.imprimirMensaje(response, "inmuebles")
     })
+
 
     this._apiService.getObservaciones().then(response => {
       this.observaciones = response
@@ -116,8 +114,7 @@ export class AgregarComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.expedienteForm.invalid) {
-        alert('errores')
-        console.log(this.expedienteForm)
+        console.log('errores en el formulario')
         return;
     }
 
@@ -128,10 +125,13 @@ export class AgregarComponent implements OnInit {
   
   createExpediente() {
     
+    this.expedienteForm.patchValue({observacion: this.selectedItems});
+    
     console.log(this.expedienteForm.value)
     this._apiService.setExpediente(this.expedienteForm.value)
-    .then(() =>{
-      console.warn(this.expedienteForm.value);
+    .then((r) =>{
+
+      console.warn(r);
       Swal.fire({
         title: 'Exito',
         text: 'Se registro correctamente',

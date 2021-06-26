@@ -1,7 +1,6 @@
 
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { TipoExpediente } from '../../../../../models/tipo_expediente.model';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -27,8 +26,7 @@ import { Router } from '@angular/router';
 export class BuscarUsuarioComponent implements OnInit {
 
   closeResult = '';
-  
-  public pokemons: TipoExpediente;
+
   public page: number = 0;
   public search: string = '';
   public usuarios: any;
@@ -39,10 +37,10 @@ export class BuscarUsuarioComponent implements OnInit {
   public inmuebles: any;
   public observaciones: any;
   public tipo_consulta: any;
+  public param_busqueda: any
 
-  expediente: string
+  usuario: string
   tramite: string
-  param_busqueda: ''
 
   categories = [
     {id: 1, name: 'DNI'},
@@ -63,7 +61,8 @@ export class BuscarUsuarioComponent implements OnInit {
     nombre: new FormControl(''),
     matricula: new FormControl(''),
     rol: new FormControl(''),
-    tipo_consulta: new FormControl('')
+    tipo_consulta: new FormControl(''),
+    param_busqueda: new FormControl('')
 
   });
 
@@ -95,12 +94,6 @@ export class BuscarUsuarioComponent implements OnInit {
         this.usuarios = response
         this._functionService.imprimirMensaje(response, "usuarios")
       })
-
-      this._apiService.getTipoExpedientes().then(response => {
-        this.tipos_usuarios = response
-        //this.tipos_usuarios = response
-      })
-  
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
@@ -137,16 +130,19 @@ export class BuscarUsuarioComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, eliminar Expediente!'
+      confirmButtonText: 'Si, eliminar Usuario!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this._apiService.deleteExpediente(id)
+        this._apiService.deleteUsuario(id)
         .then(() =>{ 
           Swal.fire(
           'Eliminado!',
-          'El expediente fue eliminado.',
+          'El usuario fue eliminado.',
           'success'
-        ) })
+        ) 
+        this.router.navigate(['/usuario/buscar']);
+      })
+          
 
         
       }
@@ -167,27 +163,27 @@ export class BuscarUsuarioComponent implements OnInit {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
 
-  buscarExpediente() {
+  buscarUsuario() {
 
     var numero = this.consultaForm.value.numero
 
-    this._apiService.getExpedienteNumero(numero)
+    this._apiService.getUsuario(numero)
     .then((x:any) =>{
 
       console.warn(x);
-      this.router.navigate(['/expediente/', x.id ]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+      this.router.navigate(['/usuario/', x.id ]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
       
-      //this.router.navigate(['/expediente'], { queryParams: { order: 'popular', 'price-range': 'not-cheap' } });
+      //this.router.navigate(['/usuario'], { queryParams: { order: 'popular', 'price-range': 'not-cheap' } });
       
 
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
+      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.usuarioForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
       // this.mensajeSwal.fire().finally(()=> {
       //   this.ngOnInit();
       //   //this.mostrarLista();
       // });
     })
     .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
+     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.usuarioForm.value}`, "error", "Aceptar", "", false, "", "");
       //this.mensajeSwal.fire();
     });
 
@@ -196,17 +192,17 @@ export class BuscarUsuarioComponent implements OnInit {
   onSubmit() {
     
     
-    this._apiService.getExpediente(this.consultaForm.value)
+    this._apiService.getUsuario(this.consultaForm.value)
     .then(() =>{
       console.warn(this.consultaForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
+      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.usuarioForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
       // this.mensajeSwal.fire().finally(()=> {
       //   this.ngOnInit();
       //   //this.mostrarLista();
       // });
     })
     .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
+     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.usuarioForm.value}`, "error", "Aceptar", "", false, "", "");
       //this.mensajeSwal.fire();
     });
   }
