@@ -20,6 +20,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { MatTableModule } from '@angular/material/table'  
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
@@ -31,9 +32,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SidebarComponent,
     NavbarComponent,
     NotFoundComponent,
-   
+    
   ],
   imports: [
+    NgxSpinnerModule,
     MatPaginatorModule,
     MatTableModule,
     CommonModule,

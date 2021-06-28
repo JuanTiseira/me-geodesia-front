@@ -53,7 +53,7 @@ export class AgregarComponent implements OnInit {
     this.expedienteForm = this.formBuilder.group({
       
       tipo_expediente: ['', Validators.required],
-      inmueble: ['', [Validators.required]],
+      inmueble: ['', Validators.required],
       propietario: ['', Validators.required],
       gestor: [''],
       observacion: ['', Validators.required],

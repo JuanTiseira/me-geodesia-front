@@ -60,9 +60,6 @@ export class DetalleComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-    
-
     this.id = this.route.snapshot.params['id'];
 
     this.isEditMode = false;
@@ -96,11 +93,13 @@ export class DetalleComponent implements OnInit {
       this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
         .then((x:any) =>{
 
-          console.warn(x);
+         
           this.resultado = x.expediente
 
           this.expedienteForm.patchValue(this.resultado)
-          this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+          if (x.observacion != null) {
+            this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+          }
 
           this.selecteditem = this.resultado.expedientetipo_expediente
           this.selectedinmueble = this.resultado.expedienteinmueble
@@ -114,19 +113,59 @@ export class DetalleComponent implements OnInit {
 
           this._functionService.imprimirMensaje(x, "expediente")
           
-      }).catch(()=>{
+      }).catch((e)=>{
+        console.log(e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       });
-    }else{
+    }else if (this.route.snapshot.params['id'] && !this.route.snapshot.queryParams['anio'] && !this.route.snapshot.queryParams['numero'])
+      {
+        this._apiService.getExpediente(this.route.snapshot.params['id'])
+        .then((x:any) =>{
+
+      
+          this.resultado = x.expediente
+          console.log(x)
+          this.expedienteForm.patchValue(this.resultado)
+
+          if (x.observacion != null) {
+            this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+          }
+          
+
+          this.selecteditem = this.resultado.expedientetipo_expediente
+          this.selectedinmueble = this.resultado.expedienteinmueble
+          this.selecteddocumento = this.resultado.expedientedocumento
+          this.selectedobservacion = this.resultado.expedienteobservacion
+          this.selectedpropietario = this.resultado.expedientepropietario
+          this.selectedgestor = this.resultado.expedientegestor
+          this.selectedagrimensor = this.resultado.expedienteagrimensor
+          this.selectedtramite = this.resultado.expedientetramite
+
+
+          this._functionService.imprimirMensaje(x, "expediente")
+          
+      }).catch((e)=>{
+        console.log(e)
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
+
+
+    }
+    
+    else{
+      
       this._apiService.getExpedienteTramite(this.route.snapshot.queryParams['numero'])
         .then((x:any) =>{
 
-          console.warn(x);
+          
           this.resultado = x.expediente
           
           this.expedienteForm.patchValue(this.resultado)
-          this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+          if (x.observacion != null) {
+            this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+          }
 
           
 
@@ -142,10 +181,12 @@ export class DetalleComponent implements OnInit {
 
           this._functionService.imprimirMensaje(x, "expediente")
           
-      }).catch(()=>{
+      }).catch((e)=>{
+        console.log(e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       });
+
     }
     
     

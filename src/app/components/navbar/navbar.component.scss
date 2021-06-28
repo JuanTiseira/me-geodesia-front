@@ -4,21 +4,27 @@ h4 {
     font-weight: bold;
 }
 nav {
+
     overflow: hidden;
     display: flex;
-    background-color: #2d223a;
+    background-color: #292814;
     z-index: 100;
+
 }
 
 nav .items {
+
     width: 100%;
     line-height: 50px;
     display: flex;
     justify-content: flex-end;
+
 }
 
 nav .items a i {
+
     cursor: pointer;
+    
 }
 
 nav .items a img{

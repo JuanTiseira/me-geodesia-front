@@ -20,17 +20,17 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
-                <input (keyup.enter)="buscarUsuario()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
+                <input  (keyup.enter)="buscarUsuario()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
             </div>
             
             <div class="col-md-4">
                 <div class="mt-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <button type="button" (click)="buscarUsuario()" class="btn btn-primary">Buscar</button>
+                            <button type="button" (click)="buscarUsuario()" class="btn btn-green">Buscar</button>
                         </div>
                         <div class="col-md-6">
-                            <button routerLink="/usuario/agregar" type="button" class="btn btn-primary">Nuevo</button>
+                            <button routerLink="/usuario/agregar" type="button" class="btn btn-green">Nuevo</button>
                         </div>
                     </div>
                 </div> 
@@ -66,7 +66,7 @@
 
             <div class="col-md-4 ">
                 <div class="mt-3">
-                    <button type="button" [type]="submit" class="btn btn-primary">Consultar</button>
+                    <button type="button" [type]="submit" class="btn btn-green">Consultar</button>
                 </div>
             </div>
         </div>
@@ -104,7 +104,7 @@
         <div class="col-md-4">
             <div class="mt-3">
                
-                <button type="button" class="btn btn-primary float-right">Limpiar</button>
+                <button type="button" class="btn btn-green float-right">Limpiar</button>
             </div>
         </div>
     

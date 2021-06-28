@@ -65,7 +65,9 @@ export class ApiService {
   }
 
   getExpediente(id){
-    return this.http.get(this.url+`/expedientes/${id}`).toPromise();
+
+    console.log(id)
+    return this.http.get(this.url+`/expedientes/1/expediente_tramite/?id=${id}`).toPromise();
   }
 
   getExpedienteNumero(numero, anio) {
@@ -89,7 +91,7 @@ export class ApiService {
   editExpediente(expediente) {
     console.warn(expediente);
 
-    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
+    return this.http.put(this.url+'/expedientes/', expediente).toPromise();
   }
 
   deleteExpediente(expediente) {

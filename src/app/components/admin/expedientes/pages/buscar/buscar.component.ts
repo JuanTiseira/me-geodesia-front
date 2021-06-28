@@ -11,7 +11,7 @@ import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { resolve } from 'url';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 
@@ -32,10 +32,10 @@ export class BuscarComponent implements OnInit {
 
   closeResult = '';
   
-  public pokemons: TipoExpediente;
   public page: number = 0;
   public search: string = '';
   public expedientes: any;
+  public load: boolean;
 
   public tipos_expedientes: any;
   public documentos: any; 
@@ -50,8 +50,8 @@ export class BuscarComponent implements OnInit {
   param_busqueda: ''
 
   categories = [
-    {id: 1, name: 'expediente'},
-    {id: 2, name: 'tramite'},
+    {id: 1, name: 'Expediente', value: 'expediente'},
+    {id: 2, name: 'Tramite', value: 'tramite'},
   ]
 
   constructor( private _apiService: ApiService,
@@ -59,7 +59,8 @@ export class BuscarComponent implements OnInit {
                 private modalService: NgbModal,
                 private authService: AuthService,
                 private router: Router,
-                ) { }
+                private spinner: NgxSpinnerService
+                ) { this.load = false; }
 
 
   consultaForm = new FormGroup({
@@ -79,28 +80,16 @@ export class BuscarComponent implements OnInit {
 
   });
 
-  open(content, id) {
-     
-    console.log('se abrio el modal con id: ', id)
-
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
   ngOnInit(): void {
+
+          /** spinner starts on init */
+      this.spinner.show();
+
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 5000);
 
       this._apiService.getTipoExpedientes().then(response => {
         this.tipos_expedientes = response
@@ -110,11 +99,6 @@ export class BuscarComponent implements OnInit {
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getObservaciones().then(response => {
-        this.observaciones = response
-        this._functionService.imprimirMensaje(response, "observaciones")
       })
   
       this._apiService.getUsuarios().then(response => {
@@ -170,13 +154,32 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarExpediente() {
-    var numero = this.consultaForm.value.numero
-    var anio = this.consultaForm.value.anio
 
+   
+    var numeroanio = this.consultaForm.value.numero
+    
     if (this.consultaForm.value.param_busqueda == 'expediente') {
 
+       
+      var numero = 0 
+      let z = 1
+
+      for (let i = 5; i < 9; i++) {
+
+        if (numeroanio.length === i) {
+          numero = numeroanio.slice(0, z);
+        }else{
+          z++
+        }
+      
+      }
+
+
+
+      var anio = numeroanio.slice(-4);
+
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-      alert('buscando por expediente')
+
       this._apiService.getExpedienteNumero(numero, anio)
         .then((x:any) =>{
 
@@ -191,13 +194,12 @@ export class BuscarComponent implements OnInit {
 
     }else{
 
-      alert('buscando por tramite')
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-      this._apiService.getExpedienteTramite(numero)
+      this._apiService.getExpedienteTramite(numeroanio)
         .then((x:any) =>{
 
           console.warn(x);
-          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
       }).catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
@@ -205,13 +207,6 @@ export class BuscarComponent implements OnInit {
       });
 
     }
-
-
-   
-    
-
-    
-
   }
 
   rangeYear () {
@@ -226,6 +221,7 @@ export class BuscarComponent implements OnInit {
   }
   
   buscarExpedientes() {
+    this.load = true;
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
     .then((res) =>{
 
@@ -239,7 +235,8 @@ export class BuscarComponent implements OnInit {
       }else{
         this.expedientes = res
       }
-      
+
+      this.load = false;
       // this.mensajeSwal.fire().finally(()=> {
       //   this.ngOnInit();
       //   //this.mostrarLista();
