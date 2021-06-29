@@ -15,7 +15,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Consultar por</label>   
                 <select formControlName="param_busqueda" class="form-select" aria-label="Default select example">
-                    <option *ngFor="let cat of categories" [ngValue]="cat.name">{{cat.name}}</option>
+                    <option *ngFor="let cat of categories" [ngValue]="cat.value">{{cat.name}}</option>
                 </select>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
@@ -128,3 +128,4 @@
 <pre>{{ closeResult }}</pre>
 
 <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
+<ngx-spinner></ngx-spinner>

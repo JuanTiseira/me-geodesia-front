@@ -6,8 +6,13 @@ import { FunctionsService } from '../../../../../services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
-import { AuthService } from 'src/app/services/auth.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 
 
 
@@ -23,12 +28,14 @@ import { AuthService } from 'src/app/services/auth.service';
 
 export class BuscarHistorialComponent implements OnInit {
 
+  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+
   closeResult = '';
   
-  public pokemons: TipoExpediente;
   public page: number = 0;
   public search: string = '';
   public expedientes: any;
+  public load: boolean;
 
   public tipos_expedientes: any;
   public documentos: any; 
@@ -38,17 +45,29 @@ export class BuscarHistorialComponent implements OnInit {
   public usuarios: any;
   public tipo_consulta: any;
 
+  expediente: string
+  tramite: string
+  param_busqueda: ''
+
+  categories = [
+    {id: 1, name: 'Expediente', value: 'expediente'},
+    {id: 2, name: 'Tramite', value: 'tramite'},
+  ]
+
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
-                private authService: AuthService,) { }
+                private authService: AuthService,
+                private router: Router,
+                private spinner: NgxSpinnerService
+                ) { this.load = false; }
 
 
   consultaForm = new FormGroup({
-
+    param_busqueda: new FormControl(''),   
     numero: new FormControl(''),
     anio: new FormControl(''),
-    tipoexpediente: new FormControl(''),
+    tipo_expediente: new FormControl(''),
     inmueble: new FormControl(''),
     documento: new FormControl(''),
     propietario: new FormControl(''),
@@ -58,62 +77,27 @@ export class BuscarHistorialComponent implements OnInit {
     abreviatura: new FormControl(''),
     agrimensor: new FormControl(''),
     tipo_consulta: new FormControl('')
-    
+
   });
 
-  open(content, id) {
-     
-    console.log('se abrio el modal con id: ', id)
-
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
   ngOnInit(): void {
 
-      this._apiService.getExpedientes()
-      .then(response => {
-        this.expedientes = response
-        this._functionService.imprimirMensaje(response, "expedientes")
-      })
+    this.spinner.show();
 
-      this._apiService.getTipoExpedientes().then(response => {
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
       
+      this._apiService.getTipoExpedientes().then(response => {
         this.tipos_expedientes = response
         //this.tipos_expedientes = response
-      })
-  
-      this._apiService.getTramites().then(response => {
-        this.tramites = response
-        this._functionService.imprimirMensaje(response, "tramites")
-      })
-  
-      this._apiService.getDocumentos().then(response => {
-        this.documentos = response
-        this._functionService.imprimirMensaje(response, "documentos")
       })
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getObservaciones().then(response => {
-        this.observaciones = response
-        this._functionService.imprimirMensaje(response, "observaciones")
       })
   
       this._apiService.getUsuarios().then(response => {
@@ -123,12 +107,35 @@ export class BuscarHistorialComponent implements OnInit {
 
   }
 
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
 
   buscar () {
     alert('buscado')
+  }
+
+  eliminar (id) {
+    Swal.fire({
+      title: 'Esta Seguro?',
+      text: "No podra revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar Expediente!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._apiService.deleteExpediente(id)
+        .then(() =>{ 
+          Swal.fire(
+          'Eliminado!',
+          'El expediente fue eliminado.',
+          'success'
+        ) 
+        this.router.navigate(['/usuario/buscar']);
+      })
+
+        
+      }
+    })
   }
 
   buscarSiguiente() {
@@ -137,28 +144,118 @@ export class BuscarHistorialComponent implements OnInit {
   } 
 
   buscarAnterior() {
-    alert('aterior pagina')
+    alert('anterior pagina')
 
   }
+
+  get isAdmin() {
+    return this.authService.hasRole(Role.ROL_ADMIN);
+  }
+
+  buscarExpediente() {
+    
+
+    this.spinner.show();
+    var numeroanio = this.consultaForm.value.numero
+    
+    if (this.consultaForm.value.param_busqueda == 'expediente') {
+
+       
+      var numero = 0 
+      let z = 1
+
+      for (let i = 5; i < 9; i++) {
+
+        if (numeroanio.length === i) {
+          numero = numeroanio.slice(0, z);
+        }else{
+          z++
+        }
+      
+      }
+
+
+
+      var anio = numeroanio.slice(-4);
+
+      //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
+
+      this._apiService.getExpedienteNumero(numero, anio)
+        .then((x:any) =>{
+
+          console.warn(x);
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          
+      }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
+      
+
+    }else{
+
+      //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
+      this._apiService.getExpedienteTramite(numeroanio)
+        .then((x:any) =>{
+
+          console.warn(x);
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          
+      }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
+
+    }
+    this.spinner.hide();
+  }
+
+  rangeYear () {
+    const max = new Date().getFullYear()
+    const min = max - 100
+    const years = []
   
-  onSubmit() {
-    
-    
-    this._apiService.setExpediente(this.consultaForm.value)
-    .then(() =>{
-      console.warn(this.consultaForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.expedienteForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
+    for (let i = max; i >= min; i--) {
+        years.push(i)
+    }
+    return years
+  }
+  
+  buscarExpedientes() {
+    this.spinner.show();
+   
+    this._apiService.getExpedientesFiltros(this.consultaForm.value)
+    .then((res) =>{
+
+      this.expedientes = res
+     
+      console.log(this.expedientes)
+      
+      if (this.expedientes.count == 0) {
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      }else{
+        this.expedientes = res
+      }
+
+      this.load = false;
       // this.mensajeSwal.fire().finally(()=> {
       //   this.ngOnInit();
       //   //this.mostrarLista();
       // });
     })
     .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.expedienteForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
+      console.log('error')
     });
+
+    this.spinner.hide();
   }
 
-  
+  limpiar() {
 
+    this.consultaForm.reset();
+
+    this.buscarExpedientes()
+    
+  }
 }

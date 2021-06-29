@@ -57,7 +57,7 @@ export class ApiService {
       params.set('anio', filtros.anio);
     }
     if (filtros.gestor){
-      params.set('gestor', filtros.gestor);
+      params.set('id_gestor', filtros.gestor);
     }
 
     if (filtros.abreviatura){
@@ -65,18 +65,13 @@ export class ApiService {
     }
 
     if (filtros.tipo_expediente){
-      params.set('tipo_expediente', filtros.tipo_expediente);
+      params.set('id_tipo_expediente', filtros.tipo_expediente);
     }
 
-    if (filtros.gestor){
-      params.set('gestor', filtros.gestor);
+    if (filtros.propietario){
+      params.set('id_propietario', filtros.propietario);
     }
    
-    
-    
-    
-    
-
     console.log('parametros', params.toString())
     
     return this.http.get(this.url+`/expedientes?${params.toString()}`).toPromise().catch((e)=>
@@ -176,6 +171,12 @@ export class ApiService {
 
   getUsuario(id){
     return this.http.get(this.url+`/usuarios/${id}`).toPromise();
+  }
+
+  getUsuarioNumero(numero) {
+    console.log(numero)
+    return this.http.get(this.url+`/usuarios/?dni=${numero}`).toPromise();
+    
   }
 
   setUsuario(usuario) {

@@ -7,6 +7,7 @@ import { Role } from './models/role.models';
 import { BuscarComponent } from './components/admin/expedientes/pages/buscar/buscar.component';
 import { HomeComponent } from './components/admin/home/home.component';
 import { DetalleComponent } from './components/admin/expedientes/pages/detalle/detalle.component';
+import { BuscarHistorialComponent } from './components/admin/historial/pages/buscar/buscar.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -19,7 +20,7 @@ const routes: Routes = [
       {path: 'home', component: HomeComponent},
       {path: 'expediente/buscar', component: BuscarComponent},
       // {path: 'expediente/:id', component: DetalleComponent},
-      {path: 'historial/buscar', component: BuscarComponent},
+      {path: 'historial/buscar', component: BuscarHistorialComponent},
       // { path: 'pagos', component: PagosComponent},
       // { path: 'contacto', component: ContactoComponent}
     ],

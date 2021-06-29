@@ -158,7 +158,8 @@ export class HomeComponent implements OnInit {
 
   buscarExpediente() {
 
-    this.spinner.show();
+    
+
     var numeroanio = this.consultaForm.value.numero
     
     if (this.consultaForm.value.param_busqueda == 'expediente') {
@@ -210,7 +211,7 @@ export class HomeComponent implements OnInit {
       });
 
     }
-    this.spinner.hide();
+    
   }
 
   rangeYear () {
@@ -225,7 +226,7 @@ export class HomeComponent implements OnInit {
   }
   
   buscarExpedientes() {
-    this.spinner.show();
+    
    
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
     .then((res) =>{
@@ -247,7 +248,7 @@ export class HomeComponent implements OnInit {
       console.log('error')
     });
 
-    this.spinner.hide();
+    
   }
 
   

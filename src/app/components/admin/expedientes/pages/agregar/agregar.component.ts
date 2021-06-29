@@ -134,20 +134,21 @@ export class AgregarComponent implements OnInit {
   
   createExpediente() {
     
-    this.expedienteForm.patchValue({observacion: this.selectedItems});
     
     console.log(this.expedienteForm.value)
     this._apiService.setExpediente(this.expedienteForm.value)
-    .then((r) =>{
+    .then((res: any) =>{
 
-      console.warn(r);
+      console.warn(res);
       Swal.fire({
         title: 'Exito',
         text: 'Se registro correctamente',
         icon: 'success',
         confirmButtonText: 'Cool',
       })
-      this.router.navigate(['/expediente/buscar'])
+
+      this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
+      
     })
     .catch((e)=>{
      Swal.fire({

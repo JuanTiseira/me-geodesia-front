@@ -36,6 +36,16 @@ export const APP_ROUTES: Routes = [
 
   {path: 'historial/:id', component: DetalleHistorialComponent},
   
-  {path: 'home', component: HomeComponent}
+  {path: 'home', component: HomeComponent},
+
+  //INMUEBLES
+
+  {path: 'inmueble/buscar', component: BuscarComponent},
+
+  {path: 'inmueble/agregar', component: AgregarComponent},
+
+  {path: 'inmueble/editar/:id', component: AgregarComponent },
+
+  {path: 'inmueble/:id', component: DetalleComponent },
 
 ];

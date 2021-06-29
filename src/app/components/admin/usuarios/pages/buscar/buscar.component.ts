@@ -9,6 +9,8 @@ import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 
 
@@ -21,10 +23,12 @@ import { Router } from '@angular/router';
   templateUrl: './buscar.component.html',
   styleUrls: ['./buscar.component.scss']
 })
-
+  
 
 export class BuscarUsuarioComponent implements OnInit {
 
+
+  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   closeResult = '';
 
   public page: number = 0;
@@ -43,7 +47,7 @@ export class BuscarUsuarioComponent implements OnInit {
   tramite: string
 
   categories = [
-    {id: 1, name: 'DNI'},
+    {id: 1, name: 'DNI', value: 'dni'},
     
   ]
 
@@ -52,12 +56,12 @@ export class BuscarUsuarioComponent implements OnInit {
                 private modalService: NgbModal,
                 private authService: AuthService,
                 private router: Router,
+                private spinner: NgxSpinnerService
                 ) { }
 
 
   consultaForm = new FormGroup({
-
-    
+    numero: new FormControl(''),
     nombre: new FormControl(''),
     matricula: new FormControl(''),
     rol: new FormControl(''),
@@ -88,6 +92,13 @@ export class BuscarUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.spinner.show();
+
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
 
       this._apiService.getUsuarios()
       .then(response => {
@@ -164,29 +175,25 @@ export class BuscarUsuarioComponent implements OnInit {
   }
 
   buscarUsuario() {
-
+  
+    this.spinner.show();
     var numero = this.consultaForm.value.numero
+    
+    //BUSCA POR NUMERO DE DNI
+    this._apiService.getUsuarioNumero(numero)
+      .then((x:any) =>{
 
-    this._apiService.getUsuario(numero)
-    .then((x:any) =>{
-
-      console.warn(x);
-      this.router.navigate(['/usuario/', x.id ]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+        console.warn(x);
+        this.router.navigate(['/usuario/'+x.id],{ queryParams: { numero: numero } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          
+    }).catch(()=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      });
       
-      //this.router.navigate(['/usuario'], { queryParams: { order: 'popular', 'price-range': 'not-cheap' } });
-      
 
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.usuarioForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
-    })
-    .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.usuarioForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
-    });
-
+    
+    this.spinner.hide();
   }
   
   onSubmit() {

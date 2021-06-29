@@ -32,7 +32,7 @@ export class DetalleComponent implements OnInit {
   submitted = false;
   selecteditem: string;
   selectedinmueble: string;
-  selecteddocumento: string;
+  selecteddocumentos: [];
   selectedtramite: string;
   selectedobservacion: string;
   selectedgestor: string; 
@@ -112,7 +112,7 @@ export class DetalleComponent implements OnInit {
 
           this.selecteditem = this.resultado.expedientetipo_expediente
           this.selectedinmueble = this.resultado.expedienteinmueble
-          this.selecteddocumento = this.resultado.expedientedocumento
+          this.selecteddocumentos = this.resultado.expedientedocumentos
           this.selectedobservacion = this.resultado.expedienteobservacion
           this.selectedpropietario = this.resultado.expedientepropietario
           this.selectedgestor = this.resultado.expedientegestor
@@ -144,7 +144,7 @@ export class DetalleComponent implements OnInit {
 
           this.selecteditem = this.resultado.expedientetipo_expediente
           this.selectedinmueble = this.resultado.expedienteinmueble
-          this.selecteddocumento = this.resultado.expedientedocumento
+          this.selecteddocumentos = this.resultado.expedientedocumentos
           this.selectedobservacion = this.resultado.expedienteobservacion
           this.selectedpropietario = this.resultado.expedientepropietario
           this.selectedgestor = this.resultado.expedientegestor
@@ -181,7 +181,7 @@ export class DetalleComponent implements OnInit {
 
           this.selecteditem = this.resultado.expedientetipo_expediente
           this.selectedinmueble = this.resultado.expedienteinmueble
-          this.selecteddocumento = this.resultado.expedientedocumento
+          this.selecteddocumentos = this.resultado.expedientedocumentos
           this.selectedpropietario = this.resultado.expedientepropietario
           this.selectedgestor = this.resultado.expedientegestor
           this.selectedagrimensor = this.resultado.expedienteagrimensor
@@ -239,7 +239,7 @@ export class DetalleComponent implements OnInit {
 
   imprimirEtiqueta(){
     
-    this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Etiqueta`, "success", "Aceptar", "", false, "", "")
+    this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Documento`, "success", "Aceptar", "", false, "", "")
     this.mensajeSwal.fire()
   }
 

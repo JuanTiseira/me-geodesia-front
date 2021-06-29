@@ -139,6 +139,18 @@ a {
     background-color: #000000;
   }
 
+  
+  .table-striped thead {
+    background-color: #464527;
+    color: white;
+  }
+
+  .btn-agregar {
+
+    margin-top: 30px !important;
+
+  }
+
 
 /* Animate Styles CSS */
 
@@ -204,6 +216,9 @@ body { margin: 0; font-family: Roboto Regular, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';

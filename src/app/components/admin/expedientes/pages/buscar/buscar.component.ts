@@ -67,7 +67,7 @@ export class BuscarComponent implements OnInit {
     param_busqueda: new FormControl(''),   
     numero: new FormControl(''),
     anio: new FormControl(''),
-    tipoexpediente: new FormControl(''),
+    tipo_expediente: new FormControl(''),
     inmueble: new FormControl(''),
     documento: new FormControl(''),
     propietario: new FormControl(''),
@@ -83,6 +83,12 @@ export class BuscarComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.spinner.show();
+
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
       
       this._apiService.getTipoExpedientes().then(response => {
         this.tipos_expedientes = response
@@ -138,7 +144,7 @@ export class BuscarComponent implements OnInit {
   } 
 
   buscarAnterior() {
-    alert('aterior pagina')
+    alert('anterior pagina')
 
   }
 
@@ -147,6 +153,7 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarExpediente() {
+    
 
     this.spinner.show();
     var numeroanio = this.consultaForm.value.numero
@@ -244,6 +251,11 @@ export class BuscarComponent implements OnInit {
     this.spinner.hide();
   }
 
-  
+  limpiar() {
 
+    this.consultaForm.reset();
+
+    this.buscarExpedientes()
+    
+  }
 }
