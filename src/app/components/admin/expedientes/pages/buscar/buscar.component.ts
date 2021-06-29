@@ -83,14 +83,7 @@ export class BuscarComponent implements OnInit {
 
   ngOnInit(): void {
 
-          /** spinner starts on init */
-      this.spinner.show();
-
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 5000);
-
+      
       this._apiService.getTipoExpedientes().then(response => {
         this.tipos_expedientes = response
         //this.tipos_expedientes = response
@@ -155,7 +148,7 @@ export class BuscarComponent implements OnInit {
 
   buscarExpediente() {
 
-   
+    this.spinner.show();
     var numeroanio = this.consultaForm.value.numero
     
     if (this.consultaForm.value.param_busqueda == 'expediente') {
@@ -207,6 +200,7 @@ export class BuscarComponent implements OnInit {
       });
 
     }
+    this.spinner.hide();
   }
 
   rangeYear () {
@@ -221,7 +215,8 @@ export class BuscarComponent implements OnInit {
   }
   
   buscarExpedientes() {
-    this.load = true;
+    this.spinner.show();
+   
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
     .then((res) =>{
 
@@ -245,6 +240,8 @@ export class BuscarComponent implements OnInit {
     .catch(()=>{
       console.log('error')
     });
+
+    this.spinner.hide();
   }
 
   

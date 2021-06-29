@@ -18,7 +18,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CommonModule } from '@angular/common';  
 import { BrowserModule } from '@angular/platform-browser';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 
 //EXPEDIENTES 
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
@@ -53,6 +53,7 @@ import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.compon
    
   ],
   imports: [
+    NgxSpinnerModule,
     CommonModule,
     NgMultiSelectDropDownModule.forRoot(),
     SweetAlert2Module,

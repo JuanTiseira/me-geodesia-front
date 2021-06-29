@@ -58,9 +58,7 @@
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Matricula</label>
-                <select formControlName="matricula" class="form-select" *ngIf="usuarios">
-                    <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                </select>
+                <input  formControlName="matricula" maxlength="20" inputmode="numeric" placeholder="Matricula" class="form-control" autocomplete="off">
             </div>
         
 
@@ -93,9 +91,9 @@
                     <td>{{ usr.email }}</td>
                     <td><b>Estado</b></td>
                     <td>
-                        <button class="btn btn-table-info"><i [routerLink]="['/usuario/', usr.id ]" class="fa fa-info"></i>
-                        </button>
-                        <button class="btn btn-table-delete"><i (click)="eliminar(usr.id)" class="fas fa-times"></i></button>
+                        <a [routerLink]="['/usuario/', usr.id ]" ><span style="color: white; background-color: black; padding: 5px 10px 5px 10px; border-radius: 100px;"><i class="fa fa-info"></i></span></a>
+                        <a (click)="eliminar(usr.id)" ><span style="color: rgb(248, 9, 9); padding: 10px; border-radius: 50px;"><i class="fa fa-times"></i></span></a>
+                        <!-- <a (click)="eliminar(user.id)" ><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-undo"></i></span></span></a> -->
                     </td>
                 </tr>
             </tbody>

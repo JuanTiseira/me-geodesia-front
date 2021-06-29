@@ -17,6 +17,8 @@
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
                 <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
+                <small *ngIf="consultaForm.value.param_busqueda === 'expediente'" id="emailHelp" class="form-text text-muted">Ingrese el numero de expediente y año, sin espacios.</small> 
+                <small *ngIf="consultaForm.value.param_busqueda === 'tramite'" id="emailHelp" class="form-text text-muted">Ingrese el numero de tramite, sin espacios.</small>    
             </div>
             
             <div class="col-md-4">
@@ -33,17 +35,6 @@
             </div>
         </div>
 
-        <!-- <div class="row" *ngIf="consultaForm.value.param_busqueda == 'expediente'">
-
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="Año" class="form-label">Año</label>
-                <select formControlName="anio" class="form-select" *ngIf="tipos_expedientes">
-                    <option [value]="dato" *ngFor="let dato of rangeYear()">{{dato}}</option>
-                </select>
-            </div>
-
-        </div> -->
-
         <hr />
 
         <div class="row" *ngIf="isAdmin">
@@ -54,8 +45,8 @@
 
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="Año" class="form-label">Año</label>
-                <select formControlName="anio" class="form-select" *ngIf="tipos_expedientes">
-                    <option [value]="dato.url" *ngFor="let dato of rangeYear()" value="">{{dato}}</option>
+                <select formControlName="anio" class="form-select" >
+                    <option [value]="dato" *ngFor="let dato of rangeYear()" value="">{{dato}}</option>
                 </select>
             </div>
 
@@ -146,8 +137,9 @@
             </div>
         </div>
 
-        <ngx-spinner></ngx-spinner>
+        
     </div> 
+    <ngx-spinner></ngx-spinner>
 </div>
 
 <hr>

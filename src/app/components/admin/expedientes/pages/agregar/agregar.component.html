@@ -86,26 +86,7 @@
 
                   </div>
 
-                  <div class="row">
-
-                    <div class="col col-md-2">   
-                      <div class="form-group">
-                    
-                        <label for="abreviatura" class="form-label">Tramite Urgente</label>
-                        <input type="checkbox" formControlName="tramite_urgente">
-                       
-                      </div>
-                    </div>
-
-                    <div class="col col-md-9">
-                      <div class="form-group" *ngIf="expedienteForm.value.tramite_urgente == true" >
-                        <label for="observacion" class="form-label">Observacion</label>
-                        <textarea name="observaciones" class="form-control" formControlName="observacion" id="observacion" cols="30" rows="1">
-                        </textarea>
-                      </div>
-
-                    </div>
-                  </div>
+                
                     <div class="form-group">
                       <label for="agrimensor" class="form-label">Agrimensor</label>
                       <select *ngIf="usuarios" formControlName="agrimensor"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }">
@@ -123,6 +104,20 @@
                         <option value="" disabled>Seleccione una Opcion</option>
                         <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                       </select>
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col col-md-12">   
+                        <div class="form-group">
+                      
+                          <label for="abreviatura" class="form-label">Tramite Urgente</label>
+                          <input type="checkbox" formControlName="tramite_urgente">
+                         
+                        </div>
+                      </div>
+  
+                 
                     </div>
 
                     <div class="row">
@@ -153,3 +148,5 @@
 
 
 </div>
+
+<ngx-spinner></ngx-spinner>

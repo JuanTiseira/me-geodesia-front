@@ -104,7 +104,7 @@ export class AgregarUsuarioComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.usuarioForm.invalid) {
-        alert('errores')
+
         console.log(this.usuarioForm)
         return;
     }

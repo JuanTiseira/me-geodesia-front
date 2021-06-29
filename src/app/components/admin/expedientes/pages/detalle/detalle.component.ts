@@ -8,6 +8,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-detalle',
@@ -54,11 +55,19 @@ export class DetalleComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private spinner: NgxSpinnerService
    
     ) {}
 
   ngOnInit(): void {
+
+    this.spinner.show();
+
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
 
     this.id = this.route.snapshot.params['id'];
 

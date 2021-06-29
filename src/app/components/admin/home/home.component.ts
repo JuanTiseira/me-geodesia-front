@@ -13,6 +13,7 @@ import { resolve } from 'url';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-home',
@@ -44,16 +45,17 @@ export class HomeComponent implements OnInit {
   param_busqueda: ''
 
   categories = [
-    {id: 1, name: 'expediente'},
-    {id: 2, name: 'tramite'},
+    {id: 1, name: 'Expediente', value: 'expediente'},
+    {id: 2, name: 'Tramite', value: 'tramite'},
   ]
+
 
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
                 private authService: AuthService,
                 private router: Router,
-           
+                private spinner: NgxSpinnerService
                 ) { }
 
 
@@ -75,6 +77,13 @@ export class HomeComponent implements OnInit {
   });
 
   ngOnInit(): void {
+
+      this.spinner.show();
+
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
 
       if (this.authService.hasRole(Role.ROL_ADMIN) || this.authService.hasRole(Role.ROL_EMPLEADO)) {
         this._apiService.getExpedientes()
@@ -148,13 +157,32 @@ export class HomeComponent implements OnInit {
   }
 
   buscarExpediente() {
-    var numero = this.consultaForm.value.numero
-    var anio = this.consultaForm.value.anio
 
+    this.spinner.show();
+    var numeroanio = this.consultaForm.value.numero
+    
     if (this.consultaForm.value.param_busqueda == 'expediente') {
 
+       
+      var numero = 0 
+      let z = 1
+
+      for (let i = 5; i < 9; i++) {
+
+        if (numeroanio.length === i) {
+          numero = numeroanio.slice(0, z);
+        }else{
+          z++
+        }
+      
+      }
+
+
+
+      var anio = numeroanio.slice(-4);
+
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-      alert('buscando por expediente')
+
       this._apiService.getExpedienteNumero(numero, anio)
         .then((x:any) =>{
 
@@ -169,13 +197,12 @@ export class HomeComponent implements OnInit {
 
     }else{
 
-      alert('buscando por tramite')
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-      this._apiService.getExpedienteTramite(numero)
+      this._apiService.getExpedienteTramite(numeroanio)
         .then((x:any) =>{
 
           console.warn(x);
-          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
       }).catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
@@ -183,13 +210,7 @@ export class HomeComponent implements OnInit {
       });
 
     }
-
-
-   
-    
-
-    
-
+    this.spinner.hide();
   }
 
   rangeYear () {
@@ -204,6 +225,8 @@ export class HomeComponent implements OnInit {
   }
   
   buscarExpedientes() {
+    this.spinner.show();
+   
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
     .then((res) =>{
 
@@ -217,15 +240,14 @@ export class HomeComponent implements OnInit {
       }else{
         this.expedientes = res
       }
+
       
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
     })
     .catch(()=>{
       console.log('error')
     });
+
+    this.spinner.hide();
   }
 
   

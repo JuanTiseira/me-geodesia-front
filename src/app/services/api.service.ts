@@ -49,14 +49,37 @@ export class ApiService {
   getExpedientesFiltros(filtros){
 
     let params: URLSearchParams = new URLSearchParams();
-  
-    params.set('numero', filtros.numero);
-    params.set('anio', filtros.anio);
-    params.set('gestor', filtros.gestor);
 
-    console.log('parametros', params)
+    if (filtros.numero){
+      params.set('numero', filtros.numero);
+    }
+    if (filtros.anio){
+      params.set('anio', filtros.anio);
+    }
+    if (filtros.gestor){
+      params.set('gestor', filtros.gestor);
+    }
 
-    return this.http.get(this.url+'/expedientes/', filtros).toPromise().catch((e)=>
+    if (filtros.abreviatura){
+      params.set('abreviatura', filtros.abreviatura);
+    }
+
+    if (filtros.tipo_expediente){
+      params.set('tipo_expediente', filtros.tipo_expediente);
+    }
+
+    if (filtros.gestor){
+      params.set('gestor', filtros.gestor);
+    }
+   
+    
+    
+    
+    
+
+    console.log('parametros', params.toString())
+    
+    return this.http.get(this.url+`/expedientes?${params.toString()}`).toPromise().catch((e)=>
     { 
       console.log('error', e);
       this.router.navigate(['login']);

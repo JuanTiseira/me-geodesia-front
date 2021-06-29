@@ -5,6 +5,7 @@ import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -42,10 +43,18 @@ export class AgregarComponent implements OnInit {
     private _functionService: FunctionsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
     ) { }
 
   ngOnInit(): void {
+
+    this.spinner.show();
+
+      setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+      }, 1000);
    
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
@@ -56,7 +65,6 @@ export class AgregarComponent implements OnInit {
       inmueble: ['', Validators.required],
       propietario: ['', Validators.required],
       gestor: [''],
-      observacion: ['', Validators.required],
       abreviatura: ['', Validators.required],
       agrimensor: ['', Validators.required],
       tramite_urgente: [''],
@@ -112,9 +120,10 @@ export class AgregarComponent implements OnInit {
   
   onSubmit() {
     this.submitted = true;
+
     // stop here if form is invalid
     if (this.expedienteForm.invalid) {
-        console.log('errores en el formulario')
+        console.log('errores en el formulario', this.expedienteForm.invalid)
         return;
     }
 
