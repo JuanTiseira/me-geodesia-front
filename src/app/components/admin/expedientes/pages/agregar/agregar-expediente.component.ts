@@ -1,22 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { concat, Observable, of, Subject } from 'rxjs';
+import { DataService, Person } from 'src/app/services/data.service';
+import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
+ 
 
 @Component({
-  selector: 'app-agregar',
-  templateUrl: './agregar.component.html',
-  styleUrls: ['./agregar.component.scss']
+  selector: 'app-agregar-expediente',
+  templateUrl: './agregar-expediente.component.html',
+  styleUrls: ['./agregar-expediente.component.scss']
 })
+
+
 export class AgregarComponent implements OnInit {
 
   // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
-
+ 
+  
   public tipos_expedientes: any;
   public documentos: any; 
   public tramites: any;
@@ -30,6 +37,11 @@ export class AgregarComponent implements OnInit {
   public tramite_urgente: boolean
 
 
+  people$: Observable<Person[]>;
+    peopleLoading = false;
+    peopleInput$ = new Subject<string>();
+    selectedPersons: Person[] = <any>[{}];
+
   expedienteForm : FormGroup
   form: FormGroup;
   id: string;
@@ -39,6 +51,7 @@ export class AgregarComponent implements OnInit {
   
 
   constructor(
+    private dataService: DataService,
     private _apiService: ApiService,
     private _functionService: FunctionsService,
     private formBuilder: FormBuilder,
@@ -47,8 +60,13 @@ export class AgregarComponent implements OnInit {
     private spinner: NgxSpinnerService
     ) { }
 
+
+    trackByFn(item: Person) {
+      return item.id;
+  }
   ngOnInit(): void {
 
+    this.loadPeople();
     this.spinner.show();
 
       setTimeout(() => {
@@ -115,6 +133,24 @@ export class AgregarComponent implements OnInit {
   
   }
 
+  private loadPeople() {
+
+    
+    this.people$ = concat(
+        of([]), // default items
+        this.peopleInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.peopleLoading = true),
+            switchMap(term => this.dataService.getPeople(term).pipe(
+                catchError(() => of([])), // empty list on error
+                tap(() => this.peopleLoading = false)
+                
+            ))
+        )
+        
+    );
+  }
+
   get f() { return this.expedienteForm.controls; }
 
   
@@ -162,6 +198,19 @@ export class AgregarComponent implements OnInit {
     
     
   }
+
+  verDetalles(dato:boolean){
+    this._apiService.getInmueblesDisponibles().then(response => {
+      this.inmuebles = response
+    })
+  } 
+
+  verDetallesUsuarios(dato:boolean){
+    this._apiService.getUsuarios().then(response => {
+      this.usuarios = response
+    })
+  } 
+
 
   onItemSelect(item: any) {
     console.log(item);

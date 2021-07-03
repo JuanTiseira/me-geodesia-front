@@ -42,7 +42,7 @@ export class BuscarUsuarioComponent implements OnInit {
   public observaciones: any;
   public tipo_consulta: any;
   public param_busqueda: any
-
+  p: number = 1;
   usuario: string
   tramite: string
 
@@ -184,7 +184,7 @@ export class BuscarUsuarioComponent implements OnInit {
       .then((x:any) =>{
 
         console.warn(x);
-        this.router.navigate(['/usuario/'+x.id],{ queryParams: { numero: numero } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+        this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
     }).catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");

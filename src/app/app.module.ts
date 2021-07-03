@@ -18,7 +18,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { MatTableModule } from '@angular/material/table'  
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 
@@ -36,7 +36,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
   ],
   imports: [
     NgxSpinnerModule,
-    MatPaginatorModule,
+    NgxPaginationModule,
     MatTableModule,
     CommonModule,
     BrowserModule,

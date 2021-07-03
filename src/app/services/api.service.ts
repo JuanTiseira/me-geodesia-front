@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -34,6 +35,15 @@ export class ApiService {
 
   errorPeticion(){
     this.router.navigate(['login']);
+  }
+
+  changePage(page){
+    console.log('bucando pagina: ' , page)
+    return this.http.get(this.url+`/expedientes/?page=${page}`).toPromise().catch((e)=>
+    {   
+        console.log("ERRORRRRR.", e);
+        //this.router.navigate(['login']);
+    });
   }
 
   //EXPEDIENTES 
@@ -153,6 +163,14 @@ export class ApiService {
     return this.http.get(this.url+'/inmuebles/?disponibles=1234').toPromise();
   }
 
+  setInmueble(inmueble) {
+    console.warn(inmueble);
+    return this.http.post(this.url+'/inmuebles/', inmueble).toPromise().catch((e)=>
+    { 
+      console.log('error', e);
+    
+    }); 
+  }
   //PROPIETARIO
 
   getUsuarios () {
@@ -192,6 +210,12 @@ export class ApiService {
   deleteUsuario(usuario) {
     console.warn(usuario);
     return this.http.delete(this.url+`/usuarios/${usuario}/`).toPromise();
+  }
+
+  //DEPARTAMENTOS
+
+  getDepartamentos () {
+    return this.http.get(this.url+'/departamentos/').toPromise();
   }
 
 

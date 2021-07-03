@@ -1,4 +1,4 @@
-export class Expediente {
+export class Usuario {
     id:               number;
     url:              string;
     rol:              string;

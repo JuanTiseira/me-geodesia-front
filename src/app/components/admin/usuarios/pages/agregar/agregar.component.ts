@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
@@ -8,14 +8,16 @@ import Swal from 'sweetalert2'
 
 
 @Component({
-  selector: 'app-agregar',
+  selector: 'app-crear-usuario',
   templateUrl: './agregar.component.html',
   styleUrls: ['./agregar.component.scss']
 })
 export class AgregarUsuarioComponent implements OnInit {
 
   // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+  @Output() verDetallesFunction: EventEmitter<any>;
 
+  
   public tipos_usuarios: any;
   public documentos: any; 
   public tramites: any;
@@ -37,7 +39,7 @@ export class AgregarUsuarioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    ) { }
+    ) {this.verDetallesFunction = new EventEmitter(); }
 
   ngOnInit(): void {
    
@@ -126,7 +128,7 @@ export class AgregarUsuarioComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Cool',
       })
-      this.router.navigate(['/usuario/buscar'])
+      this.verDetallesFunction.emit(true);
     })
     .catch((e)=>{
      Swal.fire({
@@ -136,9 +138,11 @@ export class AgregarUsuarioComponent implements OnInit {
         confirmButtonText: 'Cool'
       })
       this.loading = false;
+      this.verDetallesFunction.emit(true);
     });
     
     
+    document.getElementById("closeModalButton").click();
   }
 
   

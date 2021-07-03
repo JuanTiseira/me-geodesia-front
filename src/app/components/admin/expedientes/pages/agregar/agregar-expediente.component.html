@@ -1,6 +1,5 @@
 
 
-<div class="container">
 
     <h2 *ngIf="isAddMode" style="font-weight: bold;">Crear Expediente</h2>
     <br>
@@ -12,7 +11,7 @@
 
                   <div class="form-group">
                     <label for="tipo" class="form-label">Tipo</label>
-                    <select *ngIf="tipos_expedientes" formControlName="tipo_expediente" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
+                    <select *ngIf="tipos_expedientes" formControlName="tipo_expediente" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
                       <option [ngValue]="dato" *ngFor="let dato of tipos_expedientes.results">{{dato.descripcion}}</option>
                     </select>
@@ -27,7 +26,7 @@
 
                       <div class="col-md-10">
                         <label for="inmueble" class="form-label">Inmueble</label>
-                        <select *ngIf="inmuebles" formControlName="inmueble" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
+                        <select *ngIf="inmuebles" formControlName="inmueble" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
                           <option value="" disabled>Seleccione una Opcion</option>
                           <option [ngValue]="dato" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
                         </select>
@@ -37,11 +36,10 @@
                       </div>
   
                       <div class="col-md-2">
-                        
-                        <button type="button"  class="btn-green btn-agregar">+</button>
+                          
+                        <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearInmueble"  class="btn btn-green btn-agregar">+</button>
   
                       </div>
-
 
                     </div>
                    
@@ -55,7 +53,7 @@
                       <div class="col-md-10">
 
                         <label for="propietario" class="form-label">Propietario</label>
-                        <select *ngIf="usuarios" formControlName="propietario"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.propietario.errors }">
+                        <select *ngIf="usuarios" formControlName="propietario"  class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.propietario.errors }">
                           <option value="" disabled>Seleccione una Opcion</option>
                           <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                         </select>
@@ -66,9 +64,9 @@
                       </div>
   
                       <div class="col-md-2">
+                          
+                        <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
   
-                        <button type="button"  class="btn-green btn-agregar">+</button>
-
                       </div>
   
 
@@ -120,19 +118,36 @@
                         <div class="col-md-10">
                           
                           <label for="agrimensor" class="form-label">Agrimensor</label>
-                          <select *ngIf="usuarios" formControlName="agrimensor"  name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }">
+                          <select *ngIf="usuarios" formControlName="agrimensor"  class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }">
                             <option value="" disabled>Seleccione una Opcion</option>
                             <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                           </select>
                           <div *ngIf="submitted && f.agrimensor.errors" class="invalid-feedback">
                             <div *ngIf="f.agrimensor.errors.required">Este campo es obligatorio</div>
                           </div>
+
+                          <ng-select 
+              
+                          [items]="people$ | async"
+                          bindLabel="nombre"
+                          [addTag]="true"
+                          [multiple]="false"
+                          [hideSelected]="true"
+                          [trackByFn]="trackByFn"
+                          [minTermLength]="3"
+                          [loading]="peopleLoading"
+                          typeToSearchText="Please enter 2 or more characters"
+                          [typeahead]="peopleInput$"
+                          formControlName="agrimensor">
+                          
+                        
+                         </ng-select>
   
                         </div>
     
                         <div class="col-md-2">
                           
-                          <button type="button"  class="btn-green btn-agregar">+</button>
+                          <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
     
                         </div>
     
@@ -148,7 +163,7 @@
                         <div class="col-md-10">
                           
                           <label for="gestor" class="form-label">Gestor</label>
-                          <select *ngIf="usuarios" formControlName="gestor"  name="" class="form-control" id="" >
+                          <select *ngIf="usuarios" formControlName="gestor"  class="form-select"  >
                             <option value="" disabled>Seleccione una Opcion</option>
                             <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                           </select>
@@ -156,8 +171,8 @@
                         </div>
     
                         <div class="col-md-2">
-
-                          <button type="button"  class="btn-green btn-agregar">+</button>
+                          
+                          <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
     
                         </div>
     
@@ -197,16 +212,66 @@
                       </div>
                       
                     </div>  
+                    
+                  
                 </div>
                
                 
               </form>  
+
+             
+
+               <div style="margin-bottom:100px">
+                Selected persons: {{expedienteForm.value.agrimensor | json}}
+            </div>
+
     </div>
     </div>
     
     <hr>
 
 
+
+
+<!-- Crear Usuario -->
+
+
+<div class="modal fade" id="crearUsuario" tabindex="-1" aria-labelledby="crearUsuario" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ingresar Registro</h5>
+                <button id="closeModalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-crear-usuario (verDetallesFunction)="verDetalles($event)"></app-crear-usuario>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="modificarUsuario()">Modificar</button>
+            </div> -->
+        </div>
+    </div>
 </div>
+
+<!-- Crear Inmueble -->
+
+
+<div class="modal fade" id="crearInmueble" tabindex="-1" aria-labelledby="crearInmueble" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Ingresar Registro</h5>
+              <button id="closeModalInmuebleButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <app-crear-inmueble (verDetallesFunction)="verDetalles($event)"></app-crear-inmueble>
+          </div>
+          <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="modificarUsuario()">Modificar</button>
+          </div> -->
+      </div>
+  </div>
+</div>
+
 
 <ngx-spinner></ngx-spinner>

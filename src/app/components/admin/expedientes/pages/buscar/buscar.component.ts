@@ -4,7 +4,6 @@ import { ApiService } from '../../../../../services/api.service';
 import { TipoExpediente } from '../../../../../models/tipo_expediente.model';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { AuthService } from '../../../../../services/auth.service';
@@ -44,6 +43,8 @@ export class BuscarComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public tipo_consulta: any;
+  p: number = 1;
+
 
   expediente: string
   tramite: string
@@ -138,8 +139,36 @@ export class BuscarComponent implements OnInit {
     })
   }
 
-  buscarSiguiente() {
-    alert('siguiente pagina')
+  onTableDataChange(event) {
+
+    
+    this.spinner.show();
+   
+    this._apiService.changePage(event)
+    .then((res) =>{
+
+      this.p =  event
+
+      this.expedientes = res
+     
+      console.log(this.expedientes)
+      
+      if (this.expedientes.count == 0) {
+        this.spinner.hide();
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+       
+      }else{
+        this.expedientes = res
+        this.spinner.hide();
+      }
+
+      this.load = false;
+     
+    })
+    .catch(()=>{
+      console.log('error')
+    });
 
   } 
 
@@ -232,10 +261,12 @@ export class BuscarComponent implements OnInit {
       console.log(this.expedientes)
       
       if (this.expedientes.count == 0) {
+        this.spinner.hide();
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       }else{
         this.expedientes = res
+        this.spinner.hide();
       }
 
       this.load = false;
@@ -248,7 +279,7 @@ export class BuscarComponent implements OnInit {
       console.log('error')
     });
 
-    this.spinner.hide();
+    //
   }
 
   limpiar() {

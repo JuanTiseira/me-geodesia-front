@@ -1,0 +1,140 @@
+
+
+    <h2 *ngIf="isAddMode" style="font-weight: bold;">Crear Inmueble</h2>
+   
+
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+             <form class="row g-3" [formGroup]="inmuebleForm" (ngSubmit)="onSubmit()">
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    
+                    <label for="numero_partida" class="form-label">Numero de Partida</label>
+                    <input formControlName="numero_partida" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.numero_partida.errors }">
+                    <div *ngIf="submitted && f.numero_partida.errors" class="invalid-feedback">
+                      <div *ngIf="f.numero_partida.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="datos" class="form-label">Datos</label>
+                    <input formControlName="datos" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.datos.errors }">
+                    <div *ngIf="submitted && f.datos.errors" class="invalid-feedback">
+                      <div *ngIf="f.datos.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+
+                  <div class="form-group">
+                    
+                    <label for="observaciones" class="form-label">Observaciones</label>
+                    <input formControlName="observaciones" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.observaciones.errors }">
+                    <div *ngIf="submitted && f.observaciones.errors" class="invalid-feedback">
+                      <div *ngIf="f.observaciones.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="rol" class="form-label">Seccion</label>
+                    <input formControlName="seccion" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
+                    <div *ngIf="submitted && f.seccion.errors" class="invalid-feedback">
+                      <div *ngIf="f.seccion.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+              
+                    <div class="col-3">
+                      <button type="button" class="btn btn-green">Volver</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    
+                    <label for="chacra" class="form-label">Chacra</label>
+                    <input formControlName="chacra" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.chacra.errors }">
+                    <div *ngIf="submitted && f.chacra.errors" class="invalid-feedback">
+                      <div *ngIf="f.chacra.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="manzana" class="form-label">Manzana</label>
+                    <input formControlName="manzana" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.manzana.errors }">
+                    <div *ngIf="submitted && f.manzana.errors" class="invalid-feedback">
+                      <div *ngIf="f.manzana.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="parcela" class="form-label">Parcela</label>
+                    <input formControlName="parcela" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.parcela.errors }">
+                    <div *ngIf="submitted && f.parcela.errors" class="invalid-feedback">
+                      <div *ngIf="f.parcela.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="numero_mensura" class="form-label">Numero de Mensura</label>
+                    <input formControlName="numero_mensura" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.numero_mensura.errors }">
+                    <div *ngIf="submitted && f.numero_mensura.errors" class="invalid-feedback">
+                      <div *ngIf="f.numero_mensura.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="departamento" class="form-label">Departamento</label>
+                    <select *ngIf="departamentos" formControlName="departamento" name="" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.departamento.errors }">
+                      <option value="" disabled>Seleccione una Opcion</option>
+                      <option [ngValue]="dato" *ngFor="let dato of departamentos.results" value="">{{dato.descripcion}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.departamento.errors" class="invalid-feedback">
+                      <div *ngIf="f.departamento.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+                  
+
+                    <div class="row">
+
+                      <div class="col-md-6">
+                        <button type="button" class="btn btn-green">Cancelar</button>
+                        <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
+                      </div>
+
+                      <div class="col-md-6">
+
+                        <button type="submit" [disabled]="loading" class="btn btn-green">
+                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                          Guardar
+                        </button>
+
+                      </div>
+                      
+                    </div>  
+                </div>
+               
+                
+              </form>  
+    </div>
+    </div>
+    
+    <hr>
+
+

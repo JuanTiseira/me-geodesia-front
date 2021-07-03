@@ -1,5 +1,5 @@
 
-<div class="container">
+
     
     <div class="row">
         <h1 style="font-weight: bold;">Consulta de Expediente</h1>
@@ -114,7 +114,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let exp of expedientes.results">
+                <tr *ngFor="let exp of expedientes.results | paginate: { itemsPerPage: 10, currentPage: p, totalItems: expedientes.count }">
 
                     <td>{{ exp.numero }}</td>
                     <td>{{ exp.anio }}</td>
@@ -131,6 +131,14 @@
             </tbody>
         </table>
 
+        <div class="d-flex justify-content-center">
+
+            <pagination-controls (pageChange)="onTableDataChange($event)"></pagination-controls>
+
+
+        </div>
+
+      
         <div class="col-md-4">
             <div class="mt-3">
                 <button type="button" (click)="limpiar()" class="btn btn-green float-right">Limpiar</button>
@@ -140,7 +148,7 @@
         
     </div> 
     <ngx-spinner></ngx-spinner>
-</div>
+
 
 <hr>
 

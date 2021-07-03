@@ -12,6 +12,10 @@
         <a  *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['usuario/buscar']">
             <i class="fad fa-users"></i>Usuarios</a>
 
+        <a  *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('inmuebles')" [routerLink]="['inmueble/buscar']">
+            <i class="fab fa-houzz"></i>Inmuebles</a>
+    
+
         <!-- <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('documentos')" [routerLink]="['abm/documentos']">
             <i class="fad fa-file"></i>Documentos</a>
 
