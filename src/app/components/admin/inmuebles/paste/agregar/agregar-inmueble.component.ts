@@ -9,8 +9,8 @@ import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-crear-inmueble',
-  templateUrl: './agregar.component.html',
-  styleUrls: ['./agregar.component.scss']
+  templateUrl: './agregar-inmueble.component.html',
+  styleUrls: ['./agregar-inmueble.component.scss']
 })
 export class AgregarInmuebleComponent implements OnInit {
 
@@ -65,13 +65,6 @@ export class AgregarInmuebleComponent implements OnInit {
         this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
         .then(x => this.form.patchValue(x));
     }
-  
-    
-    this._apiService.getDepartamentos().then(response => {
-      this.departamentos = response
-      this._functionService.imprimirMensaje(response, "departamentos")
-    })
-
 
   
   }

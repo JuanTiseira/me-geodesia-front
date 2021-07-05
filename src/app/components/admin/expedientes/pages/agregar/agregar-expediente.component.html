@@ -53,10 +53,19 @@
                       <div class="col-md-10">
 
                         <label for="propietario" class="form-label">Propietario</label>
-                        <select *ngIf="usuarios" formControlName="propietario"  class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.propietario.errors }">
-                          <option value="" disabled>Seleccione una Opcion</option>
-                          <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                        </select>
+                          <ng-select 
+                          [items]="people$ | async"
+                          bindLabel="nombre apellido"
+                          [addTag]="true"
+                          [multiple]="false"
+                          [hideSelected]="true"
+                          [trackByFn]="trackByFn"
+                          [minTermLength]="3"
+                          [loading]="peopleLoading"
+                          typeToSearchText="Please enter 2 or more characters"
+                          [typeahead]="peopleInput$"
+                          formControlName="propietario">
+                          </ng-select>
                         <div *ngIf="submitted && f.propietario.errors" class="invalid-feedback">
                           <div *ngIf="f.propietario.errors.required">Este campo es obligatorio</div>
                         </div>
@@ -118,30 +127,27 @@
                         <div class="col-md-10">
                           
                           <label for="agrimensor" class="form-label">Agrimensor</label>
-                          <select *ngIf="usuarios" formControlName="agrimensor"  class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }">
+                          <!-- <select *ngIf="usuarios" formControlName="agrimensor"  class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }">
                             <option value="" disabled>Seleccione una Opcion</option>
                             <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                          </select>
+                          </select> -->
+                          <ng-select 
+                            [items]="people$ | async"
+                            bindLabel="nombre"
+                            [addTag]="true"
+                            [multiple]="false"
+                            [hideSelected]="true"
+                            [trackByFn]="trackByFn"
+                            [minTermLength]="3"
+                            [loading]="peopleLoading"
+                            typeToSearchText="Please enter 2 or more characters"
+                            [typeahead]="peopleInput$"
+                            formControlName="agrimensor">
+                          </ng-select>
+
                           <div *ngIf="submitted && f.agrimensor.errors" class="invalid-feedback">
                             <div *ngIf="f.agrimensor.errors.required">Este campo es obligatorio</div>
                           </div>
-
-                          <ng-select 
-              
-                          [items]="people$ | async"
-                          bindLabel="nombre"
-                          [addTag]="true"
-                          [multiple]="false"
-                          [hideSelected]="true"
-                          [trackByFn]="trackByFn"
-                          [minTermLength]="3"
-                          [loading]="peopleLoading"
-                          typeToSearchText="Please enter 2 or more characters"
-                          [typeahead]="peopleInput$"
-                          formControlName="agrimensor">
-                          
-                        
-                         </ng-select>
   
                         </div>
     
@@ -163,10 +169,19 @@
                         <div class="col-md-10">
                           
                           <label for="gestor" class="form-label">Gestor</label>
-                          <select *ngIf="usuarios" formControlName="gestor"  class="form-select"  >
-                            <option value="" disabled>Seleccione una Opcion</option>
-                            <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                          </select>
+                          <ng-select 
+                            [items]="people$ | async"
+                            bindLabel="nombre"
+                            [addTag]="true"
+                            [multiple]="false"
+                            [hideSelected]="true"
+                            [trackByFn]="trackByFn"
+                            [minTermLength]="3"
+                            [loading]="peopleLoading"
+                            typeToSearchText="Please enter 2 or more characters"
+                            [typeahead]="peopleInput$"
+                            formControlName="gestor">
+                          </ng-select>
   
                         </div>
     

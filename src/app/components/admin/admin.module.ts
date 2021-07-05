@@ -2,25 +2,25 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home/home.component';
-import { AgregarComponent } from './expedientes/pages/agregar/agregar-expediente.component';
-import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
+
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_ROUTES } from './admin-routing.module';
-import { TiposComponent } from './tipos/tipos.component';
-import { DocumentosComponent } from './documentos/documentos.component';
-import { TramitesComponent } from './tramites/tramites.component';
-import { ObservacionesComponent } from './observaciones/observaciones.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
+
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Select2Module } from "ng-select2-component";
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CommonModule } from '@angular/common';  
-import { BrowserModule } from '@angular/platform-browser';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgSelectModule } from '@ng-select/ng-select';
+
+
+
 //EXPEDIENTES 
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
+import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
+import { AgregarComponent } from './expedientes/pages/agregar/agregar-expediente.component';
 
 
 //HISTORIAL 
@@ -35,7 +35,8 @@ import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.compon
 
 
 //INMUBELES
-import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar.component';
+import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmueble.component';
+import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
 
 
 
@@ -45,10 +46,6 @@ import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar.comp
      
     HomeComponent, 
     BuscarComponent,
-    TiposComponent,
-    DocumentosComponent,
-    TramitesComponent,
-    ObservacionesComponent,
     DetalleComponent,
     DetalleHistorialComponent,
     BuscarUsuarioComponent,
@@ -56,10 +53,12 @@ import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar.comp
     AgregarUsuarioComponent,
     DetalleUsuarioComponent,
     AgregarComponent,
-    AgregarInmuebleComponent
+    AgregarInmuebleComponent,
+    BuscarInmuebleComponent
 
   ],
   imports: [
+
     NgSelectModule,
     NgxSpinnerModule,
     CommonModule,
@@ -70,8 +69,8 @@ import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar.comp
     RouterModule.forChild(APP_ROUTES),
     SharedModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatPaginatorModule
+    ReactiveFormsModule
+ 
   ]
 })
 

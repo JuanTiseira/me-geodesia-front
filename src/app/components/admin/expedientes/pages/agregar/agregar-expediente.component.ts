@@ -60,10 +60,7 @@ export class AgregarComponent implements OnInit {
     private spinner: NgxSpinnerService
     ) { }
 
-
-    trackByFn(item: Person) {
-      return item.id;
-  }
+    
   ngOnInit(): void {
 
     this.loadPeople();
@@ -133,21 +130,22 @@ export class AgregarComponent implements OnInit {
   
   }
 
+  trackByFn(item: Person) {
+    return item.id;
+  }
+
   private loadPeople() {
 
-    
     this.people$ = concat(
-        of([]), // default items
+        of([]), // items por defecto
         this.peopleInput$.pipe(
             distinctUntilChanged(),
             tap(() => this.peopleLoading = true),
             switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // empty list on error
+                catchError(() => of([])), // limpiar lista error
                 tap(() => this.peopleLoading = false)
-                
             ))
         )
-        
     );
   }
 
@@ -166,11 +164,10 @@ export class AgregarComponent implements OnInit {
     this.loading = true;    
     this.createExpediente();
   
-}
+  }
   
   createExpediente() {
-    
-    
+  
     console.log(this.expedienteForm.value)
     this._apiService.setExpediente(this.expedienteForm.value)
     .then((res: any) =>{
@@ -196,7 +193,6 @@ export class AgregarComponent implements OnInit {
       this.loading = false;
     });
     
-    
   }
 
   verDetalles(dato:boolean){
@@ -215,6 +211,8 @@ export class AgregarComponent implements OnInit {
   onItemSelect(item: any) {
     console.log(item);
   }
+
+  
   onSelectAll(items: any) {
     console.log(items);
   }

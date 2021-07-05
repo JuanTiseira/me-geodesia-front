@@ -8,6 +8,8 @@ import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from '
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class ApiService {
 
   private url: string;
@@ -46,7 +48,7 @@ export class ApiService {
     });
   }
 
-  //EXPEDIENTES 
+  //EXPEDIENTES  ////////////////////////////////////////////////////////////////////////////////
 
   getExpedientes(){
     return this.http.get(this.url+'/expedientes/').toPromise().catch(()=>
@@ -93,7 +95,6 @@ export class ApiService {
   }
 
   getExpediente(id){
-
     console.log(id)
     return this.http.get(this.url+`/expedientes/1/expediente_tramite/?id=${id}`).toPromise();
   }
@@ -111,7 +112,7 @@ export class ApiService {
     console.warn(expediente);
     return this.http.post(this.url+'/expedientes/', expediente).toPromise().catch((e)=>
     { 
-      console.log('error', e);
+      console.log('error al crear expediente', e);
     
     }); 
   }
@@ -129,31 +130,31 @@ export class ApiService {
 
 
 
-  //TIPO EXPETIENTE 
+  //TIPO EXPETIENTE  ////////////////////////////////////////////////////////////////////////////////
   
   getTipoExpedientes () { 
     return this.http.get(this.url+'/tipo_expedientes/').toPromise();
   }
 
-  //DOCUMENTO 
+  //DOCUMENTO  ////////////////////////////////////////////////////////////////////////////////
 
   getDocumentos () {
     return this.http.get(this.url+'/documentos/').toPromise();
   }
 
-  //TRAMITE 
+  //TRAMITE  ////////////////////////////////////////////////////////////////////////////////
 
   getTramites () {
     return this.http.get(this.url+'/tramites/').toPromise();
   }
 
-  //OBSERVACION 
+  //OBSERVACION  ////////////////////////////////////////////////////////////////////////////////
 
   getObservaciones () {
     return this.http.get(this.url+'/observaciones/').toPromise();
   }
 
-  //INMUEBLE 
+  //INMUEBLE  ////////////////////////////////////////////////////////////////////////////////
 
   getInmuebles () {
     return this.http.get(this.url+'/inmuebles/').toPromise();
@@ -163,6 +164,11 @@ export class ApiService {
     return this.http.get(this.url+'/inmuebles/?disponibles=1234').toPromise();
   }
 
+  getInmueble(id){
+    return this.http.get(this.url+`/inmuebles/${id}`).toPromise();
+  }
+
+
   setInmueble(inmueble) {
     console.warn(inmueble);
     return this.http.post(this.url+'/inmuebles/', inmueble).toPromise().catch((e)=>
@@ -171,13 +177,16 @@ export class ApiService {
     
     }); 
   }
-  //PROPIETARIO
 
-  getUsuarios () {
-    return this.http.get(this.url+'/usuarios/').toPromise();
+  deleteInmueble(inmueble) {
+    console.warn(inmueble);
+    return this.http.delete(this.url+`/inmuebles/${inmueble}/`).toPromise();
   }
 
-  //USUARIOS 
+
+
+
+  //USUARIOS ////////////////////////////////////////////////////////////////////////////////
 
   getRoles() {
     return this.http.get(this.url+'/roles/').toPromise();
@@ -211,13 +220,6 @@ export class ApiService {
     console.warn(usuario);
     return this.http.delete(this.url+`/usuarios/${usuario}/`).toPromise();
   }
-
-  //DEPARTAMENTOS
-
-  getDepartamentos () {
-    return this.http.get(this.url+'/departamentos/').toPromise();
-  }
-
 
   
 }

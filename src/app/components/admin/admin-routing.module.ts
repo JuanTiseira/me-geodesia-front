@@ -8,7 +8,9 @@ import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.compon
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
 import { DetalleUsuarioComponent } from './usuarios/pages/detalle/detalle.component';
-import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar.component';
+import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmueble.component';
+import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
+
 
 
 export const APP_ROUTES: Routes = [
@@ -41,7 +43,7 @@ export const APP_ROUTES: Routes = [
 
   //INMUEBLES
 
-  {path: 'inmueble/buscar', component: BuscarComponent},
+  {path: 'inmueble/buscar', component: BuscarInmuebleComponent},
 
   {path: 'inmueble/agregar', component: AgregarInmuebleComponent},
 
