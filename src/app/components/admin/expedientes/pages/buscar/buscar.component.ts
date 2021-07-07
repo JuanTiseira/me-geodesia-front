@@ -12,9 +12,6 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-
-
-
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
@@ -144,7 +141,7 @@ export class BuscarComponent implements OnInit {
     
     this.spinner.show();
    
-    this._apiService.changePage(event)
+    this._apiService.changePage(event, 'expedientes')
     .then((res) =>{
 
       this.p =  event

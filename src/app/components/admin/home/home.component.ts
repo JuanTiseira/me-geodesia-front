@@ -92,17 +92,12 @@ export class HomeComponent implements OnInit {
           this._functionService.imprimirMensaje(response, "expedientes")
         })
 
-
       this._apiService.getUsuarios()
         .then(response => {
           this.usuarios = response
           this._functionService.imprimirMensaje(response, "usuarios")
         })
       }
-
-
-      
-     
   }
 
   get isAdmin() {

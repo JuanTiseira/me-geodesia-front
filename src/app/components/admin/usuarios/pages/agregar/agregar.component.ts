@@ -57,7 +57,7 @@ export class AgregarUsuarioComponent implements OnInit {
       matricula: ['', Validators.required],
       direccion: ['', Validators.required],
       fecha_nacimiento: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
       telefono: ['', Validators.required],  
     }, {
          

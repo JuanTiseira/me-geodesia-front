@@ -9,27 +9,48 @@
              <form class="row g-3" [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
                 <div class="col-md-6">
 
-                  <div class="form-group">
-                    <label for="tipo" class="form-label">Tipo</label>
-                    <select *ngIf="tipos_expedientes" formControlName="tipo_expediente" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
-                      <option value="" disabled>Seleccione una Opcion</option>
-                      <option [ngValue]="dato" *ngFor="let dato of tipos_expedientes.results">{{dato.descripcion}}</option>
-                    </select>
-                    <div *ngIf="submitted && f.tipo_expediente.errors" class="invalid-feedback">
-                      <div *ngIf="f.tipo_expediente.errors.required">Este campo es obligatorio</div>
+                  <div class="row">
+
+                   
+                    <div class="col-md-10">
+                      <div class="form-group">
+                        <label for="tipo" class="form-label">Tipo</label>
+                      
+    
+                        <ng-select *ngIf="tipos_expedientes" [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" >
+                          <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                          <ng-option *ngFor="let dato of tipos_expedientes.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
+                        </ng-select>
+    
+                        <div *ngIf="submitted && f.tipo_expediente.errors" class="invalid-feedback">
+                          <div *ngIf="f.tipo_expediente.errors.required">Este campo es obligatorio</div>
+                        </div>
+                      </div>
+    
                     </div>
+
+                    <div class="col col-md-2">   
+                      <div class="form-group">
+                    
+                        <label for="abreviatura" class="form-label">Tramite Urgente</label>
+                        <input type="checkbox" formControlName="tramite_urgente">
+                       
+                      </div>
+                    </div>
+
+               
                   </div>
 
+                 
                   <div class="form-group">
 
                     <div class="row">
 
                       <div class="col-md-10">
                         <label for="inmueble" class="form-label">Inmueble</label>
-                        <select *ngIf="inmuebles" formControlName="inmueble" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
-                          <option value="" disabled>Seleccione una Opcion</option>
-                          <option [ngValue]="dato" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
-                        </select>
+                        <ng-select *ngIf="inmuebles" [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" >
+                          <ng-option *ngFor="let dato of inmuebles.results" [value]="dato" [disabled]="dato.disabled">{{dato.departamento.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
+                        </ng-select>
                         <div *ngIf="submitted && f.inmueble.errors" class="invalid-feedback">
                           <div *ngIf="f.inmueble.errors.required">Este campo es obligatorio</div>
                         </div>
@@ -54,16 +75,16 @@
 
                         <label for="propietario" class="form-label">Propietario</label>
                           <ng-select 
-                          [items]="people$ | async"
-                          bindLabel="nombre apellido"
-                          [addTag]="true"
+                          [items]="propietario$ | async"
+                          bindLabel="fullName"
+                          [addTag]="false"
                           [multiple]="false"
                           [hideSelected]="true"
                           [trackByFn]="trackByFn"
-                          [minTermLength]="3"
-                          [loading]="peopleLoading"
-                          typeToSearchText="Please enter 2 or more characters"
-                          [typeahead]="peopleInput$"
+                          [minTermLength]="2"
+                          [loading]="propietarioLoading"
+                          typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                          [typeahead]="propietarioInput$"
                           formControlName="propietario">
                           </ng-select>
                         <div *ngIf="submitted && f.propietario.errors" class="invalid-feedback">
@@ -85,39 +106,47 @@
                    
                   </div>
 
-                  <div *ngIf="documentos" class="form-group">
-                    <label for="propietario" class="form-label">Documentos</label>
-                    <ng-multiselect-dropdown
-                      [placeholder]="'Seleccione una opcion'"
-                      [settings]="dropdownSettings"
-                      [data]="documentos.results"
-                      formControlName="documentos"
-                      (onSelect)="onItemSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
+                  <div class="col-md-10">
 
-
-                    <div *ngIf="submitted && documentos.errors" class="invalid-feedback">
-                      <div *ngIf="f.documentos.errors.required">Este campo es obligatorio</div>
+                    <div *ngIf="documentos" class="form-group">
+                      <label for="propietario" class="form-label">Documentos</label>
+                
+  
+                      <ng-select *ngIf="documentos" [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && f.documentos.errors }">
+                        <ng-option *ngFor="let dato of documentos.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
+                      </ng-select>
+  
+  
+                      <div *ngIf="submitted && documentos.errors" class="invalid-feedback">
+                        <div *ngIf="f.documentos.errors.required">Este campo es obligatorio</div>
+                      </div>
                     </div>
+
                   </div>
 
-                    <div class="col-3">
+                 
+
+                    <div class="col-3" >
                       <button type="button" class="btn btn-green">Volver</button>
                     </div>
                 </div>
                 <div class="col-md-6">
 
-                  <div class="form-group">
+                  <div class="col-md-10">
+
+                    <div class="form-group">
                     
-                    <label for="abreviatura" class="form-label">Abreviatura</label>
-                    <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
-                    <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                      <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                      <label for="abreviatura" class="form-label">Abreviatura</label>
+                      <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
+                      <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
+                        <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                      </div>
+  
                     </div>
 
                   </div>
+
+                
 
                 
                     <div class="form-group">
@@ -132,16 +161,16 @@
                             <option [ngValue]="dato" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
                           </select> -->
                           <ng-select 
-                            [items]="people$ | async"
-                            bindLabel="nombre"
-                            [addTag]="true"
+                            [items]="agrimensor$ | async"
+                            bindLabel="fullName"
+                            [addTag]="false"
                             [multiple]="false"
                             [hideSelected]="true"
                             [trackByFn]="trackByFn"
                             [minTermLength]="3"
-                            [loading]="peopleLoading"
-                            typeToSearchText="Please enter 2 or more characters"
-                            [typeahead]="peopleInput$"
+                            [loading]="agrimensorLoading"
+                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                            [typeahead]="agrimensorInput$"
                             formControlName="agrimensor">
                           </ng-select>
 
@@ -170,16 +199,16 @@
                           
                           <label for="gestor" class="form-label">Gestor</label>
                           <ng-select 
-                            [items]="people$ | async"
-                            bindLabel="nombre"
-                            [addTag]="true"
+                            [items]="gestor$ | async"
+                            bindLabel="fullName"
+                            [addTag]="false"
                             [multiple]="false"
                             [hideSelected]="true"
                             [trackByFn]="trackByFn"
                             [minTermLength]="3"
-                            [loading]="peopleLoading"
-                            typeToSearchText="Please enter 2 or more characters"
-                            [typeahead]="peopleInput$"
+                            [loading]="gestorLoading"
+                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                            [typeahead]="gestorInput$"
                             formControlName="gestor">
                           </ng-select>
   
@@ -196,21 +225,9 @@
                  
                     </div>
 
-                    <div class="row">
+                    
 
-                      <div class="col col-md-12">   
-                        <div class="form-group">
-                      
-                          <label for="abreviatura" class="form-label">Tramite Urgente</label>
-                          <input type="checkbox" formControlName="tramite_urgente">
-                         
-                        </div>
-                      </div>
-  
-                 
-                    </div>
-
-                    <div class="row">
+                    <div class="row" style="margin-top: 10vh">
 
                       <div class="col-md-6">
                         <button type="button" class="btn btn-green">Cancelar</button>
@@ -233,12 +250,6 @@
                
                 
               </form>  
-
-             
-
-               <div style="margin-bottom:100px">
-                Selected persons: {{expedienteForm.value.agrimensor | json}}
-            </div>
 
     </div>
     </div>

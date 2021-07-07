@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject } from 'rxjs';
-import { DataService, Person } from 'src/app/services/data.service';
+import { DataService, Person, Documento } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
  
@@ -24,30 +24,46 @@ export class AgregarComponent implements OnInit {
   // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
  
   
-  public tipos_expedientes: any;
-  public documentos: any; 
-  public tramites: any;
-  public inmuebles: any;
-  public observaciones: any;
-  public usuarios: any;
-  public docs: any
-  public selectedDocumentos: any 
-  public dropdownSettings: IDropdownSettings;
-  public selectedItems: any
-  public tramite_urgente: boolean
+    public tipos_expedientes: any;
+    public documentos: any; 
+    public tramites: any;
+    public inmuebles: any;
+    public observaciones: any;
+    public usuarios: any;
+    public docs: any
+    public dropdownSettings: IDropdownSettings;
+    public selectedItems: any
+    public tramite_urgente: boolean = false
 
 
-  people$: Observable<Person[]>;
-    peopleLoading = false;
-    peopleInput$ = new Subject<string>();
-    selectedPersons: Person[] = <any>[{}];
+    agrimensor$: Observable<Person[]>;
+    gestor$: Observable<Person[]>;
+    propietario$: Observable<Person[]>;
+    documento$: Observable<Documento[]>;
 
-  expedienteForm : FormGroup
-  form: FormGroup;
-  id: string;
-  isAddMode: boolean;
-  loading = false;
-  submitted = false;
+    agrimensorLoading = false;
+    gestorLoading = false;
+    propietarioLoading = false;
+    documentoLoading = false;
+
+
+    agrimensorInput$ = new Subject<string>();
+    propietarioInput$ = new Subject<string>();
+    gestorInput$ = new Subject<string>();
+    documentoInput$ = new Subject<string>();
+
+
+    selectedAgrimensores: Person[] = <any>[{}];
+    selectedPropietarios: Person[] = <any>[{}];
+    selectedGestores: Person[] = <any>[{}];
+    selectedDocumentos: Documento[] = <any>[{}];
+
+    expedienteForm : FormGroup
+    form: FormGroup;
+    id: string;
+    isAddMode: boolean;
+    loading = false;
+    submitted = false;
   
 
   constructor(
@@ -63,7 +79,12 @@ export class AgregarComponent implements OnInit {
     
   ngOnInit(): void {
 
-    this.loadPeople();
+    this.loadPropietarios();
+
+ 
+    this.loadGestores();
+    this.loadAgrimensores();
+    this.loadDocumentos()
     this.spinner.show();
 
       setTimeout(() => {
@@ -127,27 +148,76 @@ export class AgregarComponent implements OnInit {
       itemsShowLimit: 10,
       allowSearchFilter: true
     };
-  
+    
+
+    console.log('PROPIETARIOS',this.selectedPropietarios)
   }
 
   trackByFn(item: Person) {
     return item.id;
   }
 
-  private loadPeople() {
+  private loadPropietarios() {
 
-    this.people$ = concat(
+    this.propietario$ = concat(
         of([]), // items por defecto
-        this.peopleInput$.pipe(
+        this.propietarioInput$.pipe(
             distinctUntilChanged(),
-            tap(() => this.peopleLoading = true),
+            tap(() => this.propietarioLoading = true),
             switchMap(term => this.dataService.getPeople(term).pipe(
                 catchError(() => of([])), // limpiar lista error
-                tap(() => this.peopleLoading = false)
+                tap(() => this.propietarioLoading = false)
             ))
         )
     );
   }
+
+  private loadGestores() {
+
+    this.gestor$ = concat(
+        of([]), // items por defecto
+        this.gestorInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.gestorLoading = true),
+            switchMap(term => this.dataService.getPeople(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.gestorLoading = false)
+            ))
+        )
+    );
+  }
+
+
+  private loadAgrimensores() {
+
+    this.agrimensor$ = concat(
+        of([]), // items por defecto
+        this.agrimensorInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.agrimensorLoading = true),
+            switchMap(term => this.dataService.getPeople(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.agrimensorLoading = false)
+            ))
+        )
+    );
+  }
+
+  private loadDocumentos() {
+
+    this.documento$ = concat(
+        of([]), // items por defecto
+        this.documentoInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.documentoLoading = true),
+            switchMap(term => this.dataService.getDocs(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.documentoLoading = false)
+            ))
+        )
+    );
+  }
+
 
   get f() { return this.expedienteForm.controls; }
 

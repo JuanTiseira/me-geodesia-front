@@ -50,14 +50,14 @@
             
 
             <div class="col-md-4">
-                <label for="username" class="form-label">Manzana</label>
+                <label for="username" class="form-label">ROL</label>
                 <select formControlName="rol" class="form-select" *ngIf="roles">
                     <option [value]="dato.url" *ngFor="let dato of roles.results" value="">{{dato.nombre}}</option>
                 </select>
             </div>
 
             <div class="col-md-4">
-                <label for="username" class="form-label">Seccion</label>
+                <label for="username" class="form-label">Matricula</label>
                 <input  formControlName="matricula" maxlength="20" inputmode="numeric" placeholder="Matricula" class="form-control" autocomplete="off">
             </div>
         

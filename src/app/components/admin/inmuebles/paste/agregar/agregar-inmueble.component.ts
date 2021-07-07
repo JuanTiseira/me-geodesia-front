@@ -47,14 +47,14 @@ export class AgregarInmuebleComponent implements OnInit {
     this.inmuebleForm = this.formBuilder.group({
       
       // user: ['', Validators.required],
-      numero_partida: ['', Validators.required],
-      datos: ['', Validators.required],
-      observaciones: ['', Validators.required],
-      seccion: ['', Validators.required],
-      chacra: ['', Validators.required],
-      manzana: ['', Validators.required],
-      parcela: ['', Validators.required],
-      numero_mensura: ['', Validators.required],
+      numero_partida: ['', Validators.required, Validators.maxLength(4)],
+      datos: ['', Validators.required, Validators.maxLength(20)],
+      observaciones: ['', Validators.required, Validators.maxLength(100)],
+      seccion: ['', Validators.required, Validators.maxLength(3)],
+      chacra: ['', Validators.required, Validators.maxLength(4)],
+      manzana: ['', Validators.required, Validators.maxLength(4)],
+      parcela: ['', Validators.required, Validators.maxLength(4)],
+      numero_mensura: ['', Validators.required, Validators.maxLength(4)],
       departamento: ['', Validators.required]
     }, {
          
@@ -65,6 +65,11 @@ export class AgregarInmuebleComponent implements OnInit {
         this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
         .then(x => this.form.patchValue(x));
     }
+
+    this._apiService.getDepartamentos().then(response => {
+      this.departamentos = response
+      this._functionService.imprimirMensaje(response, "departamentos")
+    })
 
   
   }

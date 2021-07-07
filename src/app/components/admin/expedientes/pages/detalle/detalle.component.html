@@ -7,7 +7,7 @@
     <br>
 
     <div class="row">
-        <div class="col-12" *ngIf="resultado">
+        <div class="col-12" *ngIf="resultado && tipos_expedientes && usuarios">
           <form class="row g-3" [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
             <div class="col-md-6">
 
@@ -67,27 +67,10 @@
                 </textarea>
 
                 
-              </div>
-
-             
-                <div class="row">
-                  <div class="col-md-6">
-
-                    <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()">Imprimir Solapa</button>
-                  
-                  </div>
-
-                  <div class="col-md-6">
-
-                    <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()">Imprimir Etiqueta</button>
-
-                  </div>
-                 
-                </div>
-                
-                  
-                
+              </div>  
             </div>
+
+
             <div class="col-md-6">
                 <div class="form-group" >
                   <label for="agrimensor" class="form-label">Agrimensor</label>
@@ -108,7 +91,6 @@
                         {{dato.nombre}} {{dato.apellido}}
                     </ng-container>
                   </select>
-
                 </div>
 
                 <div class="form-group">
@@ -120,78 +102,138 @@
                     </option>
                     </ng-container>
                   </select>
-                </div>
-
-                <!-- <div class="form-group">
-                  <label for="propietario" class="form-label">Documentos</label>
-                  <ng-multiselect-dropdown
-                    [placeholder]="'Seleccione una opcion'"
-                    [settings]="dropdownSettings"
-                    [data]="documentos.results"
-                    formControlName="documentos"
-                    (onSelect)="onItemSelect($event)"
-                    (onSelectAll)="onSelectAll($event)"
-                  >
-                  </ng-multiselect-dropdown>
-
-
-                  <div *ngIf="submitted && documentos.errors" class="invalid-feedback">
-                    <div *ngIf="f.documentos.errors.required">Este campo es obligatorio</div>
-                  </div>
-                </div> -->
-
-                <div class="row">
-
-
-                  <div class="col-md-6">
-                    <button (click)="verHistorial()" type="button" class="btn btn-green">Ver Historial</button>
-                  </div>
-                  
-  
-                  <div class="col-md-6">
-                     <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
-                  <button *ngIf="isEditMode" [disabled]="loading" class="btn btn-green">
-                    <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
-                    Guardar
-                  </button>
-  
-                  <button *ngIf="!isEditMode && isAdmin" (click)="editar()"  [disabled]="loading" type="button" class="btn btn-green">
-                    <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
-                    Editar
-                  </button>
-  
-                  </div>
-
-
-                </div>
-              
-                
-               
-                
+                </div>              
             </div>
-           
+          
+            <div class="row">
+              
+              <div class="col-md-6">
+                <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()">Imprimir Solapa</button>
+              </div>
             
+
+              <div class="col-md-6">
+                <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()">Imprimir Etiqueta</button>
+              </div> 
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <button (click)="verHistorial()" type="button" class="btn btn-green">Ver Historial</button>
+              </div>
+            
+              <div class="col-md-6">
+                 <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
+              <button *ngIf="isEditMode" [disabled]="loading" class="btn btn-green">
+                <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
+                Guardar
+              </button>
+
+              <button *ngIf="!isEditMode && isAdmin" (click)="editar()"  [disabled]="loading" type="button" class="btn btn-green">
+                <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
+                Editar
+              </button>
+
+              </div>
+
+              <div class="col-md-12">
+
+                <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearRetiro" class="btn btn-green btn-block">Devolver Documentos</button>
+                <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearRetiro" class="btn btn-green btn-block">Retirar Documentos</button>
+
+              </div>
+            </div>
+
           </form>  
                 
-            <div class="row">
-
-                <div class="col-3">
-                   
-                </div>
-
-                <div class="col-3">
-                    
-                </div>
-
-
-            </div>
+      
+            
                 
                     
     </div>
-    
 
     <ngx-spinner></ngx-spinner>
 
-
 </div>
+
+
+<!-- MODAL CREAR RETIRO -->
+
+<div class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Registrar Retiro</h5>
+              <button id="closeModalRetiroButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                   <form class="row g-3" [formGroup]="retiroForm" (ngSubmit)="guardarRetiro()">
+                      <div class="col-md-12">      
+                        <div class="form-group">
+                          <label for="descripcion" class="form-label">Descripcion *</label>
+                          <input formControlName="descripcion" placeholder="Descripcion" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                          <div *ngIf="submitted && r.descripcion.errors" class="invalid-feedback">
+                            <div *ngIf="r.descripcion.errors.required">Este campo es obligatorio</div>
+                          </div>
+                        </div>
+      
+                        <div *ngIf="documentos" class="form-group">
+                          <label for="documentos" class="form-label">Documentos *</label>
+                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documento" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                            <ng-option *ngFor="let doc of documentosexpediente" [value]="doc.id" [disabled]="doc.disabled">{{doc.descripcion}}</ng-option>
+                          </ng-select>
+                          <div *ngIf="submitted && r.documento.errors" class="invalid-feedback">
+                            <div *ngIf="r.documento.errors.required">Este campo es obligatorio</div>
+                          </div>
+                        </div>
+
+
+                        <div class="form-group">
+                          <div class="row">    
+                            <div class="col-md-12">                              
+                              <label for="gestor" class="form-label">Usuario *</label>
+                              <ng-select 
+                                [items]="gestor$ | async"
+                                bindLabel="fullName"
+                                bindValue="id" 
+                                [addTag]="false"
+                                [multiple]="false"
+                                [hideSelected]="true"
+                                [trackByFn]="trackByFn"
+                                [minTermLength]="3"
+                                [loading]="gestorLoading"
+                                typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                                [typeahead]="gestorInput$"
+                                formControlName="usuario">
+                              </ng-select>
+                            </div>
+                          </div>                     
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                          <div class="row">
+                              <div class="col-12">
+                              <button type="button" class="btn btn-green">Volver</button>
+                              <button type="button" class="btn btn-green" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                    
+                              <button type="button" (click)="guardarRetiro()" [disabled]="loading" class="btn btn-green">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Guardar
+                              </button>
+                            </div>                            
+                          </div>  
+                      </div>
+                    </form>  
+              </div>
+            </div>
+          </div>
+         
+      </div>
+  </div>
+</div>
+
+
 <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>

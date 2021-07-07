@@ -10,6 +10,8 @@ import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.com
 import { DetalleUsuarioComponent } from './usuarios/pages/detalle/detalle.component';
 import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmueble.component';
 import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
+import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
+
 
 
 
@@ -50,5 +52,11 @@ export const APP_ROUTES: Routes = [
   {path: 'inmueble/editar/:id', component: AgregarComponent },
 
   {path: 'inmueble/:id', component: DetalleComponent },
+
+
+  
+  //RETIRO
+
+  {path: 'retiro/buscar', component: BuscarRetiroComponent},
 
 ];

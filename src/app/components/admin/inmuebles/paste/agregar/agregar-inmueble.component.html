@@ -13,10 +13,11 @@
                   <div class="form-group">
                     
                     <label for="numero_partida" class="form-label">Numero de Partida</label>
-                    <input formControlName="numero_partida" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.numero_partida.errors }">
+                    <input formControlName="numero_partida" type="numeric" class="form-control" maxlength="4" [ngClass]="{ 'is-invalid': submitted && f.numero_partida.errors }">
                     <div *ngIf="submitted && f.numero_partida.errors" class="invalid-feedback">
                       <div *ngIf="f.numero_partida.errors.required">Este campo es obligatorio</div>
                     </div>
+                    
 
                   </div>
 
@@ -94,6 +95,7 @@
                     <div *ngIf="submitted && f.numero_mensura.errors" class="invalid-feedback">
                       <div *ngIf="f.numero_mensura.errors.required">Este campo es obligatorio</div>
                     </div>
+                
 
                   </div>
 
@@ -107,6 +109,7 @@
                     <div *ngIf="submitted && f.departamento.errors" class="invalid-feedback">
                       <div *ngIf="f.departamento.errors.required">Este campo es obligatorio</div>
                     </div>
+                  
 
                   </div>
                   

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/40dff5ce-9575-41b4-a07c-57d5a767f88c/resourceGroups/Demo/providers/Microsoft.Web/sites/Geodesia-front",
+    "appService.deploySubpath": "dist\\front"
+}

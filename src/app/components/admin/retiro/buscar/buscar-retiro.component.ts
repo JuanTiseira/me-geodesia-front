@@ -1,31 +1,27 @@
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-
-
-
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
 @Component({
   selector: 'app-buscar',
-  templateUrl: './buscar-inmueble.component.html',
-  styleUrls: ['./buscar-inmueble.component.scss']
+  templateUrl: './buscar-retiro.component.html',
+  styleUrls: ['./buscar-retiro.component.scss']
 })
   
 
-export class BuscarInmuebleComponent implements OnInit {
+export class BuscarRetiroComponent implements OnInit {
 
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
@@ -48,7 +44,7 @@ export class BuscarInmuebleComponent implements OnInit {
   tramite: string
 
   categories = [
-    {id: 1, name: 'Numero', value: 'numero'},
+    {id: 1, name: 'DNI', value: 'dni'},
     
   ]
 

@@ -48,6 +48,14 @@ export interface Rol {
     habilitado:  boolean;
 }
 
+export class Documento {
+    id:             number;
+    url:            string;
+    descripcion:    string;
+    tipo_documento: string;
+    retiro:         string;
+}
+
 
 @Injectable({
     providedIn: 'root'
@@ -73,24 +81,47 @@ export class DataService {
 
     getUsuarios () {
         return this.http.get(this.url+'/usuarios/').toPromise();
-      }
+    }
+
+    getDocumentos () {
+        return this.http.get(this.url+'/documentos/').toPromise();
+    }
     
     getPeople(term: string = null): Observable<Person[]> {
 
-
         this.getUsuarios().then((res:Respuesta) =>{
-
-
             console.warn(res);
            
             this.items = res.results
+            this.items.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + i.dni; return i; })
+
+            console.log(this.items)
             if (term) {
                 this.items = this.items.filter(x => x.nombre.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
             }
 
           })
         
-        
-        return of(this.items).pipe(delay(500));
+        return of(this.items).pipe( delay(500));
     }
+
+
+    getDocs(term: string = null): Observable<Documento[]> {
+
+
+        this.getDocumentos().then((res:Respuesta) =>{
+
+            console.warn(res);
+            this.items = res.results
+            console.log(this.items)
+            
+            if (term) {
+                this.items = this.items.filter(x => x.descripcion.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
+            }
+
+          })
+
+        return of(this.items).pipe( delay(500));
+    }
+
 }

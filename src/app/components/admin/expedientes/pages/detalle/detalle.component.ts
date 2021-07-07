@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -9,6 +8,9 @@ import Swal from 'sweetalert2'
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { concat, Observable, of, Subject } from 'rxjs';
+import { DataService, Documento, Person } from 'src/app/services/data.service';
+import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detalle',
@@ -26,18 +28,38 @@ export class DetalleComponent implements OnInit {
   resultado = null;
   message = '';
   expedienteForm: FormGroup;
+  retiroForm: FormGroup
   id: string;
   isEditMode: boolean;
   loading = false;
   submitted = false;
   selecteditem: string;
-  selectedinmueble: string;
-  selecteddocumentos: [];
+  selectedInmuebles: string;
   selectedtramite: string;
-  selectedobservacion: string;
-  selectedgestor: string; 
-  selectedpropietario: string; 
-  selectedagrimensor: string;
+
+
+    agrimensor$: Observable<Person[]>;
+    gestor$: Observable<Person[]>;
+    propietario$: Observable<Person[]>;
+    documento$: Observable<Documento[]>;
+    documentos$: Observable<Documento[]>;
+
+    agrimensorLoading = false;
+    gestorLoading = false;
+    propietarioLoading = false;
+    documentoLoading = false;
+
+
+    agrimensorInput$ = new Subject<string>();
+    propietarioInput$ = new Subject<string>();
+    gestorInput$ = new Subject<string>();
+    documentoInput$ = new Subject<string>();
+
+
+    selectedAgrimensores: Person[] = <any>[{}];
+    selectedPropietarios: Person[] = <any>[{}];
+    selectedGestores: Person[] = <any>[{}];
+    selectedDocumentos: Documento[] = <any>[{}];
 
 
   public tipos_expedientes: any;
@@ -46,10 +68,12 @@ export class DetalleComponent implements OnInit {
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
+  documentosexpediente: any;
 
 
 
   constructor(
+    private dataService: DataService,
     private _apiService: ApiService,
     private _functionService: FunctionsService ,
     private route: ActivatedRoute,
@@ -62,30 +86,47 @@ export class DetalleComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.spinner.show();
+    this._apiService.getDocumentos().then(response => {
+      this.documentos = response
+      this._functionService.imprimirMensaje(response, "documentos")
+    })
 
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 1000);
+
+    this.loadPropietarios();
+    this.loadGestores();
+    this.loadAgrimensores();
+    this.loadDocumentos()
+    this.spinner.show();
 
     this.id = this.route.snapshot.params['id'];
 
     this.isEditMode = false;
     
     this.expedienteForm = this.formBuilder.group({
-      tipo_expediente: [{value: '', }, Validators.required],
-      inmueble: [{value: '', }, Validators.required],
-      documento: [{value: '', }, Validators.required],
-      propietario: [{value: '', }, Validators.required],
-      gestor: [{value: '', }, Validators.required],
-      tramite: [{value: '', }, Validators.required],
-      observacion: [{value: '', }, Validators.required],
-      abreviatura: [{value: '', }, Validators.required],
-      agrimensor: [{value: '', }, Validators.required],
+
+        tipo_expediente: [{value: '', }, Validators.required],
+        inmueble: [{value: '', }, Validators.required],
+        documento: [{value: '', }, Validators.required],
+        propietario: [{value: '', }, Validators.required],
+        gestor: [{value: '', }, Validators.required],
+        tramite: [{value: '', }, Validators.required],
+        observacion: [{value: '', }, Validators.required],
+        abreviatura: [{value: '', }, Validators.required],
+        agrimensor: [{value: '', }, Validators.required],
+
       }, {
          
       });
+    
+      this.retiroForm = this.formBuilder.group({
+        descripcion: [{value: '', }, Validators.required],
+        documento: [{value: '', }, Validators.required],
+        expediente: [{value: '', }, Validators.required],
+        usuario: [{value: '', }, Validators.required],
+      }, {
+         
+      });
+      
 
       this.expedienteForm.disable();
 
@@ -102,28 +143,26 @@ export class DetalleComponent implements OnInit {
       this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
         .then((x:any) =>{
 
-         
           this.resultado = x.expediente
+          this.documentosexpediente  = this.resultado.documentos
 
           this.expedienteForm.patchValue(this.resultado)
+
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
           }
 
-          this.selecteditem = this.resultado.expedientetipo_expediente
-          this.selectedinmueble = this.resultado.expedienteinmueble
-          this.selecteddocumentos = this.resultado.expedientedocumentos
-          this.selectedobservacion = this.resultado.expedienteobservacion
-          this.selectedpropietario = this.resultado.expedientepropietario
-          this.selectedgestor = this.resultado.expedientegestor
-          this.selectedagrimensor = this.resultado.expedienteagrimensor
-          this.selectedtramite = this.resultado.expedientetramite
-
-
+          this.selecteditem = this.resultado.tipo_expediente
+          this.selectedInmuebles = this.resultado.inmueble
+          this.selectedDocumentos = this.resultado.documentos
+          this.selectedPropietarios = this.resultado.propietario
+          this.selectedGestores = this.resultado.gestor
+          this.selectedAgrimensores = this.resultado.agrimensor
+          this.selectedtramite = this.resultado.tramit
           this._functionService.imprimirMensaje(x, "expediente")
           
       }).catch((e)=>{
-        console.log(e)
+        
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       });
@@ -132,34 +171,36 @@ export class DetalleComponent implements OnInit {
         this._apiService.getExpediente(this.route.snapshot.params['id'])
         .then((x:any) =>{
 
-      
           this.resultado = x.expediente
-          console.log(x)
+          this.documentosexpediente  = this.resultado.documentos
+
+
+          console.log('RESULTADO', this.resultado)
           this.expedienteForm.patchValue(this.resultado)
 
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
           }
-          
+        
+          this.selecteditem = this.resultado.tipo_expediente
+          this.selectedInmuebles = this.resultado.inmueble
+          this.selectedDocumentos = this.resultado.documentos
+         
+          this.selectedPropietarios = this.resultado.propietario
+          this.selectedGestores = this.resultado.gestor
+          this.selectedAgrimensores = this.resultado.agrimensor
+          this.selectedtramite = this.resultado.tramite
 
-          this.selecteditem = this.resultado.expedientetipo_expediente
-          this.selectedinmueble = this.resultado.expedienteinmueble
-          this.selecteddocumentos = this.resultado.expedientedocumentos
-          this.selectedobservacion = this.resultado.expedienteobservacion
-          this.selectedpropietario = this.resultado.expedientepropietario
-          this.selectedgestor = this.resultado.expedientegestor
-          this.selectedagrimensor = this.resultado.expedienteagrimensor
-          this.selectedtramite = this.resultado.expedientetramite
-
-
-          this._functionService.imprimirMensaje(x, "expediente")
+          this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
           
       }).catch((e)=>{
-        console.log(e)
+        console.log('error', e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
+        
       });
-
+      this.retiroForm.patchValue({descripcion: ''});
+          
 
     }
     
@@ -167,42 +208,33 @@ export class DetalleComponent implements OnInit {
       
       this._apiService.getExpedienteTramite(this.route.snapshot.queryParams['numero'])
         .then((x:any) =>{
-
           
           this.resultado = x.expediente
+          this.documentosexpediente  = this.resultado.documentos
           
           this.expedienteForm.patchValue(this.resultado)
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
           }
 
-          
-
-
-          this.selecteditem = this.resultado.expedientetipo_expediente
-          this.selectedinmueble = this.resultado.expedienteinmueble
-          this.selecteddocumentos = this.resultado.expedientedocumentos
-          this.selectedpropietario = this.resultado.expedientepropietario
-          this.selectedgestor = this.resultado.expedientegestor
-          this.selectedagrimensor = this.resultado.expedienteagrimensor
-          this.selectedtramite = this.resultado.expedientetramite
-
+          this.selecteditem = this.resultado.tipo_expediente
+          this.selectedInmuebles = this.resultado.inmueble
+          this.selectedDocumentos = this.resultado.documentos
+          this.selectedPropietarios = this.resultado.propietario
+          this.selectedGestores = this.resultado.gestor
+          this.selectedAgrimensores = this.resultado.agrimensor
+          this.selectedtramite = this.resultado.tramite
 
           this._functionService.imprimirMensaje(x, "expediente")
           
       }).catch((e)=>{
-        console.log(e)
+        console.log('error', e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       });
 
     }
-    
-    
-    
-      
-    
-
+  
     this._apiService.getTipoExpedientes().then(response => {
       
       this.tipos_expedientes = response
@@ -229,9 +261,68 @@ export class DetalleComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "usuarios")
     })
 
+    this.loadPropietarios()
 
     
   }
+
+  trackByFn(item: Person) {
+    return item.id;
+  }
+  
+
+
+  private loadPropietarios() {
+
+    this.propietario$ = concat(
+        of([]), // items por defecto
+        this.propietarioInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.propietarioLoading = true),
+            switchMap(term => this.dataService.getPeople(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.propietarioLoading = false)
+            ))
+        )
+    );
+  }
+
+  private loadGestores() {
+
+    this.gestor$ = concat(
+        of([]), // items por defecto
+        this.gestorInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.gestorLoading = true),
+            switchMap(term => this.dataService.getPeople(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.gestorLoading = false)
+            ))
+        )
+    );
+  }
+
+
+  private loadAgrimensores() {
+    this.agrimensor$ = concat(
+        of([]), // items por defecto
+        this.agrimensorInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.agrimensorLoading = true),
+            switchMap(term => this.dataService.getPeople(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.agrimensorLoading = false)
+            ))
+        )
+    );
+  }
+
+  private loadDocumentos() {
+
+    this.documentos$ = this.dataService.getDocs()
+    
+  }
+
 
   compareFn(value, option): boolean {
     return value.id === option.id;
@@ -262,7 +353,25 @@ export class DetalleComponent implements OnInit {
   
   }
 
+  guardarRetiro(){
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.retiroForm.invalid) {
+        alert('errores')
+        console.log(this.expedienteForm)
+        return;
+    }else{
+      this.loading = true;    
+      this.setRetiro();
+    }
+
+   
+  }
+
+  
   get f() { return this.expedienteForm.controls; }
+
+  get r() { return this.retiroForm.controls; }
 
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
@@ -293,4 +402,39 @@ export class DetalleComponent implements OnInit {
 
   }
 
+
+  setRetiro() {
+  
+    console.info('FORMULARIO RETIRO', this.retiroForm.value.documento)
+
+    for (var id of this.retiroForm.value.documento) {
+
+      this.retiroForm.patchValue({documento: id});
+      this.retiroForm.patchValue({expediente: this.resultado.id});
+
+      console.log(this.retiroForm)
+      this._apiService.setRetiro(this.retiroForm.value)
+      .then((res: any) =>{
+
+        console.warn(res);
+        Swal.fire({
+          title: 'Exito',
+          text: 'Se registro correctamente',
+          icon: 'success',
+          confirmButtonText: 'Cool',
+        })
+        this.loading = false;
+        document.getElementById("closeModalRetiroButton").click();
+      })
+      .catch((e)=>{
+      Swal.fire({
+          title: 'Error!',
+          text: 'No se pudo registrar',
+          icon: 'error',
+          confirmButtonText: 'Cool'
+        })
+        this.loading = false;
+    });
+    } 
+  }
 }

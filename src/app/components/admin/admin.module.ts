@@ -39,6 +39,11 @@ import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmu
 import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
 
 
+//RETIROS 
+import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
+
+
+
 
 
 @NgModule({
@@ -54,8 +59,9 @@ import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmuebl
     DetalleUsuarioComponent,
     AgregarComponent,
     AgregarInmuebleComponent,
-    BuscarInmuebleComponent
-
+    BuscarInmuebleComponent,
+    BuscarRetiroComponent,
+   
   ],
   imports: [
 

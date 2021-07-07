@@ -39,9 +39,9 @@ export class ApiService {
     this.router.navigate(['login']);
   }
 
-  changePage(page){
+  changePage(page, module){
     console.log('bucando pagina: ' , page)
-    return this.http.get(this.url+`/expedientes/?page=${page}`).toPromise().catch((e)=>
+    return this.http.get(this.url+`/${module}/?page=${page}`).toPromise().catch((e)=>
     {   
         console.log("ERRORRRRR.", e);
         //this.router.navigate(['login']);
@@ -96,16 +96,16 @@ export class ApiService {
 
   getExpediente(id){
     console.log(id)
-    return this.http.get(this.url+`/expedientes/1/expediente_tramite/?id=${id}`).toPromise();
+    return this.http.get(this.url+`/expedientes/expediente_tramite/?id=${id}`).toPromise();
   }
 
   getExpedienteNumero(numero, anio) {
     console.log(numero, anio)
-    return this.http.get(this.url+`/expedientes/1/expediente_tramite/?anio=${anio}&numero=${numero}`).toPromise();
+    return this.http.get(this.url+`/expedientes/expediente_tramite/?anio=${anio}&numero=${numero}`).toPromise();
   }
 
   getExpedienteTramite(numero){
-    return this.http.get(this.url+`/expedientes/1/expediente_tramite/?tramite=${numero}`).toPromise();
+    return this.http.get(this.url+`/expedientes/expediente_tramite/?tramite=${numero}`).toPromise();
   }
 
   setExpediente(expediente) {
@@ -188,6 +188,10 @@ export class ApiService {
 
   //USUARIOS ////////////////////////////////////////////////////////////////////////////////
 
+  getUsuarios () {
+    return this.http.get(this.url+'/usuarios/').toPromise();
+  }
+
   getRoles() {
     return this.http.get(this.url+'/roles/').toPromise();
   }
@@ -221,5 +225,23 @@ export class ApiService {
     return this.http.delete(this.url+`/usuarios/${usuario}/`).toPromise();
   }
 
-  
+
+  // DEPARTAMENTOS //////////////////////////////////////////////////////
+
+  getDepartamentos() {
+    return this.http.get(this.url+'/departamentos/').toPromise();
+  }
+
+
+  // RETIROS / DEVOLUCIONES ////////////////////////////////////////////
+
+  setRetiro(retiro) {
+    console.warn(retiro);
+    return this.http.post(this.url+'/retiros/', retiro).toPromise().catch((e)=>
+    { 
+      console.log('error', e);
+
+    }); 
+  }
+
 }
