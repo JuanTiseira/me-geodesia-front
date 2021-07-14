@@ -14,8 +14,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CommonModule } from '@angular/common';  
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgSelectModule } from '@ng-select/ng-select';
-
-
+import {NgxPrintModule} from 'ngx-print';
+// Import ngx-barcode module
+import { NgxBarcodeModule } from 'ngx-barcode';
 
 //EXPEDIENTES 
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
@@ -41,6 +42,7 @@ import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmuebl
 
 //RETIROS 
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
+import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
 
 
 
@@ -61,10 +63,12 @@ import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
     AgregarInmuebleComponent,
     BuscarInmuebleComponent,
     BuscarRetiroComponent,
+    CaratulaComponent,
    
   ],
   imports: [
-
+    NgxBarcodeModule,
+    NgxPrintModule,
     NgSelectModule,
     NgxSpinnerModule,
     CommonModule,

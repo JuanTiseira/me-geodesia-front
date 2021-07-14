@@ -49,7 +49,7 @@
                       <div class="col-md-10">
                         <label for="inmueble" class="form-label">Inmueble</label>
                         <ng-select *ngIf="inmuebles" [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" >
-                          <ng-option *ngFor="let dato of inmuebles.results" [value]="dato" [disabled]="dato.disabled">{{dato.departamento.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
+                          <ng-option *ngFor="let dato of inmuebles.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.municipio.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
                         </ng-select>
                         <div *ngIf="submitted && f.inmueble.errors" class="invalid-feedback">
                           <div *ngIf="f.inmueble.errors.required">Este campo es obligatorio</div>
@@ -77,6 +77,7 @@
                           <ng-select 
                           [items]="propietario$ | async"
                           bindLabel="fullName"
+                          bindValue="id"
                           [addTag]="false"
                           [multiple]="false"
                           [hideSelected]="true"
@@ -163,6 +164,7 @@
                           <ng-select 
                             [items]="agrimensor$ | async"
                             bindLabel="fullName"
+                            bindValue="id"
                             [addTag]="false"
                             [multiple]="false"
                             [hideSelected]="true"
@@ -201,6 +203,7 @@
                           <ng-select 
                             [items]="gestor$ | async"
                             bindLabel="fullName"
+                            bindValue="id"
                             [addTag]="false"
                             [multiple]="false"
                             [hideSelected]="true"
@@ -270,7 +273,7 @@
                 <button id="closeModalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <app-crear-usuario (verDetallesFunction)="verDetalles($event)"></app-crear-usuario>
+                <app-crear-usuario (verDetallesFunction)="verDetallesUsuarios($event)"></app-crear-usuario>
             </div>
             <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="modificarUsuario()">Modificar</button>
@@ -290,7 +293,7 @@
               <button id="closeModalInmuebleButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <app-crear-inmueble (verDetallesFunction)="verDetalles($event)"></app-crear-inmueble>
+              <app-crear-inmueble (verDetallesInmuebles)="verDetalles($event)"></app-crear-inmueble>
           </div>
           <!-- <div class="modal-footer">
               <button type="button" class="btn btn-primary" (click)="modificarUsuario()">Modificar</button>

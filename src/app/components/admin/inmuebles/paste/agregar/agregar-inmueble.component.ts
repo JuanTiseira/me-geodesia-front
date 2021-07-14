@@ -16,9 +16,9 @@ export class AgregarInmuebleComponent implements OnInit {
 
   // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
-  @Output() verDetallesFunction: EventEmitter<any>;
+  @Output() verDetallesInmuebles: EventEmitter<any>;
   
-  public departamentos: any;
+  public municipios: any;
 
   inmuebleForm : FormGroup
   form: FormGroup;
@@ -36,7 +36,7 @@ export class AgregarInmuebleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     ) { 
-      this.verDetallesFunction = new EventEmitter();
+      this.verDetallesInmuebles = new EventEmitter();
      }
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class AgregarInmuebleComponent implements OnInit {
       manzana: ['', Validators.required, Validators.maxLength(4)],
       parcela: ['', Validators.required, Validators.maxLength(4)],
       numero_mensura: ['', Validators.required, Validators.maxLength(4)],
-      departamento: ['', Validators.required]
+      municipio: ['', Validators.required]
     }, {
          
       });
@@ -66,9 +66,9 @@ export class AgregarInmuebleComponent implements OnInit {
         .then(x => this.form.patchValue(x));
     }
 
-    this._apiService.getDepartamentos().then(response => {
-      this.departamentos = response
-      this._functionService.imprimirMensaje(response, "departamentos")
+    this._apiService.getMunicipios().then(response => {
+      this.municipios = response
+      this._functionService.imprimirMensaje(response, "municipios")
     })
 
   
@@ -103,7 +103,7 @@ export class AgregarInmuebleComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'OK',
       })
-      
+      this.verDetallesInmuebles.emit(true);
     })
     .catch((e)=>{
      Swal.fire({
@@ -113,11 +113,9 @@ export class AgregarInmuebleComponent implements OnInit {
         confirmButtonText: 'OK'
       })
 
-      {
-     
-    }  
+
       this.loading = false;
-      this.verDetallesFunction.emit(true);
+      
     });
     
     document.getElementById("closeModalInmuebleButton").click();

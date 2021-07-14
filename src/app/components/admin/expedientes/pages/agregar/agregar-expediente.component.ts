@@ -150,7 +150,6 @@ export class AgregarComponent implements OnInit {
     };
     
 
-    console.log('PROPIETARIOS',this.selectedPropietarios)
   }
 
   trackByFn(item: Person) {
@@ -269,6 +268,8 @@ export class AgregarComponent implements OnInit {
     this._apiService.getInmueblesDisponibles().then(response => {
       this.inmuebles = response
     })
+
+    alert('entro')
   } 
 
   verDetallesUsuarios(dato:boolean){

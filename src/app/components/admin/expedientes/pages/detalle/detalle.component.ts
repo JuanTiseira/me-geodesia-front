@@ -84,6 +84,8 @@ export class DetalleComponent implements OnInit {
    
     ) {}
 
+
+
   ngOnInit(): void {
 
     this._apiService.getDocumentos().then(response => {
@@ -96,7 +98,6 @@ export class DetalleComponent implements OnInit {
     this.loadGestores();
     this.loadAgrimensores();
     this.loadDocumentos()
-    this.spinner.show();
 
     this.id = this.route.snapshot.params['id'];
 
@@ -139,6 +140,8 @@ export class DetalleComponent implements OnInit {
 
     this.id = this.route.snapshot.params['id'];
 
+
+    //BUSQUEDA Y CARGA CON FILTROS 
     if (this.route.snapshot.queryParams['anio']) {
       this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
         .then((x:any) =>{
@@ -235,8 +238,9 @@ export class DetalleComponent implements OnInit {
 
     }
   
+
+    //CARGA DE DATOS PARA SELECTS
     this._apiService.getTipoExpedientes().then(response => {
-      
       this.tipos_expedientes = response
       //this.tipos_expedientes = response
     })
@@ -263,13 +267,47 @@ export class DetalleComponent implements OnInit {
 
     this.loadPropietarios()
 
-    
+  //FIN CARGAR DATOS PARA SELECTS
   }
 
   trackByFn(item: Person) {
     return item.id;
   }
   
+  //IMPRIMIR ETIQUETA
+  
+  elementType = 'svg';
+  value = '1234567';
+  format = 'EAN8';
+  lineColor = '#000000';
+  width = 1.5;
+  height = 24;
+  displayValue = true;
+  font = 'monospace';
+  textAlign = 'center';
+  textPosition = 'bottom';
+  textMargin = 2;
+  fontSize = 24;
+  background = '#ffffff';
+  margin = 0;
+  marginTop = 0;
+  marginBottom = 0;
+  marginLeft = 0;
+  marginRight = 0;
+
+  get values(): string[] {
+    return this.value.split('\n');
+  }
+  codeList: string[] = [
+    '', 'CODE128',
+    'CODE128A', 'CODE128B', 'CODE128C',
+    'UPC', 'EAN8', 'EAN5', 'EAN2',
+    'CODE39',
+    'ITF14',
+    'MSI', 'MSI10', 'MSI11', 'MSI1010', 'MSI1110',
+    'pharmacode',
+    'codabar'
+  ];
 
 
   private loadPropietarios() {
@@ -437,4 +475,6 @@ export class DetalleComponent implements OnInit {
     });
     } 
   }
+
+ 
 }

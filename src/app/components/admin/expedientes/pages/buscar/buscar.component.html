@@ -37,7 +37,8 @@
 
         <hr />
 
-        <div class="row" *ngIf="isAdmin">
+        <div class="row" *ngIf="isAdmin || isEmpleado">
+
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de Expediente</label>
                 <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
@@ -76,11 +77,29 @@
             </div>
             
 
-            <div class="col-md-4">
-                <label for="username" class="form-label">Gestor</label>
-                <select formControlName="gestor" class="form-select" *ngIf="usuarios">
-                    <option [value]="dato.id" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                </select>
+            <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-10">
+                          <label for="gestor" class="form-label">Gestor</label>
+                          <ng-select 
+                            [items]="gestor$ | async"
+                            bindLabel="fullName"
+                            bindValue="id"
+                            [addTag]="false"
+                            [multiple]="false"
+                            [hideSelected]="true"
+                            [trackByFn]="trackByFn"
+                            [minTermLength]="3"
+                            [loading]="gestorLoading"
+                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                            [typeahead]="gestorInput$"
+                            formControlName="gestor">
+                          </ng-select>
+                        </div>
+                        <div class="col-md-2">
+                          <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
+                        </div>
+                    </div>
             </div>
 
 

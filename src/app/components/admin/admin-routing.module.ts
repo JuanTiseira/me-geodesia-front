@@ -11,6 +11,7 @@ import { DetalleUsuarioComponent } from './usuarios/pages/detalle/detalle.compon
 import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmueble.component';
 import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
+import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
 
 
 
@@ -25,8 +26,13 @@ export const APP_ROUTES: Routes = [
 
   {path: 'expediente/editar/:id', component: AgregarComponent },
 
+  {path: 'expediente/caratula', component: CaratulaComponent},
+
   {path: 'expediente/:id', component: DetalleComponent },
 
+  //IMPRIMIR CARATULA 
+
+  
 
   //USUARIOS
 

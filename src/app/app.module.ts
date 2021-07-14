@@ -21,7 +21,7 @@ import { MatTableModule } from '@angular/material/table'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
-
+import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -35,6 +35,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     
   ],
   imports: [
+    NgxPrintModule, 
     NgxSpinnerModule,
     NgxPaginationModule,
     MatTableModule,

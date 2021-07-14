@@ -44,7 +44,7 @@
 
                   <div class="form-group">
                     <label for="rol" class="form-label">Seccion</label>
-                    <input formControlName="seccion" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
+                    <input formControlName="seccion" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
                     <div *ngIf="submitted && f.seccion.errors" class="invalid-feedback">
                       <div *ngIf="f.seccion.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -61,7 +61,7 @@
                   <div class="form-group">
                     
                     <label for="chacra" class="form-label">Chacra</label>
-                    <input formControlName="chacra" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.chacra.errors }">
+                    <input formControlName="chacra" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.chacra.errors }">
                     <div *ngIf="submitted && f.chacra.errors" class="invalid-feedback">
                       <div *ngIf="f.chacra.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -71,7 +71,7 @@
                   <div class="form-group">
                     
                     <label for="manzana" class="form-label">Manzana</label>
-                    <input formControlName="manzana" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.manzana.errors }">
+                    <input formControlName="manzana" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.manzana.errors }">
                     <div *ngIf="submitted && f.manzana.errors" class="invalid-feedback">
                       <div *ngIf="f.manzana.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -101,13 +101,13 @@
 
                   <div class="form-group">
                     
-                    <label for="departamento" class="form-label">Departamento</label>
-                    <select *ngIf="departamentos" formControlName="departamento" name="" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.departamento.errors }">
+                    <label for="municipio" class="form-label">Municipio</label>
+                    <select *ngIf="municipios" formControlName="municipio" name="" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.municipio.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
-                      <option [ngValue]="dato" *ngFor="let dato of departamentos.results" value="">{{dato.descripcion}}</option>
+                      <option [ngValue]="dato.id" *ngFor="let dato of municipios.results" value="">{{dato.descripcion}}</option>
                     </select>
-                    <div *ngIf="submitted && f.departamento.errors" class="invalid-feedback">
-                      <div *ngIf="f.departamento.errors.required">Este campo es obligatorio</div>
+                    <div *ngIf="submitted && f.municipio.errors" class="invalid-feedback">
+                      <div *ngIf="f.municipio.errors.required">Este campo es obligatorio</div>
                     </div>
                   
 

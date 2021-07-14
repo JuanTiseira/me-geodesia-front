@@ -1,0 +1,76 @@
+    @font-face {
+        font-family: Roboto Regular;
+        src: url(./fonts/Roboto-Regular.ttf);
+    }
+
+    @font-face {
+        font-family: Roboto Bold;
+        src: url(./fonts/Roboto-Bold.ttf);
+    }
+
+    html {
+        overflow-x: hidden;
+    }
+
+    body {
+        overflow-x: hidden;
+        font-family: 'Roboto Regular' !important;
+        background-color: rgb(240, 240, 240) !important;
+        height: 100%;
+        width: 100%;
+        padding-left: 5px;
+        
+    }
+
+    table {
+        border-collapse: collapse;
+        font-size: 5px;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        
+    }
+
+    th, td { 
+        font-size: 6px;
+        text-align: left;
+        font-weight: 100;
+    }
+
+    hr {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    } 
+
+    a {
+        cursor: pointer;
+    }
+
+    h2 {
+
+        font-size: 50px;
+    
+    }
+
+    p{
+        margin: 0px;
+        padding: 0px;
+    }
+
+    label{
+        font-size: 12px;
+    }
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+

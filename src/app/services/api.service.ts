@@ -26,10 +26,14 @@ export class ApiService {
       
   }
 
+  
+
   getLogin(username: string, password: string){
     var data = new FormData();
     data.append('username', username);
     data.append('password', password);
+
+   
     return this.http.post(this.urlLogin, data).toPromise();
   }
 
@@ -231,6 +235,13 @@ export class ApiService {
   getDepartamentos() {
     return this.http.get(this.url+'/departamentos/').toPromise();
   }
+
+  // MUNICIPIOS
+
+  getMunicipios() {
+    return this.http.get(this.url+'/municipios/').toPromise();
+  }
+
 
 
   // RETIROS / DEVOLUCIONES ////////////////////////////////////////////
