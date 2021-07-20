@@ -95,7 +95,7 @@ export class DataService {
             this.items = res.results
             this.items.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + i.dni; return i; })
 
-            console.log(this.items)
+            //console.log(this.items)
             if (term) {
                 this.items = this.items.filter(x => x.nombre.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
             }
@@ -113,7 +113,7 @@ export class DataService {
 
             console.warn(res);
             this.items = res.results
-            console.log(this.items)
+            //console.log(this.items)
             
             if (term) {
                 this.items = this.items.filter(x => x.descripcion.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);

@@ -103,7 +103,10 @@ export class AgregarInmuebleComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'OK',
       })
+      this.inmuebleForm.reset();
+      this.loading = false;
       this.verDetallesInmuebles.emit(true);
+      
     })
     .catch((e)=>{
      Swal.fire({
@@ -113,7 +116,7 @@ export class AgregarInmuebleComponent implements OnInit {
         confirmButtonText: 'OK'
       })
 
-
+      
       this.loading = false;
       
     });

@@ -8,6 +8,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
 import { CommonModule } from '@angular/common';  
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -56,17 +57,15 @@ export class DetalleUsuarioComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
-    
-   
+    private spinner: NgxSpinnerService
     ) {}
 
   ngOnInit(): void {
-
-
     
-
+   
+    this.spinner.show();
+      
     this.id = this.route.snapshot.params['id'];
-
     this.isEditMode = false;
     
     this.usuarioForm = this.formBuilder.group({
@@ -85,58 +84,26 @@ export class DetalleUsuarioComponent implements OnInit {
 
       this.usuarioForm.disable();
 
-
-      
+     
     this.message = '';
     
     this.idEdit = false
 
     this._apiService.getUsuario(this.route.snapshot.paramMap.get('id'))
       .then(response => {
+      
       this.usuario = response
       this.usuarioForm.patchValue(response)
 
 
       this.selecteditem = this.usuario.tipo_usuario
-      this.selectedinmueble = this.usuario.inmueble
-      this.selecteddocumento = this.usuario.documento
-      this.selectedobservacion = this.usuario.observacion
-      this.selectedpropietario = this.usuario.propietario
-      this.selectedgestor = this.usuario.gestor
-      this.selectedagrimensor = this.usuario.agrimensor
-      this.selectedtramite = this.usuario.tramite
 
 
       this._functionService.imprimirMensaje(response, "usuario")
+     
     })
 
-    this._apiService.getTipoExpedientes().then(response => {
-      
-      this.tipos_usuarios = response
-      //this.tipos_usuarios = response
-    })
-
-    this._apiService.getTramites().then(response => {
-      this.tramites = response
-      this._functionService.imprimirMensaje(response, "tramites")
-    })
-
-    this._apiService.getInmuebles().then(response => {
-      this.inmuebles = response
-      this._functionService.imprimirMensaje(response, "inmuebles")
-    })
-
-    this._apiService.getObservaciones().then(response => {
-      this.observaciones = response
-      this._functionService.imprimirMensaje(response, "observaciones")
-    })
-
-    this._apiService.getUsuarios().then(response => {
-      this.usuarios = response
-      this._functionService.imprimirMensaje(response, "usuarios")
-    })
-
-
+  
     
   }
 

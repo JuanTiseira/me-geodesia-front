@@ -32,6 +32,11 @@ export class BuscarUsuarioComponent implements OnInit {
   closeResult = '';
 
   public page: number = 0;
+
+
+
+ 
+  public load: boolean;
   public search: string = '';
   public usuarios: any;
   public roles: any;
@@ -94,17 +99,11 @@ export class BuscarUsuarioComponent implements OnInit {
   ngOnInit(): void {
 
     this.spinner.show();
-
+    
       setTimeout(() => {
         /** spinner ends after 5 seconds */
         this.spinner.hide();
       }, 1000);
-
-      this._apiService.getUsuarios()
-      .then(response => {
-        this.usuarios = response
-        this._functionService.imprimirMensaje(response, "usuarios")
-      })
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
@@ -115,11 +114,6 @@ export class BuscarUsuarioComponent implements OnInit {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
-  
-      this._apiService.getUsuarios().then(response => {
-        this.usuarios = response
-        this._functionService.imprimirMensaje(response, "usuarios")
-      })
 
       this._apiService.getRoles().then(response => {
         this.roles = response
@@ -129,8 +123,30 @@ export class BuscarUsuarioComponent implements OnInit {
   }
 
 
-  buscar () {
-    alert('buscado')
+  buscarUsuarios() {
+    this.spinner.show();
+    this._apiService.getUsuariosFiltros(this.consultaForm.value)
+    .then((res) =>{
+
+      this.usuarios = res
+     
+      console.log(this.usuarios)
+      
+      if (this.usuarios.count == 0) {
+        this.spinner.hide();
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire()
+      }else{
+        this.usuarios = res
+        this.spinner.hide();
+      }
+
+      this.load = false;
+    
+    })
+    .catch(()=>{
+      console.log('error')
+    });
   }
 
   eliminar (id) {

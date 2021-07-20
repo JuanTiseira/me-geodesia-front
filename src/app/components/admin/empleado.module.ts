@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home/home.component';
 import { AgregarComponent } from './expedientes/pages/agregar/agregar-expediente.component';
 import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
@@ -23,7 +22,6 @@ import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.com
   imports: [
     NgxPaginationModule,
     RouterModule.forChild(APP_ROUTES),
-    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule

@@ -96,11 +96,6 @@ export class BuscarInmuebleComponent implements OnInit {
 
     this.spinner.show();
 
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 1000);
-
       this._apiService.getInmuebles()
       .then(response => {
         this.inmuebles = response
@@ -125,8 +120,11 @@ export class BuscarInmuebleComponent implements OnInit {
       this._apiService.getRoles().then(response => {
         this.roles = response
         this._functionService.imprimirMensaje(response, "roles")
-      })
+        
+        this.spinner.hide();
 
+      })
+     
   }
 
   onTableDataChange(event) {

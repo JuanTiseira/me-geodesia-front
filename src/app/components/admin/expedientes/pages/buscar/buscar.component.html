@@ -1,24 +1,25 @@
-
-
-    
     <div class="row">
         <h1 style="font-weight: bold;">Consulta de Expediente</h1>
     </div>
-    
     <br>  
     <form [formGroup]="consultaForm">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Consultar por</label>   
-                <select formControlName="param_busqueda" class="form-select" aria-label="Default select example">
-                    <option *ngFor="let cat of categories" [ngValue]="cat.value">{{cat.name}}</option>
-                </select>
+               
+                <ng-select id="param_busqueda" [multiple]="false" [closeOnSelect]="true" formControlName="param_busqueda" >
+                    <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                    <ng-option *ngFor="let cat of categories" [value]="cat.value" [disabled]="cat.disabled">{{cat.name}}</ng-option>
+                </ng-select>
+
+                
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
-                <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
-                <small *ngIf="consultaForm.value.param_busqueda === 'expediente'" id="emailHelp" class="form-text text-muted">Ingrese el numero de expediente y año, sin espacios.</small> 
-                <small *ngIf="consultaForm.value.param_busqueda === 'tramite'" id="emailHelp" class="form-text text-muted">Ingrese el numero de tramite, sin espacios.</small>    
+                <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="numeric" type="number" placeholder="Número" class="form-control" autocomplete="off">
+                <small *ngIf="consultaForm.value.param_busqueda === 'expediente'" class="form-text text-muted">Ingrese el numero de expediente y año, sin espacios.</small> 
+                <small *ngIf="consultaForm.value.param_busqueda === 'tramite'"  class="form-text text-muted">Ingrese el numero de tramite, sin espacios.</small>   
+                
             </div>
             
             <div class="col-md-4">
@@ -38,7 +39,7 @@
         <hr />
 
         <div class="row" *ngIf="isAdmin || isEmpleado">
-
+            <h2 style="font-weight: bold;">Filtrar expedientes</h2>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de Expediente</label>
                 <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
@@ -57,57 +58,74 @@
             </div>
 
             <div class="col-md-4">
-                <label for="username" class="form-label">Tipo de Expediente</label>   
+                <label for="username" class="form-label">Tipo de Expediente</label> 
+               
                 <select formControlName="tipo_expediente" class="form-select" *ngIf="tipos_expedientes">
                     <option [value]="dato.id" *ngFor="let dato of tipos_expedientes.results" value="">{{dato.nombre}}</option>
                 </select>
+                <span *ngIf="!tipos_expedientes" class="spinner-border spinner-border-sm mr-1"></span>  
             </div>
-
             <div class="col-md-4">
                     <label for="username" class="form-label">Agrimensor</label>   
-                    <select formControlName="agrimensor" class="form-select" *ngIf="usuarios">
-                        <option [value]="dato.id" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                    </select>
+                    <ng-select 
+                    [items]="agrimensor$ | async"
+                    bindLabel="fullName"
+                    bindValue="id"
+                    [addTag]="false"
+                    [multiple]="false"
+                    [hideSelected]="true"
+                    [trackByFn]="trackByFn"
+                    [minTermLength]="3"
+                    [loading]="agrimensorLoading"
+                    typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                    [typeahead]="agrimensorInput$"
+                    formControlName="agrimensor"
+                    id="prueba">
+                  </ng-select>
+                  <span *ngIf="!usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
             </div>
             <div class="col-md-4">
                 <label for="username" class="form-label">Propietario</label>
-                <select formControlName="propietario" class="form-select" *ngIf="usuarios">
-                    <option [value]="dato.id" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                </select>
-            </div>
-            
-
-            <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-10">
-                          <label for="gestor" class="form-label">Gestor</label>
-                          <ng-select 
-                            [items]="gestor$ | async"
-                            bindLabel="fullName"
-                            bindValue="id"
-                            [addTag]="false"
-                            [multiple]="false"
-                            [hideSelected]="true"
-                            [trackByFn]="trackByFn"
-                            [minTermLength]="3"
-                            [loading]="gestorLoading"
-                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
-                            [typeahead]="gestorInput$"
-                            formControlName="gestor">
+                        <ng-select 
+                          [items]="propietario$ | async"
+                          bindLabel="fullName"
+                          bindValue="id"
+                          [addTag]="false"
+                          [multiple]="false"
+                          [hideSelected]="true"
+                          [trackByFn]="trackByFn"
+                          [minTermLength]="2"
+                          [loading]="propietarioLoading"
+                          typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                          [typeahead]="propietarioInput$"
+                          formControlName="propietario">
                           </ng-select>
-                        </div>
-                        <div class="col-md-2">
-                          <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
-                        </div>
-                    </div>
+                          <span *ngIf="!usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
             </div>
-
-
+            <div class="col-md-4">
+                        <label for="username" class="form-label">Gestor</label>
+                        <ng-select 
+                        [items]="gestor$ | async"
+                        bindLabel="fullName"
+                        bindValue="id"
+                        [addTag]="false"
+                        [multiple]="false"
+                        [hideSelected]="true"
+                        [trackByFn]="trackByFn"
+                        [minTermLength]="3"
+                        [loading]="gestorLoading"
+                        typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                        [typeahead]="gestorInput$"
+                        formControlName="gestor">
+                    </ng-select>
+                    <span *ngIf="!usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
+            </div>
             <div class="col-md-4">
                 <label for="username" class="form-label">Inmueble</label>
                 <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
                     <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
                   </select>
+                  <span *ngIf="!inmuebles" class="spinner-border spinner-border-sm mr-1"></span>  
             </div>
 
             <div class="col-md-4 ">
@@ -134,41 +152,32 @@
             </thead>
             <tbody>
                 <tr *ngFor="let exp of expedientes.results | paginate: { itemsPerPage: 10, currentPage: p, totalItems: expedientes.count }">
-
                     <td>{{ exp.numero }}</td>
                     <td>{{ exp.anio }}</td>
                     <td *ngIf="exp.gestor"> {{ exp.gestor.nombre }} {{ exp.gestor.apellido }}</td> 
                     <td *ngIf="!exp.gestor"> {{ exp.agrimensor.nombre }} {{ exp.agrimensor.apellido }}</td> 
                     <td> {{ exp.propietario.nombre }} {{ exp.propietario.apellido }}</td>
-                    <td><b>Estado</b></td>
+                    <td *ngIf="exp.habilitado == true"><b>Activo</b></td>
+                    <td *ngIf="exp.habilitado == false"><b>Inactivo</b></td>
                     <td>
                         <a [routerLink]="['/expediente/', exp.id ]" ><span style="color: white; background-color: black; padding: 5px 10px 5px 10px; border-radius: 100px;"><i class="fa fa-info"></i></span></a>
                         <a (click)="eliminar(exp.id)" ><span style="color: rgb(248, 9, 9); padding: 10px; border-radius: 50px;"><i class="fa fa-times"></i></span></a>
-                        <a (click)="eliminar(exp.id)" ><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-undo"></i></span></span></a>
+                        <!-- <a (click)="eliminar(exp.id)" ><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-undo"></i></span></span></a> -->
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <div class="d-flex justify-content-center">
-
             <pagination-controls (pageChange)="onTableDataChange($event)"></pagination-controls>
-
-
         </div>
-
-      
         <div class="col-md-4">
             <div class="mt-3">
                 <button type="button" (click)="limpiar()" class="btn btn-green float-right">Limpiar</button>
             </div>
         </div>
-
-        
     </div> 
     <ngx-spinner></ngx-spinner>
-
-
 <hr>
 
 <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>

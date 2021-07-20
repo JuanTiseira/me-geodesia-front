@@ -36,6 +36,8 @@ export class DetalleComponent implements OnInit {
   selecteditem: string;
   selectedInmuebles: string;
   selectedtramite: string;
+  usuario: any;
+  texto: any;
 
 
     agrimensor$: Observable<Person[]>;
@@ -43,23 +45,27 @@ export class DetalleComponent implements OnInit {
     propietario$: Observable<Person[]>;
     documento$: Observable<Documento[]>;
     documentos$: Observable<Documento[]>;
+    usuario$: Observable<Person[]>;
 
     agrimensorLoading = false;
     gestorLoading = false;
     propietarioLoading = false;
     documentoLoading = false;
+    usuarioLoading = false;
 
 
     agrimensorInput$ = new Subject<string>();
     propietarioInput$ = new Subject<string>();
     gestorInput$ = new Subject<string>();
     documentoInput$ = new Subject<string>();
+    usuarioInput$ = new Subject<string>();
 
 
     selectedAgrimensores: Person[] = <any>[{}];
     selectedPropietarios: Person[] = <any>[{}];
     selectedGestores: Person[] = <any>[{}];
     selectedDocumentos: Documento[] = <any>[{}];
+    usuarioDocumentos: Documento[] = <any>[{}];
 
 
   public tipos_expedientes: any;
@@ -124,13 +130,14 @@ export class DetalleComponent implements OnInit {
         documento: [{value: '', }, Validators.required],
         expediente: [{value: '', }, Validators.required],
         usuario: [{value: '', }, Validators.required],
+        dni: [{value: ''}]
       }, {
          
       });
       
 
       this.expedienteForm.disable();
-
+      this.retiroForm.value.dni = ''
 
       
     this.message = '';
@@ -140,7 +147,7 @@ export class DetalleComponent implements OnInit {
 
     this.id = this.route.snapshot.params['id'];
 
-
+    this.retiroForm.controls['dni'].setValue('');
     //BUSQUEDA Y CARGA CON FILTROS 
     if (this.route.snapshot.queryParams['anio']) {
       this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
@@ -150,6 +157,8 @@ export class DetalleComponent implements OnInit {
           this.documentosexpediente  = this.resultado.documentos
 
           this.expedienteForm.patchValue(this.resultado)
+          this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
+          
 
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
@@ -180,7 +189,8 @@ export class DetalleComponent implements OnInit {
 
           console.log('RESULTADO', this.resultado)
           this.expedienteForm.patchValue(this.resultado)
-
+          this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
+          
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
           }
@@ -216,6 +226,9 @@ export class DetalleComponent implements OnInit {
           this.documentosexpediente  = this.resultado.documentos
           
           this.expedienteForm.patchValue(this.resultado)
+          this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
+          
+
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
           }
@@ -308,6 +321,71 @@ export class DetalleComponent implements OnInit {
     'pharmacode',
     'codabar'
   ];
+
+  leerDni(){
+
+    this.texto =  this.usuario + this.retiroForm.value.dni
+    this.retiroForm.controls['dni'].setValue('');
+
+    this.verificarUsuario()
+  
+  }
+
+  verificarUsuario () {
+    let cont = 0
+    let dni = ''
+
+
+    if (this.texto[0] != "@") {
+      console.log(this.texto)
+      for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
+        if (this.texto[i] == '@') {
+          console.log(this.texto)
+          cont++
+        }
+
+        if (cont == 4 && this.texto[i] != '@') {
+          dni = dni + this.texto[i].toString()
+        }
+      }
+    }
+
+
+    if (this.texto[0] == "@") {
+
+      console.log(this.texto , '222222')
+
+      for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
+        if (this.texto[i] == '@') {
+          console.log(this.texto)
+          cont++
+        }
+        if (cont == 1 && this.texto[i] != '@' && this.texto[i] != " ") {
+          dni = dni + this.texto[i].toString()
+        }
+      }
+    }
+
+     
+
+    
+  
+    console.log('dni', dni, cont)
+
+    this._apiService.getUsuarioNumero(dni).then((response:any) => {
+      this._functionService.imprimirMensaje(response, "usuario")
+      console.log(response, 'respuesta')
+      this.usuario = response.results[0]
+      console.log(this.usuario)
+
+      if (response.count == 0) {
+        
+        this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire()
+      }
+      
+    })
+  }
 
 
   private loadPropietarios() {

@@ -14,8 +14,8 @@
                  
                   <tbody>
                       <tr>
-                          <th>Numero</th>
-                              <td >{{ usuario.nombre }}</td>
+                            <th>Nombre</th>
+                            <td >{{ usuario.nombre }}</td>
                       </tr>
                       <tr>
                           <th>Apellido</th>
@@ -83,4 +83,5 @@
 
 
 </div>
-<!-- <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal> -->
+<swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
+<ngx-spinner *ngIf="!usuario"></ngx-spinner>

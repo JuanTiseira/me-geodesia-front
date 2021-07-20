@@ -129,6 +129,7 @@ export class AgregarUsuarioComponent implements OnInit {
         confirmButtonText: 'Cool',
       })
       this.verDetallesFunction.emit(true);
+      this.loading = false;
     })
     .catch((e)=>{
      Swal.fire({

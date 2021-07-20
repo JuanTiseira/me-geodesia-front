@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
@@ -10,8 +10,6 @@ import { concat, Observable, of, Subject } from 'rxjs';
 import { DataService, Person, Documento } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
- 
-
 @Component({
   selector: 'app-agregar-expediente',
   templateUrl: './agregar-expediente.component.html',
@@ -21,9 +19,6 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
 
 export class AgregarComponent implements OnInit {
 
-  // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
- 
-  
     public tipos_expedientes: any;
     public documentos: any; 
     public tramites: any;
@@ -35,7 +30,6 @@ export class AgregarComponent implements OnInit {
     public selectedItems: any
     public tramite_urgente: boolean = false
 
-
     agrimensor$: Observable<Person[]>;
     gestor$: Observable<Person[]>;
     propietario$: Observable<Person[]>;
@@ -46,12 +40,10 @@ export class AgregarComponent implements OnInit {
     propietarioLoading = false;
     documentoLoading = false;
 
-
     agrimensorInput$ = new Subject<string>();
     propietarioInput$ = new Subject<string>();
     gestorInput$ = new Subject<string>();
     documentoInput$ = new Subject<string>();
-
 
     selectedAgrimensores: Person[] = <any>[{}];
     selectedPropietarios: Person[] = <any>[{}];
@@ -64,7 +56,6 @@ export class AgregarComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
-  
 
   constructor(
     private dataService: DataService,
@@ -75,13 +66,9 @@ export class AgregarComponent implements OnInit {
     private router: Router,
     private spinner: NgxSpinnerService
     ) { }
-
     
   ngOnInit(): void {
-
     this.loadPropietarios();
-
- 
     this.loadGestores();
     this.loadAgrimensores();
     this.loadDocumentos()
@@ -90,13 +77,14 @@ export class AgregarComponent implements OnInit {
       setTimeout(() => {
         /** spinner ends after 5 seconds */
         this.spinner.hide();
-      }, 1000);
-   
+      }, 2000);
+
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
     this.selectedItems = []
+
+
     this.expedienteForm = this.formBuilder.group({
-      
       tipo_expediente: ['', Validators.required],
       inmueble: ['', Validators.required],
       propietario: ['', Validators.required],
@@ -105,12 +93,9 @@ export class AgregarComponent implements OnInit {
       agrimensor: ['', Validators.required],
       tramite_urgente: [''],
       documentos: ['', Validators.required]
-
-      
       });
 
     this._apiService.getTipoExpedientes().then(response => {
-      
       this.tipos_expedientes = response
       //this.tipos_expedientes = response
     })
@@ -120,24 +105,15 @@ export class AgregarComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "inmuebles")
     })
 
-
     this._apiService.getObservaciones().then(response => {
       this.observaciones = response
       this._functionService.imprimirMensaje(response, "observaciones")
     })
 
-    this._apiService.getUsuarios().then(response => {
-      this.usuarios = response
-      this._functionService.imprimirMensaje(response, "usuarios")
-    })
-
     this._apiService.getDocumentos().then(response => {
       this.documentos = response
-
-      
       this._functionService.imprimirMensaje(response, "documentos")
     })
-
 
     this.dropdownSettings=<IDropdownSettings> {
       singleSelection: false,
@@ -148,8 +124,6 @@ export class AgregarComponent implements OnInit {
       itemsShowLimit: 10,
       allowSearchFilter: true
     };
-    
-
   }
 
   trackByFn(item: Person) {
@@ -157,7 +131,6 @@ export class AgregarComponent implements OnInit {
   }
 
   private loadPropietarios() {
-
     this.propietario$ = concat(
         of([]), // items por defecto
         this.propietarioInput$.pipe(
@@ -172,7 +145,6 @@ export class AgregarComponent implements OnInit {
   }
 
   private loadGestores() {
-
     this.gestor$ = concat(
         of([]), // items por defecto
         this.gestorInput$.pipe(
@@ -185,7 +157,6 @@ export class AgregarComponent implements OnInit {
         )
     );
   }
-
 
   private loadAgrimensores() {
 
@@ -201,9 +172,7 @@ export class AgregarComponent implements OnInit {
         )
     );
   }
-
   private loadDocumentos() {
-
     this.documento$ = concat(
         of([]), // items por defecto
         this.documentoInput$.pipe(
@@ -217,30 +186,24 @@ export class AgregarComponent implements OnInit {
     );
   }
 
-
   get f() { return this.expedienteForm.controls; }
-
   
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.expedienteForm.invalid) {
         console.log('errores en el formulario', this.expedienteForm.invalid)
         return;
     }
-
     this.loading = true;    
     this.createExpediente();
-  
   }
   
   createExpediente() {
-  
     console.log(this.expedienteForm.value)
     this._apiService.setExpediente(this.expedienteForm.value)
-    .then((res: any) =>{
 
+    .then((res: any) =>{
       console.warn(res);
       Swal.fire({
         title: 'Exito',
@@ -248,9 +211,7 @@ export class AgregarComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Cool',
       })
-
       this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
-      
     })
     .catch((e)=>{
      Swal.fire({
@@ -268,7 +229,6 @@ export class AgregarComponent implements OnInit {
     this._apiService.getInmueblesDisponibles().then(response => {
       this.inmuebles = response
     })
-
     alert('entro')
   } 
 
@@ -277,16 +237,4 @@ export class AgregarComponent implements OnInit {
       this.usuarios = response
     })
   } 
-
-
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-
-  
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-
-  
 }

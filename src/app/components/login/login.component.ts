@@ -13,7 +13,9 @@ import * as $ from 'JQuery';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit{
+  
   @ViewChild('failSwal') failSwal: SwalComponent
+
   Role = Role;
   loginForm: FormGroup;
   loading = false;

@@ -129,7 +129,9 @@ export class ApiService {
 
   deleteExpediente(expediente) {
     console.warn(expediente);
-    return this.http.delete(this.url+`/expedientes/${expediente}/`).toPromise();
+    return this.http.patch(this.url+`/expedientes/${expediente}/`, {
+      "habilitado": false 
+      } ).toPromise();
   }
 
 
@@ -202,6 +204,31 @@ export class ApiService {
 
   getUsers() {
     return this.http.get(this.url+'/roles/').toPromise();
+  }
+
+
+  getUsuariosFiltros(filtros){
+
+    let params: URLSearchParams = new URLSearchParams();
+
+    if (filtros.nombre){
+      params.set('nombre', filtros.nombre);
+    }
+    if (filtros.apellido){
+      params.set('apellido', filtros.apellido);
+    }
+    if (filtros.matricula){
+      params.set('matricula', filtros.matricula);
+    }
+   
+    console.log('parametros', params.toString())
+    
+    return this.http.get(this.url+`/usuarios?${params.toString()}`).toPromise().catch((e)=>
+    { 
+      console.log('error', e);
+      this.router.navigate(['login']);
+
+    });
   }
 
   getUsuario(id){

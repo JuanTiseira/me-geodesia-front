@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { BrowserModule } from '@angular/platform-browser';
-import { SharedModule } from './components/shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +21,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import {NgxPrintModule} from 'ngx-print';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { HttpErrorInterceptor } from './services/http-error-interceptors';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {NgxPrintModule} from 'ngx-print';
     
   ],
   imports: [
+    NgSelectModule,
     NgxPrintModule, 
     NgxSpinnerModule,
     NgxPaginationModule,
@@ -43,7 +45,6 @@ import {NgxPrintModule} from 'ngx-print';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    SharedModule,
     ReactiveFormsModule,
     HttpClientModule,
     SweetAlert2Module.forRoot(),
@@ -53,6 +54,7 @@ import {NgxPrintModule} from 'ngx-print';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ValidatorInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]

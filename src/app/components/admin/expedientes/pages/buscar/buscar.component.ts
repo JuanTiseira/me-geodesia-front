@@ -1,20 +1,17 @@
-
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { TipoExpediente } from '../../../../../models/tipo_expediente.model';
 import { FunctionsService } from '../../../../../services/functions.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject } from 'rxjs';
 import { DataService, Documento, Person } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
@@ -24,11 +21,9 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
   styleUrls: ['./buscar.component.scss']
 })
 
-
 export class BuscarComponent implements OnInit {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
-
   closeResult = '';
   
   public page: number = 0;
@@ -43,9 +38,13 @@ export class BuscarComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public tipo_consulta: any;
+
+  public selectedItems: any
+  public tramite_urgente: boolean = false
+
   p: number = 1;
   
-  agrimensor$: Observable<Person[]>;
+    agrimensor$: Observable<Person[]>;
     gestor$: Observable<Person[]>;
     propietario$: Observable<Person[]>;
     documento$: Observable<Documento[]>;
@@ -67,10 +66,10 @@ export class BuscarComponent implements OnInit {
     selectedGestores: Person[] = <any>[{}];
     selectedDocumentos: Documento[] = <any>[{}];
 
-  expediente: string
-  tramite: string
-  param_busqueda: ''
-
+    expediente: string
+    tramite: string
+    param_busqueda: ''
+    consultaForm : FormGroup
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
     {id: 2, name: 'Tramite', value: 'tramite'},
@@ -79,39 +78,53 @@ export class BuscarComponent implements OnInit {
   constructor( private _apiService: ApiService,
                 private dataService: DataService,
                 private _functionService: FunctionsService ,
-                private modalService: NgbModal,
                 private authService: AuthService,
+                private formBuilder: FormBuilder,
                 private router: Router,
                 private spinner: NgxSpinnerService
                 ) { this.load = false; }
 
+  // consultaForm = new FormGroup({
+  //   param_busqueda: [''],   
+  //   numero: [''],
+  //   anio: [''],
+  //   tipo_expediente: [''],
+  //   inmueble: [''],
+  //   documento: [''],
+  //   propietario: [''],
+  //   gestor: [''],
+  //   tramite: [''],
+  //   observacion: [''],
+  //   abreviatura: [''],
+  //   agrimensor: [''],
+  //   tipo_consulta: [''],
 
-  consultaForm = new FormGroup({
-    param_busqueda: new FormControl(''),   
-    numero: new FormControl(''),
-    anio: new FormControl(''),
-    tipo_expediente: new FormControl(''),
-    inmueble: new FormControl(''),
-    documento: new FormControl(''),
-    propietario: new FormControl(''),
-    gestor: new FormControl(''),
-    tramite: new FormControl(''),
-    observacion: new FormControl(''),
-    abreviatura: new FormControl(''),
-    agrimensor: new FormControl(''),
-    tipo_consulta: new FormControl('')
+  // });
 
-  });
 
 
   ngOnInit(): void {
-    this.loadPropietarios();
 
- 
+    
+  this.consultaForm = this.formBuilder.group({
+    param_busqueda: [''],   
+    numero: ['', Validators.maxLength(5)],
+    anio: [''],
+    tipo_expediente: [''],
+    inmueble: [''],
+    documento: [''],
+    propietario: [''],
+    gestor: [''],
+    tramite: [''],
+    observacion: [''],
+    abreviatura: [''],
+    agrimensor: [''],
+    tipo_consulta: [''],
+    });
+    this.loadPropietarios();
     this.loadGestores();
     this.loadAgrimensores();
-    this.loadDocumentos()
-    this.spinner.show();
+    this.loadDocumentos();
 
       setTimeout(() => {
         /** spinner ends after 5 seconds */
@@ -135,7 +148,6 @@ export class BuscarComponent implements OnInit {
 
   }
 
-
   buscar () {
     alert('buscado')
   }
@@ -158,38 +170,30 @@ export class BuscarComponent implements OnInit {
           'El expediente fue eliminado.',
           'success'
         ) 
-        this.router.navigate(['/usuario/buscar']);
+        this.buscarExpedientes()
       })
-
-        
       }
     })
   }
 
   onTableDataChange(event) {
-
-    
     this.spinner.show();
-   
     this._apiService.changePage(event, 'expedientes')
+
     .then((res) =>{
 
       this.p =  event
-
       this.expedientes = res
-     
       console.log(this.expedientes)
       
       if (this.expedientes.count == 0) {
         this.spinner.hide();
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
-       
       }else{
         this.expedientes = res
         this.spinner.hide();
       }
-
       this.load = false;
      
     })
@@ -201,7 +205,6 @@ export class BuscarComponent implements OnInit {
 
   buscarAnterior() {
     alert('anterior pagina')
-
   }
 
   get isAdmin() {
@@ -213,29 +216,39 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarExpediente() {
+   
     this.spinner.show();
+    
     var numeroanio = this.consultaForm.value.numero
+
+    
+    
     
     if (this.consultaForm.value.param_busqueda == 'expediente') {
-      var numero = 0 
-      let z = 1
 
-      for (let i = 5; i < 9; i++) {
-
-        if (numeroanio.length === i) {
-          numero = numeroanio.slice(0, z);
-        }else{
-          z++
+      if(numeroanio.toString().length > 5) {
+        var numero = 0 
+        let z = 1
+  
+        for (let i = 5; i < 9; i++) {
+  
+          if (numeroanio.toString().length === i) {
+            numero = numeroanio.toString().slice(0, z);
+          }else{
+            z++
+          }
+          
         }
-      
+        var anio = numeroanio.toString().slice(-4);
+      }else{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
       }
-      var anio = numeroanio.slice(-4);
+      
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
       this._apiService.getExpedienteNumero(numero, anio)
         .then((x:any) =>{
-
           console.warn(x);
           this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
@@ -243,7 +256,6 @@ export class BuscarComponent implements OnInit {
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       });
-      
 
     }else{
 
@@ -267,7 +279,6 @@ export class BuscarComponent implements OnInit {
     const max = new Date().getFullYear()
     const min = max - 100
     const years = []
-  
     for (let i = max; i >= min; i--) {
         years.push(i)
     }
@@ -276,7 +287,6 @@ export class BuscarComponent implements OnInit {
   
   buscarExpedientes() {
     this.spinner.show();
-   
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
     .then((res) =>{
 
@@ -306,8 +316,13 @@ export class BuscarComponent implements OnInit {
     this.buscarExpedientes()
   }
 
-  private loadPropietarios() {
+  trackByFn(item: Person) {
+    return item.id;
+  }
 
+  get f() { return this.consultaForm.controls; }
+
+  private loadPropietarios() {
     this.propietario$ = concat(
         of([]), // items por defecto
         this.propietarioInput$.pipe(
@@ -338,7 +353,6 @@ export class BuscarComponent implements OnInit {
 
 
   private loadAgrimensores() {
-
     this.agrimensor$ = concat(
         of([]), // items por defecto
         this.agrimensorInput$.pipe(
@@ -353,7 +367,6 @@ export class BuscarComponent implements OnInit {
   }
 
   private loadDocumentos() {
-
     this.documento$ = concat(
         of([]), // items por defecto
         this.documentoInput$.pipe(

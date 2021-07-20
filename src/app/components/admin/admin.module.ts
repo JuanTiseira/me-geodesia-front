@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home/home.component';
 
 
@@ -14,7 +13,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CommonModule } from '@angular/common';  
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgSelectModule } from '@ng-select/ng-select';
-import {NgxPrintModule} from 'ngx-print';
+import { NgxPrintModule } from 'ngx-print';
 // Import ngx-barcode module
 import { NgxBarcodeModule } from 'ngx-barcode';
 
@@ -67,6 +66,7 @@ import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula
    
   ],
   imports: [
+    NgSelectModule,
     NgxBarcodeModule,
     NgxPrintModule,
     NgSelectModule,
@@ -77,7 +77,6 @@ import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula
     Select2Module,
     NgxPaginationModule,
     RouterModule.forChild(APP_ROUTES),
-    SharedModule,
     FormsModule,
     ReactiveFormsModule
  
