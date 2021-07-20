@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint: "http://192.168.0.79:8000"
+  endpoint: "https://demo-geodesia.azurewebsites.net"
 };
 
 /*

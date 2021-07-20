@@ -75,6 +75,7 @@ export class DetalleComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   documentosexpediente: any;
+  imprimir: boolean;
 
 
 
@@ -94,6 +95,7 @@ export class DetalleComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.spinner.show()
     this._apiService.getDocumentos().then(response => {
       this.documentos = response
       this._functionService.imprimirMensaje(response, "documentos")
@@ -172,11 +174,12 @@ export class DetalleComponent implements OnInit {
           this.selectedAgrimensores = this.resultado.agrimensor
           this.selectedtramite = this.resultado.tramit
           this._functionService.imprimirMensaje(x, "expediente")
-          
+          this.spinner.hide()
       }).catch((e)=>{
         
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
+        this.spinner.hide()
       });
     }else if (this.route.snapshot.params['id'] && !this.route.snapshot.queryParams['anio'] && !this.route.snapshot.queryParams['numero'])
       {
@@ -205,12 +208,12 @@ export class DetalleComponent implements OnInit {
           this.selectedtramite = this.resultado.tramite
 
           this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
-          
+          this.spinner.hide()
       }).catch((e)=>{
         console.log('error', e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
-        
+        this.spinner.hide()
       });
       this.retiroForm.patchValue({descripcion: ''});
           
@@ -242,44 +245,21 @@ export class DetalleComponent implements OnInit {
           this.selectedtramite = this.resultado.tramite
 
           this._functionService.imprimirMensaje(x, "expediente")
-          
+          this.spinner.hide()
       }).catch((e)=>{
         console.log('error', e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
+        this.spinner.hide()
       });
-
+      
     }
   
 
     //CARGA DE DATOS PARA SELECTS
-    this._apiService.getTipoExpedientes().then(response => {
-      this.tipos_expedientes = response
-      //this.tipos_expedientes = response
-    })
-
-    this._apiService.getTramites().then(response => {
-      this.tramites = response
-      this._functionService.imprimirMensaje(response, "tramites")
-    })
-
-    this._apiService.getInmuebles().then(response => {
-      this.inmuebles = response
-      this._functionService.imprimirMensaje(response, "inmuebles")
-    })
-
-    this._apiService.getObservaciones().then(response => {
-      this.observaciones = response
-      this._functionService.imprimirMensaje(response, "observaciones")
-    })
-
-    this._apiService.getUsuarios().then(response => {
-      this.usuarios = response
-      this._functionService.imprimirMensaje(response, "usuarios")
-    })
-
+ 
     this.loadPropietarios()
-
+    
   //FIN CARGAR DATOS PARA SELECTS
   }
 
@@ -448,6 +428,7 @@ export class DetalleComponent implements OnInit {
     
     this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Documento`, "success", "Aceptar", "", false, "", "")
     this.mensajeSwal.fire()
+    this.imprimir = true
   }
 
   editar (){

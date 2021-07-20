@@ -97,7 +97,7 @@ export class DataService {
 
             //console.log(this.items)
             if (term) {
-                this.items = this.items.filter(x => x.nombre.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
+                this.items = this.items.filter(x => x.fullName.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
             }
 
           })

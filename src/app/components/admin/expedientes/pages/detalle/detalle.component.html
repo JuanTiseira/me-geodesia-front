@@ -7,64 +7,65 @@
     <br>
 
     <div class="row">
-        <div class="col-12" *ngIf="resultado && tipos_expedientes && usuarios">
-          <form class="row g-3" [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="tipo_expediente" class="form-label">Tipo Expediente</label>
-                <select [compareWith]="compareFn" *ngIf="tipos_expedientes" [(value)]="selecteditem" class="form-control" formControlName="tipo_expediente" >
-                  <ng-container *ngFor="let dato of tipos_expedientes.results">
-                    <option  [ngValue]="dato">
-                      {{dato.descripcion}}
-                  </option>
-                  </ng-container>
-                </select>
-              </div>
+        <div class="col-12" *ngIf="resultado">
+          <div class="col-12" >
+            <table class="table table-striped" >
+               
+                <tbody>
+                    <tr>
+                          <th>Numero</th>
+                          <td>{{ resultado.numero }}</td>
+                    </tr>
+                    <tr>
+                        <th>Abreviatura</th>
+                            <td>{{ resultado.abreviatura }}</td>
+                    </tr>
 
-              <div class="form-group">
-                <label for="abreviatura" class="form-label">Abreviatura</label>
-                <input formControlName="abreviatura" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors, 'disabled': !isEditMode }">
-              </div>
+                    <tr>
+                        <th>Año</th>
+                            <td>{{ resultado.anio }}</td>
+                    </tr>
 
-              <div class="form-group">
-                <label for="inmueble" class="form-label">Inmueble</label>
-                <input formControlName="inmueble" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors, 'disabled': !isEditMode }">
-              </div>
+                    <tr>
+                        <th>Tipo de Expediente</th>
+                            <td>{{ resultado.tipo_expediente.descripcion }} </td>
+                    </tr>
 
-              
+                    <tr>
+                        <th>Agrimensor</th>
+                            <td>{{ resultado.agrimensor.nombre}} {{ resultado.agrimensor.apellido }}</td>
+                    </tr>
 
-              <div class="form-group" *ngIf="expedienteForm.value.observacion.descripcion" >
-                <label for="inmueble" class="form-label">Observaciones</label>
-                <textarea name="observaciones" class="form-control" formControlName="observacion"  id="observacion" cols="30" rows="5">
-                  {{expedienteForm.value.observacion.descripcion}}
-                </textarea>
-              </div>  
-            </div>
+                    <tr *ngIf="resultado.gestor != null">
+                        <th>Gestor</th>
+                            <td>{{ resultado.gestor.nombre }} </td>
+                    </tr>
 
-            <div class="col-md-6">
-                <div class="form-group" >
-                  <label for="agrimensor" class="form-label">Agrimensor</label>
-                  <select [compareWith]="compareFn" *ngIf="usuarios" [(value)]="selectedgrimensor" class="form-control" formControlName="agrimensor"  >
-                    <ng-container *ngFor="let dato of usuarios.results">
-                      <option [ngValue]="dato">
-                        {{dato.nombre}} {{dato.apellido}}
-                      </option>
-                    </ng-container>
-                  </select>
-                </div>
+                    <tr *ngIf="resultado.gestor == null">
+                      <th>Gestor</th>
+                        <td>{{ resultado.agrimensor.nombre}} {{ resultado.agrimensor.apellido }}</td>
+                  </tr>
 
+                    <tr>
+                        <th>Propietario</th>
+                            <td>{{ resultado.propietario.nombre }} {{ resultado.propietario.apellido }}</td>
+                    </tr>
 
-                <div class="form-group">
-                  <label for="propietario" class="form-label">Propietario</label>
-                  <select [compareWith]="compareFn" *ngIf="usuarios" [(value)]="selectedpropietario" class="form-control" formControlName="propietario" >
-                    <ng-container *ngFor="let dato of usuarios.results">
-                      <option [ngValue]="dato">
-                        {{dato.nombre}} {{dato.apellido}}
-                    </option>
-                    </ng-container>
-                  </select>
-                </div>              
-            </div>
+                    <tr>
+                      <th>Inmueble</th>
+                          <td>{{ resultado.inmueble.municipio.departamento.codigo }}- {{ resultado.inmueble.municipio.codigo }} - {{ resultado.inmueble.seccion }} -{{ resultado.inmueble.chacra }} - {{ resultado.inmueble.manzana }} -{{ resultado.inmueble.parcela }}</td>
+                          
+                  </tr>
+
+                   
+                       
+                   
+                </tbody>
+            </table>
+
+            
+
+          </div>
           
             <div class="row">
               
@@ -104,7 +105,7 @@
               </div>
             </div>
 
-          </form>  
+         
     </div>
     <ngx-spinner></ngx-spinner>
 </div>
@@ -228,7 +229,7 @@
   </div>
 </div>
 <!-- SOLAPA HTML -->
-<div hidden *ngIf="resultado">
+<div hidden *ngIf="imprimir">
   <div id="mytodosItemsId">
       <h1 style="text-align: center; font-size: 20px; font-weight: 100;">PROVINCIA DE MISIONES</h1>
       <h2 style="font-weight: bold; text-align: center;">Ministerio de Gobierno</h2>
@@ -373,7 +374,7 @@
 
 
 <!-- ETIQUETA HTML -->
-<div hidden>
+<div hidden *ngIf="imprimir">
  
   <div id="Etiqueta">
 

@@ -19,12 +19,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     
     if (!this.authService.isAuthorized()) {
         console.log("no está autorizado");
-        Swal.fire({
-          title: 'No Autorizado',
-          text: 'No autorizado',
-          icon: 'error',
-          confirmButtonText: 'Aceptar',
-        })
+      
         this.router.navigate(['login']);
         return false;
     }

@@ -253,7 +253,9 @@ export class ApiService {
 
   deleteUsuario(usuario) {
     console.warn(usuario);
-    return this.http.delete(this.url+`/usuarios/${usuario}/`).toPromise();
+    return this.http.patch(this.url+`/usuarios/${usuario}/`, {
+      "habilitado": false 
+      } ).toPromise();
   }
 
 

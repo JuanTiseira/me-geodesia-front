@@ -167,7 +167,7 @@ export class BuscarUsuarioComponent implements OnInit {
           'El usuario fue eliminado.',
           'success'
         ) 
-        this.router.navigate(['/usuario/buscar']);
+        this.buscarUsuarios()
       })
           
 
