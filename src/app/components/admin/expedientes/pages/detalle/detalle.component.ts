@@ -11,7 +11,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject } from 'rxjs';
 import { DataService, Documento, Person } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-
+import * as moment from 'moment'
+import { TokenService } from 'src/app/services/token.service';
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.component.html',
@@ -76,6 +77,10 @@ export class DetalleComponent implements OnInit {
   public usuarios: any;
   documentosexpediente: any;
   imprimir: boolean;
+  date: any;
+  tramite: any;
+  fecha_hora: string;
+  user: any;
 
 
 
@@ -87,13 +92,26 @@ export class DetalleComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private _tokenService: TokenService
    
     ) {}
+  
+  fullName (nombre, apellido){
 
+    var fullName = nombre.charAt(0).toUpperCase() + '. '  + apellido
+    return fullName
+
+  }
 
 
   ngOnInit(): void {
+
+    this.date = moment(new Date()).format('DD/MM/YYYY');
+    this.fecha_hora = moment(new Date()).format('hh:mm:ss')
+    this.user = this._tokenService.getUserName();
+    
+
 
     this.spinner.show()
     this._apiService.getDocumentos().then(response => {
@@ -155,6 +173,8 @@ export class DetalleComponent implements OnInit {
       this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
         .then((x:any) =>{
 
+          this.tramite = x
+
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
 
@@ -185,6 +205,9 @@ export class DetalleComponent implements OnInit {
       {
         this._apiService.getExpediente(this.route.snapshot.params['id'])
         .then((x:any) =>{
+
+          this.tramite = x
+
 
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
@@ -224,6 +247,9 @@ export class DetalleComponent implements OnInit {
       
       this._apiService.getExpedienteTramite(this.route.snapshot.queryParams['numero'])
         .then((x:any) =>{
+
+          this.tramite = x
+
           
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
