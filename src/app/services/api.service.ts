@@ -286,7 +286,7 @@ export class ApiService {
 
   setDevol(retiro) {
    
-    return this.http.post(this.url+'/devoluciones/', retiro).toPromise().catch((e)=>
+    return this.http.post(this.url+'/retiros/devolver/', retiro).toPromise().catch((e)=>
     { 
       console.log('error', e);
 

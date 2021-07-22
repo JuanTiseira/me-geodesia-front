@@ -95,7 +95,7 @@
                     <td>
                         <a [routerLink]="['/usuario/', usr.id ]" ><span style="color: white; background-color: black; padding: 5px 10px 5px 10px; border-radius: 100px;"><i class="fa fa-info"></i></span></a>
                         <a (click)="eliminar(usr.id)" ><span style="color: rgb(248, 9, 9); padding: 10px; border-radius: 50px;"><i class="fa fa-times"></i></span></a>
-                        <!-- <a (click)="eliminar(user.id)" ><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-undo"></i></span></span></a> -->
+                        <a [routerLink]="['/usuario/editar/', usr.id]"><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-edit"></i></span></span></a>
                     </td>
                 </tr>
             </tbody>

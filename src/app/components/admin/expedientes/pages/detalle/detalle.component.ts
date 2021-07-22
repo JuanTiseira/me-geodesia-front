@@ -111,8 +111,6 @@ export class DetalleComponent implements OnInit {
     this.date = moment(new Date()).format('DD/MM/YYYY');
     this.fecha_hora = moment(new Date()).format('hh:mm:ss')
     this.user = this._tokenService.getUserName();
-    
-
 
     this.spinner.show()
     this._apiService.getDocumentos().then(response => {
@@ -155,7 +153,7 @@ export class DetalleComponent implements OnInit {
       this.devolForm = this.formBuilder.group({ //FORMULARIO DE DEVOLUCION num_tramite, tramite_urgente, documento
         num_tramite: [{value: '', }, Validators.required],
         tramite_urgente: [{value: '', }, Validators.required],
-        documento: [{value: '', }, Validators.required]
+        documentos: [{value: '', }, Validators.required]
       });
       
 
@@ -590,8 +588,8 @@ export class DetalleComponent implements OnInit {
 
         console.warn(res);
         Swal.fire({
-          title: 'Exito',
-          text: 'Se registro correctamente',
+          title: 'Info',
+          text: res.message,
           icon: 'success',
           confirmButtonText: 'Cool',
         })

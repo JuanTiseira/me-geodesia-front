@@ -1,13 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
-import { CommonModule } from '@angular/common';  
-import { BrowserModule } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 
@@ -61,8 +58,6 @@ export class DetalleUsuarioComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    
-   
     this.spinner.show();
       
     this.id = this.route.snapshot.params['id'];
@@ -83,7 +78,6 @@ export class DetalleUsuarioComponent implements OnInit {
       });
 
       this.usuarioForm.disable();
-
      
     this.message = '';
     
@@ -94,12 +88,10 @@ export class DetalleUsuarioComponent implements OnInit {
       
       this.usuario = response
       this.usuarioForm.patchValue(response)
-
-
       this.selecteditem = this.usuario.tipo_usuario
 
-
       this._functionService.imprimirMensaje(response, "usuario")
+      this.spinner.hide()
      
     })
 

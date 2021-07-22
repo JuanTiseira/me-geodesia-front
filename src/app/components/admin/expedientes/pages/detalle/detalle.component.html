@@ -251,7 +251,7 @@
       
                         <div *ngIf="documentos" class="form-group">
                           <label for="documentos" class="form-label">Documentos *</label>
-                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documento" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
                             <ng-option *ngFor="let doc of documentosexpediente" [value]="doc.id" [disabled]="doc.disabled">{{doc.descripcion}}</ng-option>
                           </ng-select>
                           <div *ngIf="submitted && r.documento.errors" class="invalid-feedback">

@@ -1,6 +1,7 @@
 import { Routes} from '@angular/router';
 import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
 import { AgregarComponent } from './expedientes/pages/agregar/agregar-expediente.component';
+import { EditComponent } from './expedientes/pages/editar/edit-expediente.component';
 import { HomeComponent } from './home/home.component';
 import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.component';
 import { BuscarUsuarioComponent } from './usuarios/pages/buscar/buscar.component';
@@ -24,7 +25,7 @@ export const APP_ROUTES: Routes = [
 
   {path: 'expediente/agregar', component: AgregarComponent},
 
-  {path: 'expediente/editar/:id', component: AgregarComponent },
+  {path: 'expediente/editar/:id', component: EditComponent },
 
   {path: 'expediente/caratula', component: CaratulaComponent},
 
