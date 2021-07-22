@@ -21,7 +21,8 @@ import { NgxBarcodeModule } from 'ngx-barcode';
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
 import { AgregarComponent } from './expedientes/pages/agregar/agregar-expediente.component';
-
+import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
+import { EditComponent } from './expedientes/pages/editar/edit-expediente.component';
 
 //HISTORIAL 
 import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.component';
@@ -41,7 +42,7 @@ import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmuebl
 
 //RETIROS 
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
-import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
+
 
 
 
@@ -53,6 +54,7 @@ import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula
     HomeComponent, 
     BuscarComponent,
     DetalleComponent,
+    EditComponent,
     DetalleHistorialComponent,
     BuscarUsuarioComponent,
     BuscarHistorialComponent,

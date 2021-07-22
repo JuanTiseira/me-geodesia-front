@@ -14,14 +14,14 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
 import * as moment from 'moment'
 import { TokenService } from 'src/app/services/token.service';
 @Component({
-  selector: 'app-detalle',
-  templateUrl: './detalle.component.html',
-  styleUrls: ['./detalle.component.scss']
+  selector: 'app-editar',
+  templateUrl: './edit-expediente.component.html',
+  styleUrls: ['./edit-expediente.component.scss']
 })
 
 
 
-export class DetalleComponent implements OnInit {
+export class EditComponent implements OnInit {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   
@@ -503,7 +503,7 @@ export class DetalleComponent implements OnInit {
         return;
     }else{
       this.loading = true;    
-      this.setDevol();
+      this.setRetiro();
     }
 
    
@@ -583,9 +583,12 @@ export class DetalleComponent implements OnInit {
   
     console.info('FORMULARIO DEVOLUCION', this.devolForm.value.documento)
 
+    for (var id of this.devolForm.value.documento) {
+
       this.devolForm.patchValue({num_tramite: this.tramite.id});
 
-      this._apiService.setDevol(this.devolForm.value)
+      console.log(this.devolForm)
+      this._apiService.setRetiro(this.devolForm.value)
       .then((res: any) =>{
 
         console.warn(res);
@@ -595,9 +598,8 @@ export class DetalleComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Cool',
         })
-        
         this.loading = false;
-        document.getElementById("closeModalDevolButton").click();
+        document.getElementById("closeModalRetiroButton").click();
       })
       .catch((e)=>{
       Swal.fire({
@@ -608,7 +610,7 @@ export class DetalleComponent implements OnInit {
         })
         this.loading = false;
     });
-    
+    } 
   }
 
  

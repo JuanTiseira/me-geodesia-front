@@ -232,17 +232,17 @@
 
 <!-- MODAL CREAR DEVOLUCION -->
 
-<div class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
+<div class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearRetiro" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
           <div class="modal-header">
               <h5 class="modal-title">Registrar Devolucion</h5>
-              <button id="closeModalDevolButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button id="closeModalRetiroButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-12">
-                   <form class="row g-3" [formGroup]="devolForm" (ngSubmit)="guardarDevol()">
+                   <form class="row g-3" [formGroup]="devolForm" (ngSubmit)="guardarRetiro()">
                       <div class="col-md-12">      
                         <div class="form-group">
                           <label for="abreviatura" class="form-label">Tramite Urgente</label>
