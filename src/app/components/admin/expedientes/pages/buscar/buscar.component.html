@@ -63,11 +63,14 @@
                 <select formControlName="tipo_expediente" class="form-select" *ngIf="tipos_expedientes">
                     <option [value]="dato.id" *ngFor="let dato of tipos_expedientes.results" value="">{{dato.nombre}}</option>
                 </select>
-                <span *ngIf="!tipos_expedientes" class="spinner-border spinner-border-sm mr-1"></span>  
+                <select *ngIf="!tipos_expedientes"  class="form-select">
+                    <option selected>Cargando</option>
+                </select> 
             </div>
             <div class="col-md-4">
                     <label for="username" class="form-label">Agrimensor</label>   
                     <ng-select 
+                    *ngIf="usuarios"
                     [items]="agrimensor$ | async"
                     bindLabel="fullName"
                     bindValue="id"
@@ -82,11 +85,14 @@
                     formControlName="agrimensor"
                     id="prueba">
                   </ng-select>
-                  <span *ngIf="!usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
+                  <select *ngIf="!usuarios"  class="form-select" >
+                    <option >Cargando</option>
+                </select>   
             </div>
             <div class="col-md-4">
                 <label for="username" class="form-label">Propietario</label>
                         <ng-select 
+                        *ngIf="usuarios"
                           [items]="propietario$ | async"
                           bindLabel="fullName"
                           bindValue="id"
@@ -100,11 +106,14 @@
                           [typeahead]="propietarioInput$"
                           formControlName="propietario">
                           </ng-select>
-                          <span *ngIf="!usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
+                          <select *ngIf="!usuarios"  class="form-select" >
+                            <option selected>Cargando</option>
+                                </select>   
             </div>
             <div class="col-md-4">
                         <label for="username" class="form-label">Gestor</label>
                         <ng-select 
+                        *ngIf="usuarios"
                         [items]="gestor$ | async"
                         bindLabel="fullName"
                         bindValue="id"
@@ -118,14 +127,18 @@
                         [typeahead]="gestorInput$"
                         formControlName="gestor">
                     </ng-select>
-                    <span *ngIf="!usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
+                    <select *ngIf="!usuarios"  class="form-select" >
+                        <option >Cargando</option>
+                    </select>   
             </div>
             <div class="col-md-4">
                 <label for="username" class="form-label">Inmueble</label>
                 <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
                     <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
                   </select>
-                  <span *ngIf="!inmuebles" class="spinner-border spinner-border-sm mr-1"></span>  
+                  <select *ngIf="!inmuebles"  class="form-select" >
+                    <option >Cargando</option>
+                </select>   
             </div>
 
             <div class="col-md-4 ">

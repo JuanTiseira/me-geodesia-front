@@ -68,17 +68,22 @@ export class AgregarComponent implements OnInit {
     ) { }
     
   ngOnInit(): void {
+
+
+    this.spinner.show();
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+    }, 3000);
+
     this.loadPropietarios();
     this.loadGestores();
     this.loadAgrimensores();
     this.loadDocumentos()
-    this.spinner.show();
+    
+    
 
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 2000);
-
+    
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
     this.selectedItems = []

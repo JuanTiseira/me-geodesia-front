@@ -9,10 +9,26 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  filterItem: string;
+  clase: boolean;
 
   constructor(private router: Router, 
     private authService: AuthService,
-    private activateRoute: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private activateRoute: ActivatedRoute) {
+
+      this.route.paramMap.subscribe(params => {
+        this.filterItem = params.get('categoria');
+
+        console.log(this.router.url)
+
+        if (this.router.url == '/home') {
+          this.clase = false
+        }else{
+          this.clase = true
+        }
+      })
+     }
 
     // get isAuthorized() {
     //   return this.authService.isAuthorized();
@@ -28,6 +44,12 @@ export class DashboardComponent implements OnInit {
   
 
   ngOnInit(): void {
+   
+  }
+
+  ngOnChanges() {
+   
+    
   }
 
 }

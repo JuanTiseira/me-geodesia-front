@@ -40,6 +40,7 @@ export class DetalleComponent implements OnInit {
   selectedtramite: string;
   usuario: any;
   texto: any;
+  public busqueda_manual: boolean = false
 
 
     agrimensor$: Observable<Person[]>;
@@ -105,6 +106,9 @@ export class DetalleComponent implements OnInit {
 
   }
 
+  public onbusquedamanualChanged(value:boolean){
+    this.busqueda_manual = value;
+  }
 
   ngOnInit(): void {
 
@@ -120,8 +124,7 @@ export class DetalleComponent implements OnInit {
 
 
     this.loadPropietarios();
-    this.loadGestores();
-    this.loadAgrimensores();
+  
     this.loadDocumentos()
 
     this.id = this.route.snapshot.params['id'];
@@ -342,7 +345,6 @@ export class DetalleComponent implements OnInit {
     let cont = 0
     let dni = ''
 
-
     if (this.texto[0] != "@") {
       console.log(this.texto)
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
@@ -356,7 +358,6 @@ export class DetalleComponent implements OnInit {
         }
       }
     }
-
 
     if (this.texto[0] == "@") {
 
@@ -372,10 +373,6 @@ export class DetalleComponent implements OnInit {
         }
       }
     }
-
-     
-
-    
   
     console.log('dni', dni, cont)
 
@@ -390,7 +387,6 @@ export class DetalleComponent implements OnInit {
         this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire()
       }
-      
     })
   }
 
@@ -410,35 +406,6 @@ export class DetalleComponent implements OnInit {
     );
   }
 
-  private loadGestores() {
-
-    this.gestor$ = concat(
-        of([]), // items por defecto
-        this.gestorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.gestorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.gestorLoading = false)
-            ))
-        )
-    );
-  }
-
-
-  private loadAgrimensores() {
-    this.agrimensor$ = concat(
-        of([]), // items por defecto
-        this.agrimensorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.agrimensorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.agrimensorLoading = false)
-            ))
-        )
-    );
-  }
 
   private loadDocumentos() {
 
@@ -518,7 +485,6 @@ export class DetalleComponent implements OnInit {
 
   updateExpediente() {
     
-    
     this._apiService.editExpediente(this.expedienteForm.value)
     .then(() =>{
       console.warn(this.expedienteForm.value);
@@ -545,6 +511,11 @@ export class DetalleComponent implements OnInit {
   setRetiro() {
   
     console.info('FORMULARIO RETIRO', this.retiroForm.value.documento)
+    
+    if (this.busqueda_manual) {
+      this.devolForm.patchValue({usuario: this.usuario});
+      
+    }
 
     for (var id of this.retiroForm.value.documento) {
 
@@ -582,6 +553,7 @@ export class DetalleComponent implements OnInit {
     console.info('FORMULARIO DEVOLUCION', this.devolForm.value.documento)
 
       this.devolForm.patchValue({num_tramite: this.tramite.id});
+
 
       this._apiService.setDevol(this.devolForm.value)
       .then((res: any) =>{

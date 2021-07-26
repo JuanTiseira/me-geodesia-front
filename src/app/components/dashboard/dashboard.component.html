@@ -4,7 +4,7 @@
 <app-sidebar *ngIf="!isExterno" class=""></app-sidebar>
 
 <div class="content mt-5">
-    <div class="container">
+    <div [ngClass]="{container: clase}">
 
         <router-outlet></router-outlet>
 
