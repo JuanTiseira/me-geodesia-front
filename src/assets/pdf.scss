@@ -19,7 +19,7 @@
         background-color: rgb(240, 240, 240) !important;
         padding-left: 350px;
         padding-right: 0px;
-        height: 100%;
+        height: auto; overflow-y: visible !important;
     }
 
     table, th, td {

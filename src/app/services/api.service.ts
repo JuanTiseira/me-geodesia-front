@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-
+import Swal from 'sweetalert2'
 
 @Injectable({
   providedIn: 'root'
@@ -277,20 +277,48 @@ export class ApiService {
 
   setRetiro(retiro) {
     console.warn(retiro);
-    return this.http.post(this.url+'/retiros/', retiro).toPromise().catch((e)=>
-    { 
-      console.log('error', e);
-
-    }); 
+    return this.http.post(this.url+'/retiros/', retiro).toPromise().then((res: any) =>{
+      console.warn(res);
+      Swal.fire({
+        title: 'Info',
+        text: res.message,
+        icon: 'success',
+        confirmButtonText: 'Cool',
+      })
+    
+    })
+    .catch((e)=>{
+    Swal.fire({
+        title: 'Error!',
+        text: 'No se pudo registrar',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+     
+  });
   }
 
   setDevol(retiro) {
    
-    return this.http.post(this.url+'/retiros/devolver/', retiro).toPromise().catch((e)=>
-    { 
-      console.log('error', e);
-
-    }); 
+    return this.http.post(this.url+'/retiros/devolver/', retiro).toPromise().then((res: any) =>{
+      console.warn(res);
+      Swal.fire({
+        title: 'Info',
+        text: res.message,
+        icon: 'success',
+        confirmButtonText: 'Cool',
+      })
+    
+    })
+    .catch((e)=>{
+    Swal.fire({
+        title: 'Error!',
+        text: 'No se pudo registrar',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+     
+  });
   }
 
 }

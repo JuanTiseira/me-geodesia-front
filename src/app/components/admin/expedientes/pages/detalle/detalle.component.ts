@@ -113,6 +113,7 @@ export class DetalleComponent implements OnInit {
   ngOnInit(): void {
 
     this.date = moment(new Date()).format('DD/MM/YYYY');
+    
     this.fecha_hora = moment(new Date()).format('hh:mm:ss')
     this.user = this._tokenService.getUserName();
 
@@ -121,7 +122,6 @@ export class DetalleComponent implements OnInit {
       this.documentos = response
       this._functionService.imprimirMensaje(response, "documentos")
     })
-
 
     this.loadPropietarios();
   
@@ -217,7 +217,7 @@ export class DetalleComponent implements OnInit {
           this.documentosexpediente  = this.resultado.documentos
 
 
-          console.log('RESULTADO', this.resultado)
+          console.log('RESULTADO', this.tramite)
           this.expedienteForm.patchValue(this.resultado)
           this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
           
@@ -300,7 +300,7 @@ export class DetalleComponent implements OnInit {
   //IMPRIMIR ETIQUETA
   
   elementType = 'svg';
-  value = '1234567';
+  public value = '1234567';
   format = 'EAN8';
   lineColor = '#000000';
   width = 1.5;
@@ -318,9 +318,40 @@ export class DetalleComponent implements OnInit {
   marginLeft = 0;
   marginRight = 0;
 
-  get values(): string[] {
-    return this.value.split('\n');
+  zfill(number, width) {
+    var numberOutput = Math.abs(number); /* Valor absoluto del número */
+    var length = number.toString().length; /* Largo del número */ 
+    var zero = "0"; /* String de cero */  
+    
+    if (width <= length) {
+        if (number < 0) {
+             return ("-" + numberOutput.toString()); 
+        } else {
+             return numberOutput.toString(); 
+        }
+    } else {
+        if (number < 0) {
+            return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); 
+        } else {
+            return ((zero.repeat(width - length)) + numberOutput.toString()); 
+        }
+    }
   }
+
+
+  get values(): string[] {
+
+    let value = this.zfill(this.tramite.numero, 7)
+    value = value + this.tramite.codigo_verificacion 
+
+    return value.split('\n');
+  }
+
+  get fecha_creacion(): string {
+    return moment(this.resultado.created_at).format('DD/MM/YYYY');
+  }
+
+
   codeList: string[] = [
     '', 'CODE128',
     'CODE128A', 'CODE128B', 'CODE128C',
@@ -333,42 +364,37 @@ export class DetalleComponent implements OnInit {
   ];
 
   leerDni(){
-
     this.texto =  this.usuario + this.retiroForm.value.dni
-    this.retiroForm.controls['dni'].setValue('');
-
+    console.log(this.texto)
+    //this.retiroForm.controls['dni'].setValue('');
     this.verificarUsuario()
-  
   }
 
   verificarUsuario () {
     let cont = 0
-    let dni = ''
+    let dni = '' 
 
-    if (this.texto[0] != "@") {
+    if (this.texto[0] != '"') {
       console.log(this.texto)
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
-        if (this.texto[i] == '@') {
+        if (this.texto[i] == '"') {
           console.log(this.texto)
           cont++
         }
-
-        if (cont == 4 && this.texto[i] != '@') {
+        if (cont == 4 && this.texto[i] != '"') {
           dni = dni + this.texto[i].toString()
         }
       }
     }
 
-    if (this.texto[0] == "@") {
-
+    if (this.texto[0] == '"') {
       console.log(this.texto , '222222')
-
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
-        if (this.texto[i] == '@') {
+        if (this.texto[i] == '"') {
           console.log(this.texto)
           cont++
         }
-        if (cont == 1 && this.texto[i] != '@' && this.texto[i] != " ") {
+        if (cont == 1 && this.texto[i] != '"' && this.texto[i] != " ") {
           dni = dni + this.texto[i].toString()
         }
       }
@@ -380,10 +406,8 @@ export class DetalleComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "usuario")
       console.log(response, 'respuesta')
       this.usuario = response.results[0]
-      console.log(this.usuario)
 
       if (response.count == 0) {
-        
         this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire()
       }
@@ -509,62 +533,45 @@ export class DetalleComponent implements OnInit {
 
 
   setRetiro() {
-  
     console.info('FORMULARIO RETIRO', this.retiroForm.value.documento)
     
-    if (this.busqueda_manual) {
-      this.devolForm.patchValue({usuario: this.usuario});
-      
+    if (this.busqueda_manual != true) {
+      this.devolForm.patchValue({usuario: this.usuario.id});
     }
 
     for (var id of this.retiroForm.value.documento) {
-
+      console.log('ID DOCUMENTO', this.retiroForm)
       this.retiroForm.patchValue({documento: id});
       this.retiroForm.patchValue({expediente: this.resultado.id});
 
-      console.log(this.retiroForm)
+      console.log(this.retiroForm.value)
+
+
       this._apiService.setRetiro(this.retiroForm.value)
       .then((res: any) =>{
 
-        console.warn(res);
-        Swal.fire({
-          title: 'Exito',
-          text: 'Se registro correctamente',
-          icon: 'success',
-          confirmButtonText: 'Cool',
-        })
+       
         this.loading = false;
         document.getElementById("closeModalRetiroButton").click();
       })
       .catch((e)=>{
-      Swal.fire({
-          title: 'Error!',
-          text: 'No se pudo registrar',
-          icon: 'error',
-          confirmButtonText: 'Cool'
-        })
+    
         this.loading = false;
     });
     } 
   }
 
   setDevol() {
-  
-    console.info('FORMULARIO DEVOLUCION', this.devolForm.value.documento)
+    console.info('FORMULARIO DEVOLUCION', this.devolForm.value)
+
+    console.info('NNUMERO DE TRAMITE', this.tramite.id)
 
       this.devolForm.patchValue({num_tramite: this.tramite.id});
-
-
+      this.devolForm.patchValue({tramite_urgente: false});
+      
       this._apiService.setDevol(this.devolForm.value)
       .then((res: any) =>{
-
         console.warn(res);
-        Swal.fire({
-          title: 'Info',
-          text: res.message,
-          icon: 'success',
-          confirmButtonText: 'Cool',
-        })
         
         this.loading = false;
         document.getElementById("closeModalDevolButton").click();
@@ -578,8 +585,19 @@ export class DetalleComponent implements OnInit {
         })
         this.loading = false;
     });
-    
   }
 
- 
+  
+  verDetalles(dato:boolean){
+    this._apiService.getInmueblesDisponibles().then(response => {
+      this.inmuebles = response
+    })
+    alert('entro')
+  } 
+
+  verDetallesUsuarios(dato:boolean){
+    this._apiService.getUsuarios().then(response => {
+      this.usuarios = response
+    })
+  } 
 }

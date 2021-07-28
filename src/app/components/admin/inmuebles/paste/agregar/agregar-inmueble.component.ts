@@ -97,12 +97,7 @@ export class AgregarInmuebleComponent implements OnInit {
     this._apiService.setInmueble(this.inmuebleForm.value)
     .then(() =>{
       console.warn(this.inmuebleForm.value);
-      Swal.fire({
-        title: 'Exito',
-        text: 'Se registro correctamente',
-        icon: 'success',
-        confirmButtonText: 'OK',
-      })
+    
       this.inmuebleForm.reset();
       this.loading = false;
       this.verDetallesInmuebles.emit(true);
@@ -120,7 +115,6 @@ export class AgregarInmuebleComponent implements OnInit {
       this.loading = false;
       
     });
-    
     document.getElementById("closeModalInmuebleButton").click();
   }
 

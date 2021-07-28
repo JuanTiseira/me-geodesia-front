@@ -1,0 +1,78 @@
+@font-face {
+    font-family: Roboto Regular;
+    src: url(./fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Roboto Bold;
+    src: url(./fonts/Roboto-Bold.ttf);
+}
+
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    font-family: 'Roboto Regular' !important;
+    background-color: rgb(240, 240, 240) !important;
+    padding: 10px 50px 20px;
+   
+    height: auto; overflow-y: visible !important;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    border-width: 3px;
+    padding: 1px;
+    color: black !important;
+    font-size: 12px;
+}
+
+input {
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 0px;
+    max-width: 13%;
+    margin: 8px 0px 0px 0px ;
+    text-align: center;
+    padding: 5px;
+}
+
+hr {
+margin-bottom: 50px;
+margin-top: 50px;
+} 
+
+a {
+    cursor: pointer;
+}
+
+h2 {
+    font-weight: 900;
+    margin: 0px;
+}
+
+h1 {
+    font-family: "Times New Roman", Times, serif;
+    margin: 0px;
+    
+}
+
+label{
+    font-size: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

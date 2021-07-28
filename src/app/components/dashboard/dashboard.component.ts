@@ -22,10 +22,10 @@ export class DashboardComponent implements OnInit {
 
         console.log(this.router.url)
 
-        if (this.router.url == '/home') {
-          this.clase = false
-        }else{
+        if (this.router.url != '/home') {
           this.clase = true
+        }else{
+          this.clase = false
         }
       })
      }

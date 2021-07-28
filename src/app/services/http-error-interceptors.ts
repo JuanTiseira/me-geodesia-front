@@ -4,7 +4,7 @@ import {throwError} from 'rxjs';
 import {catchError} from 'rxjs/internal/operators';
 import { FunctionsService } from './functions.service';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2'
 @Injectable({
   providedIn: 'root'
 })
@@ -18,9 +18,21 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         if (error instanceof ErrorEvent) {
           // client-side error
           errorMessage = `Client-side error: ${error.error.message}`;
+          Swal.fire({
+            title: 'Error! ' + ` ${error.error.status}`,
+            text: 'Ocurrio un error en la operacion',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
         } else {
           // backend error
           errorMessage = `Server-side error: ${error.status} ${error.message}`;
+          Swal.fire({
+            title: 'Error! ' + ` ${error.status}`,
+            text: 'Ocurrio un error en la operacion',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          })
         }
         
         // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.

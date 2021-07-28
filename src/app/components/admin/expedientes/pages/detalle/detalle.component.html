@@ -17,6 +17,10 @@
                           <td>{{ resultado.numero }}</td>
                     </tr>
                     <tr>
+                      <th>Presentacion Numero</th>
+                      <td>{{ tramite.numero_presentacion }}</td>
+                   </tr>
+                    <tr>
                         <th>Abreviatura</th>
                             <td>{{ resultado.abreviatura }}</td>
                     </tr>
@@ -94,14 +98,20 @@
                 <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
                 Guardar
               </button>
-              <button *ngIf="!isEditMode && isAdmin" (click)="editar()"  [disabled]="true" type="button" class="btn btn-green">
+
+              
+              <button *ngIf="!isEditMode && isAdmin" [disabled]="loading" type="button" class="btn btn-green"
+              printSectionId="acuse"
+              printTitle="CARATULA"
+              ngxPrint
+              styleSheetFile="/assets/acuse.scss">
                 <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
-                Editar
+                Imprimir Constancia 
               </button>
               </div>
               <div class="col-md-12">
-                <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearDevol" class="btn btn-green btn-block">Devolver Documentos</button>
-                <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearRetiro" class="btn btn-green btn-block">Retirar Documentos</button>
+                <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearDevol" class="btn btn-green btn-block">Nueva Presentacion</button>
+                <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearRetiro" class="btn btn-green btn-block">Retiro de Documentos</button>
               </div>
             </div>
 
@@ -109,7 +119,6 @@
     </div>
     <ngx-spinner></ngx-spinner>
 </div>
-
 
 <!-- MODAL CREAR RETIRO -->
 
@@ -127,7 +136,7 @@
                       <div class="col-md-12">      
                         <div class="form-group">
                           <label for="descripcion" class="form-label">Descripcion *</label>
-                          <input formControlName="descripcion" placeholder="Descripcion" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                          <input formControlName="descripcion" placeholder="Descripcion" type="text" maxlength="20" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
                           <div *ngIf="submitted && r.descripcion.errors" class="invalid-feedback">
                             <div *ngIf="r.descripcion.errors.required">Este campo es obligatorio</div>
                           </div>
@@ -145,25 +154,56 @@
 
                         <div  class="form-group">
                           <label *ngIf="!busqueda_manual" for="dni" class="form-label">DNI</label>
-                          <input *ngIf="!busqueda_manual" (keyup)="leerDni()" formControlName="dni" placeholder="Ingrese numero de DNI" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.dni.errors }">
+                          <input *ngIf="!busqueda_manual" (keyup.enter)="leerDni()" formControlName="dni" placeholder="Ingrese numero de DNI" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.dni.errors }">
                           
                           <label  *ngIf="busqueda_manual"  for="usuario" class="form-label">Usuario</label>
-                          <ng-select 
-                          *ngIf="busqueda_manual"
-                          [items]="propietario$ | async"
-                          bindLabel="fullName"
-                          bindValue="id"
-                          [addTag]="false"
-                          [multiple]="false"
-                          [hideSelected]="true"
-                          [trackByFn]="trackByFn"
-                          [minTermLength]="5"
-                          [loading]="propietarioLoading"
-                          typeToSearchText="Por favor, ingrese 2 o mas caracteres"
-                          [typeahead]="propietarioInput$"
-                          formControlName="usuario">
-                          </ng-select>
 
+                          <div  *ngIf="busqueda_manual" class="row">
+
+                            <div class="col-md-10">
+                              <ng-select 
+                             
+                              [items]="propietario$ | async"
+                              bindLabel="fullName"
+                              bindValue="id"
+                              [addTag]="false"
+                              [multiple]="false"
+                              [hideSelected]="true"
+                              [trackByFn]="trackByFn"
+                              [minTermLength]="5"
+                              [loading]="propietarioLoading"
+                              typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                              [typeahead]="propietarioInput$"
+                              formControlName="usuario">
+                              </ng-select>
+                            </div>
+
+                            <div class="col-md-2">
+                             
+                                <button type="button" data-bs-toggle="modal" id="btn-edit-user" style="margin-top: 1;"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
+                             
+    
+                            </div>
+
+                          </div>
+                       
+
+                          
+                          
+                          <!-- Crear Usuario -->
+                          <div class="modal fade" id="crearUsuario" tabindex="-1" aria-labelledby="crearUsuario" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Ingresar Registro</h5>
+                                        <button id="closeModalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <app-crear-usuario (verDetallesFunction)="verDetallesUsuarios($event)"></app-crear-usuario>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
 
                           <label for="">Busqueda manual</label>
                          
@@ -178,6 +218,8 @@
                           <div *ngIf="submitted && r.dni.errors" class="invalid-feedback">
                             <div *ngIf="r.dni.errors.required">Este campo es obligatorio</div>
                           </div>
+
+                         
                         </div>  
 
                       
@@ -331,7 +373,7 @@
               <input type="text" name="" id="" value="013" style="margin-left: 20px;">
               <input type="text" name="" id="" value="{{resultado.anio}}" style="margin-left: 20px;">
               <input type="text" name="" id="" value="" style="margin-left: 20px;">
-              <input type="text" name="" id="" value="{{date}}" style="margin-left: 20px;">
+              <input type="text" name="" id="" value="{{fecha_creacion}}" style="margin-left: 20px;">
           </div>
         </div>
 
@@ -509,16 +551,16 @@
 
                   Tramite: {{tramite.numero}} <br>
                   Expte: {{resultado.numero}} {{ resultado.anio }} <br>
-                  Pres: {{ date }} <br>
+                  Pres: {{ fecha_creacion }} <br>
                   </th>
 
                   <th style="font-weight: normal; font-size: 7.5px;" >
-                      Tipo: {{ resultado.abreviatura }} <br>
-                      Prof: {{fullName(resultado.agrimensor.nombre ,  resultado.agrimensor.apellido )}} <br> 
+                      <b>Tipo:</b>  {{ resultado.abreviatura }} <br>
+                      <b> Prof:</b> {{fullName(resultado.agrimensor.nombre ,  resultado.agrimensor.apellido )}} <br> 
                       {{ resultado.agrimensor.dni }} <br>
-                      Tit: {{fullName(resultado.propietario.nombre ,  resultado.propietario.apellido )}} <br> 
+                      <b>Tit:</b>  {{fullName(resultado.propietario.nombre ,  resultado.propietario.apellido )}} <br> 
                       {{ resultado.propietario.cuit }} <br>
-                      Usuario de Impresion: <br>
+                      <b>Usuario de Impresion:</b>  <br>
                       {{user}} <br>    
                       {{date}} {{fecha_hora}} <br>
                   </th>
@@ -529,6 +571,88 @@
                   </td>
               </tr>
       </table>
+  </div>
+</div>
+
+
+<!-- ACUSE DE RECIBO -->
+
+<div hidden>
+  <div id="acuse">
+    <table style="width:100%">
+      <tr>
+     
+        <th style="text-align: center;">   <img src="assets/escudo.png" alt="Escudo misiones" width="60px"> </th>
+        <th style="text-align: center; max-width: 500px; padding-top: 50px; padding-left: 30px; font-style: italic;">
+          “Año 2021 - Año de la Prevención y Lucha contra
+          el COVID-19, Dengue y demás Enfermedades
+          Infectocontagiosas, contra la Violencia por motivos
+          de Género en todas sus formas, del Bicentenario del
+          Fallecimiento del General Martín Miguel de
+          Güemes y de la Transición de la Década de Acción
+          de los Objetivos de Desarrollo Sostenible”.</th>
+      </tr>
+      <tr>
+        <th style="text-align: center; font-weight: 900; font-size: 10px;">PROVINCIA DE MISIONES</th>
+      </tr>
+      <br>
+      <tr>
+        <th style="text-align: center;  font-weight: 900; font-size: 8px; padding: 1px;">DIRECCION GENERAL DE CATASTRO</th>  
+      </tr> 
+     
+    </table>
+
+    <h2 style="text-align: center; font-weight: 900; margin-top: 50px; font-size: 20px;">MESA DE ENTRADA Y SALIDAS</h2>
+    <h2 style="text-align: center; font-weight: 900;  margin-top: 20px; font-size: 18px;">Departamento de Geodesia y Cartografia</h2>
+
+    <p>
+      Por la presente, se deja constancia que el <b>TRAMITE n {{tramite.numero}}</b> del <b>Tipo {{resultado.abreviatura}} </b> INICIADO EN FECHA <b>27/07/2021</b> , 
+      <b>Expediente N {{resultado.numero}} </b> 
+      con <b>Presentacion {{tramite.numero_presentacion}}</b>  se ha recibido con la siguiente 
+      documentacion: 
+    </p>
+
+    <table style="border: 1px solid black;  width: 100%;">
+      <tr>
+        <th style="border-bottom: 1px solid black; background-color: rgb(216, 216, 216);">
+          Documentacion Presentada
+        </th>
+      </tr>
+
+      <tr *ngFor="let doc of resultado.documentos">
+        <td>
+         {{doc.descripcion}}
+        </td>
+      </tr>
+    </table>
+
+   
+    <h4 style="margin-top: 50px;"> Presentado por: </h4>
+    
+    <li *ngIf="resultado.gestor"> {{resultado.gestor.nombre}} {{resultado.gestor.apellido}}</li>
+    <li *ngIf="resultado.gestor"> {{resultado.gestor.dni}}</li>
+
+    <li *ngIf="!resultado.gestor"> {{resultado.agrimensor.nombre}} {{resultado.agrimensor.apellido}}</li>
+    <li *ngIf="!resultado.gestor"> {{resultado.agrimensor.dni}}</li>
+
+
+    
+    <h4 style="margin-top: 50px;">Profesional Solicitante:</h4> 
+
+    <li> {{resultado.agrimensor.nombre}} {{resultado.agrimensor.apellido}}</li>
+    <li>Agrimensor</li>
+    <li>D.N.I:  {{resultado.agrimensor.dni}}</li>
+
+    <p style="text-align: right;">
+      FIRMA<br>
+      Nombre Directora<br>
+      Director General de Catastro
+    </p>
+    <p style="position: absolute;
+    bottom: 10px; font-size: 8px;">
+      Usuario Impresion: {{user}} <br>    
+      Fecha de Impresion: {{date}} {{fecha_hora}} <br>
+    </p>
   </div>
 </div>
 
