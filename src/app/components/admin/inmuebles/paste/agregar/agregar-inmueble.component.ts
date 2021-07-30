@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
@@ -17,7 +17,9 @@ export class AgregarInmuebleComponent implements OnInit {
   // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
   @Output() verDetallesInmuebles: EventEmitter<any>;
-  
+  @Input() volver: string;
+
+
   public municipios: any;
 
   inmuebleForm : FormGroup
