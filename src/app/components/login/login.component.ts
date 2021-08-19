@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { Role } from 'src/app/models/role.models';
 import { AuthService } from 'src/app/services/auth.service';
-import * as $ from 'JQuery';
+import * as $ from 'jquery';
 
 
 @Component({
