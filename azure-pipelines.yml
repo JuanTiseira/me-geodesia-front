@@ -28,4 +28,4 @@ steps:
     azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
     appType: 'webAppLinux'
     WebAppName: 'geodesia-frontend-dev'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/dist/front/*.zip'
