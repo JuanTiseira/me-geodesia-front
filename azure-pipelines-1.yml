@@ -24,11 +24,11 @@ steps:
       customCommand: 'install @angular/cli'
 
   - task: Npm@1
-    displayName: 'npm build'
+    displayName: 'npm run build'
     inputs:
       command: custom
       verbose: false
-      customCommand: 'run build-prod'
+      customCommand: 'run build'
 
   - task: ArchiveFiles@1
     displayName: 'Archive files '
