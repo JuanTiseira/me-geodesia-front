@@ -24,7 +24,7 @@ steps:
  
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/**/*.zip'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
