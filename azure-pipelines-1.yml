@@ -41,12 +41,12 @@ steps:
     inputs:
       SourceFolder: '$(Build.ArtifactStagingDirectory)'
       Contents: '$(Build.BuildId).zip'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/ArtifactsToBePublished'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsToBePublished'
 
   - task: AzureRmWebAppDeployment@4
     inputs:
@@ -54,4 +54,4 @@ steps:
       azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
       appType: 'webAppLinux'
       WebAppName: 'geodesia-frontend-dev'
-      packageForLinux: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished\*.zip'
+      packageForLinux: '$(Build.ArtifactStagingDirectory)/drop'
