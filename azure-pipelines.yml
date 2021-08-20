@@ -24,10 +24,9 @@ steps:
  
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-    includeRootFolder: false
+    rootFolderOrFile: '$(Build.BinariesDirectory)/dist/'
+    includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
-
 - task: PublishBuildArtifacts@1   
