@@ -1,4 +1,4 @@
 export const environment = {
-  endpoint: "http://api.relex.com.ar",
+  endpoint: "https://api.relex.com.ar",
   production: true
 };
