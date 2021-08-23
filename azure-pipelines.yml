@@ -21,19 +21,25 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
-
+ 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/dist/front'
-    includeRootFolder: false
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
     appType: 'webAppLinux'
     WebAppName: 'geodesia-frontend-dev'
-    packageForLinux: '$(Build.SourcesDirectory)/dist/front'
-- task: PublishBuildArtifacts@1    
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
+

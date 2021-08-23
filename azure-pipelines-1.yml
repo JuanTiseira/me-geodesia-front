@@ -1,0 +1,57 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+  demands: npm
+
+steps:
+  - task: Npm@0
+    displayName: 'npm install'
+    inputs:
+      arguments: '--force'
+
+  - task: Npm@1
+    displayName: 'npm install angular cli'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'install @angular/cli'
+
+  - task: Npm@1
+    displayName: 'npm run build'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run build'
+
+  - task: ArchiveFiles@1
+    displayName: 'Archive files '
+    inputs:
+      rootFolder: '$(System.DefaultWorkingDirectory)/dist/front' #name of your project on angular.json .defaultProject value
+      includeRootFolder: false
+
+  - task: CopyFiles@2
+    displayName: 'Copy File to: $(TargetFolder)'
+    inputs:
+      SourceFolder: '$(Build.ArtifactStagingDirectory)'
+      Contents: '$(Build.BuildId).zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/ArtifactsToBePublished'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/ArtifactsToBePublished'
+
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
+      appType: 'webAppLinux'
+      WebAppName: 'geodesia-frontend-dev'
+      packageForLinux: '$(Build.ArtifactStagingDirectory)'
