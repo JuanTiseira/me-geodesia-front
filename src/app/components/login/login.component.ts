@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit{
   Role = Role;
   loginForm: FormGroup;
   loading = false;
+  date: Date;
 
   constructor(private router: Router,
     private authService: AuthService, 
@@ -29,6 +30,8 @@ export class LoginComponent implements OnInit{
       email: ['', Validators.required],
       password: ['', Validators.required]
   })    
+
+  this.date = new Date()
   }
 
   onSubmit(formData: {email: string, password: string}) {
