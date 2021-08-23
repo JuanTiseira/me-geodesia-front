@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint: "https://demo-geodesia.azurewebsites.net"
+  endpoint: "http://api.relex.com.ar"
 };
 
 /*
