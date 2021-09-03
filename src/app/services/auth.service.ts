@@ -37,6 +37,8 @@ export class AuthService {
   }
 
   hasRole(role: Role) {
+      // console.log("auth guard autorites: ", this.usert.authorities[0].authority)
+      // console.log("role: ", role)
       return this.isAuthorized() && this.usert.authorities[0].authority === role;
   }
 

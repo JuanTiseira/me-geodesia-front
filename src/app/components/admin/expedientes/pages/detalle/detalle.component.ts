@@ -564,9 +564,9 @@ export class DetalleComponent implements OnInit {
   setDevol() {
     console.info('FORMULARIO DEVOLUCION', this.devolForm.value)
 
-    console.info('NNUMERO DE TRAMITE', this.tramite.id)
+    console.info('NNUMERO DE TRAMITE', this.tramite.numero)
 
-      this.devolForm.patchValue({num_tramite: this.tramite.id});
+      this.devolForm.patchValue({num_tramite: this.tramite.numero});
       this.devolForm.patchValue({tramite_urgente: false});
       
       this._apiService.setDevol(this.devolForm.value)

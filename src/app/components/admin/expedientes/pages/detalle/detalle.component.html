@@ -136,7 +136,7 @@
                       <div class="col-md-12">      
                         <div class="form-group">
                           <label for="descripcion" class="form-label">Descripcion *</label>
-                          <input formControlName="descripcion" placeholder="Descripcion" type="text" maxlength="20" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                          <input formControlName="descripcion" placeholder="Descripcion" type="text" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
                           <div *ngIf="submitted && r.descripcion.errors" class="invalid-feedback">
                             <div *ngIf="r.descripcion.errors.required">Este campo es obligatorio</div>
                           </div>

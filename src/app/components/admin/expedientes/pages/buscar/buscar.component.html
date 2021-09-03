@@ -16,7 +16,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
-                <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="numeric" type="number" placeholder="Número" class="form-control" autocomplete="off">
+                <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="text" type="text" placeholder="Número" class="form-control" autocomplete="off">
                 <small *ngIf="consultaForm.value.param_busqueda === 'expediente'" class="form-text text-muted">Ingrese el numero de expediente y año, sin espacios.</small> 
                 <small *ngIf="consultaForm.value.param_busqueda === 'tramite'"  class="form-text text-muted">Ingrese el numero de tramite, sin espacios.</small>   
                 

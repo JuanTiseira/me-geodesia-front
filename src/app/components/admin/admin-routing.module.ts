@@ -21,7 +21,7 @@ export const APP_ROUTES: Routes = [
 
   //EXPEDIENTES 
 
-  {path: 'expediente/buscar', component: BuscarComponent},
+  // {path: 'expediente/buscar', component: BuscarComponent},
 
   {path: 'expediente/agregar', component: AgregarComponent},
 
@@ -48,7 +48,7 @@ export const APP_ROUTES: Routes = [
 
   {path: 'historial/:id', component: DetalleHistorialComponent},
   
-  {path: 'home', component: HomeComponent},
+  // {path: 'home', component: HomeComponent},
 
   //INMUEBLES
 

@@ -221,11 +221,12 @@ export class BuscarComponent implements OnInit {
     
     var numeroanio = this.consultaForm.value.numero
 
-    
+    this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+
     
     
     if (this.consultaForm.value.param_busqueda == 'expediente') {
-
+      
       if(numeroanio.toString().length > 5) {
         var numero = 0 
         let z = 1
@@ -240,6 +241,7 @@ export class BuscarComponent implements OnInit {
           
         }
         var anio = numeroanio.toString().slice(-4);
+        this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
       }else{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
       }

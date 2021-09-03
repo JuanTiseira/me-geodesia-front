@@ -13,7 +13,6 @@ import { CaratulaComponent } from './components/admin/expedientes/pages/reporte/
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
 
-
   { path: '', component: DashboardComponent, 
     canLoad: [AuthGuard], 
     canActivate: [AuthGuard],
@@ -23,14 +22,13 @@ const routes: Routes = [
       // {path: 'expediente/caratula', component: CaratulaComponent},
       // {path: 'expediente/:id', component: DetalleComponent},
       {path: 'historial/buscar', component: BuscarHistorialComponent},
-      // { path: 'pagos', component: PagosComponent},
       // { path: 'contacto', component: ContactoComponent}
     ],
     data: {
       roles: [
-        Role.ROL_PROFESIONAL,
         Role.ROL_ADMIN,
-        Role.ROL_EMPLEADO
+        Role.ROL_EMPLEADO,
+        Role.ROL_PROFESIONAL,
       ]
     }
   },
@@ -63,7 +61,7 @@ const routes: Routes = [
 
 
 {
-  path:'**', component: LoginComponent
+  path:'**', pathMatch: 'full', redirectTo: '/home'
 }
 ];
 
