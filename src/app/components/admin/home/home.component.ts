@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -30,16 +31,39 @@ export class HomeComponent implements OnInit {
   expediente: string
   tramite: string
   param_busqueda: ''
+  consultaForm : FormGroup
+  categories = [
+    {id: 1, name: 'Expediente', value: 'expediente'},
+    {id: 2, name: 'Tramite', value: 'tramite'},
+  ]
 
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
                 private authService: AuthService,
+                private formBuilder: FormBuilder,
                 private spinner: NgxSpinnerService
                 ) { }
 
   ngOnInit(): void {
 
-      if (this.authService.hasRole(Role.ROL_ADMIN) || this.authService.hasRole(Role.ROL_EMPLEADO)) {
+    this.consultaForm = this.formBuilder.group({
+      param_busqueda: [''],   
+      numero: ['', Validators.maxLength(5)],
+      anio: [''],
+      tipo_expediente: [''],
+      inmueble: [''],
+      documento: [''],
+      propietario: [''],
+      gestor: [''],
+      tramite: [''],
+      observacion: [''],
+      abreviatura: [''],
+      agrimensor: [''],
+      tipo_consulta: [''],
+      });
+
+
+      if (this.isAdmin || this.isEmpleado) {
         this.spinner.show();
         this._apiService.getExpedientes()
         .then(response => {
@@ -68,5 +92,35 @@ export class HomeComponent implements OnInit {
   get isProfesional() {
     return this.authService.hasRole(Role.ROL_PROFESIONAL);
   }
- 
+
+
+  buscarHistorialExpediente(){
+    var numeroanio = this.consultaForm.value.numero
+
+    this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+
+    
+    
+    if (this.consultaForm.value.param_busqueda == 'expediente') {
+      
+      if(numeroanio.toString().length > 5) {
+        var numero = 0 
+        let z = 1
+  
+        for (let i = 5; i < 9; i++) {
+  
+          if (numeroanio.toString().length === i) {
+            numero = numeroanio.toString().slice(0, z);
+          }else{
+            z++
+          }
+          
+        }
+        var anio = numeroanio.toString().slice(-4);
+        this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+      }else{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+      }
+    }
+  }
 }

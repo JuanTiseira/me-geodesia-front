@@ -214,7 +214,7 @@ export class AgregarComponent implements OnInit {
         title: 'Exito',
         text: 'Se registro correctamente',
         icon: 'success',
-        confirmButtonText: 'Cool',
+        confirmButtonText: 'Aceptar',
       })
       this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
     })
@@ -223,7 +223,7 @@ export class AgregarComponent implements OnInit {
         title: 'Error!',
         text: 'No se pudo registrar',
         icon: 'error',
-        confirmButtonText: 'Cool'
+        confirmButtonText: 'Aceptar'
       })
       this.loading = false;
     });
@@ -234,7 +234,6 @@ export class AgregarComponent implements OnInit {
     this._apiService.getInmueblesDisponibles().then(response => {
       this.inmuebles = response
     })
-    alert('entro')
   } 
 
   verDetallesUsuarios(dato:boolean){

@@ -300,10 +300,11 @@
             <form [formGroup]="consultaForm">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-12">
-                        <label for="username" class="form-label">Consultar por</label>   
-                        <select formControlName="param_busqueda" class="form-select" aria-label="Default select example">
-                            <option *ngFor="let cat of categories" [ngValue]="cat.value">{{cat.name}}</option>
-                        </select>
+                        <label for="username" class="form-label">Consultar por3</label>   
+                        <ng-select id="param_busqueda" [multiple]="false" [closeOnSelect]="true" formControlName="param_busqueda" >
+                            <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                            <ng-option *ngFor="let cat of categories" [value]="cat.value" [disabled]="cat.disabled">{{cat.name}}</ng-option>
+                        </ng-select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12">
                         <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
@@ -316,7 +317,7 @@
                         <div class="mt-3">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button type="button" (click)="buscarExpediente()" class="btn btn-green">Buscar</button>
+                                    <button type="button" (click)="buscarHistorialExpediente()" class="btn btn-green">Buscar</button>
                                 </div>
                                 <div class="col-md-6">
                                     <button routerLink="/expediente/agregar" type="button" class="btn btn-green">Nuevo</button>

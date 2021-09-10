@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint: "https://api.relex.com.ar"
+  endpoint: "http://192.168.0.79:8000"
 };
 
 /*

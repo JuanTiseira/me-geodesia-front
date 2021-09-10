@@ -14,14 +14,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
 
   { path: '', component: DashboardComponent, 
-    canLoad: [AuthGuard], 
-    canActivate: [AuthGuard],
     children:[
       {path: 'home', component: HomeComponent},
-      {path: 'expediente/buscar', component: BuscarComponent},
+      // {path: 'expediente/buscar', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarComponent},
       // {path: 'expediente/caratula', component: CaratulaComponent},
       // {path: 'expediente/:id', component: DetalleComponent},
-      {path: 'historial/buscar', component: BuscarHistorialComponent},
+      {path: 'historial/buscar', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
       // { path: 'contacto', component: ContactoComponent}
     ],
     data: {
@@ -33,30 +31,31 @@ const routes: Routes = [
     }
   },
 
-  
+  { path: '', component: DashboardComponent, 
+  canLoad: [AuthGuard], 
+  canActivate: [AuthGuard],
+  loadChildren: () => import('../app/components/admin/empleado.module').then(m => m.EmpleadoModule),
+  data: {
+    roles: [
+      Role.ROL_EMPLEADO,
+      Role.ROL_ADMIN
+    ]
+  }
+
+},
   { path: '', component: DashboardComponent, 
     canLoad: [AuthGuard], 
     canActivate: [AuthGuard],
     loadChildren: () => import('../app/components/admin/admin.module').then(m => m.AdminModule),
     data: {
       roles: [
-        Role.ROL_ADMIN,
+        Role.ROL_ADMIN
       ]
     }
   
   },
 
-  { path: '', component: DashboardComponent, 
-    canLoad: [AuthGuard], 
-    canActivate: [AuthGuard],
-    loadChildren: () => import('../app/components/admin/empleado.module').then(m => m.EmpleadoModule),
-    data: {
-      roles: [
-        Role.ROL_EMPLEADO,
-      ]
-    }
-  
-  },
+
 
 
 

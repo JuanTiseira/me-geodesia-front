@@ -3,7 +3,6 @@ import { CanActivate, Router, ActivatedRouteSnapshot, CanLoad, Route } from '@an
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Role } from 'src/app/models/role.models';
-import Swal from 'sweetalert2'
 @Injectable({
   providedIn: 'root'
 })
@@ -18,36 +17,32 @@ export class AuthGuard implements CanActivate, CanLoad {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     
     if (!this.authService.isAuthorized()) {
-        console.log("no está autorizado");
-      
-        this.router.navigate(['login']);
-        return false;
-    }
+      this.router.navigate(['login']);
+      return false;
+  }
 
     const roles = route.data.roles as Role[];
     if (roles && !roles.some(r => this.authService.hasRole(r))) {
-        console.log("redirecciona");
-        this.router.navigate(['login']);
-        return false;
+      this.router.navigate(['login']);
+      return false;
     }
 
     return true;
 }
 
-canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
- 
+  canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
+  
     if (!this.authService.isAuthorized()) {
-      
-        this.router.navigate(['login']);
-        return false;
+      this.router.navigate(['login']);
+      return false;
     }
 
     const roles = route.data && route.data.roles as Role[];
     if (roles && !roles.some(r => this.authService.hasRole(r))) {
-        this.router.navigate(['login']);
-        return false;
+      this.router.navigate(['login']);
+      return false;
     }
 
     return true;
-}
+  }
 }

@@ -70,10 +70,10 @@ export class BuscarComponent implements OnInit {
     tramite: string
     param_busqueda: ''
     consultaForm : FormGroup
-  categories = [
-    {id: 1, name: 'Expediente', value: 'expediente'},
-    {id: 2, name: 'Tramite', value: 'tramite'},
-  ]
+    categories = [
+      {id: 1, name: 'Expediente', value: 'expediente'},
+      {id: 2, name: 'Tramite', value: 'tramite'},
+    ]
 
   constructor( private _apiService: ApiService,
                 private dataService: DataService,
@@ -83,25 +83,6 @@ export class BuscarComponent implements OnInit {
                 private router: Router,
                 private spinner: NgxSpinnerService
                 ) { this.load = false; }
-
-  // consultaForm = new FormGroup({
-  //   param_busqueda: [''],   
-  //   numero: [''],
-  //   anio: [''],
-  //   tipo_expediente: [''],
-  //   inmueble: [''],
-  //   documento: [''],
-  //   propietario: [''],
-  //   gestor: [''],
-  //   tramite: [''],
-  //   observacion: [''],
-  //   abreviatura: [''],
-  //   agrimensor: [''],
-  //   tipo_consulta: [''],
-
-  // });
-
-
 
   ngOnInit(): void {
 

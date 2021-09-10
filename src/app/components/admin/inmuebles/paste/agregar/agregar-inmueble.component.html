@@ -51,6 +51,15 @@
 
                   </div>
 
+                  <div class="form-group">
+                    
+                    <label for="unidad_funcional" class="form-label">Unidad Funcional</label>
+                    <input formControlName="unidad_funcional" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.unidad_funcional.errors }">
+                    <div *ngIf="submitted && f.unidad_funcional.errors" class="invalid-feedback">
+                      <div *ngIf="f.unidad_funcional.errors.required">Este campo es obligatorio</div>
+                    </div>
+                  </div>
+
               
                     <div class="col-3">
                       <!-- <button type="button" [routerLink]="['/inmueble/buscar']" class="btn btn-green">Volver</button> -->
@@ -95,8 +104,6 @@
                     <div *ngIf="submitted && f.numero_mensura.errors" class="invalid-feedback">
                       <div *ngIf="f.numero_mensura.errors.required">Este campo es obligatorio</div>
                     </div>
-                
-
                   </div>
 
                   <div class="form-group">

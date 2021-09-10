@@ -57,6 +57,7 @@ export class AgregarInmuebleComponent implements OnInit {
       manzana: ['', Validators.required, Validators.maxLength(4)],
       parcela: ['', Validators.required, Validators.maxLength(4)],
       numero_mensura: ['', Validators.required, Validators.maxLength(4)],
+      unidad_funcional: ['', Validators.required, Validators.maxLength(10)],
       municipio: ['', Validators.required]
     }, {
          

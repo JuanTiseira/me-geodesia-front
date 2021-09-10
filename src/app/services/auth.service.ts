@@ -5,6 +5,7 @@ import { TokenService } from './token.service';
 import Swal from 'sweetalert2'
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
+import { FunctionsService } from './functions.service';
 
 
 @Injectable({
@@ -17,7 +18,8 @@ export class AuthService {
 
   constructor(private _apiService: ApiService,
     private _tokenService: TokenService,
-    private router: Router
+    private router: Router,
+    private _functionsService: FunctionsService
     ) { }
 
 
@@ -37,9 +39,9 @@ export class AuthService {
   }
 
   hasRole(role: Role) {
-      // console.log("auth guard autorites: ", this.usert.authorities[0].authority)
-      // console.log("role: ", role)
-      return this.isAuthorized() && this.usert.authorities[0].authority === role;
+    this._functionsService.imprimirMensaje(role, "hasRole: ")
+    this._functionsService.imprimirMensaje(this.usert?.authorities[0]?.authority, "Role user: ")
+    return this.isAuthorized() && this.usert.authorities[0].authority === role;
   }
 
 
