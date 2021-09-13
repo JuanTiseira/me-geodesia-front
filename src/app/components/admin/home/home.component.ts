@@ -7,6 +7,7 @@ import { FunctionsService } from 'src/app/services/functions.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -37,12 +38,13 @@ export class HomeComponent implements OnInit {
     {id: 2, name: 'Tramite', value: 'tramite'},
   ]
 
-  constructor( private _apiService: ApiService,
-                private _functionService: FunctionsService ,
-                private authService: AuthService,
-                private formBuilder: FormBuilder,
-                private spinner: NgxSpinnerService
-                ) { }
+  constructor(private router: Router,
+              private _apiService: ApiService,
+              private _functionService: FunctionsService ,
+              private authService: AuthService,
+              private formBuilder: FormBuilder,
+              private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit(): void {
 
@@ -60,7 +62,7 @@ export class HomeComponent implements OnInit {
       abreviatura: [''],
       agrimensor: [''],
       tipo_consulta: [''],
-      });
+  });
 
 
       if (this.isAdmin || this.isEmpleado) {
@@ -68,7 +70,6 @@ export class HomeComponent implements OnInit {
         this._apiService.getExpedientes()
         .then(response => {
           this.expedientes = response
-         
         })
 
       this._apiService.getUsuarios()
@@ -76,6 +77,12 @@ export class HomeComponent implements OnInit {
           this.usuarios = response
           this._functionService.imprimirMensaje(response, "usuarios")
         })
+        .catch(error => {
+          this._functionService.imprimirMensaje(error, "error en home: ");
+          this.router.navigate(['login']);
+        })
+      }else{
+        this.router.navigate(['login']);
       }
 
       this.spinner.hide();
