@@ -43,37 +43,38 @@ export class BuscarComponent implements OnInit {
   public tramite_urgente: boolean = false
 
   p: number = 1;
+  submitted = false;
   
-    agrimensor$: Observable<Person[]>;
-    gestor$: Observable<Person[]>;
-    propietario$: Observable<Person[]>;
-    documento$: Observable<Documento[]>;
+  agrimensor$: Observable<Person[]>;
+  gestor$: Observable<Person[]>;
+  propietario$: Observable<Person[]>;
+  documento$: Observable<Documento[]>;
 
-    agrimensorLoading = false;
-    gestorLoading = false;
-    propietarioLoading = false;
-    documentoLoading = false;
-
-
-    agrimensorInput$ = new Subject<string>();
-    propietarioInput$ = new Subject<string>();
-    gestorInput$ = new Subject<string>();
-    documentoInput$ = new Subject<string>();
+  agrimensorLoading = false;
+  gestorLoading = false;
+  propietarioLoading = false;
+  documentoLoading = false;
 
 
-    selectedAgrimensores: Person[] = <any>[{}];
-    selectedPropietarios: Person[] = <any>[{}];
-    selectedGestores: Person[] = <any>[{}];
-    selectedDocumentos: Documento[] = <any>[{}];
+  agrimensorInput$ = new Subject<string>();
+  propietarioInput$ = new Subject<string>();
+  gestorInput$ = new Subject<string>();
+  documentoInput$ = new Subject<string>();
 
-    expediente: string
-    tramite: string
-    param_busqueda: ''
-    consultaForm : FormGroup
-    categories = [
-      {id: 1, name: 'Expediente', value: 'expediente'},
-      {id: 2, name: 'Tramite', value: 'tramite'},
-    ]
+
+  selectedAgrimensores: Person[] = <any>[{}];
+  selectedPropietarios: Person[] = <any>[{}];
+  selectedGestores: Person[] = <any>[{}];
+  selectedDocumentos: Documento[] = <any>[{}];
+
+  expediente: string
+  tramite: string
+  param_busqueda: ''
+  consultaForm : FormGroup
+  categories = [
+    {id: 1, name: 'Expediente', value: 'expediente'},
+    {id: 2, name: 'Tramite', value: 'tramite'},
+  ]
 
   constructor( private _apiService: ApiService,
                 private dataService: DataService,
@@ -88,8 +89,8 @@ export class BuscarComponent implements OnInit {
 
     
   this.consultaForm = this.formBuilder.group({
-    param_busqueda: [''],   
-    numero: ['', Validators.maxLength(5)],
+    param_busqueda: ['', Validators.required],   
+    numero: ['', Validators.required, Validators.maxLength(9)],
     anio: [''],
     tipo_expediente: [''],
     inmueble: [''],
@@ -197,7 +198,13 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarExpediente() {
-   
+
+    this.submitted = true;
+    if (this.consultaForm.invalid) {
+      this._functionService.imprimirMensaje(this.consultaForm, "consulta form: ")
+      return;
+    
+    }
     this.spinner.show();
     
     var numeroanio = this.consultaForm.value.numero

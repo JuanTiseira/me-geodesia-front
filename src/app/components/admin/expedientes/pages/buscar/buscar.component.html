@@ -5,18 +5,23 @@
     <form [formGroup]="consultaForm">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Consultar por</label>   
+                <label for="param_busqueda" class="form-label">Consultar por</label>   
                
-                <ng-select id="param_busqueda" [multiple]="false" [closeOnSelect]="true" formControlName="param_busqueda" >
+                <ng-select id="param_busqueda" [multiple]="false" [closeOnSelect]="true" formControlName="param_busqueda" [ngClass]="{ 'is-invalid': submitted && f.param_busqueda.errors }">
                     <ng-option value="" disabled>Seleccione una opcion</ng-option>
                     <ng-option *ngFor="let cat of categories" [value]="cat.value" [disabled]="cat.disabled">{{cat.name}}</ng-option>
                 </ng-select>
-
+                <div *ngIf="f.param_busqueda.errors" class="invalid-feedback">
+                    <div *ngIf="f.param_busqueda.errors.required">Seleccione una opción.</div>
+                </div>
                 
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
-                <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="text" type="text" placeholder="Número" class="form-control" autocomplete="off">
+                <label for="numero" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
+                <input (keyup.enter)="buscarExpediente()" formControlName="numero" maxlength="10" inputmode="text" type="text" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                <div *ngIf="f.numero.errors" class="invalid-feedback">
+                    <div *ngIf="f.numero.errors.required">Ingrese un número.</div>
+                </div>
                 <small *ngIf="consultaForm.value.param_busqueda === 'expediente'" class="form-text text-muted">Ingrese el numero de expediente y año, sin espacios.</small> 
                 <small *ngIf="consultaForm.value.param_busqueda === 'tramite'"  class="form-text text-muted">Ingrese el numero de tramite, sin espacios.</small>   
                 
@@ -38,12 +43,12 @@
 
         <hr />
 
-        <div class="row" *ngIf="isAdmin || isEmpleado">
+        <div class="row justify-content-between" *ngIf="isAdmin || isEmpleado">
             <h2 style="font-weight: bold;">Filtrar expedientes</h2>
-            <div class="col-lg-4 col-md-4 col-sm-12">
+            <!-- <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Número de Expediente</label>
                 <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
-            </div>
+            </div> -->
 
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="Año" class="form-label">Año</label>
@@ -149,7 +154,7 @@
         </div>
     </form>
     
-    <hr/>
+    <hr *ngIf="expedientes"/>
 
     <div *ngIf="expedientes">
         <table class="table table-striped" >

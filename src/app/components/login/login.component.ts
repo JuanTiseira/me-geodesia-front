@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   loading = false;
   date: Date;
+  submitted = false;  
 
   constructor(private router: Router,
     private authService: AuthService, 
@@ -34,7 +35,16 @@ export class LoginComponent implements OnInit{
   this.date = new Date()
   }
 
+  get f() { return this.loginForm.controls; }
+
   onSubmit(formData: {email: string, password: string}) {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+
+        console.log(this.loginForm)
+        return;
+    }
 
     this.loading = true;
     $("#btn-login").toggleClass('disabled');

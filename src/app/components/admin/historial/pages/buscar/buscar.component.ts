@@ -63,7 +63,7 @@ export class BuscarHistorialComponent implements OnInit {
                 ) { this.load = false; }
 
 
-  consultaForm = new FormGroup({
+    consultaForm = new FormGroup({
     param_busqueda: new FormControl(''),   
     numero: new FormControl(''),
     anio: new FormControl(''),

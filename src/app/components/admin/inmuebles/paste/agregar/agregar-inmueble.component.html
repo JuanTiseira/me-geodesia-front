@@ -24,7 +24,7 @@
                   <div class="form-group">
                     
                     <label for="datos" class="form-label">Datos</label>
-                    <input formControlName="datos" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.datos.errors }">
+                    <input formControlName="datos" type="text" class="form-control"  maxlength="20" [ngClass]="{ 'is-invalid': submitted && f.datos.errors }">
                     <div *ngIf="submitted && f.datos.errors" class="invalid-feedback">
                       <div *ngIf="f.datos.errors.required">Este campo es obligatorio</div>
                     </div>

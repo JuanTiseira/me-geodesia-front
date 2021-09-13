@@ -98,21 +98,21 @@ export class AgregarInmuebleComponent implements OnInit {
     
     console.log(this.inmuebleForm.value)
     this._apiService.setInmueble(this.inmuebleForm.value)
-    .then(() =>{
-      console.warn(this.inmuebleForm.value);
-    
-      this.inmuebleForm.reset();
-      this.loading = false;
-      this.verDetallesInmuebles.emit(true);
+      .then(() =>{
+        console.warn(this.inmuebleForm.value);
       
-    })
-    .catch((e)=>{
-     Swal.fire({
-        title: 'Error!',
-        text: 'No se pudo registrar',
-        icon: 'error',
-        confirmButtonText: 'OK'
+        this.inmuebleForm.reset();
+        this.loading = false;
+        this.verDetallesInmuebles.emit(true);
+        
       })
+      .catch((e)=>{
+      Swal.fire({
+          title: 'Error!',
+          text: 'No se pudo registrar',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
 
       
       this.loading = false;
