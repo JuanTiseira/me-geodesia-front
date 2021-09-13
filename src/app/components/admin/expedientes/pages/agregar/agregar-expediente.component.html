@@ -10,8 +10,8 @@
                   <div class="row">
                     <div class="col-md-10">
                       <div class="form-group">
-                        <label for="tipo" class="form-label">Tipo</label>
-                        <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" >
+                        <label for="tipo_expediente" class="form-label">Tipo</label>
+                        <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
                           <ng-option value="" disabled>Seleccione una opcion</ng-option>
                           <ng-option *ngFor="let dato of tipos_expedientes.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
                         </ng-select>
@@ -33,7 +33,7 @@
                     <div class="row">
                       <div class="col-md-10">
                         <label for="inmueble" class="form-label">Inmueble</label>
-                        <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" >
+                        <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
                           <ng-option *ngFor="let dato of inmuebles.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.municipio.departamento.codigo}}-{{dato.municipio.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
                         </ng-select>
                         <div *ngIf="submitted && f.inmueble.errors" class="invalid-feedback">
@@ -61,7 +61,9 @@
                           [loading]="propietarioLoading"
                           typeToSearchText="Por favor, ingrese 2 o mas caracteres"
                           [typeahead]="propietarioInput$"
-                          formControlName="propietario">
+                          formControlName="propietario"
+                          [ngClass]="{ 'is-invalid': submitted && f.propietario.errors }">
+                          
                           </ng-select>
                         <div *ngIf="submitted && f.propietario.errors" class="invalid-feedback">
                           <div *ngIf="f.propietario.errors.required">Este campo es obligatorio</div>
@@ -78,11 +80,11 @@
                   <div class="col-md-10">
 
                     <div class="form-group">
-                      <label for="propietario" class="form-label">Documentos</label>
+                      <label for="documentos" class="form-label">Documentos</label>
                       <ng-select  [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && f.documentos.errors }">
                         <ng-option *ngFor="let dato of documentos.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
                       </ng-select>
-                      <div *ngIf="submitted && documentos.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.documentos.errors" class="invalid-feedback">
                         <div *ngIf="f.documentos.errors.required">Este campo es obligatorio</div>
                       </div>
                     </div>
@@ -119,7 +121,9 @@
                             [loading]="agrimensorLoading"
                             typeToSearchText="Por favor, ingrese 2 o mas caracteres"
                             [typeahead]="agrimensorInput$"
-                            formControlName="agrimensor">
+                            formControlName="agrimensor"
+                            [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }"
+                            >
                           </ng-select>
 
                           <div *ngIf="submitted && f.agrimensor.errors" class="invalid-feedback">

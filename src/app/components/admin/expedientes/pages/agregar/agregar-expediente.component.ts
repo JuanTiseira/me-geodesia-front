@@ -197,8 +197,8 @@ export class AgregarComponent implements OnInit {
     this.submitted = true;
 
     if (this.expedienteForm.invalid) {
-        console.log('errores en el formulario', this.expedienteForm.invalid)
-        return;
+      this._functionService.imprimirMensaje(this.expedienteForm.invalid, "expediente form invalid: ")
+      return;
     }
     this.loading = true;    
     this.createExpediente();
