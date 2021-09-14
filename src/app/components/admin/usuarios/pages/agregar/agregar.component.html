@@ -13,9 +13,10 @@
                   <div class="form-group">
                     
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input formControlName="nombre" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+                    <input formControlName="nombre" maxlength="50" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
                     <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
-                      <div *ngIf="f.nombre.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.nombre.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.nombre.errors.required">Solo se permiten letras.</div>
                     </div>
 
                   </div>
@@ -23,9 +24,11 @@
                   <div class="form-group">
                     
                     <label for="cuit" class="form-label">Cuit</label>
-                    <input formControlName="cuit" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.cuit.errors }">
+                    <input formControlName="cuit" type="text" class="form-control" maxlength="11" id="cuit" [ngClass]="{ 'is-invalid': submitted && f.cuit.errors }">
                     <div *ngIf="submitted && f.cuit.errors" class="invalid-feedback">
-                      <div *ngIf="f.cuit.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.cuit.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.cuit.errors">Ingresar 11 números.</div>
+                      <div *ngIf="f.cuit.errors.pattern">Ingresar solamente números.</div>
                     </div>
 
                   </div>
@@ -62,9 +65,10 @@
                   <div class="form-group">
                     
                     <label for="apellido" class="form-label">Apellido</label>
-                    <input formControlName="apellido" type="text" class="form-control" id="apellido" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
+                    <input formControlName="apellido" type="text" maxlength="50" class="form-control" id="apellido" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
                     <div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
                       <div *ngIf="f.apellido.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.apellido.errors.pattern">Solo se permiten letras.</div>
                     </div>
 
                   </div>
@@ -72,9 +76,11 @@
                   <div class="form-group">
                     
                     <label for="matricula" class="form-label">Matricula</label>
-                    <input formControlName="matricula" type="text" class="form-control" id="matricula" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
+                    <input formControlName="matricula" type="text" class="form-control" id="matricula" maxlength="25" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
                     <div *ngIf="submitted && f.matricula.errors" class="invalid-feedback">
-                      <div *ngIf="f.matricula.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.matricula.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.matricula.errors">Ingrese como mínimo 4 números.</div>
+                      <div *ngIf="f.matricula.errors.pattern">Ingrese solamente números.</div>
                     </div>
 
                   </div>
