@@ -55,13 +55,11 @@ export class AgregarUsuarioComponent implements OnInit {
       cuit: ['', Validators.required],
       dni: ['', Validators.required],
       matricula: ['', Validators.required],
-      direccion: ['', Validators.required],
+      direccion:  ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
       fecha_nacimiento: ['', Validators.required],
-      email: ['', Validators.required, Validators.email],
-      telefono: ['', Validators.required],  
-    }, {
-         
-      });
+      email:  ['', Validators.compose([Validators.required, Validators.email])],
+      telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],  
+    }, {});
 
 
     if (!this.isAddMode) {

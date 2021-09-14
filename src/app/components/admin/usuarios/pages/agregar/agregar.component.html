@@ -62,7 +62,7 @@
                   <div class="form-group">
                     
                     <label for="apellido" class="form-label">Apellido</label>
-                    <input formControlName="apellido" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
+                    <input formControlName="apellido" type="text" class="form-control" id="apellido" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
                     <div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
                       <div *ngIf="f.apellido.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -72,7 +72,7 @@
                   <div class="form-group">
                     
                     <label for="matricula" class="form-label">Matricula</label>
-                    <input formControlName="matricula" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
+                    <input formControlName="matricula" type="text" class="form-control" id="matricula" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
                     <div *ngIf="submitted && f.matricula.errors" class="invalid-feedback">
                       <div *ngIf="f.matricula.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -82,9 +82,10 @@
                   <div class="form-group">
                     
                     <label for="direccion" class="form-label">Direccion</label>
-                    <input formControlName="direccion" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.direccion.errors }">
+                    <input formControlName="direccion" type="text" maxlength="100" class="form-control" id="direccion" [ngClass]="{ 'is-invalid': submitted && f.direccion.errors }">
                     <div *ngIf="submitted && f.direccion.errors" class="invalid-feedback">
                       <div *ngIf="f.direccion.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.direccion.errors.pattern">Ingrese letras y números. Ej: [Gral Paz 1836]</div>
                     </div>
 
                   </div>
@@ -92,7 +93,7 @@
                   <div class="form-group">
                     
                     <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                    <input formControlName="fecha_nacimiento" type="date" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento.errors }">
+                    <input formControlName="fecha_nacimiento" type="date" class="form-control" id="fecha_nacimiento" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento.errors }">
                     <div *ngIf="submitted && f.fecha_nacimiento.errors" class="invalid-feedback">
                       <div *ngIf="f.fecha_nacimiento.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -102,9 +103,10 @@
                   <div class="form-group">
                     
                     <label for="email" class="form-label">Email</label>
-                    <input formControlName="email" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <input formControlName="email" type="text" class="form-control" id="email" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
                     <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                       <div *ngIf="f.email.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.email.errors.email">Este campo requiere un correo válido.</div>
                     </div>
 
                   </div>
@@ -115,9 +117,11 @@
                   <div class="form-group">
                     
                     <label for="telefono" class="form-label">Telefono</label>
-                    <input formControlName="telefono" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
-                    <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
-                      <div *ngIf="f.telefono.errors.required">Este campo es obligatorio</div>
+                    <input formControlName="telefono" type="text"  maxlength="15" class="form-control" id="telefono" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
+                    <div *ngIf="f.telefono.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.telefono.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.telefono.errors.pattern">Ingrese solo números</div>                      
+                      <div *ngIf="f.telefono.errors">Este campo requiere como mínimo 6 caracteres.</div>
                     </div>
 
                   </div>

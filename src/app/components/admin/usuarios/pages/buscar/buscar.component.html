@@ -15,7 +15,7 @@
                 <div class="col-lg-7 col-md-6 col-sm-12">
                     <div class="form-group">
                         <label for="numero" class="form-label">Dni</label>
-                        <input (keyup.enter)="buscarUsuario()" formControlName="numero" maxlength="8" inputmode="number" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                        <input (keyup.enter)="buscarUsuario()" formControlName="numero" maxlength="8" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
                         <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
                             <div *ngIf="f.numero.errors.required">Este campo es obligatorio</div>
                             <div *ngIf="f.numero.errors">Debe ingresar 7 caracteres como mínimo</div>
