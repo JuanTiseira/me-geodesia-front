@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
@@ -37,6 +38,7 @@ export class AgregarUsuarioComponent implements OnInit {
     private _apiService: ApiService,
     private _functionService: FunctionsService,
     private formBuilder: FormBuilder,
+    private _location: Location,
     private route: ActivatedRoute,
     private router: Router,
     ) {this.verDetallesFunction = new EventEmitter(); }
@@ -113,6 +115,14 @@ export class AgregarUsuarioComponent implements OnInit {
     this.createUsuario();
   
 }
+
+  limpiar(){
+    this.usuarioForm.reset();
+  }
+
+  volver(){
+    this._location.back();
+  }
   
   createUsuario() {
     

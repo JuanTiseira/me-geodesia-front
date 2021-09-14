@@ -144,6 +144,10 @@ export class BuscarUsuarioComponent implements OnInit {
     });
   }
 
+  limpiar(){
+    this.consultaForm.reset();
+  }
+
   eliminar (id) {
     Swal.fire({
       title: 'Esta Seguro?',

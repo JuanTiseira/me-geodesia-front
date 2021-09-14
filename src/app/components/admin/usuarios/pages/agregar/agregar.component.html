@@ -16,14 +16,14 @@
                     <input formControlName="nombre" maxlength="50" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
                     <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
                       <div *ngIf="f.nombre.errors.required">Este campo es obligatorio.</div>
-                      <div *ngIf="f.nombre.errors.required">Solo se permiten letras.</div>
+                      <div *ngIf="f.nombre.errors.pattern">Solo se permiten letras.</div>
                     </div>
 
                   </div>
 
                   <div class="form-group">
                     
-                    <label for="cuit" class="form-label">Cuit</label>
+                    <label for="cuit" class="form-label">CUIT</label>
                     <input formControlName="cuit" type="text" class="form-control" maxlength="11" id="cuit" [ngClass]="{ 'is-invalid': submitted && f.cuit.errors }">
                     <div *ngIf="submitted && f.cuit.errors" class="invalid-feedback">
                       <div *ngIf="f.cuit.errors.required">Este campo es obligatorio.</div>
@@ -57,7 +57,7 @@
 
               
                     <div class="col-3">
-                      <button type="button" class="btn btn-green">Volver</button>
+                      <button type="button" (click)="volver()" class="btn btn-green">Volver</button>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -137,7 +137,7 @@
                     <div class="row">
 
                       <div class="col-md-6">
-                        <button type="button" class="btn btn-green">Cancelar</button>
+                        <button type="button" (click)="limpiar()" class="btn btn-green">Limpiar</button>
                         <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
                       </div>
 
