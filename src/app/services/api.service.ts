@@ -220,15 +220,8 @@ export class ApiService {
     if (filtros.matricula){
       params.set('matricula', filtros.matricula);
     }
-   
-    console.log('parametros', params.toString())
-    
-    return this.http.get(this.url+`/usuarios?${params.toString()}`).toPromise().catch((e)=>
-    { 
-      console.log('error', e);
-      this.router.navigate(['login']);
-
-    });
+       
+    return this.http.get(this.url+`/usuarios?${params.toString()}`).toPromise();
   }
 
   getUsuario(id){
@@ -243,12 +236,7 @@ export class ApiService {
 
   setUsuario(usuario) {
     console.warn(usuario);
-    return this.http.post(this.url+'/usuarios/', usuario).toPromise().catch((e)=>
-    { 
-      console.log('error', e);
-     
-
-    }); 
+    return this.http.post(this.url+'/usuarios/', usuario).toPromise();
   }
 
   deleteUsuario(usuario) {

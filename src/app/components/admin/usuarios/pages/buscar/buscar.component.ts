@@ -51,6 +51,7 @@ export class BuscarUsuarioComponent implements OnInit {
   usuario: string
   tramite: string
   submitted = false;
+  submitted2 = false;
   consultaForm : FormGroup
 
 
@@ -106,9 +107,9 @@ export class BuscarUsuarioComponent implements OnInit {
       })
 
       this.consultaForm = this.formBuilder.group({
-        numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
-        nombre: [''],
-        matricula: [''],
+        numero: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
+        nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
+        matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
         rol: [''],
         tipo_consulta: [''],
         param_busqueda: [''],
@@ -119,6 +120,10 @@ export class BuscarUsuarioComponent implements OnInit {
 
 
   buscarUsuarios() {
+    this.submitted2 = true;
+    if (this.consultaForm.invalid) {
+      return;
+    }
     this.spinner.show();
     this._apiService.getUsuariosFiltros(this.consultaForm.value)
     .then((res) =>{

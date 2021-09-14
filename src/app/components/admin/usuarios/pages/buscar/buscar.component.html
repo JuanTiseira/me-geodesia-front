@@ -45,8 +45,11 @@
 
 
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Nombre</label>
-                <input  formControlName="nombre" maxlength="20" inputmode="numeric" placeholder="Nombre de Usuario" class="form-control" autocomplete="off">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input (keyup.enter)="buscarUsuarios()" formControlName="nombre" maxlength="50" inputmode="numeric" placeholder="Nombre de Usuario" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted2 && f.nombre.errors }">
+                <div *ngIf="f.nombre.errors" class="invalid-feedback">
+                    <div *ngIf="f.nombre.errors.pattern">Ingresar solo letras</div>
+                </div>
             </div>
             
 
@@ -64,7 +67,11 @@
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Matricula</label>
-                <input  formControlName="matricula" maxlength="20" inputmode="numeric" placeholder="Matricula" class="form-control" autocomplete="off">
+                <input (keyup.enter)="buscarUsuarios()" formControlName="matricula" maxlength="20" inputmode="numeric" placeholder="Matricula" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted2 && f.matricula.errors }">
+                <div *ngIf="f.matricula.errors" class="invalid-feedback">
+                    <div *ngIf="f.matricula.errors">Debe ingresar 4 caracteres como mínimo</div>
+                    <div *ngIf="f.matricula.errors.pattern">Ingresar solo números</div>
+                </div>
             </div>
         
 

@@ -22,7 +22,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             title: 'Error! ' + ` ${error.error.status}`,
             text: 'Ocurrio un error en la operacion',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'Aceptar'
           })
         } else {
           // backend error
@@ -31,12 +31,13 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             title: 'Error! ' + ` ${error.status}`,
             text: 'Ocurrio un error en la operacion',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'Aceptar'
           })
         }
         
         // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
         if (error.status == 401) {
+          console.log("error: ",error.status)
             this.router.navigate(['login']);
             
         }
