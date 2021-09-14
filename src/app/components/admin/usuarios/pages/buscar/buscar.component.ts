@@ -2,7 +2,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../../../services/auth.service';
@@ -50,30 +50,20 @@ export class BuscarUsuarioComponent implements OnInit {
   p: number = 1;
   usuario: string
   tramite: string
+  submitted = false;
+  consultaForm : FormGroup
 
-  categories = [
-    {id: 1, name: 'DNI', value: 'dni'},
-    
-  ]
 
   constructor( private _apiService: ApiService,
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
                 private authService: AuthService,
                 private router: Router,
+                private formBuilder: FormBuilder,
                 private spinner: NgxSpinnerService
                 ) { }
 
 
-  consultaForm = new FormGroup({
-    numero: new FormControl(''),
-    nombre: new FormControl(''),
-    matricula: new FormControl(''),
-    rol: new FormControl(''),
-    tipo_consulta: new FormControl(''),
-    param_busqueda: new FormControl('')
-
-  });
 
   open(content, id) {
      
@@ -98,6 +88,7 @@ export class BuscarUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
 
+
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
@@ -114,7 +105,17 @@ export class BuscarUsuarioComponent implements OnInit {
         this._functionService.imprimirMensaje(response, "roles")
       })
 
+      this.consultaForm = this.formBuilder.group({
+        numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
+        nombre: [''],
+        matricula: [''],
+        rol: [''],
+        tipo_consulta: [''],
+        param_busqueda: [''],
+      })  
   }
+
+  get f() { return this.consultaForm.controls; }
 
 
   buscarUsuarios() {
@@ -185,7 +186,12 @@ export class BuscarUsuarioComponent implements OnInit {
   }
 
   buscarUsuario() {
-  
+    this.submitted = true;
+    if (this.consultaForm.invalid) {
+      this._functionService.imprimirMensaje(this.consultaForm, "consulta form: ")
+      return;
+    }
+    
     this.spinner.show();
     var numero = this.consultaForm.value.numero
     
@@ -206,23 +212,15 @@ export class BuscarUsuarioComponent implements OnInit {
     this.spinner.hide();
   }
   
-  onSubmit() {
-    
-    
-    this._apiService.getUsuario(this.consultaForm.value)
-    .then(() =>{
-      console.warn(this.consultaForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El usuario ${this.usuarioForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
-    })
-    .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el usuario ${this.usuarioForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
-    });
-  }
+  // onSubmit() {
+  //   this.submitted = true;
+  //   console.log("sdasdasdasdadadasdas ",this.consultaForm)
+  //   if (this.consultaForm.invalid) {
+  //     this._functionService.imprimirMensaje(this.consultaForm.invalid, "expediente form invalid: ")
+  //     return;
+  //   }    
+  //   this.buscarUsuario();
+  // }
 
   
 

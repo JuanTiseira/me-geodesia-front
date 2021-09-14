@@ -90,7 +90,7 @@ export class BuscarComponent implements OnInit {
     
   this.consultaForm = this.formBuilder.group({
     param_busqueda: ['', Validators.required],   
-    numero: ['', Validators.required, Validators.maxLength(9)],
+    numero: ['', Validators.required],
     anio: [''],
     tipo_expediente: [''],
     inmueble: [''],
