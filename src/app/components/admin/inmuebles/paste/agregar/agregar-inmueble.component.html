@@ -13,9 +13,10 @@
                   <div class="form-group">
                     
                     <label for="numero_partida" class="form-label">Numero de Partida</label>
-                    <input formControlName="numero_partida" type="numeric" class="form-control" maxlength="4" [ngClass]="{ 'is-invalid': submitted && f.numero_partida.errors }">
+                    <input formControlName="numero_partida" type="numeric" class="form-control" maxlength="6" [ngClass]="{ 'is-invalid': submitted && f.numero_partida.errors }">
                     <div *ngIf="submitted && f.numero_partida.errors" class="invalid-feedback">
                       <div *ngIf="f.numero_partida.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.numero_partida.errors.pattern">Ingresar solamente números.</div>
                     </div>
                     
 
@@ -24,7 +25,7 @@
                   <div class="form-group">
                     
                     <label for="datos" class="form-label">Datos</label>
-                    <input formControlName="datos" type="text" class="form-control"  maxlength="20" [ngClass]="{ 'is-invalid': submitted && f.datos.errors }">
+                    <input formControlName="datos" type="text" class="form-control"  maxlength="400" [ngClass]="{ 'is-invalid': submitted && f.datos.errors }">
                     <div *ngIf="submitted && f.datos.errors" class="invalid-feedback">
                       <div *ngIf="f.datos.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -35,7 +36,7 @@
                   <div class="form-group">
                     
                     <label for="observaciones" class="form-label">Observaciones</label>
-                    <input formControlName="observaciones" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.observaciones.errors }">
+                    <input formControlName="observaciones" type="text" class="form-control" maxlength="400" [ngClass]="{ 'is-invalid': submitted && f.observaciones.errors }">
                     <div *ngIf="submitted && f.observaciones.errors" class="invalid-feedback">
                       <div *ngIf="f.observaciones.errors.required">Este campo es obligatorio</div>
                     </div>
@@ -47,6 +48,8 @@
                     <input formControlName="seccion" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
                     <div *ngIf="submitted && f.seccion.errors" class="invalid-feedback">
                       <div *ngIf="f.seccion.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.seccion.errors">Ingresar más de 3 caracteres numéricos.</div>
+                      <div *ngIf="f.seccion.errors.pattern">Solo se permiten números.</div>
                     </div>
 
                   </div>
@@ -70,9 +73,10 @@
                   <div class="form-group">
                     
                     <label for="chacra" class="form-label">Chacra</label>
-                    <input formControlName="chacra" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.chacra.errors }">
+                    <input formControlName="chacra" type="text" class="form-control" maxlength="4" [ngClass]="{ 'is-invalid': submitted && f.chacra.errors }">
                     <div *ngIf="submitted && f.chacra.errors" class="invalid-feedback">
                       <div *ngIf="f.chacra.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.chacra.errors.pattern">No se permiten caracteres especiales.</div>
                     </div>
 
                   </div>
@@ -80,9 +84,10 @@
                   <div class="form-group">
                     
                     <label for="manzana" class="form-label">Manzana</label>
-                    <input formControlName="manzana" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.manzana.errors }">
+                    <input formControlName="manzana" type="text" maxlength="4" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.manzana.errors }">
                     <div *ngIf="submitted && f.manzana.errors" class="invalid-feedback">
-                      <div *ngIf="f.manzana.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.manzana.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.manzana.errors.pattern">No se permiten caracteres especiales.</div>
                     </div>
 
                   </div>
@@ -90,9 +95,10 @@
                   <div class="form-group">
                     
                     <label for="parcela" class="form-label">Parcela</label>
-                    <input formControlName="parcela" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.parcela.errors }">
+                    <input formControlName="parcela" type="numeric" class="form-control" maxlength="4" [ngClass]="{ 'is-invalid': submitted && f.parcela.errors }">
                     <div *ngIf="submitted && f.parcela.errors" class="invalid-feedback">
                       <div *ngIf="f.parcela.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.parcela.errors.pattern">No se permiten caracteres especiales.</div>
                     </div>
 
                   </div>

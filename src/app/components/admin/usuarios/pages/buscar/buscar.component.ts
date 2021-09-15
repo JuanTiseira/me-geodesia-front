@@ -107,9 +107,9 @@ export class BuscarUsuarioComponent implements OnInit {
       })
 
       this.consultaForm = this.formBuilder.group({
-        numero: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
+        numero: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
         nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
-        matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[1-9]\d*)?$/)])],
+        matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
         rol: [''],
         tipo_consulta: [''],
         param_busqueda: [''],
@@ -196,8 +196,12 @@ export class BuscarUsuarioComponent implements OnInit {
 
   buscarUsuario() {
     this.submitted = true;
+    if(this.consultaForm.value.numero < 1){
+      this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+      this.mensajeSwal.fire();
+      return;
+    }
     if (this.consultaForm.invalid) {
-      this._functionService.imprimirMensaje(this.consultaForm, "consulta form: ")
       return;
     }
     
@@ -221,16 +225,6 @@ export class BuscarUsuarioComponent implements OnInit {
     this.spinner.hide();
   }
   
-  // onSubmit() {
-  //   this.submitted = true;
-  //   console.log("sdasdasdasdadadasdas ",this.consultaForm)
-  //   if (this.consultaForm.invalid) {
-  //     this._functionService.imprimirMensaje(this.consultaForm.invalid, "expediente form invalid: ")
-  //     return;
-  //   }    
-  //   this.buscarUsuario();
-  // }
 
-  
 
 }

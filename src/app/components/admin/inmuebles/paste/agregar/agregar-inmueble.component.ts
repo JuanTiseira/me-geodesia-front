@@ -49,15 +49,15 @@ export class AgregarInmuebleComponent implements OnInit {
     this.inmuebleForm = this.formBuilder.group({
       
       // user: ['', Validators.required],
-      numero_partida: ['', Validators.required, Validators.maxLength(4)],
-      datos: ['', Validators.required, Validators.maxLength(20)],
-      observaciones: ['', Validators.required, Validators.maxLength(100)],
-      seccion: ['', Validators.required, Validators.maxLength(3)],
-      chacra: ['', Validators.required, Validators.maxLength(4)],
-      manzana: ['', Validators.required, Validators.maxLength(4)],
-      parcela: ['', Validators.required, Validators.maxLength(4)],
-      numero_mensura: ['', Validators.required, Validators.maxLength(4)],
-      unidad_funcional: ['', Validators.required, Validators.maxLength(10)],
+      numero_partida: ['', Validators.compose([Validators.required, Validators.maxLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      datos: ['', Validators.compose([Validators.required, Validators.maxLength(400)])],
+      observaciones: ['', Validators.compose([Validators.required, Validators.maxLength(100)])],
+      seccion: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      chacra: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
+      manzana: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
+      parcela: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
+      numero_mensura: ['', Validators.compose([Validators.required, Validators.maxLength(4)])],
+      unidad_funcional: ['', Validators.compose([Validators.required, Validators.maxLength(10)])],
       municipio: ['', Validators.required]
     }, {
          
