@@ -1,11 +1,11 @@
 
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from '../../../../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';

@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { AuthService } from '../../../../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -90,7 +90,7 @@ export class BuscarComponent implements OnInit {
     
   this.consultaForm = this.formBuilder.group({
     param_busqueda: ['', Validators.required],   
-    numero: ['', Validators.required],
+    numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
     anio: [''],
     tipo_expediente: [''],
     inmueble: [''],
@@ -277,6 +277,7 @@ export class BuscarComponent implements OnInit {
   
   buscarExpedientes() {
     this.spinner.show();
+    this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
     .then((res) =>{
 
@@ -303,7 +304,6 @@ export class BuscarComponent implements OnInit {
 
   limpiar() {
     this.consultaForm.reset();
-    this.buscarExpedientes()
   }
 
   trackByFn(item: Person) {

@@ -36,8 +36,10 @@ import { AgregarUsuarioComponent } from './usuarios/pages/agregar/agregar.compon
 
 
 //INMUBELES
-import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmueble.component';
-import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
+import { AgregarInmuebleComponent } from './inmuebles/agregar/agregar-inmueble.component';
+import { BuscarInmuebleComponent } from './inmuebles/buscar/buscar-inmueble.component';
+import { DetallesInmuebleComponent } from './inmuebles/detalles/detalles-inmueble.component';
+
 
 
 //RETIROS 
@@ -65,6 +67,7 @@ import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
     BuscarInmuebleComponent,
     BuscarRetiroComponent,
     CaratulaComponent,
+    DetallesInmuebleComponent,
    
   ],
   imports: [

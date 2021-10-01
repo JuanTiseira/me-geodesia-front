@@ -14,36 +14,34 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError(error => {
-        let errorMessage = '';
-        if (error instanceof ErrorEvent) {
-          // client-side error
-          errorMessage = `Client-side error: ${error.error.message}`;
-          Swal.fire({
-            title: 'Error! ' + ` ${error.error.status}`,
-            text: 'Ocurrio un error en la operacion',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          })
-        } else {
-          // backend error
-          errorMessage = `Server-side error: ${error.status} ${error.message}`;
-          Swal.fire({
-            title: 'Error! ' + ` ${error.status}`,
-            text: 'Ocurrio un error en la operacion',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          })
-        }
-        
-        // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
-        if (error.status == 401) {
-          console.log("error: ",error.status)
+        switch (error.status) {
+          case 500:
+            Swal.fire({
+              title: 'Error' + ` ${error.error.status}`,
+              text: 'Problema del servidor',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            })
+            break;
+          case 404:
+            Swal.fire({
+              title: 'No encontrado' + ` ${error.error.status}`,
+              text: 'No se encontró el recurso solicitado',
+              icon: 'info',
+              confirmButtonText: 'Aceptar'
+            })
+            break; 
+          case 401:
+            Swal.fire({
+              title: 'Inactivo' + ` ${error.error.status}`,
+              text: 'Por favor volver a loguearse.',
+              icon: 'info',
+              confirmButtonText: 'Aceptar'
+            })
             this.router.navigate(['login']);
-            
+            break;
         }
-
-        console.log('error', errorMessage)
-        return throwError(errorMessage);
+        return throwError(error.status);
       })
     );
   }

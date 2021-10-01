@@ -580,18 +580,12 @@ export class EditComponent implements OnInit {
   }
 
   setDevol() {
-  
-    console.info('FORMULARIO DEVOLUCION', this.devolForm.value.documento)
-
-    for (var id of this.devolForm.value.documento) {
+      for (var id of this.devolForm.value.documento) {
 
       this.devolForm.patchValue({num_tramite: this.tramite.id});
 
-      console.log(this.devolForm)
       this._apiService.setRetiro(this.devolForm.value)
       .then((res: any) =>{
-
-        console.warn(res);
         Swal.fire({
           title: 'Exito',
           text: 'Se registro correctamente',

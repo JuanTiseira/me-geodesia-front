@@ -59,11 +59,7 @@
                       <th>Inmueble</th>
                           <td>{{ resultado.inmueble.municipio.departamento.codigo }}- {{ resultado.inmueble.municipio.codigo }} - {{ resultado.inmueble.seccion }} -{{ resultado.inmueble.chacra }} - {{ resultado.inmueble.manzana }} -{{ resultado.inmueble.parcela }}</td>
                           
-                  </tr>
-
-                   
-                       
-                   
+                  </tr>                    
                 </tbody>
             </table>
 
@@ -82,8 +78,9 @@
             
 
               <div class="col-md-6">
-                <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()" printSectionId="Etiqueta"
-                
+                <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()" 
+                printSectionId="Etiqueta"
+                ngxPrint
                 styleSheetFile="/assets/etiqueta.scss">Imprimir Etiqueta</button>
               </div> 
             </div>
@@ -101,10 +98,10 @@
 
               
               <button *ngIf="!isEditMode && isAdmin" [disabled]="loading" type="button" class="btn btn-green"
-              printSectionId="acuse"
-              printTitle="CARATULA"
-              ngxPrint
-              styleSheetFile="/assets/acuse.scss">
+                printSectionId="acuse"
+                printTitle="CARATULA"
+                ngxPrint
+                styleSheetFile="/assets/acuse.scss">
                 <span *ngIf="loading"  class="spinner-border spinner-border-sm mr-1"></span>
                 Imprimir Constancia 
               </button>
@@ -322,11 +319,11 @@
       
                         <div *ngIf="documentos" class="form-group">
                           <label for="documentos" class="form-label">Documentos *</label>
-                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && d.documentos.errors }">
                             <ng-option *ngFor="let doc of documentosexpediente" [value]="doc.id" [disabled]="doc.disabled">{{doc.descripcion}}</ng-option>
                           </ng-select>
-                          <div *ngIf="submitted && r.documento.errors" class="invalid-feedback">
-                            <div *ngIf="r.documento.errors.required">Este campo es obligatorio</div>
+                          <div *ngIf="submitted && d.documentos.errors" class="invalid-feedback">
+                            <div *ngIf="d.documentos.errors.required">Este campo es obligatorio</div>
                           </div>
                         </div>
 
@@ -337,8 +334,7 @@
                       <div class="col-md-12">
                           <div class="row">
                               <div class="col-12">
-                              <button type="button" class="btn btn-green">Volver</button>
-                              <button type="button" class="btn btn-green" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                              <button type="button" class="btn btn-green" (click)="limpiar(devolForm)" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                     
                               <button type="button" (click)="guardarDevol()" [disabled]="loading" class="btn btn-green">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

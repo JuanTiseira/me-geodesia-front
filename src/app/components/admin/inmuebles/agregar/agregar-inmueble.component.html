@@ -45,10 +45,9 @@
 
                   <div class="form-group">
                     <label for="rol" class="form-label">Seccion</label>
-                    <input formControlName="seccion" type="text" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
+                    <input formControlName="seccion" type="text" class="form-control" maxlength="3" [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
                     <div *ngIf="submitted && f.seccion.errors" class="invalid-feedback">
                       <div *ngIf="f.seccion.errors.required">Este campo es obligatorio</div>
-                      <div *ngIf="f.seccion.errors">Ingresar más de 3 caracteres numéricos.</div>
                       <div *ngIf="f.seccion.errors.pattern">Solo se permiten números.</div>
                     </div>
 
@@ -57,9 +56,10 @@
                   <div class="form-group">
                     
                     <label for="unidad_funcional" class="form-label">Unidad Funcional</label>
-                    <input formControlName="unidad_funcional" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.unidad_funcional.errors }">
+                    <input formControlName="unidad_funcional" type="text" class="form-control" maxlength="6" [ngClass]="{ 'is-invalid': submitted && f.unidad_funcional.errors }">
                     <div *ngIf="submitted && f.unidad_funcional.errors" class="invalid-feedback">
                       <div *ngIf="f.unidad_funcional.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.unidad_funcional.errors.pattern">No se permiten caracteres especiales.</div>
                     </div>
                   </div>
 
@@ -106,9 +106,10 @@
                   <div class="form-group">
                     
                     <label for="numero_mensura" class="form-label">Numero de Mensura</label>
-                    <input formControlName="numero_mensura" type="numeric" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.numero_mensura.errors }">
+                    <input formControlName="numero_mensura" type="numeric" maxlength="6" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.numero_mensura.errors }">
                     <div *ngIf="submitted && f.numero_mensura.errors" class="invalid-feedback">
                       <div *ngIf="f.numero_mensura.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.numero_mensura.errors.pattern">Solo se permiten números.</div>
                     </div>
                   </div>
 
@@ -147,4 +148,4 @@
     
     <hr>
 
-
+    <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>

@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
+import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -205,11 +205,8 @@ export class AgregarComponent implements OnInit {
   }
   
   createExpediente() {
-    console.log(this.expedienteForm.value)
     this._apiService.setExpediente(this.expedienteForm.value)
-
     .then((res: any) =>{
-      console.warn(res);
       Swal.fire({
         title: 'Exito',
         text: 'Se registro correctamente',
@@ -241,4 +238,8 @@ export class AgregarComponent implements OnInit {
       this.usuarios = response
     })
   } 
+
+  limpiar(){
+    this.expedienteForm.reset();
+  }
 }

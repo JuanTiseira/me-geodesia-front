@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
-import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import Swal from 'sweetalert2'
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -44,22 +42,13 @@ export class ApiService {
   }
 
   changePage(page, module){
-    console.log('bucando pagina: ' , page)
-    return this.http.get(this.url+`/${module}/?page=${page}`).toPromise().catch((e)=>
-    {   
-        console.log("ERRORRRRR.", e);
-        //this.router.navigate(['login']);
-    });
+    return this.http.get(this.url+`/${module}/?page=${page}`).toPromise();
   }
 
   //EXPEDIENTES  ////////////////////////////////////////////////////////////////////////////////
 
   getExpedientes(){
-    return this.http.get(this.url+'/expedientes/').toPromise().catch(()=>
-    { 
-        console.log("ERRORRRRR.");
-        this.router.navigate(['login']);
-    });
+    return this.http.get(this.url+'/expedientes/').toPromise();
   }
 
   getExpedientesFiltros(filtros){
@@ -69,11 +58,17 @@ export class ApiService {
     if (filtros.numero){
       params.set('numero', filtros.numero);
     }
+
     if (filtros.anio){
       params.set('anio', filtros.anio);
     }
+
     if (filtros.gestor){
       params.set('id_gestor', filtros.gestor);
+    }
+
+    if (filtros.agrimensor){
+      params.set('id_agrimensor', filtros.agrimensor);
     }
 
     if (filtros.abreviatura){
@@ -87,24 +82,15 @@ export class ApiService {
     if (filtros.propietario){
       params.set('id_propietario', filtros.propietario);
     }
-   
-    console.log('parametros', params.toString())
-    
-    return this.http.get(this.url+`/expedientes?${params.toString()}`).toPromise().catch((e)=>
-    { 
-      console.log('error', e);
-      this.router.navigate(['login']);
-
-    });
+       
+    return this.http.get(this.url+`/expedientes?${params.toString()}`).toPromise();
   }
 
   getExpediente(id){
-    console.log(id)
     return this.http.get(this.url+`/expedientes/expediente_tramite/?id=${id}`).toPromise();
   }
 
   getExpedienteNumero(numero, anio) {
-    console.log(numero, anio)
     return this.http.get(this.url+`/expedientes/expediente_tramite/?anio=${anio}&numero=${numero}`).toPromise();
   }
 
@@ -113,22 +99,14 @@ export class ApiService {
   }
 
   setExpediente(expediente) {
-    console.warn(expediente);
-    return this.http.post(this.url+'/expedientes/', expediente).toPromise().catch((e)=>
-    { 
-      console.log('error al crear expediente', e);
-    
-    }); 
+    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
   }
 
   editExpediente(expediente) {
-    console.warn(expediente);
-
     return this.http.put(this.url+'/expedientes/', expediente).toPromise();
   }
 
   deleteExpediente(expediente) {
-    console.warn(expediente);
     return this.http.patch(this.url+`/expedientes/${expediente}/`, {
       "habilitado": false 
       } ).toPromise();
@@ -154,6 +132,10 @@ export class ApiService {
     return this.http.get(this.url+'/tramites/').toPromise();
   }
 
+  setNuevaTransicion(tramite){
+    return this.http.get(this.url+'/tramites/nueva_transicion/?tramite='+tramite).toPromise();
+  }
+
   //OBSERVACION  ////////////////////////////////////////////////////////////////////////////////
 
   getObservaciones () {
@@ -174,19 +156,20 @@ export class ApiService {
     return this.http.get(this.url+`/inmuebles/${id}`).toPromise();
   }
 
+  getInmuebleWithParams(parametro, valor){
+    return this.http.get(this.url+`/inmuebles/?${parametro}=${valor}`).toPromise();
+  }
 
   setInmueble(inmueble) {
     console.warn(inmueble);
-    return this.http.post(this.url+'/inmuebles/', inmueble).toPromise().catch((e)=>
-    { 
-      console.log('error', e);
-    
-    }); 
+    return this.http.post(this.url+'/inmuebles/', inmueble).toPromise();
   }
 
-  deleteInmueble(inmueble) {
-    console.warn(inmueble);
-    return this.http.delete(this.url+`/inmuebles/${inmueble}/`).toPromise();
+  deleteInmueble(inmueble) {;
+    let params = {
+      "habilitado": false
+    }
+    return this.http.patch(this.url+`/inmuebles/${inmueble}/`, params).toPromise();
   }
 
 
@@ -229,18 +212,15 @@ export class ApiService {
   }
 
   getUsuarioNumero(numero) {
-    console.log(numero)
     return this.http.get(this.url+`/usuarios/?dni=${numero}`).toPromise();
     
   }
 
   setUsuario(usuario) {
-    console.warn(usuario);
     return this.http.post(this.url+'/usuarios/', usuario).toPromise();
   }
 
   deleteUsuario(usuario) {
-    console.warn(usuario);
     return this.http.patch(this.url+`/usuarios/${usuario}/`, {
       "habilitado": false 
       } ).toPromise();
@@ -264,49 +244,18 @@ export class ApiService {
   // RETIROS / DEVOLUCIONES ////////////////////////////////////////////
 
   setRetiro(retiro) {
-    console.warn(retiro);
-    return this.http.post(this.url+'/retiros/', retiro).toPromise().then((res: any) =>{
-      console.warn(res);
-      Swal.fire({
-        title: 'Info',
-        text: res.message,
-        icon: 'success',
-        confirmButtonText: 'Cool',
-      })
-    
-    })
-    .catch((e)=>{
-    Swal.fire({
-        title: 'Error!',
-        text: 'No se pudo registrar',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-     
-  });
+    return this.http.post(this.url+'/retiros/', retiro).toPromise()
   }
 
   setDevol(retiro) {
-   
-    return this.http.post(this.url+'/retiros/devolver/', retiro).toPromise().then((res: any) =>{
-      console.warn(res);
-      Swal.fire({
-        title: 'Info',
-        text: res.message,
-        icon: 'success',
-        confirmButtonText: 'Cool',
-      })
-    
-    })
-    .catch((e)=>{
-    Swal.fire({
-        title: 'Error!',
-        text: 'No se pudo registrar',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-     
-  });
+    return this.http.post(this.url+'/retiros/devolver/', retiro).toPromise();
+  }
+
+
+  getHistoriales(id){
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('tramite', id);
+    return this.http.get(this.url+`/historiales?${params.toString()}`).toPromise();
   }
 
 }

@@ -20,6 +20,7 @@ const routes: Routes = [
       // {path: 'expediente/caratula', component: CaratulaComponent},
       // {path: 'expediente/:id', component: DetalleComponent},
       {path: 'historial/buscar', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
+      {path: 'historial/buscar/:id', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
       // { path: 'contacto', component: ContactoComponent}
     ],
     data: {

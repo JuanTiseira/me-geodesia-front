@@ -101,33 +101,46 @@ export class HomeComponent implements OnInit {
   }
 
 
-  buscarHistorialExpediente(){
-    var numeroanio = this.consultaForm.value.numero
+  // buscarHistorialExpediente(){
+  //   var numeroanio = this.consultaForm.value.numero
 
-    this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+  //   this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
 
     
     
-    if (this.consultaForm.value.param_busqueda == 'expediente') {
+  //   if (this.consultaForm.value.param_busqueda == 'expediente') {
       
-      if(numeroanio.toString().length > 5) {
-        var numero = 0 
-        let z = 1
+  //     if(numeroanio.toString().length > 5) {
+  //       var numero = 0 
+  //       let z = 1
   
-        for (let i = 5; i < 9; i++) {
+  //       for (let i = 5; i < 9; i++) {
   
-          if (numeroanio.toString().length === i) {
-            numero = numeroanio.toString().slice(0, z);
-          }else{
-            z++
-          }
+  //         if (numeroanio.toString().length === i) {
+  //           numero = numeroanio.toString().slice(0, z);
+  //         }else{
+  //           z++
+  //         }
           
-        }
-        var anio = numeroanio.toString().slice(-4);
-        this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
-      }else{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-      }
-    }
+  //       }
+  //       var anio = numeroanio.toString().slice(-4);
+  //       this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+  //     }else{
+  //       this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+  //     }
+  //   }
+  // }
+
+
+
+  cargarExpedienteAlSector(){
+    var tramite = this.consultaForm.value.numero;
+    this._functionService.imprimirMensaje(tramite, "numero tramite: ");
+    this._apiService.setNuevaTransicion(tramite).then((response) => {
+      this._functionService.imprimirMensaje(response, "response: ")
+    }).catch((error) => {
+      this._functionService.imprimirMensaje(error, "error: ")
+    })
+
   }
 }

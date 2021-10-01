@@ -10,7 +10,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 
@@ -48,6 +48,8 @@ export class BuscarHistorialComponent implements OnInit {
   expediente: string
   tramite: string
   param_busqueda: ''
+  historiales: any;  //cambiar tipos de datos any
+  id: string;
 
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
@@ -59,6 +61,7 @@ export class BuscarHistorialComponent implements OnInit {
                 private modalService: NgbModal,
                 private authService: AuthService,
                 private router: Router,
+                private route: ActivatedRoute,
                 private spinner: NgxSpinnerService
                 ) { this.load = false; }
 
@@ -82,83 +85,24 @@ export class BuscarHistorialComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    this.spinner.show();
-
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 1000);
-      
-      this._apiService.getTipoExpedientes().then(response => {
-        this.tipos_expedientes = response
-        //this.tipos_expedientes = response
-      })
-  
-      this._apiService.getInmuebles().then(response => {
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getUsuarios().then(response => {
-        this.usuarios = response
-        this._functionService.imprimirMensaje(response, "usuarios")
-      })
-
+    this.id = this.route.snapshot.params['id'];
+    if( this.id != null){
+      this.buscarHistorial();
+    }
   }
 
-
-  buscar () {
-    alert('buscado')
-  }
-
-  eliminar (id) {
-    Swal.fire({
-      title: 'Esta Seguro?',
-      text: "No podra revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, eliminar Expediente!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this._apiService.deleteExpediente(id)
-        .then(() =>{ 
-          Swal.fire(
-          'Eliminado!',
-          'El expediente fue eliminado.',
-          'success'
-        ) 
-        this.router.navigate(['/usuario/buscar']);
-      })
-
-        
-      }
-    })
-  }
-
-  buscarSiguiente() {
-    alert('siguiente pagina')
-
-  } 
-
-  buscarAnterior() {
-    alert('anterior pagina')
-
-  }
 
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
 
-  buscarExpediente() {
+  buscarHistorial() {
     
 
     this.spinner.show();
     var numeroanio = this.consultaForm.value.numero
     
-    if (this.consultaForm.value.param_busqueda == 'expediente') {
+    if (this.consultaForm.value.param_busqueda == 'expediente' && this.id == null) {
 
        
       var numero = 0 
@@ -182,10 +126,10 @@ export class BuscarHistorialComponent implements OnInit {
 
       this._apiService.getExpedienteNumero(numero, anio)
         .then((x:any) =>{
-
-          console.warn(x);
-          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
-          
+          this._apiService.getHistoriales(x.id).then((x:any) =>{
+            console.log(x.results);
+            this.historiales = x.results;
+          })         
       }).catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
@@ -195,11 +139,17 @@ export class BuscarHistorialComponent implements OnInit {
     }else{
 
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
+      if(this.consultaForm.value.param_busqueda != 'tramite' && this.id != null){
+        numeroanio = this.id
+      }
+
       this._apiService.getExpedienteTramite(numeroanio)
         .then((x:any) =>{
-
-          console.warn(x);
-          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
+          this._apiService.getHistoriales(x.id).then((x:any) =>{
+            console.log(x.results);
+            this.historiales = x.results;
+          })
+          // this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
       }).catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
@@ -221,41 +171,4 @@ export class BuscarHistorialComponent implements OnInit {
     return years
   }
   
-  buscarExpedientes() {
-    this.spinner.show();
-   
-    this._apiService.getExpedientesFiltros(this.consultaForm.value)
-    .then((res) =>{
-
-      this.expedientes = res
-     
-      console.log(this.expedientes)
-      
-      if (this.expedientes.count == 0) {
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      }else{
-        this.expedientes = res
-      }
-
-      this.load = false;
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
-    })
-    .catch(()=>{
-      console.log('error')
-    });
-
-    this.spinner.hide();
-  }
-
-  limpiar() {
-
-    this.consultaForm.reset();
-
-    this.buscarExpedientes()
-    
-  }
 }

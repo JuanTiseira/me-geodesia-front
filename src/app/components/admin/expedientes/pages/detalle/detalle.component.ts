@@ -97,7 +97,36 @@ export class DetalleComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private _tokenService: TokenService
    
-    ) {}
+    ) {
+      this.expedienteForm = this.formBuilder.group({
+
+        tipo_expediente: [{value: '', }, Validators.required],
+        inmueble: [{value: '', }, Validators.required],
+        documento: [{value: '', }, Validators.required],
+        propietario: [{value: '', }, Validators.required],
+        gestor: [{value: '', }, Validators.required],
+        tramite: [{value: '', }, Validators.required],
+        observacion: [{value: '', }, Validators.required],
+        abreviatura: [{value: '', }, Validators.required],
+        agrimensor: [{value: '', }, Validators.required],
+         
+      });
+    
+      this.retiroForm = this.formBuilder.group({ //FORMULARIO DE RETIRO 
+        descripcion: [{value: '', }, Validators.required],
+        documento: [{value: '', }, Validators.required],
+        tramite: [{value: '', }, Validators.required],
+        usuario: [{value: '', }, Validators.required],
+        dni: [{value: ''}]
+      });
+
+      this.devolForm = this.formBuilder.group({ //FORMULARIO DE DEVOLUCION num_tramite, tramite_urgente, documento
+        num_tramite: [{value: '', }, Validators.required],
+        tramite_urgente: [false, Validators.required],
+        documentos: ['', Validators.required]
+      });
+
+    }
   
   fullName (nombre, apellido){
 
@@ -130,40 +159,11 @@ export class DetalleComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
 
     this.isEditMode = false;
-    
-    this.expedienteForm = this.formBuilder.group({
+       
 
-        tipo_expediente: [{value: '', }, Validators.required],
-        inmueble: [{value: '', }, Validators.required],
-        documento: [{value: '', }, Validators.required],
-        propietario: [{value: '', }, Validators.required],
-        gestor: [{value: '', }, Validators.required],
-        tramite: [{value: '', }, Validators.required],
-        observacion: [{value: '', }, Validators.required],
-        abreviatura: [{value: '', }, Validators.required],
-        agrimensor: [{value: '', }, Validators.required],
-         
-      });
-    
-      this.retiroForm = this.formBuilder.group({ //FORMULARIO DE RETIRO 
-        descripcion: [{value: '', }, Validators.required],
-        documento: [{value: '', }, Validators.required],
-        expediente: [{value: '', }, Validators.required],
-        usuario: [{value: '', }, Validators.required],
-        dni: [{value: ''}]
-      });
+    this.expedienteForm.disable();
+    this.retiroForm.value.dni = ''
 
-      this.devolForm = this.formBuilder.group({ //FORMULARIO DE DEVOLUCION num_tramite, tramite_urgente, documento
-        num_tramite: [{value: '', }, Validators.required],
-        tramite_urgente: [{value: '', }, Validators.required],
-        documentos: [{value: '', }, Validators.required]
-      });
-      
-
-      this.expedienteForm.disable();
-      this.retiroForm.value.dni = ''
-
-      
     this.message = '';
     
     this.idEdit = false
@@ -212,12 +212,9 @@ export class DetalleComponent implements OnInit {
 
           this.tramite = x
 
-
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
 
-
-          console.log('RESULTADO', this.tramite)
           this.expedienteForm.patchValue(this.resultado)
           this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
           
@@ -237,7 +234,6 @@ export class DetalleComponent implements OnInit {
           this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
           this.spinner.hide()
       }).catch((e)=>{
-        console.log('error', e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
         this.spinner.hide()
@@ -277,7 +273,6 @@ export class DetalleComponent implements OnInit {
           this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
       }).catch((e)=>{
-        console.log('error', e)
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
         this.spinner.hide()
@@ -365,7 +360,6 @@ export class DetalleComponent implements OnInit {
 
   leerDni(){
     this.texto =  this.usuario + this.retiroForm.value.dni
-    console.log(this.texto)
     //this.retiroForm.controls['dni'].setValue('');
     this.verificarUsuario()
   }
@@ -375,10 +369,8 @@ export class DetalleComponent implements OnInit {
     let dni = '' 
 
     if (this.texto[0] != '"') {
-      console.log(this.texto)
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
         if (this.texto[i] == '"') {
-          console.log(this.texto)
           cont++
         }
         if (cont == 4 && this.texto[i] != '"') {
@@ -388,10 +380,8 @@ export class DetalleComponent implements OnInit {
     }
 
     if (this.texto[0] == '"') {
-      console.log(this.texto , '222222')
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
         if (this.texto[i] == '"') {
-          console.log(this.texto)
           cont++
         }
         if (cont == 1 && this.texto[i] != '"' && this.texto[i] != " ") {
@@ -400,18 +390,16 @@ export class DetalleComponent implements OnInit {
       }
     }
   
-    console.log('dni', dni, cont)
+    this._apiService.getUsuarioNumero(dni)
+      .then((response:any) => {
+        this._functionService.imprimirMensaje(response, "usuario")
+        this.usuario = response.results[0]
 
-    this._apiService.getUsuarioNumero(dni).then((response:any) => {
-      this._functionService.imprimirMensaje(response, "usuario")
-      console.log(response, 'respuesta')
-      this.usuario = response.results[0]
-
-      if (response.count == 0) {
-        this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
-        this.mensajeSwal.fire()
-      }
-    })
+        if (response.count == 0) {
+          this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
+          this.mensajeSwal.fire()
+        }
+      })
   }
 
 
@@ -442,6 +430,10 @@ export class DetalleComponent implements OnInit {
     return value.id === option.id;
 }
 
+  verHistorial(){
+    this.router.navigate(['historial/buscar/'+this.tramite.numero])
+  }
+
   imprimirEtiqueta(){
     
     this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Documento`, "success", "Aceptar", "", false, "", "")
@@ -458,8 +450,6 @@ export class DetalleComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.expedienteForm.invalid) {
-        alert('errores')
-        console.log(this.expedienteForm)
         return;
     }
 
@@ -471,9 +461,7 @@ export class DetalleComponent implements OnInit {
   guardarRetiro(){
     this.submitted = true;
     // stop here if form is invalid
-    if (this.retiroForm.invalid) {
-        alert('errores')
-       
+    if (this.retiroForm.invalid) {       
         return;
     }else{
       this.loading = true;    
@@ -486,22 +474,18 @@ export class DetalleComponent implements OnInit {
   guardarDevol(){
     this.submitted = true;
     // stop here if form is invalid
-    if (this.devolForm.invalid) {
-        alert('errores')
-        
+    if (this.devolForm.invalid) {  
         return;
     }else{
       this.loading = true;    
       this.setDevol();
     }
-
-   
   }
 
   
   get f() { return this.expedienteForm.controls; }
-
   get r() { return this.retiroForm.controls; }
+  get d() { return this.devolForm.controls; }
 
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
@@ -511,21 +495,12 @@ export class DetalleComponent implements OnInit {
     
     this._apiService.editExpediente(this.expedienteForm.value)
     .then(() =>{
-      console.warn(this.expedienteForm.value);
-      Swal.fire({
-        title: 'Exito',
-        text: 'Se registro correctamente',
-        icon: 'error',
-        confirmButtonText: 'Cool',
-      })
+      this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
+      this.mensajeSwal.fire();
     })
     .catch((e)=>{
-     Swal.fire({
-        title: 'Error!',
-        text: 'No se guardo correctamente',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
+      this._functionService.configSwal(this.mensajeSwal, `No se pudo editar el expediente`, "error", "Aceptar", "", false, "", "")
+      this.mensajeSwal.fire();
       this.loading = false;
     });
 
@@ -533,58 +508,54 @@ export class DetalleComponent implements OnInit {
 
 
   setRetiro() {
-    console.info('FORMULARIO RETIRO', this.retiroForm.value.documento)
-    
+    this.loading = false;
     if (this.busqueda_manual != true) {
       this.devolForm.patchValue({usuario: this.usuario.id});
     }
 
-    for (var id of this.retiroForm.value.documento) {
-      console.log('ID DOCUMENTO', this.retiroForm)
-      this.retiroForm.patchValue({documento: id});
-      this.retiroForm.patchValue({expediente: this.resultado.id});
-
-      console.log(this.retiroForm.value)
-
-
-      this._apiService.setRetiro(this.retiroForm.value)
-      .then((res: any) =>{
-
-       
-        this.loading = false;
-        document.getElementById("closeModalRetiroButton").click();
-      })
-      .catch((e)=>{
+    console.log("adasdad_ ",this.retiroForm.value.documento)
+    if(this.retiroForm.value.documento != null){
+      for (var id of this.retiroForm.value.documento) {
+        this.retiroForm.patchValue({documento: id});
+        this.retiroForm.patchValue({tramite: this.tramite.id});
+  
+        this._apiService.setRetiro(this.retiroForm.value)
+          .then((res: any) =>{
+            this._functionService.configSwal(this.mensajeSwal, `Se ha registrado correctamente`, "success", "Aceptar", "", false, "", "")
+            this.mensajeSwal.fire();
+            this.loading = false;
+            document.getElementById("closeModalRetiroButton").click();
+          })
+          .catch((e)=>{
+            this._functionService.configSwal(this.mensajeSwal, `No se ha podido registrar el retiro`, "error", "Aceptar", "", false, "", "")
+            this.mensajeSwal.fire();
+            this.loading = false;
+          }
+        );
+      } 
+    }else{
+      this.loading = false;
+    }
     
-        this.loading = false;
-    });
-    } 
+    
   }
 
   setDevol() {
-    console.info('FORMULARIO DEVOLUCION', this.devolForm.value)
-
-    console.info('NNUMERO DE TRAMITE', this.tramite.numero)
 
       this.devolForm.patchValue({num_tramite: this.tramite.numero});
-      this.devolForm.patchValue({tramite_urgente: false});
-      
       this._apiService.setDevol(this.devolForm.value)
-      .then((res: any) =>{
-        console.warn(res);
-        
-        this.loading = false;
-        document.getElementById("closeModalDevolButton").click();
-      })
-      .catch((e)=>{
-      Swal.fire({
-          title: 'Error!',
-          text: 'No se pudo registrar',
-          icon: 'error',
-          confirmButtonText: 'Cool'
+        .then((res: any) =>{        
+          this.loading = false;
+          this._functionService.configSwal(this.mensajeSwal, 'Nueva presentación registrada', "success", "Aceptar", "", false, "", "")
+          this.mensajeSwal.fire()
+            .finally(() => this.ngOnInit());
+          document.getElementById("closeModalDevolButton").click();
         })
-        this.loading = false;
-    });
+        .catch((e)=>{
+          this._functionService.configSwal(this.mensajeSwal, `No se pudo realizar la presentación`, "error", "Aceptar", "", false, "", "")
+          this.mensajeSwal.fire();
+          this.loading = false;
+        });
   }
 
   
@@ -592,7 +563,6 @@ export class DetalleComponent implements OnInit {
     this._apiService.getInmueblesDisponibles().then(response => {
       this.inmuebles = response
     })
-    alert('entro')
   } 
 
   verDetallesUsuarios(dato:boolean){
@@ -600,4 +570,9 @@ export class DetalleComponent implements OnInit {
       this.usuarios = response
     })
   } 
+
+
+  limpiar(formulario){
+    formulario.reset();
+  }
 }

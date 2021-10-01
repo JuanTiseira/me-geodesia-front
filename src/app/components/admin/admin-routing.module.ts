@@ -9,8 +9,9 @@ import { BuscarHistorialComponent } from './historial/pages/buscar/buscar.compon
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { DetalleHistorialComponent } from './historial/pages/detalle/detalle.component';
 import { DetalleUsuarioComponent } from './usuarios/pages/detalle/detalle.component';
-import { AgregarInmuebleComponent } from './inmuebles/paste/agregar/agregar-inmueble.component';
-import { BuscarInmuebleComponent } from './inmuebles/paste/buscar/buscar-inmueble.component';
+import { AgregarInmuebleComponent } from './inmuebles/agregar/agregar-inmueble.component';
+import { BuscarInmuebleComponent } from './inmuebles/buscar/buscar-inmueble.component';
+import { DetallesInmuebleComponent } from './inmuebles/detalles/detalles-inmueble.component';
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
 import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
 
@@ -29,7 +30,7 @@ export const APP_ROUTES: Routes = [
 
   {path: 'expediente/caratula', component: CaratulaComponent},
 
-  {path: 'expediente/:id', component: DetalleComponent },
+  {path: 'expediente/:id', component: DetalleComponent},
 
   //IMPRIMIR CARATULA 
 
@@ -58,7 +59,7 @@ export const APP_ROUTES: Routes = [
 
   {path: 'inmueble/editar/:id', component: AgregarComponent },
 
-  {path: 'inmueble/:id', component: DetalleComponent },
+  {path: 'inmueble/:id', component: DetallesInmuebleComponent },
 
 
   

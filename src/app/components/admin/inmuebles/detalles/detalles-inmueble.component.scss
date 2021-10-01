@@ -1,0 +1,26 @@
+input {
+    
+    margin-bottom: 20px;    
+    background-color: white !important;
+    text-transform:uppercase
+}
+
+select {
+    margin-bottom: 20px;
+}
+
+.container {
+    width: 70%;
+}
+
+.disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.disabled {
+    background-color : #e9ecef !important; 
+}

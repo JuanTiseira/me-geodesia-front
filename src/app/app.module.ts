@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,6 +23,11 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import {NgxPrintModule} from 'ngx-print';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpErrorInterceptor } from './services/http-error-interceptors';
+
+
+import { registerLocaleData } from '@angular/common';
+import localeEsAr from '@angular/common/locales/es-AR';
+registerLocaleData(localeEsAr, 'es-Ar');
 
 @NgModule({
   declarations: [
@@ -55,7 +60,8 @@ import { HttpErrorInterceptor } from './services/http-error-interceptors';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ValidatorInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LOCALE_ID, useValue: 'es-Ar' }
   ],
   bootstrap: [AppComponent]
 })

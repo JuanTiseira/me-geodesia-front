@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
 
 
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2'
 })
 export class AgregarInmuebleComponent implements OnInit {
 
-  // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
   @Output() verDetallesInmuebles: EventEmitter<any>;
   @Input() volver: string;
@@ -52,12 +53,12 @@ export class AgregarInmuebleComponent implements OnInit {
       numero_partida: ['', Validators.compose([Validators.required, Validators.maxLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
       datos: ['', Validators.compose([Validators.required, Validators.maxLength(400)])],
       observaciones: ['', Validators.compose([Validators.required, Validators.maxLength(100)])],
-      seccion: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      seccion: ['', Validators.compose([Validators.required, Validators.maxLength(3), Validators.pattern(/^-?([0-9]\d*)?$/)])],
       chacra: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
       manzana: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
       parcela: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
-      numero_mensura: ['', Validators.compose([Validators.required, Validators.maxLength(4)])],
-      unidad_funcional: ['', Validators.compose([Validators.required, Validators.maxLength(10)])],
+      numero_mensura: ['', Validators.compose([Validators.required, Validators.maxLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      unidad_funcional: ['', Validators.compose([Validators.required, Validators.maxLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
       municipio: ['', Validators.required]
     }, {
          
@@ -77,15 +78,14 @@ export class AgregarInmuebleComponent implements OnInit {
   
   }
 
-  get f() { return this.inmuebleForm.controls; }
+  get f() { 
+    return this.inmuebleForm.controls; }
 
   
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.inmuebleForm.invalid) {
-
-        console.log(this.inmuebleForm)
         return;
     }
 
@@ -95,29 +95,20 @@ export class AgregarInmuebleComponent implements OnInit {
 }
   
   createInmueble() {
-    
-    console.log(this.inmuebleForm.value)
     this._apiService.setInmueble(this.inmuebleForm.value)
-      .then(() =>{
-        console.warn(this.inmuebleForm.value);
-      
-        this.inmuebleForm.reset();
+      .then(() =>{     
         this.loading = false;
         this.verDetallesInmuebles.emit(true);
-        
+        this._functionService.configSwal(this.mensajeSwal, 'Inmueble registrado correctamente', "success", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire().finally(() => this.inmuebleForm.reset())
       })
       .catch((e)=>{
-      Swal.fire({
-          title: 'Error!',
-          text: 'No se pudo registrar',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        })
-
-      
-      this.loading = false;
-      
-    });
+        this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar`, "error", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire()
+    
+        this.loading = false;
+    
+      });
     document.getElementById("closeModalInmuebleButton").click();
   }
 

@@ -1,11 +1,11 @@
 
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from '../../../../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -49,6 +49,8 @@ export class BuscarInmuebleComponent implements OnInit {
 
   categories = [
     {id: 1, name: 'Numero', value: 'numero'},
+    {id: 2, name: 'Numero de partida', value: 'numero_partida'},
+    {id: 3, name: 'Datos', value: 'datos'},
     
   ]
 
@@ -95,22 +97,6 @@ export class BuscarInmuebleComponent implements OnInit {
   ngOnInit(): void {
 
     this.spinner.show();
-
-      this._apiService.getInmuebles()
-      .then(response => {
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getInmuebles().then(response => {
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getObservaciones().then(response => {
-        this.observaciones = response
-        this._functionService.imprimirMensaje(response, "observaciones")
-      })
   
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
@@ -173,12 +159,13 @@ export class BuscarInmuebleComponent implements OnInit {
       if (result.isConfirmed) {
         this._apiService.deleteInmueble(id)
         .then(() =>{ 
+
           Swal.fire(
           'Eliminado!',
           'El inmueble fue eliminado.',
           'success'
         ) 
-        this.router.navigate(['/inmueble/buscar']);
+        this.ngOnInit();
       })
           
 
@@ -205,28 +192,32 @@ export class BuscarInmuebleComponent implements OnInit {
   
     this.spinner.show();
     var numero = this.consultaForm.value.numero
-    
+    var parametro = this.consultaForm.value.param_busqueda
+    this._apiService.getInmuebleWithParams(parametro, numero).then((response) => {
+      console.log("response: ",response)
+      this.inmuebles = response;
+    })
     
     this.spinner.hide();
   }
   
-  onSubmit() {
+  // onSubmit() {
     
     
-    this._apiService.getInmueble(this.consultaForm.value)
-    .then(() =>{
-      console.warn(this.consultaForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El inmueble ${this.inmuebleForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
-    })
-    .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el inmueble ${this.inmuebleForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
-    });
-  }
+  //   this._apiService.getInmueble(this.consultaForm.value)
+  //   .then(() =>{
+  //     console.warn(this.consultaForm.value);
+  //     //this._functionService.configSwal(this.mensajeSwal, `El inmueble ${this.inmuebleForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
+  //     // this.mensajeSwal.fire().finally(()=> {
+  //     //   this.ngOnInit();
+  //     //   //this.mostrarLista();
+  //     // });
+  //   })
+  //   .catch(()=>{
+  //    // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el inmueble ${this.inmuebleForm.value}`, "error", "Aceptar", "", false, "", "");
+  //     //this.mensajeSwal.fire();
+  //   });
+  // }
 
   
 
