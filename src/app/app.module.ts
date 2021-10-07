@@ -38,7 +38,6 @@ registerLocaleData(localeEsAr, 'es-Ar');
     SidebarComponent,
     NavbarComponent,
     NotFoundComponent,
-    
   ],
   imports: [
     NgSelectModule,

@@ -34,7 +34,7 @@ export class DetalleComponent implements OnInit {
   id: string;
   isEditMode: boolean;
   loading = false;
-  submitted = false;
+  submitted: boolean = false;
   selecteditem: string;
   selectedInmuebles: string;
   selectedtramite: string;
@@ -113,11 +113,11 @@ export class DetalleComponent implements OnInit {
       });
     
       this.retiroForm = this.formBuilder.group({ //FORMULARIO DE RETIRO 
-        descripcion: [{value: '', }, Validators.required],
-        documento: [{value: '', }, Validators.required],
+        descripcion: ['', Validators.required],
+        documento: ['', Validators.required],
         tramite: [{value: '', }, Validators.required],
-        usuario: [{value: '', }, Validators.required],
-        dni: [{value: ''}]
+        usuario: [''],
+        dni: ['']
       });
 
       this.devolForm = this.formBuilder.group({ //FORMULARIO DE DEVOLUCION num_tramite, tramite_urgente, documento
@@ -141,16 +141,22 @@ export class DetalleComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.submitted = false;
     this.date = moment(new Date()).format('DD/MM/YYYY');
     
     this.fecha_hora = moment(new Date()).format('hh:mm:ss')
     this.user = this._tokenService.getUserName();
 
     this.spinner.show()
-    this._apiService.getDocumentos().then(response => {
-      this.documentos = response
-      this._functionService.imprimirMensaje(response, "documentos")
-    })
+    this._apiService.getDocumentos()
+      .then(response => {
+        this.documentos = response
+        this._functionService.imprimirMensaje(response, "documentos")
+        // this.documentosexpediente = this.documentos.results
+      })
+      .catch(err => {
+        console.log("error documentos: ", err)
+      })
 
     this.loadPropietarios();
   
@@ -178,7 +184,7 @@ export class DetalleComponent implements OnInit {
         .then((x:any) =>{
 
           this.tramite = x
-
+          console.log("TRAMITE: ============================ ", this.tramite)
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
 
@@ -336,8 +342,8 @@ export class DetalleComponent implements OnInit {
 
   get values(): string[] {
 
-    let value = this.zfill(this.tramite.numero, 7)
-    value = value + this.tramite.codigo_verificacion 
+    // let value = this.zfill(this.tramite.numero, 7)
+    let value = this.tramite.numero + this.tramite.codigo_verificacion 
 
     return value.split('\n');
   }
@@ -359,7 +365,8 @@ export class DetalleComponent implements OnInit {
   ];
 
   leerDni(){
-    this.texto =  this.usuario + this.retiroForm.value.dni
+    this.texto =  this.retiroForm.value["dni"]
+    console.log("texto: ", this.texto)
     //this.retiroForm.controls['dni'].setValue('');
     this.verificarUsuario()
   }
@@ -394,12 +401,14 @@ export class DetalleComponent implements OnInit {
       .then((response:any) => {
         this._functionService.imprimirMensaje(response, "usuario")
         this.usuario = response.results[0]
+        this.retiroForm.patchValue({dni: this.usuario.dni})
 
         if (response.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
           this.mensajeSwal.fire()
         }
       })
+
   }
 
 
@@ -422,7 +431,6 @@ export class DetalleComponent implements OnInit {
   private loadDocumentos() {
 
     this.documentos$ = this.dataService.getDocs()
-    
   }
 
 
@@ -436,7 +444,7 @@ export class DetalleComponent implements OnInit {
 
   imprimirEtiqueta(){
     
-    this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Documento`, "success", "Aceptar", "", false, "", "")
+    this._functionService.configSwal(this.mensajeSwal, `Imprimiendo Documento \n(cerrar ventana de impresión para continuar)`, "success", "Aceptar", "", false, "", "")
     this.mensajeSwal.fire()
     this.imprimir = true
   }
@@ -461,6 +469,7 @@ export class DetalleComponent implements OnInit {
   guardarRetiro(){
     this.submitted = true;
     // stop here if form is invalid
+    if(this.retiroForm.value["dni"]=="" && this.retiroForm.value["usuario"]=="") return
     if (this.retiroForm.invalid) {       
         return;
     }else{
@@ -510,10 +519,9 @@ export class DetalleComponent implements OnInit {
   setRetiro() {
     this.loading = false;
     if (this.busqueda_manual != true) {
-      this.devolForm.patchValue({usuario: this.usuario.id});
+      this.retiroForm.patchValue({usuario: this.usuario.id});
     }
 
-    console.log("adasdad_ ",this.retiroForm.value.documento)
     if(this.retiroForm.value.documento != null){
       for (var id of this.retiroForm.value.documento) {
         this.retiroForm.patchValue({documento: id});
@@ -530,8 +538,12 @@ export class DetalleComponent implements OnInit {
             this._functionService.configSwal(this.mensajeSwal, `No se ha podido registrar el retiro`, "error", "Aceptar", "", false, "", "")
             this.mensajeSwal.fire();
             this.loading = false;
-          }
-        );
+          })
+          .finally(() =>{
+            this.retiroForm.reset()
+            this.usuario = ""
+            this.ngOnInit()
+          })
       } 
     }else{
       this.loading = false;
@@ -547,9 +559,9 @@ export class DetalleComponent implements OnInit {
         .then((res: any) =>{        
           this.loading = false;
           this._functionService.configSwal(this.mensajeSwal, 'Nueva presentación registrada', "success", "Aceptar", "", false, "", "")
-          this.mensajeSwal.fire()
-            .finally(() => this.ngOnInit());
+          this.mensajeSwal.fire();
           document.getElementById("closeModalDevolButton").click();
+          this.ngOnInit()
         })
         .catch((e)=>{
           this._functionService.configSwal(this.mensajeSwal, `No se pudo realizar la presentación`, "error", "Aceptar", "", false, "", "")
@@ -570,6 +582,11 @@ export class DetalleComponent implements OnInit {
       this.usuarios = response
     })
   } 
+
+  cancelarRetiro(){
+    this.limpiar(this.retiroForm)
+    this.usuario = ""
+  }
 
 
   limpiar(formulario){

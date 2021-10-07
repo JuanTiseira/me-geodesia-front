@@ -48,10 +48,16 @@ export class BuscarInmuebleComponent implements OnInit {
   tramite: string
 
   categories = [
-    {id: 1, name: 'Numero', value: 'numero'},
-    {id: 2, name: 'Numero de partida', value: 'numero_partida'},
+    {id: 1, name: 'Unidad Funcional', value: 'unidad_funcional'},
+    {id: 2, name: 'Número de partida', value: 'numero_partida'},
     {id: 3, name: 'Datos', value: 'datos'},
-    
+    {id: 4, name: 'Seccion', value: 'seccion'},
+    {id: 5, name: 'Chacra', value: 'chacra'},
+    {id: 6, name: 'Manzana', value: 'manzana'},
+    {id: 7, name: 'Parcela', value: 'parcela'},
+    {id: 8, name: 'Número de mensura', value: 'numero_mensura'},
+    {id: 9, name: 'Municipio', value: 'municipio'},
+    {id: 10, name: 'Observaciones', value: 'observaciones'},
   ]
 
   constructor( private _apiService: ApiService,
@@ -75,8 +81,6 @@ export class BuscarInmuebleComponent implements OnInit {
 
   open(content, id) {
      
-    console.log('se abrio el modal con id: ', id)
-
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -148,13 +152,14 @@ export class BuscarInmuebleComponent implements OnInit {
 
   eliminar (id) {
     Swal.fire({
-      title: 'Esta Seguro?',
-      text: "No podra revertir esto!",
+      title: '¿Está seguro de que desea eliminar el inmueble?',
+      text: "No podrá revertir la acción",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, eliminar Inmueble!'
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
         this._apiService.deleteInmueble(id)
@@ -199,6 +204,12 @@ export class BuscarInmuebleComponent implements OnInit {
     })
     
     this.spinner.hide();
+  }
+
+
+  limpiar(){
+    this.consultaForm.reset();
+    this.ngOnInit();
   }
   
   // onSubmit() {

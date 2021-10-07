@@ -1,15 +1,13 @@
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { TipoExpediente } from '../../../../../models/tipo_expediente.model';
-import { FunctionsService } from '../../../../../services/functions.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
+import { FormBuilder, Validators } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { AuthService } from '../../../../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
-import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -50,10 +48,11 @@ export class BuscarHistorialComponent implements OnInit {
   param_busqueda: ''
   historiales: any;  //cambiar tipos de datos any
   id: string;
+  submitted: boolean = false;
 
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
-    {id: 2, name: 'Tramite', value: 'tramite'},
+    {id: 2, name: 'Trámite', value: 'tramite'},
   ]
 
   constructor( private _apiService: ApiService,
@@ -62,26 +61,15 @@ export class BuscarHistorialComponent implements OnInit {
                 private authService: AuthService,
                 private router: Router,
                 private route: ActivatedRoute,
+                private formBuilder: FormBuilder,
                 private spinner: NgxSpinnerService
                 ) { this.load = false; }
 
 
-    consultaForm = new FormGroup({
-    param_busqueda: new FormControl(''),   
-    numero: new FormControl(''),
-    anio: new FormControl(''),
-    tipo_expediente: new FormControl(''),
-    inmueble: new FormControl(''),
-    documento: new FormControl(''),
-    propietario: new FormControl(''),
-    gestor: new FormControl(''),
-    tramite: new FormControl(''),
-    observacion: new FormControl(''),
-    abreviatura: new FormControl(''),
-    agrimensor: new FormControl(''),
-    tipo_consulta: new FormControl('')
-
-  });
+    consultaForm =  this.formBuilder.group({
+      param_busqueda: ['', Validators.required],  
+      numero: ['', Validators.required],  
+    });
 
 
   ngOnInit(): void {
@@ -91,12 +79,20 @@ export class BuscarHistorialComponent implements OnInit {
     }
   }
 
+  get r() { return this.consultaForm.controls; }
 
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
 
   buscarHistorial() {
+
+    console.log("swal: ", this.mensajeSwal)
+    if(this.id == null) {
+      this.submitted = true;
+      if (this.consultaForm.invalid) return;
+    };
+    
     
 
     this.spinner.show();

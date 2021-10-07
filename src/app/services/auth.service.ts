@@ -56,7 +56,6 @@ export class AuthService {
         }  
       )
       .catch(error =>{
-        console.log("login error: ",error);
         this.logout()
         return log;
       })     

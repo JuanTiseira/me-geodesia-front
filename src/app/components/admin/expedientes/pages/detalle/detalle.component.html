@@ -140,8 +140,8 @@
                         </div>
       
                         <div *ngIf="documentos" class="form-group">
-                          <label for="documentos" class="form-label">Documentos *</label>
-                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documento" [ngClass]="{ 'is-invalid': submitted && r.descripcion.errors }">
+                          <label for="documento" class="form-label">Documentos *</label>
+                          <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documento" [ngClass]="{ 'is-invalid': submitted && r.documento.errors }">
                             <ng-option *ngFor="let doc of documentosexpediente" [value]="doc.id" [disabled]="doc.disabled">{{doc.descripcion}}</ng-option>
                           </ng-select>
                           <div *ngIf="submitted && r.documento.errors" class="invalid-feedback">
@@ -152,11 +152,12 @@
                         <div  class="form-group">
                           <label *ngIf="!busqueda_manual" for="dni" class="form-label">DNI</label>
                           <input *ngIf="!busqueda_manual" (keyup.enter)="leerDni()" formControlName="dni" placeholder="Ingrese numero de DNI" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && r.dni.errors }">
-                          
+                          <div *ngIf="submitted && r.dni.errors && !busqueda_manual" class="invalid-feedback">
+                            <div *ngIf="r.dni.errors.required">Este campo es obligatorio</div>
+                          </div>
+
                           <label  *ngIf="busqueda_manual"  for="usuario" class="form-label">Usuario</label>
-
                           <div  *ngIf="busqueda_manual" class="row">
-
                             <div class="col-md-10">
                               <ng-select 
                              
@@ -171,22 +172,20 @@
                               [loading]="propietarioLoading"
                               typeToSearchText="Por favor, ingrese 2 o mas caracteres"
                               [typeahead]="propietarioInput$"
-                              formControlName="usuario">
+                              formControlName="usuario"
+                              [ngClass]="{ 'is-invalid': submitted && r.usuario.errors }">
                               </ng-select>
                             </div>
 
                             <div class="col-md-2">
-                             
                                 <button type="button" data-bs-toggle="modal" id="btn-edit-user" style="margin-top: 1;"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
-                             
-    
                             </div>
-
+                          </div>
+                          <div *ngIf="submitted && r.usuario.errors && busqueda_manual" class="invalid-feedback">
+                            <div *ngIf="r.usuario.errors.required">Este campo es obligatorio</div>
                           </div>
                        
 
-                          
-                          
                           <!-- Crear Usuario -->
                           <div class="modal fade" id="crearUsuario" tabindex="-1" aria-labelledby="crearUsuario" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -202,19 +201,17 @@
                             </div>
                           </div>
 
-                          <label for="">Busqueda manual</label>
-                         
-
+                          <label for="">Busqueda manual </label>
                           <input #busquedamanualCheckBox
-                          id="busquedamanualCheckBox" 
-                          type="checkbox" 
-                          [checked]="busqueda_manual" 
-                          (change)="onbusquedamanualChanged(busquedamanualCheckBox.checked)" />
+                            id="busquedamanualCheckBox" 
+                            type="checkbox" 
+                            [checked]="busqueda_manual" 
+                            (change)="onbusquedamanualChanged(busquedamanualCheckBox.checked)" />
                           
                           
-                          <div *ngIf="submitted && r.dni.errors" class="invalid-feedback">
-                            <div *ngIf="r.dni.errors.required">Este campo es obligatorio</div>
-                          </div>
+                            <!-- <div *ngIf="submitted && r.dni.errors" class="invalid-feedback">
+                              <div *ngIf="r.dni.errors.required">Este campo es obligatorio</div>
+                            </div> -->
 
                          
                         </div>  
@@ -278,8 +275,7 @@
                       <div class="col-md-12">
                           <div class="row">
                               <div class="col-12">
-                              <button type="button" class="btn btn-green">Volver</button>
-                              <button type="button" class="btn btn-green" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                              <button type="button" class="btn btn-green" (click)="cancelarRetiro()" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                     
                               <button type="button" (click)="guardarRetiro()" [disabled]="loading" class="btn btn-green">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -320,7 +316,7 @@
                         <div *ngIf="documentos" class="form-group">
                           <label for="documentos" class="form-label">Documentos *</label>
                           <ng-select [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && d.documentos.errors }">
-                            <ng-option *ngFor="let doc of documentosexpediente" [value]="doc.id" [disabled]="doc.disabled">{{doc.descripcion}}</ng-option>
+                            <ng-option *ngFor="let doc of documentos.results" [value]="doc.id" [disabled]="doc.disabled">{{doc.descripcion}}</ng-option>
                           </ng-select>
                           <div *ngIf="submitted && d.documentos.errors" class="invalid-feedback">
                             <div *ngIf="d.documentos.errors.required">Este campo es obligatorio</div>
@@ -336,7 +332,7 @@
                               <div class="col-12">
                               <button type="button" class="btn btn-green" (click)="limpiar(devolForm)" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                     
-                              <button type="button" (click)="guardarDevol()" [disabled]="loading" class="btn btn-green">
+                              <button type="button" id="btn-guardar-devolver" (click)="guardarDevol()" [disabled]="loading" class="btn btn-green">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 Guardar
                               </button>
@@ -515,7 +511,7 @@
               </th>
               
               <th>
-                  <img src="../../../../../../../assets/escudo.png" alt="" width="20" height="18"> 
+                  <img src="../../../../../../assets/escudo.png" alt="" width="20" height="18"> 
               </th>
           </tr>
       </table>
@@ -602,7 +598,7 @@
     <h2 style="text-align: center; font-weight: 900;  margin-top: 20px; font-size: 18px;">Departamento de Geodesia y Cartografia</h2>
 
     <p>
-      Por la presente, se deja constancia que el <b>TRAMITE n {{tramite.numero}}</b> del <b>Tipo {{resultado.abreviatura}} </b> INICIADO EN FECHA <b>27/07/2021</b> , 
+      Por la presente, se deja constancia que el <b>TRAMITE N° {{tramite.numero}}</b> del <b>Tipo {{resultado.abreviatura}} </b> INICIADO EN FECHA <b>27/07/2021</b> , 
       <b>Expediente N {{resultado.numero}} </b> 
       con <b>Presentacion {{tramite.numero_presentacion}}</b>  se ha recibido con la siguiente 
       documentacion: 

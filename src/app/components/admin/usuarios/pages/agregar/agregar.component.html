@@ -37,16 +37,18 @@
                   <div class="form-group">
                     
                     <label for="dni" class="form-label">DNI</label>
-                    <input formControlName="dni" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }">
+                    <input formControlName="dni" type="text" maxlength="8" class="form-control" id="dni" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }">
                     <div *ngIf="submitted && f.dni.errors" class="invalid-feedback">
-                      <div *ngIf="f.dni.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.dni.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.dni.errors">Ingresar mínimo 7 números.</div>
+                      <div *ngIf="f.dni.errors.pattern">Ingresar solamente números.</div>
                     </div>
 
                   </div>
 
                   <div class="form-group">
                     <label for="rol" class="form-label">Rol</label>
-                    <select *ngIf="roles" formControlName="rol" name="" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
+                    <select *ngIf="roles" formControlName="rol" name="" class="form-control" id="rol" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
                       <option value="" disabled>Seleccione una Opcion</option>
                       <option [ngValue]="dato" *ngFor="let dato of roles.results" value="">{{dato.nombre}}</option>
                     </select>
@@ -75,7 +77,7 @@
 
                   <div class="form-group">
                     
-                    <label for="matricula" class="form-label">Matricula</label>
+                    <label for="matricula" class="form-label">Matrícula</label>
                     <input formControlName="matricula" type="text" class="form-control" id="matricula" maxlength="25" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
                     <div *ngIf="submitted && f.matricula.errors" class="invalid-feedback">
                       <div *ngIf="f.matricula.errors.required">Este campo es obligatorio.</div>
@@ -87,7 +89,7 @@
 
                   <div class="form-group">
                     
-                    <label for="direccion" class="form-label">Direccion</label>
+                    <label for="direccion" class="form-label">Dirección</label>
                     <input formControlName="direccion" type="text" maxlength="100" class="form-control" id="direccion" [ngClass]="{ 'is-invalid': submitted && f.direccion.errors }">
                     <div *ngIf="submitted && f.direccion.errors" class="invalid-feedback">
                       <div *ngIf="f.direccion.errors.required">Este campo es obligatorio</div>
@@ -122,7 +124,7 @@
 
                   <div class="form-group">
                     
-                    <label for="telefono" class="form-label">Telefono</label>
+                    <label for="telefono" class="form-label">Teléfono</label>
                     <input formControlName="telefono" type="text"  maxlength="15" class="form-control" id="telefono" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
                     <div *ngIf="f.telefono.errors" class="invalid-feedback">
                       <div *ngIf="submitted && f.telefono.errors.required">Este campo es obligatorio</div>

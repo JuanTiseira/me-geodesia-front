@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
   closeResult = '';
@@ -28,11 +29,17 @@ export class HomeComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public tipo_consulta: any;
+  
 
+  expedientes_a_entrar;
+  expedientes_salida;
+  expedientes_sector;
+  sector: string;
   expediente: string
+  submitted: boolean;
   tramite: string
   param_busqueda: ''
-  consultaForm : FormGroup
+  // consultaForm : FormGroup
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
     {id: 2, name: 'Tramite', value: 'tramite'},
@@ -46,24 +53,25 @@ export class HomeComponent implements OnInit {
               private spinner: NgxSpinnerService
   ) { }
 
+
+  consultaForm = this.formBuilder.group({
+    param_busqueda: [''],   
+    numero: ['', Validators.compose([Validators.maxLength(8), Validators.required])],
+    anio: [''],
+    tipo_expediente: [''],
+    inmueble: [''],
+    documento: [''],
+    propietario: [''],
+    gestor: [''],
+    tramite: [''],
+    observacion: [''],
+    abreviatura: [''],
+    agrimensor: [''],
+    tipo_consulta: [''],
+});
+
   ngOnInit(): void {
-
-    this.consultaForm = this.formBuilder.group({
-      param_busqueda: [''],   
-      numero: ['', Validators.maxLength(5)],
-      anio: [''],
-      tipo_expediente: [''],
-      inmueble: [''],
-      documento: [''],
-      propietario: [''],
-      gestor: [''],
-      tramite: [''],
-      observacion: [''],
-      abreviatura: [''],
-      agrimensor: [''],
-      tipo_consulta: [''],
-  });
-
+    this.submitted = false;
 
       if (this.isAdmin || this.isEmpleado) {
         this.spinner.show();
@@ -75,7 +83,6 @@ export class HomeComponent implements OnInit {
       this._apiService.getUsuarios()
         .then(response => {
           this.usuarios = response
-          this._functionService.imprimirMensaje(response, "usuarios")
         })
         .catch(error => {
           this._functionService.imprimirMensaje(error, "error en home: ");
@@ -85,8 +92,14 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['login']);
       }
 
+      if(this.isEmpleado){
+        this.cargarExpedientesEstado()
+      }
+
       this.spinner.hide();
   }
+
+  get r (){ return this.consultaForm.controls;}
 
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
@@ -100,47 +113,37 @@ export class HomeComponent implements OnInit {
     return this.authService.hasRole(Role.ROL_PROFESIONAL);
   }
 
-
-  // buscarHistorialExpediente(){
-  //   var numeroanio = this.consultaForm.value.numero
-
-  //   this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
-
-    
-    
-  //   if (this.consultaForm.value.param_busqueda == 'expediente') {
-      
-  //     if(numeroanio.toString().length > 5) {
-  //       var numero = 0 
-  //       let z = 1
-  
-  //       for (let i = 5; i < 9; i++) {
-  
-  //         if (numeroanio.toString().length === i) {
-  //           numero = numeroanio.toString().slice(0, z);
-  //         }else{
-  //           z++
-  //         }
-          
-  //       }
-  //       var anio = numeroanio.toString().slice(-4);
-  //       this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
-  //     }else{
-  //       this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-  //     }
-  //   }
-  // }
-
-
-
   cargarExpedienteAlSector(){
+    this.submitted = true;
+
+    if(this.consultaForm.invalid) return
+    
     var tramite = this.consultaForm.value.numero;
     this._functionService.imprimirMensaje(tramite, "numero tramite: ");
-    this._apiService.setNuevaTransicion(tramite).then((response) => {
-      this._functionService.imprimirMensaje(response, "response: ")
-    }).catch((error) => {
-      this._functionService.imprimirMensaje(error, "error: ")
-    })
+    this._apiService.setNuevaTransicion(tramite)
+      .then((response) => {
+        this._functionService.imprimirMensaje(response, "response: ")
+        this._functionService.configSwal(this.mensajeSwal, 'Expediente cargado', "success", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire()
+        .finally(() => {this.cargarExpedientesEstado()})
+      })
+      .catch((error) => {
+        this._functionService.imprimirMensaje(error, "error 2222: ")
+        this._functionService.configSwal(this.mensajeSwal, 'No es posible cargar este tramite', "error", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire()
+      })
+  }
 
+
+  cargarExpedientesEstado(){
+    this._apiService.getExpedientesSector()
+      .then((response:any) => {
+        this.expedientes_sector = response.data
+        this.expedientes_a_entrar = response.data
+        this.expedientes_salida = response.data
+      })
+      .catch(error => {
+        this._functionService.imprimirMensaje(error, "error al traer los expedientes en home")
+      })
   }
 }

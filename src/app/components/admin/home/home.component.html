@@ -1,3 +1,4 @@
+<swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         <div class="row" *ngIf="isAdmin">
@@ -228,8 +229,12 @@
                     <div class="row">
                       
                         <div class="col-lg-6 col-md-6 col-sm-12">
-                            <label for="username" class="form-label"><b>Entrada/Salida</b></label>
-                            <input (keyup.enter)="cargarExpedienteAlSector()" formControlName="numero" maxlength="8" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
+                            <label for="numero" class="form-label"><b>Entrada/Salida</b></label>
+                            <input (keyup.enter)="cargarExpedienteAlSector()" formControlName="numero" maxlength="8" 
+                                inputmode="numeric" placeholder="Número" class="form-control" maxlength="8" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
+                            <div *ngIf="submitted && r.numero.errors" class="invalid-feedback">
+                                <div *ngIf="r.numero.errors.required">Este campo es obligatorio</div>
+                            </div>
                         </div>
                         
                         <div class="col-md-4">
@@ -253,28 +258,29 @@
                         </div>
                         
                         <div class="col-md-4">
-                            <label for="username" class="form-label"> <b> A ingresar</b></label>
-                            <select formControlName="propietario" class="form-select" >
-                                <!-- <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option> -->
-                                <option value="Seleccione" selected>Seleccione una opcion</option>                       
+                            <label for="expedientes_a_entrar" class="form-label"> <b> A ingresar</b></label>
+                            <select class="form-select" >
+                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_a_entrar | invert">{{dato.numero_tramite}} </option>
+                                <!-- <option value="Seleccione" selected>Seleccione una opcion</option>                        -->
                             </select>
                         </div>
                         
             
                         <div class="col-md-4">
-                            <label for="username" class="form-label"> <b>Ultimas Entradas</b> </label>
-                            <select formControlName="gestor" class="form-select" >
-                                <!-- <option [value]="dato.url" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option> -->
-                                <option value="Seleccione" selected>Seleccione una opcion</option>            
+                            <label for="expedientes_sector" class="form-label"> <b>Ultimas Entradas</b> </label>
+                            <select class="form-select" >
+                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_sector | invert">{{dato.numero_tramite}} </option>
+                                <!-- <option value="Seleccione" selected>Seleccione una opcion</option>             -->
                             </select>
+
                         </div>
             
             
                         <div class="col-md-4">
-                            <label for="username" class="form-label"><b> Ultimas Salidas</b></label>
-                            <select formControlName="inmueble"  name="" class="form-select" id="" >
-                                <!-- <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option> -->
-                                <option value="Seleccione" selected>Seleccione una opcion</option>            
+                            <label for="expedientes_salida" class="form-label"><b> Ultimas Salidas</b></label>
+                            <select class="form-select" >
+                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_salida | invert">{{dato.numero_tramite}} </option>
+                                <!-- <option value="Seleccione" selected>Seleccione una opcion</option>             -->
                               </select>
                         </div>
                         
@@ -326,8 +332,6 @@
                         </div> 
                     </div>
                 </div>
-
-              
 
                 <hr />
 
@@ -415,5 +419,4 @@
         
         <hr>
         
-        <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
         <ngx-spinner></ngx-spinner>

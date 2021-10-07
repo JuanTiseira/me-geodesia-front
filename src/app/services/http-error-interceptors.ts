@@ -17,7 +17,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         switch (error.status) {
           case 500:
             Swal.fire({
-              title: 'Error' + ` ${error.error.status}`,
+              title: 'Error' + ` ${error.status}`,
               text: 'Problema del servidor',
               icon: 'error',
               confirmButtonText: 'Aceptar'
@@ -25,7 +25,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             break;
           case 404:
             Swal.fire({
-              title: 'No encontrado' + ` ${error.error.status}`,
+              title: 'No encontrado' + ` ${error.status}`,
               text: 'No se encontró el recurso solicitado',
               icon: 'info',
               confirmButtonText: 'Aceptar'
@@ -33,7 +33,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             break; 
           case 401:
             Swal.fire({
-              title: 'Inactivo' + ` ${error.error.status}`,
+              title: 'Inactivo' + ` ${error.status}`,
               text: 'Por favor volver a loguearse.',
               icon: 'info',
               confirmButtonText: 'Aceptar'

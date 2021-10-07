@@ -55,7 +55,7 @@ export class AgregarUsuarioComponent implements OnInit {
       nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
       apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
       cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
-      dni: ['', Validators.required],
+      dni: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
       matricula: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
       direccion:  ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
       fecha_nacimiento: ['', Validators.required],

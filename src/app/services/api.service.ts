@@ -94,6 +94,10 @@ export class ApiService {
     return this.http.get(this.url+`/expedientes/expediente_tramite/?anio=${anio}&numero=${numero}`).toPromise();
   }
 
+  getExpedientesSector(){
+    return this.http.get(this.url+'/expedientes/sector/').toPromise();
+  }
+
   getExpedienteTramite(numero){
     return this.http.get(this.url+`/expedientes/expediente_tramite/?tramite=${numero}`).toPromise();
   }

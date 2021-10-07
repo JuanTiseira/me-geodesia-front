@@ -31,11 +31,7 @@ export class BuscarUsuarioComponent implements OnInit {
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   closeResult = '';
 
-  public page: number = 0;
-
-
-
- 
+  public page: number = 0; 
   public load: boolean;
   public search: string = '';
   public usuarios: any;
@@ -67,9 +63,6 @@ export class BuscarUsuarioComponent implements OnInit {
 
 
   open(content, id) {
-     
-    console.log('se abrio el modal con id: ', id)
-
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -89,8 +82,6 @@ export class BuscarUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-  
       this._apiService.getInmuebles().then(response => {
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
@@ -155,13 +146,14 @@ export class BuscarUsuarioComponent implements OnInit {
 
   eliminar (id) {
     Swal.fire({
-      title: 'Esta Seguro?',
-      text: "No podra revertir esto!",
+      title: '¿Está seguro de que desea eliminar el Usuario?',
+      text: "No podra revertir la acción",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, eliminar Usuario!'
+      confirmButtonText: 'Eliminar',
+      cancelButtonText : 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
         this._apiService.deleteUsuario(id)

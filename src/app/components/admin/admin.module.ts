@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_ROUTES } from './admin-routing.module';
 
@@ -41,13 +40,10 @@ import { BuscarInmuebleComponent } from './inmuebles/buscar/buscar-inmueble.comp
 import { DetallesInmuebleComponent } from './inmuebles/detalles/detalles-inmueble.component';
 
 
-
 //RETIROS 
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
-
-
-
-
+import { InvertPipe } from 'src/app/pipes/invert.pipe';
+import { OrderByPipe } from 'src/app/pipes/order-by.pipe';
 
 
 @NgModule({
@@ -68,7 +64,8 @@ import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
     BuscarRetiroComponent,
     CaratulaComponent,
     DetallesInmuebleComponent,
-   
+    InvertPipe,
+    OrderByPipe,
   ],
   imports: [
     NgSelectModule,
@@ -78,7 +75,7 @@ import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
     NgxSpinnerModule,
     CommonModule,
     NgMultiSelectDropDownModule.forRoot(),
-    SweetAlert2Module,
+    SweetAlert2Module.forRoot(),
     Select2Module,
     NgxPaginationModule,
     RouterModule.forChild(APP_ROUTES),

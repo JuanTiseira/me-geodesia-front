@@ -9,16 +9,22 @@
     <form [formGroup]="consultaForm">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Consultar por</label>   
-                <select formControlName="param_busqueda" class="form-select" aria-label="Default select example">
+                <label for="param_busqueda" class="form-label">Consultar por</label>   
+                <select formControlName="param_busqueda" class="form-select" aria-label="Default select example" [ngClass]="{ 'is-invalid': submitted && r.param_busqueda.errors }">
                     <option *ngFor="let cat of categories" [ngValue]="cat.value">{{cat.name}}</option>
                 </select>
+                <div *ngIf="submitted && r.param_busqueda.errors" class="invalid-feedback">
+                    <div *ngIf="r.param_busqueda.errors.required">Este campo es obligatorio</div>
+                </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
-                <input (keyup.enter)="buscarHistorial()" formControlName="numero" maxlength="8" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
+                <label for="numero" class="form-label">Número de {{consultaForm.value.param_busqueda}}</label>
+                <input (keyup.enter)="buscarHistorial()" formControlName="numero" maxlength="8" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
                 <small *ngIf="consultaForm.value.param_busqueda === 'expediente'" id="emailHelp" class="form-text text-muted">Ingrese el numero de expediente y año, sin espacios.</small> 
-                <small *ngIf="consultaForm.value.param_busqueda === 'tramite'" id="emailHelp" class="form-text text-muted">Ingrese el numero de tramite, sin espacios.</small>    
+                <small *ngIf="consultaForm.value.param_busqueda === 'tramite'" id="emailHelp" class="form-text text-muted">Ingrese el numero de trámite, sin espacios.</small>    
+                <div *ngIf="submitted && r.numero.errors" class="invalid-feedback">
+                    <div *ngIf="r.numero.errors.required">Este campo es obligatorio</div>
+                </div>
             </div>
             
             <div class="col-md-4">
@@ -32,109 +38,7 @@
             </div>
         </div>
 
-        <!-- <hr />
-
-        <div class="row" *ngIf="isAdmin">
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Número de Expediente</label>
-                <input  formControlName="numero" maxlength="5" inputmode="numeric" placeholder="Número de expediente" class="form-control" autocomplete="off">
-            </div>
-
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="Año" class="form-label">Año</label>
-                <select formControlName="anio" class="form-select" >
-                    <option [value]="dato" *ngFor="let dato of rangeYear()" value="">{{dato}}</option>
-                </select>
-            </div>
-
-            <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="Año" class="form-label">Abreviatura</label>
-                <input  formControlName="abreviatura" maxlength="5" inputmode="text" placeholder="Abreviatura" class="form-control" autocomplete="off">
-            </div>
-
-            <div class="col-md-4">
-                <label for="username" class="form-label">Tipo de Expediente</label>   
-                <select formControlName="tipo_expediente" class="form-select" *ngIf="tipos_expedientes">
-                    <option [value]="dato.id" *ngFor="let dato of tipos_expedientes.results" value="">{{dato.nombre}}</option>
-                </select>
-            </div>
-
-            <div class="col-md-4">
-                    <label for="username" class="form-label">Agrimensor</label>   
-                    <select formControlName="agrimensor" class="form-select" *ngIf="usuarios">
-                        <option [value]="dato.id" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                    </select>
-            </div>
-            <div class="col-md-4">
-                <label for="username" class="form-label">Propietario</label>
-                <select formControlName="propietario" class="form-select" *ngIf="usuarios">
-                    <option [value]="dato.id" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                </select>
-            </div>
-            
-
-            <div class="col-md-4">
-                <label for="username" class="form-label">Gestor</label>
-                <select formControlName="gestor" class="form-select" *ngIf="usuarios">
-                    <option [value]="dato.id" *ngFor="let dato of usuarios.results" value="">{{dato.nombre}}</option>
-                </select>
-            </div>
-
-
-            <div class="col-md-4">
-                <label for="username" class="form-label">Inmueble</label>
-                <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
-                    <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
-                  </select>
-            </div>
-
-            <div class="col-md-4 ">
-                <div class="mt-3">
-                    <button type="button" (click)="buscarExpedientes()" class="btn btn-green">Consultar</button>
-                </div>
-            </div>
-        </div> -->
     </form>
-    
-<!-- 
-    <div *ngIf="expedientes">
-        <table class="table table-striped" >
-            <thead>
-                <tr>
-                    <th>Numero</th>
-                    <th>Año</th>
-                    <th>Gestor / Iniciador</th>
-                    <th>Propietario</th>
-                    <th>Estado</th>
-                    <th>Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let exp of expedientes.results">
-
-                    <td>{{ exp.numero }}</td>
-                    <td>{{ exp.anio }}</td>
-                    <td *ngIf="exp.gestor"> {{ exp.gestor.nombre }} {{ exp.gestor.apellido }}</td> 
-                    <td *ngIf="!exp.gestor"> {{ exp.agrimensor.nombre }} {{ exp.agrimensor.apellido }}</td> 
-                    <td> {{ exp.propietario.nombre }} {{ exp.propietario.apellido }}</td>
-                    <td><b>Estado</b></td>
-                    <td>
-                        <a [routerLink]="['/expediente/', exp.id ]" ><span style="color: white; background-color: black; padding: 5px 10px 5px 10px; border-radius: 100px;"><i class="fa fa-info"></i></span></a>
-                        <a (click)="eliminar(exp.id)" ><span style="color: rgb(248, 9, 9); padding: 10px; border-radius: 50px;"><i class="fa fa-times"></i></span></a>
-                        <a (click)="eliminar(exp.id)" ><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-undo"></i></span></span></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="col-md-4">
-            <div class="mt-3">
-                <button type="button" (click)="limpiar()" class="btn btn-green float-right">Limpiar</button>
-            </div>
-        </div>
-
-        
-    </div>  -->
     <ngx-spinner></ngx-spinner>
 </div>
 

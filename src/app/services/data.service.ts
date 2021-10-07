@@ -89,9 +89,7 @@ export class DataService {
     
     getPeople(term: string = null): Observable<Person[]> {
 
-        this.getUsuarios().then((res:Respuesta) =>{
-            console.warn(res);
-           
+        this.getUsuarios().then((res:Respuesta) =>{          
             this.items = res.results
             this.items.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + i.dni; return i; })
 
@@ -111,7 +109,6 @@ export class DataService {
 
         this.getDocumentos().then((res:Respuesta) =>{
 
-            console.warn(res);
             this.items = res.results
             //console.log(this.items)
             
