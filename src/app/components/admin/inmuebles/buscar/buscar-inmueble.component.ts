@@ -151,32 +151,17 @@ export class BuscarInmuebleComponent implements OnInit {
   } 
 
   eliminar (id) {
-    Swal.fire({
-      title: '¿Está seguro de que desea eliminar el inmueble?',
-      text: "No podrá revertir la acción",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this._apiService.deleteInmueble(id)
-        .then(() =>{ 
-
-          Swal.fire(
-          'Eliminado!',
-          'El inmueble fue eliminado.',
-          'success'
-        ) 
-        this.ngOnInit();
+    this._functionService.configSwal(this.mensajeSwal, `¿Está seguro de que desea eliminar el inmueble?`, "warning", "Aceptar", "Cancelar", true, "", "");
+    this.mensajeSwal.fire()
+      .then((result) => {
+        if (result.isConfirmed) {
+          this._apiService.deleteInmueble(id)
+          .then(() =>{ 
+            this._functionService.configSwal(this.mensajeSwal, `El inmueble fue eliminado.`, "success", "Aceptar", "", false, "", "");
+          this.ngOnInit();
+        }) 
+        }
       })
-          
-
-        
-      }
-    })
   }
 
   buscarSiguiente() {

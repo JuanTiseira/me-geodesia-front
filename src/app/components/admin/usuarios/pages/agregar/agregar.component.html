@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-12">
-             <form class="row g-3" [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+            <form class="row g-3" [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
                 <div class="col-md-6">
 
                   <div class="form-group">
@@ -48,19 +48,25 @@
 
                   <div class="form-group">
                     <label for="rol" class="form-label">Rol</label>
-                    <select *ngIf="roles" formControlName="rol" name="" class="form-control" id="rol" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
-                      <option value="" disabled>Seleccione una Opcion</option>
-                      <option [ngValue]="dato" *ngFor="let dato of roles.results" value="">{{dato.nombre}}</option>
-                    </select>
+                    <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
+                      <ng-option value="" disabled>Seleccione una Opcion</ng-option>
+                      <ng-option *ngFor="let dato of roles?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
+                    </ng-select>
                     <div *ngIf="submitted && f.rol.errors" class="invalid-feedback">
                       <div *ngIf="f.rol.errors.required">Este campo es obligatorio</div>
                     </div>
                   </div>
 
-              
-                    <div class="col-3">
-                      <button type="button" (click)="volver()" class="btn btn-green">Volver</button>
+                  <div class="form-group">
+                    
+                    <label for="email" class="form-label">Email</label>
+                    <input formControlName="email" type="text" class="form-control" id="email" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.email.errors.email">Este campo requiere un correo válido.</div>
                     </div>
+
+                  </div>
                 </div>
                 <div class="col-md-6">
 
@@ -110,20 +116,6 @@
 
                   <div class="form-group">
                     
-                    <label for="email" class="form-label">Email</label>
-                    <input formControlName="email" type="text" class="form-control" id="email" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
-                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                      <div *ngIf="f.email.errors.required">Este campo es obligatorio</div>
-                      <div *ngIf="f.email.errors.email">Este campo requiere un correo válido.</div>
-                    </div>
-
-                  </div>
-
-                 
-
-
-                  <div class="form-group">
-                    
                     <label for="telefono" class="form-label">Teléfono</label>
                     <input formControlName="telefono" type="text"  maxlength="15" class="form-control" id="telefono" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
                     <div *ngIf="f.telefono.errors" class="invalid-feedback">
@@ -133,17 +125,18 @@
                     </div>
 
                   </div>
-                  
-                  
 
                     <div class="row">
+                      <div *ngIf="!isAddMode" class="col-md-4">
+                        <button type="button" (click)="volver()" class="btn btn-green">Volver</button>
+                      </div>
 
-                      <div class="col-md-6">
+                      <div class="col-md-4" [ngClass]="{'col-md-6': isAddMode}">
                         <button type="button" (click)="limpiar()" class="btn btn-green">Limpiar</button>
                         <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
                       </div>
 
-                      <div class="col-md-6">
+                      <div class="col-md-4" [ngClass]="{'col-md-6': isAddMode}">
 
                         <button type="submit" [disabled]="loading" class="btn btn-green">
                           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -154,9 +147,7 @@
                       
                     </div>  
                 </div>
-               
-                
-              </form>  
+            </form>  
     </div>
     </div>
     

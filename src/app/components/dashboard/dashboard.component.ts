@@ -19,9 +19,6 @@ export class DashboardComponent implements OnInit {
 
       this.route.paramMap.subscribe(params => {
         this.filterItem = params.get('categoria');
-
-        console.log(this.router.url)
-
         if (this.router.url != '/home') {
           this.clase = true
         }else{
@@ -49,15 +46,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     if(!this.isAdmin && !this.isEmpleado){
-      console.log("admin: ", this.isAdmin);
+      // console.log("admin: ", this.isAdmin);
       this.router.navigate(['login']);
     }
    
   }
 
   ngOnChanges() {
-   
-    
   }
 
 }

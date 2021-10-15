@@ -32,12 +32,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             })
             break; 
           case 401:
-            Swal.fire({
-              title: 'Inactivo' + ` ${error.status}`,
-              text: 'Por favor volver a loguearse.',
-              icon: 'info',
-              confirmButtonText: 'Aceptar'
-            })
+            // Swal.fire({
+            //   title: 'Inactivo' + ` ${error.status}`,
+            //   text: 'Por favor volver a loguearse.',
+            //   icon: 'info',
+            //   confirmButtonText: 'Aceptar'
+            // })
             this.router.navigate(['login']);
             break;
         }

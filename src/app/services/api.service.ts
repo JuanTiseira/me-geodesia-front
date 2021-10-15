@@ -52,37 +52,10 @@ export class ApiService {
   }
 
   getExpedientesFiltros(filtros){
-
     let params: URLSearchParams = new URLSearchParams();
-
-    if (filtros.numero){
-      params.set('numero', filtros.numero);
+    for(let i in filtros){
+      if(filtros[i]) params.set(i, filtros[i])
     }
-
-    if (filtros.anio){
-      params.set('anio', filtros.anio);
-    }
-
-    if (filtros.gestor){
-      params.set('id_gestor', filtros.gestor);
-    }
-
-    if (filtros.agrimensor){
-      params.set('id_agrimensor', filtros.agrimensor);
-    }
-
-    if (filtros.abreviatura){
-      params.set('abreviatura', filtros.abreviatura);
-    }
-
-    if (filtros.tipo_expediente){
-      params.set('id_tipo_expediente', filtros.tipo_expediente);
-    }
-
-    if (filtros.propietario){
-      params.set('id_propietario', filtros.propietario);
-    }
-       
     return this.http.get(this.url+`/expedientes?${params.toString()}`).toPromise();
   }
 
@@ -96,6 +69,14 @@ export class ApiService {
 
   getExpedientesSector(){
     return this.http.get(this.url+'/expedientes/sector/').toPromise();
+  }
+
+  getExpedientesSectorSalida(){
+    return this.http.get(this.url+'/expedientes/sector_salida/').toPromise();
+  }
+
+  getExpedientesSectorEntrada(){
+    return this.http.get(this.url+'/expedientes/sector_entrada/').toPromise();
   }
 
   getExpedienteTramite(numero){
@@ -152,6 +133,10 @@ export class ApiService {
     return this.http.get(this.url+'/inmuebles/').toPromise();
   }
 
+  // getWithoutPagination(){
+  //   return this.http.get(this.url+'/inmuebles/get_without_pagination/').toPromise();
+  // }
+
   getInmueblesDisponibles () {
     return this.http.get(this.url+'/inmuebles/?disponibles=1234').toPromise();
   }
@@ -197,17 +182,9 @@ export class ApiService {
   getUsuariosFiltros(filtros){
 
     let params: URLSearchParams = new URLSearchParams();
-
-    if (filtros.nombre){
-      params.set('nombre', filtros.nombre);
-    }
-    if (filtros.apellido){
-      params.set('apellido', filtros.apellido);
-    }
-    if (filtros.matricula){
-      params.set('matricula', filtros.matricula);
-    }
-       
+    for(let i in filtros){
+      if(filtros[i]) params.set(i, filtros[i])
+    }   
     return this.http.get(this.url+`/usuarios?${params.toString()}`).toPromise();
   }
 

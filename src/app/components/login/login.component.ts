@@ -5,6 +5,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { Role } from 'src/app/models/role.models';
 import { AuthService } from 'src/app/services/auth.service';
 import * as $ from 'jquery';
+import { FunctionsService } from 'src/app/services/functions.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit{
 
   constructor(private router: Router,
     private authService: AuthService, 
-     private formBuilder:FormBuilder) { }
+     private formBuilder:FormBuilder,
+     private _functionService: FunctionsService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -41,8 +43,6 @@ export class LoginComponent implements OnInit{
     this.submitted = true;
     // stop here if form is invalid
     if (this.loginForm.invalid) {
-
-        console.log(this.loginForm)
         return;
     }
 
@@ -50,19 +50,14 @@ export class LoginComponent implements OnInit{
     $("#btn-login").toggleClass('disabled');
     this.authService.login(formData.email, formData.password)
     .then(response => {
-      
       if(response){
-        
         this.router.navigate(['home']);
       }else{
-            this.failSwal.fire();
+        $("#btn-login").removeClass('disabled');
+        this.loading = false;
+        this.failSwal.fire()
       }
-    })
-    .catch(error => {
       
-      $("#btn-login").removeClass('disabled');
-      this.loading = false;
-      console.log(error)
-    });   
+    }) 
   }
 }

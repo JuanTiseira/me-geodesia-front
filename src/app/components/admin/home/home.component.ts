@@ -31,9 +31,9 @@ export class HomeComponent implements OnInit {
   public tipo_consulta: any;
   
 
-  expedientes_a_entrar;
-  expedientes_salida;
-  expedientes_sector;
+  expedientes_a_entrar= "";
+  expedientes_salida= "";
+  expedientes_sector = "";
   sector: string;
   expediente: string
   submitted: boolean;
@@ -125,7 +125,7 @@ export class HomeComponent implements OnInit {
         this._functionService.imprimirMensaje(response, "response: ")
         this._functionService.configSwal(this.mensajeSwal, 'Expediente cargado', "success", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire()
-        .finally(() => {this.cargarExpedientesEstado()})
+          .finally(() => {this.cargarExpedientesEstado()})
       })
       .catch((error) => {
         this._functionService.imprimirMensaje(error, "error 2222: ")
@@ -136,14 +136,33 @@ export class HomeComponent implements OnInit {
 
 
   cargarExpedientesEstado(){
+    this.consultaForm.reset();
+    this.submitted = false;
+
     this._apiService.getExpedientesSector()
       .then((response:any) => {
         this.expedientes_sector = response.data
-        this.expedientes_a_entrar = response.data
+      })
+      .catch(error => {
+        this._functionService.imprimirMensaje(error, "error al traer los expedientes del sector en home")
+      })
+
+    this._apiService.getExpedientesSectorSalida()
+      .then((response:any) => {
         this.expedientes_salida = response.data
       })
       .catch(error => {
-        this._functionService.imprimirMensaje(error, "error al traer los expedientes en home")
+        this._functionService.imprimirMensaje(error, "error al traer los expedientes de salida de home")
       })
+
+    this._apiService.getExpedientesSectorEntrada()
+      .then((response:any) => {
+        this.expedientes_a_entrar = response.data
+      })
+      .catch(error => {
+        this._functionService.imprimirMensaje(error, "error al traer los expedientes de entrada de home")
+      })
+
+
   }
 }

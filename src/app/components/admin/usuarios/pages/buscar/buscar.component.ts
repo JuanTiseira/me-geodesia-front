@@ -98,7 +98,7 @@ export class BuscarUsuarioComponent implements OnInit {
       })
 
       this.consultaForm = this.formBuilder.group({
-        numero: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
+        numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
         nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
         matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
         rol: [''],
@@ -112,16 +112,16 @@ export class BuscarUsuarioComponent implements OnInit {
 
   buscarUsuarios() {
     this.submitted2 = true;
-    if (this.consultaForm.invalid) {
-      return;
-    }
+    // if (this.consultaForm.invalid) {
+    //   return;
+    // }
     this.spinner.show();
     this._apiService.getUsuariosFiltros(this.consultaForm.value)
     .then((res) =>{
 
       this.usuarios = res
      
-      console.log(this.usuarios)
+      this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
       
       if (this.usuarios.count == 0) {
         this.spinner.hide();
@@ -189,7 +189,7 @@ export class BuscarUsuarioComponent implements OnInit {
   buscarUsuario() {
     this.submitted = true;
     if(this.consultaForm.value.numero < 1){
-      this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+      this._functionService.configSwal(this.mensajeSwal, `Debe ingresar un DNI`, "info", "Aceptar", "", false, "", "");
       this.mensajeSwal.fire();
       return;
     }
@@ -203,8 +203,6 @@ export class BuscarUsuarioComponent implements OnInit {
     //BUSCA POR NUMERO DE DNI
     this._apiService.getUsuarioNumero(numero)
       .then((x:any) =>{
-
-        console.warn(x);
         this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
     }).catch(()=>{

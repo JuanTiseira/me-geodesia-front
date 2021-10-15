@@ -46,7 +46,7 @@ export class FunctionsService {
 
   imprimirMensaje(obj, mensaje){
     if(!environment.production){
-      console.log(`Debug desarrollo:     ${mensaje}: `,obj);
+      console.log(`Debug:     ${mensaje}: `,obj);
     }
   }
 

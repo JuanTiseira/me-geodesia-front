@@ -1,23 +1,17 @@
 input {
-    
-    margin-bottom: 20px;    
+    margin-bottom: 1rem;    
     background-color: white !important;
 }
 
-select {
-    margin-bottom: 20px;
+select, ng-select {
+    margin-bottom: 1rem;
 }
 
-ng-select {
-    margin-bottom: 20px;
-}
 
 is-invalid {
     background-color: rgb(212, 154, 154);
 }
 
 .btn {
-    
     color: white !important;
-    
 }

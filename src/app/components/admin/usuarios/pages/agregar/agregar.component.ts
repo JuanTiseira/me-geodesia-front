@@ -27,7 +27,7 @@ export class AgregarUsuarioComponent implements OnInit {
   public usuarios: any;
   public roles: any;
   usuarioForm : FormGroup
-  form: FormGroup;
+  // form: FormGroup;
   id: string;
   isAddMode: boolean;
   loading = false;
@@ -47,6 +47,7 @@ export class AgregarUsuarioComponent implements OnInit {
    
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
+    console.log("add mode: ", this.id)
 
     this.usuarioForm = this.formBuilder.group({
       
@@ -64,10 +65,10 @@ export class AgregarUsuarioComponent implements OnInit {
     }, {});
 
 
-    if (!this.isAddMode) {
-        this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-        .then(x => this.form.patchValue(x));
-    }
+    // if (!this.isAddMode) {
+    //     this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+    //     .then(x => this.form.patchValue(x));
+    // }
     
 
     this._apiService.getTipoExpedientes().then(response => {

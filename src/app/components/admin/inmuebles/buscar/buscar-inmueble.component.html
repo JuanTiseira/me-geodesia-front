@@ -76,6 +76,7 @@
         <table class="table table-striped" >
             <thead>
                 <tr>
+                    <th>Unidad Funcional</th>
                     <th>N° de Partida</th>
                     <th>Datos</th>
                     <th>Observaciones</th>
@@ -91,6 +92,7 @@
             <tbody>
                 <tr *ngFor="let inm of inmuebles.results | paginate: { itemsPerPage: 10, currentPage: p, totalItems: inmuebles.count }">
 
+                    <td>{{ inm.unidad_funcional }}</td>
                     <td>{{ inm.numero_partida }}</td>
                     <td>{{ inm.datos }}</td>
                     <td>{{ inm.observaciones }}</td>

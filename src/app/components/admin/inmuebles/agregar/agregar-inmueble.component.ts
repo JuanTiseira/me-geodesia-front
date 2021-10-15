@@ -100,7 +100,10 @@ export class AgregarInmuebleComponent implements OnInit {
         this.loading = false;
         this.verDetallesInmuebles.emit(true);
         this._functionService.configSwal(this.mensajeSwal, 'Inmueble registrado correctamente', "success", "Aceptar", "", false, "", "")
-        this.mensajeSwal.fire().finally(() => this.inmuebleForm.reset())
+        this.mensajeSwal.fire().finally(() => {
+          this.inmuebleForm.reset();
+          this.submitted = false;
+        })
       })
       .catch((e)=>{
         this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar`, "error", "Aceptar", "", false, "", "")

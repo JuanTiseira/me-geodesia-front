@@ -13,7 +13,7 @@
                         <label for="tipo_expediente" class="form-label">Tipo</label>
                         <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
                           <ng-option value="" disabled>Seleccione una opcion</ng-option>
-                          <ng-option *ngFor="let dato of tipos_expedientes.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
+                          <ng-option *ngFor="let dato of tipos_expedientes.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
                         </ng-select>
                         <div *ngIf="submitted && f.tipo_expediente.errors" class="invalid-feedback">
                           <div *ngIf="f.tipo_expediente.errors.required">Este campo es obligatorio</div>

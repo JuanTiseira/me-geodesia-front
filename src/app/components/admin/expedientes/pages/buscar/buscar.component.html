@@ -138,13 +138,11 @@
                     </select>   
             </div>
             <div class="col-md-4">
-                <label for="username" class="form-label">Inmueble</label>
-                <select *ngIf="inmuebles" formControlName="inmueble"  name="" class="form-select" id="" >
-                    <option [value]="dato.url" *ngFor="let dato of inmuebles.results" value="">{{dato.datos}}</option>
-                  </select>
-                  <select *ngIf="!inmuebles"  class="form-select" >
-                    <option >Cargando</option>
-                </select>   
+                <label for="inmueble" class="form-label">Inmueble</label>
+                <ng-select id="inmueble" [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
+                    <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                    <ng-option *ngFor="let inmueble of inmuebles.results" [value]="inmueble.id" [disabled]="inmueble.disabled">{{ inmueble.municipio.departamento.codigo }}-{{ inmueble.municipio.codigo }}-{{ inmueble.seccion }}-{{ inmueble.chacra }}-{{ inmueble.manzana }}-{{ inmueble.parcela }}</ng-option>
+                </ng-select>  
             </div>
 
             <div class="col-md-4 ">

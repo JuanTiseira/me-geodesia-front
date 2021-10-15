@@ -1,63 +1,71 @@
 <div class="container">
 
-  <h2 style="font-weight: bold;">Detalle Usuario</h2>
+    <h2 style="font-weight: bold;">Detalle Usuario</h2>
 
-  <br>
+    <br>
 
-  <div class="row" *ngIf="usuario">
-      <div class="col-12" >
-        <div class="row" >
-          <div class="col-12" >
-              <table class="table table-striped" >
-                 
-                  <tbody>
-                      <tr>
-                            <th>Nombre</th>
-                            <td >{{ usuario.nombre }}</td>
-                      </tr>
-                      <tr>
-                          <th>Apellido</th>
-                              <td>{{ usuario.apellido }}</td>
-                      </tr>
-  
-                      <tr>
-                          <th>Fecha de Nacimiento</th>
-                              <td>{{ usuario.fecha_nacimiento }}</td>
-                      </tr>
-  
-                      <tr>
-                          <th>Matricula</th>
-                              <td>{{ usuario.matricula }} </td>
-                      </tr>
-  
-                      <tr>
-                          <th>Teléfono</th>
-                              <td>{{ usuario.telefono}}</td>
-                      </tr>
-  
-                      <tr>
-                          <th>Email</th>
-                              <td>{{ usuario.email }} </td>
-                      </tr>
-  
-                      <tr>
-                          <th>Dirección</th>
-                              <td>{{ usuario.direccion }}</td>
-                      </tr>
+    <div class="row" *ngIf="usuario">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-striped">
 
-                      <tr>
-                        <th>Dni</th>
-                            <td>{{ usuario.dni }}</td>
-                    </tr>
-                  </tbody>
-              </table>
+                        <tbody>
+                            <tr>
+                                <th>Nombre</th>
+                                <td>{{ usuario.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Apellido</th>
+                                <td>{{ usuario.apellido }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>CUIT</th>
+                                <td>{{ usuario.cuit }}</td>
+                            </tr>
+                            <tr>
+                                <th>DNI</th>
+                                <td>{{ usuario.dni }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de Nacimiento</th>
+                                <td>{{ usuario.fecha_nacimiento }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Matricula</th>
+                                <td>{{ usuario.matricula }} </td>
+                            </tr>
+
+                            <tr>
+                                <th>Teléfono</th>
+                                <td>{{ usuario.telefono}}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ usuario.email }} </td>
+                            </tr>
+
+                            <tr>
+                                <th>Dirección</th>
+                                <td>{{ usuario.direccion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Rol</th>
+                                <td>{{ usuario.rol.nombre }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
         </div>
-  </div>
-  
-
-  
-
-
-</div>
-<swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
-<ngx-spinner></ngx-spinner>
+        <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor
+            confirmButtonColor confirm></swal>
+        <ngx-spinner></ngx-spinner>

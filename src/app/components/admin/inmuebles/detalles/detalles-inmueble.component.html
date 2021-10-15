@@ -1,58 +1,67 @@
 <div class="container">
     <h2 style="font-weight: bold;">Detalle Inmueble</h2>
-  
+
     <br>
-  
+
     <div class="row" *ngIf="inmueble">
-        <div class="col-12" >
-          <div class="row" >
-            <div class="col-12" >
-                <table class="table table-striped" >
-                   
-                    <tbody>
-                        <tr>
-                              <th>Numero de Partida</th>
-                              <td >{{ inmueble.numero_partida }}</td>
-                        </tr>
-                        <tr>
-                            <th>Datos</th>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-striped">
+
+                        <tbody>
+                            <tr>
+                                <th>Unidad Funcional</th>
+                                <td>{{ inmueble.unidad_funcional }}</td>
+                            </tr>
+                            <tr>
+                                <th>Número de Partida</th>
+                                <td>{{ inmueble.numero_partida }}</td>
+                            </tr>
+                            <tr>
+                                <th>Datos</th>
                                 <td>{{ inmueble.datos }}</td>
-                        </tr>
-    
-                        <tr>
-                            <th>Observaciones</th>
+                            </tr>
+
+                            <tr>
+                                <th>Observaciones</th>
                                 <td>{{ inmueble.observaciones }}</td>
-                        </tr>
-    
-                        <tr>
-                            <th>Seccion</th>
+                            </tr>
+
+                            <tr>
+                                <th>Sección</th>
                                 <td>{{ inmueble.seccion }} </td>
-                        </tr>
-    
-                        <tr>
-                            <th>Chacra</th>
+                            </tr>
+
+                            <tr>
+                                <th>Chacra</th>
                                 <td>{{ inmueble.chacra}}</td>
-                        </tr>
-    
-                        <tr>
-                            <th>Manzana</th>
+                            </tr>
+
+                            <tr>
+                                <th>Manzana</th>
                                 <td>{{ inmueble.manzana }} </td>
-                        </tr>
-    
-                        <tr>
-                            <th>Parcela</th>
+                            </tr>
+
+                            <tr>
+                                <th>Parcela</th>
                                 <td>{{ inmueble.parcela }}</td>
-                        </tr>
-  
-                        <tr>
-                          <th>Numero de Mensura</th>
-                              <td>{{ inmueble.numero_mensura }}</td>
-                      </tr>
-                    </tbody>
-                </table>
-          </div>
-    </div>  
-  
-  </div>
-  <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
-  <ngx-spinner></ngx-spinner>
+                            </tr>
+
+                            <tr>
+                                <th>Número de Mensura</th>
+                                <td>{{ inmueble.numero_mensura }}</td>
+                            </tr>
+                            <tr>
+                                <th>Municipio</th>
+                                <td>{{ inmueble.municipio.descripcion }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor
+            confirmButtonColor confirm></swal>
+        <ngx-spinner></ngx-spinner>

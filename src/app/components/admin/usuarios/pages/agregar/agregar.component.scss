@@ -1,15 +1,17 @@
 input {
     
-    margin-bottom: 20px;    
+    margin-bottom: 1rem;    
     background-color: white !important;
     text-transform:uppercase
 }
 
 select {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
-
+ng-select {
+    margin-bottom: 1rem;
+}
 
 is-invalid {
     background-color: rgb(212, 154, 154);

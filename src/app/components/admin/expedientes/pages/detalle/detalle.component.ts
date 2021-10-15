@@ -32,7 +32,12 @@ export class DetalleComponent implements OnInit {
   retiroForm: FormGroup
   devolForm: FormGroup
   id: string;
+  anioParam:string = '';
+  numeroParam:string = '';
+
+  // isNumeroAnio:boolean = false;
   isEditMode: boolean;
+
   loading = false;
   submitted: boolean = false;
   selecteditem: string;
@@ -139,8 +144,11 @@ export class DetalleComponent implements OnInit {
     this.busqueda_manual = value;
   }
 
+
   ngOnInit(): void {
 
+    this.numeroParam = ""
+    this.anioParam = ""
     this.submitted = false;
     this.date = moment(new Date()).format('DD/MM/YYYY');
     
@@ -155,7 +163,7 @@ export class DetalleComponent implements OnInit {
         // this.documentosexpediente = this.documentos.results
       })
       .catch(err => {
-        console.log("error documentos: ", err)
+        this._functionService.imprimirMensaje(err, "error documento: ")
       })
 
     this.loadPropietarios();
@@ -163,10 +171,11 @@ export class DetalleComponent implements OnInit {
     this.loadDocumentos()
 
     this.id = this.route.snapshot.params['id'];
+    this.anioParam = this.route.snapshot.queryParams['anio'];
+    this.numeroParam = this.route.snapshot.queryParams['numero']
 
     this.isEditMode = false;
        
-
     this.expedienteForm.disable();
     this.retiroForm.value.dni = ''
 
@@ -174,17 +183,13 @@ export class DetalleComponent implements OnInit {
     
     this.idEdit = false
 
-
-    this.id = this.route.snapshot.params['id'];
-
     this.retiroForm.controls['dni'].setValue('');
     //BUSQUEDA Y CARGA CON FILTROS 
-    if (this.route.snapshot.queryParams['anio']) {
-      this._apiService.getExpedienteNumero(this.route.snapshot.queryParams['numero'], this.route.snapshot.queryParams['anio'])
+    if (this.anioParam) {
+      this._apiService.getExpedienteNumero(this.numeroParam, this.anioParam)
         .then((x:any) =>{
 
           this.tramite = x
-          console.log("TRAMITE: ============================ ", this.tramite)
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
 
@@ -211,9 +216,9 @@ export class DetalleComponent implements OnInit {
         this.mensajeSwal.fire()
         this.spinner.hide()
       });
-    }else if (this.route.snapshot.params['id'] && !this.route.snapshot.queryParams['anio'] && !this.route.snapshot.queryParams['numero'])
+    }else if (this.id && !this.anioParam && !this.numeroParam)
       {
-        this._apiService.getExpediente(this.route.snapshot.params['id'])
+        this._apiService.getExpediente(this.id)
         .then((x:any) =>{
 
           this.tramite = x
@@ -251,12 +256,10 @@ export class DetalleComponent implements OnInit {
     
     else{
       
-      this._apiService.getExpedienteTramite(this.route.snapshot.queryParams['numero'])
+      this._apiService.getExpedienteTramite(this.numeroParam)
         .then((x:any) =>{
 
           this.tramite = x
-
-          
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
           
@@ -296,6 +299,12 @@ export class DetalleComponent implements OnInit {
 
   trackByFn(item: Person) {
     return item.id;
+  }
+
+  get isNumeroAnio(){ 
+    let numP = !!this.numeroParam
+    let anioP = !!this.anioParam
+    return (numP == anioP)? true:false
   }
   
   //IMPRIMIR ETIQUETA
@@ -343,7 +352,7 @@ export class DetalleComponent implements OnInit {
   get values(): string[] {
 
     // let value = this.zfill(this.tramite.numero, 7)
-    let value = this.tramite.numero + this.tramite.codigo_verificacion 
+    let value = this.tramite?.numero + this.tramite?.codigo_verificacion 
 
     return value.split('\n');
   }
@@ -366,7 +375,7 @@ export class DetalleComponent implements OnInit {
 
   leerDni(){
     this.texto =  this.retiroForm.value["dni"]
-    console.log("texto: ", this.texto)
+    // console.log("texto: ", this.texto)
     //this.retiroForm.controls['dni'].setValue('');
     this.verificarUsuario()
   }
@@ -582,6 +591,14 @@ export class DetalleComponent implements OnInit {
       this.usuarios = response
     })
   } 
+
+  verTramite(){
+    this.router.navigate(['expediente/',this.id])
+    .then(response => {
+      this.ngOnInit()
+    })
+    
+  }
 
   cancelarRetiro(){
     this.limpiar(this.retiroForm)

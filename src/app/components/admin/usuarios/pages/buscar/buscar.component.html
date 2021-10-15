@@ -55,9 +55,10 @@
 
             <div class="col-md-4">
                 <label for="username" class="form-label">ROL</label>
-                <select *ngIf="roles" formControlName="rol" class="form-select" >
-                    <option [value]="dato.url" *ngFor="let dato of roles.results" value="">{{dato.nombre}}</option>
-                </select>
+                <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
+                    <ng-option value="" disabled>Seleccione una Opcion</ng-option>
+                    <ng-option *ngFor="let dato of roles?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
+                </ng-select>
 
                 <select *ngIf="!roles" class="form-select" >
                     <option value="Cargando" selected>Cargando</option>
@@ -83,13 +84,14 @@
         </div>
     </form>
     
-    <hr/>
+    <hr *ngIf="usuarios" />
 
     <div *ngIf="usuarios">
         <table class="table table-striped" >
             <thead>
                 <tr>
                     <th>Nombre y Apellido</th>
+                    <th>DNI</th>
                     <th>CUIT</th>
                     <th>Email</th>
                     <th>Estado</th>
@@ -100,6 +102,7 @@
                 <tr *ngFor="let usr of usuarios.results | paginate: { itemsPerPage: 10, currentPage: p, totalItems: usuarios.count }">
 
                     <td>{{ usr.nombre }} {{ usr.apellido }}</td>
+                    <td>{{ usr.dni }}</td>
                     <td>{{ usr.cuit }}</td>
                     <td>{{ usr.email }}</td>
                     <td *ngIf="usr.habilitado == true"><b>Activo</b></td>
@@ -145,7 +148,7 @@
 
 
 
-<hr>
+<hr *ngIf="usuarios">
 
 <pre>{{ closeResult }}</pre>
 

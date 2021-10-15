@@ -116,10 +116,10 @@
                   <div class="form-group">
                     
                     <label for="municipio" class="form-label">Municipio</label>
-                    <select *ngIf="municipios" formControlName="municipio" name="" class="form-select"  [ngClass]="{ 'is-invalid': submitted && f.municipio.errors }">
-                      <option value="" disabled>Seleccione una Opcion</option>
-                      <option [ngValue]="dato.id" *ngFor="let dato of municipios.results" value="">{{dato.descripcion}}</option>
-                    </select>
+                    <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="municipio" [ngClass]="{ 'is-invalid': submitted && f.municipio.errors }">
+                      <ng-option value="" disabled>Seleccione una Opcion</ng-option>
+                      <ng-option *ngFor="let dato of municipios.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
+                    </ng-select>
                     <div *ngIf="submitted && f.municipio.errors" class="invalid-feedback">
                       <div *ngIf="f.municipio.errors.required">Este campo es obligatorio</div>
                     </div>

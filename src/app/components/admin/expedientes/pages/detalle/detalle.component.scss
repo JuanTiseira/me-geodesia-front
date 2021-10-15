@@ -1,12 +1,12 @@
 input {
     
-    margin-bottom: 20px;    
+    margin-bottom: 1rem;    
     background-color: white !important;
     text-transform:uppercase
 }
 
 select {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 
@@ -20,4 +20,8 @@ select {
 
 .disabled {
     background-color : #e9ecef !important; 
+}
+
+.btn-agregar{
+    margin-top: 0 !important;
 }
