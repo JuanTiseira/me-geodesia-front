@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    console.log("testing de variable de entorno: ", process.env.endpoint)
     this.loading = true;
     $("#btn-login").toggleClass('disabled');
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
