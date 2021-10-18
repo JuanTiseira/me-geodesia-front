@@ -23,11 +23,13 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import {NgxPrintModule} from 'ngx-print';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpErrorInterceptor } from './services/http-error-interceptors';
-
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAr, 'es-Ar');
+
+// const globalSettings: RecaptchaSettings = { siteKey: '6LfahdocAAAAAFkL015n25F3anhRBpr-nNmAdY2n' };
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ registerLocaleData(localeEsAr, 'es-Ar');
     SweetAlert2Module.forRoot(),
     BrowserAnimationsModule,
     MatProgressBarModule,
-    NgbModule
+    NgbModule,
+    NgxCaptchaModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ValidatorInterceptorService, multi: true },

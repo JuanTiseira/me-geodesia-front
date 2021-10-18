@@ -8,7 +8,7 @@
                 </div>
                 <div class="card-body">
                     <!-- <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div> -->
-                    <form [formGroup]="loginForm" (keyup.enter)="onSubmit(loginForm.value)">
+                    <form [formGroup]="loginForm" (keyup.enter)="onSubmit()">
                         <div class="mb-3 form-email">
                             <label for="email" class="form-label">Usuario</label>
                             <input formControlName="email" #email type="email" class="form-control" placeholder="Usuario" id="email" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
@@ -23,12 +23,22 @@
                                 <div *ngIf="f.password.errors.required">Contraseña requerida</div>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <ngx-recaptcha2 #captchaElem
+                                [siteKey]='siteKey'
+                                formControlName="recaptcha"
+                                [ngClass]="{ 'is-invalid': submitted && f.recaptcha.errors }">
+                            </ngx-recaptcha2>
+                            <div *ngIf="f.recaptcha.errors" class="invalid-feedback text-left">
+                                <div *ngIf="f.recaptcha.errors.required">Captcha requerido</div>
+                            </div>
+                        </div>
                         <!-- <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="checkSesion">
                             <label class="form-check-label" for="checkSesion">Mantener la sesión inciada en este equipo</label>
                         </div> -->
-                        <div class="d-flex justify-content-center mt-5">
-                            <button type="button" class="btn btn-primary w-100 mb-3" (click)="onSubmit(loginForm.value)">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary w-100 mb-3" (click)="onSubmit()">
                                 <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> -->
                                 Iniciar Sesión</button>
                         </div>

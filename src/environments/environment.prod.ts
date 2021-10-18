@@ -1,5 +1,6 @@
 export const environment = {
-  endpoint: "https://api.relex.com.ar",
+  endpoint: "",
   production: true,
-  secret_key: "12hg31%dsMmk#!!dns(mAa2a2)313nn21"
+  secret_key: "",
+  siteKey: ""
 };
