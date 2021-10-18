@@ -8,7 +8,6 @@ import * as $ from 'jquery';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { environment } from 'src/environments/environment';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -38,8 +37,7 @@ export class LoginComponent implements OnInit {
       recaptcha: ['', Validators.required]
     })
 
-    console.log("testing de variable de entorno: ", process.env.endpoint)
-
+    console.log("environment: ", environment.endpoint)
     this.date = new Date()
   }
 
