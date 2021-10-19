@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "config": "ts-node ./src/assets/scripts/setEnv.ts --endpoint=https://api.relex.com.ar",
+    "config": "ts-node ./src/assets/scripts/setEnv.ts",
     "start": "npm run config -- --environment=dev && ng serve --host=192.168.0.79",
     "build": "npm run config -- --environment=prod && ng build --prod",
     "test": "ng test",
