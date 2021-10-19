@@ -8,14 +8,16 @@ const environment = argv.environment;
 
 
 function writeFileUsingFS(targetPath, environmentFileContent) {
-  writeFile(targetPath, environmentFileContent, function (err) {
-    if (err) {
-      console.log(err);
-    }
-    if (environmentFileContent !== '' && targetPath != './src/environments/environment.prod.ts') {
-      console.log(`wrote variables to ${targetPath} with ${environmentFileContent}`);
-    }
-  });
+  if(targetPath != './src/environments/environment.prod.ts'){
+    writeFile(targetPath, environmentFileContent, function (err) {
+      if (err) {
+        console.log(err);
+      }
+      if (environmentFileContent !== '') {
+        console.log(`wrote variables to ${targetPath} with ${environmentFileContent}`);
+      }
+    });
+  }
 }
 
 
