@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       recaptcha: ['', Validators.required]
     })
 
-    console.log("environment: ", environment.endpoint)
+    console.log("environment: ", environment)
     this.date = new Date()
   }
 
