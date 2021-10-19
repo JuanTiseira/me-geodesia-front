@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prod-build-dev": "ng build --prod --build-optimizer",
-    "prod-build-staging": "ng build --prod --configuration=staging --build-optimizer"    
+    "prod-build-staging": "ng build --prod --configuration=staging --build-optimizer"
   },
   "private": true,
   "dependencies": {
@@ -60,7 +60,6 @@
     "@types/node": "^12.20.33",
     "codelyzer": "^6.0.0",
     "dotenv": "^10.0.0",
-    "dotenv-webpack": "^7.0.3",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.1.0",
@@ -76,6 +75,9 @@
     "yargs": "^17.2.1"
   },
   "browser": {
-    "crypto": false
+    "crypto": false,
+    "fs": false,
+    "os": false,
+    "path": false
   }
 }
