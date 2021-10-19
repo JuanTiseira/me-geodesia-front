@@ -12,7 +12,7 @@ function writeFileUsingFS(targetPath, environmentFileContent) {
     if (err) {
       console.log(err);
     }
-    if (environmentFileContent !== '') {
+    if (environmentFileContent !== '' && targetPath != './src/environments/environment.prod.ts') {
       console.log(`wrote variables to ${targetPath} with ${environmentFileContent}`);
     }
   });
