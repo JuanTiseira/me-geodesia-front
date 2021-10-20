@@ -89,11 +89,13 @@ stages:
             displayName: 'Archive dist'
             inputs:
               rootFolderOrFile: $(Pipeline.Workspace)
+          - script: echo $(Pipeline.Workspace)   
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact: drop'
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          - script: echo $(Build.ArtifactStagingDirectory)/$(Build.BuildId)
 
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: geodesia-frontend-dev'
