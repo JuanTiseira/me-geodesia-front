@@ -26,6 +26,16 @@ stages:
 
           - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
             displayName: 'ng build'
+          
+          - task: ArchiveFiles@2
+            displayName: 'Archive dist/front'
+            inputs:
+              rootFolderOrFile: dist/front
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact: drop'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
 
   - stage: deploy_dev
     displayName: Deploy to development
@@ -82,16 +92,6 @@ stages:
     jobs:
       - job:
         steps:
-          - task: ArchiveFiles@2
-            displayName: 'Archive dist/front'
-            inputs:
-              rootFolderOrFile: dist/front
-
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact: drop'
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: geodesia-frontend-dev'
             inputs:
