@@ -49,6 +49,7 @@ export class BuscarUsuarioComponent implements OnInit {
   submitted = false;
   submitted2 = false;
   consultaForm : FormGroup
+  consultaAvanzadaForm : FormGroup
 
 
   constructor( private _apiService: ApiService,
@@ -98,25 +99,29 @@ export class BuscarUsuarioComponent implements OnInit {
       })
 
       this.consultaForm = this.formBuilder.group({
-        numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
+        numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
+      })  
+
+      this.consultaAvanzadaForm = this.formBuilder.group({
         nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
         matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
         rol: [''],
         tipo_consulta: [''],
         param_busqueda: [''],
-      })  
+      }) 
   }
 
   get f() { return this.consultaForm.controls; }
+  get g() { return this.consultaAvanzadaForm.controls; }
 
 
   buscarUsuarios() {
     this.submitted2 = true;
-    // if (this.consultaForm.invalid) {
-    //   return;
-    // }
+    if (this.consultaAvanzadaForm.invalid) {
+      return;
+    }
     this.spinner.show();
-    this._apiService.getUsuariosFiltros(this.consultaForm.value)
+    this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
     .then((res) =>{
 
       this.usuarios = res
@@ -140,8 +145,8 @@ export class BuscarUsuarioComponent implements OnInit {
     });
   }
 
-  limpiar(){
-    this.consultaForm.reset();
+  limpiar(form){
+    form.reset();
   }
 
   eliminar (id) {

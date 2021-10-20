@@ -38,7 +38,8 @@
             </div>
         </div>
 
-
+    </form>
+    <form [formGroup]="consultaAvanzadaForm">
         <hr />
 
         <div class="row" *ngIf="isAdmin">
@@ -46,32 +47,28 @@
 
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input (keyup.enter)="buscarUsuarios()" formControlName="nombre" maxlength="50" inputmode="numeric" placeholder="Nombre de Usuario" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted2 && f.nombre.errors }">
-                <div *ngIf="f.nombre.errors" class="invalid-feedback">
-                    <div *ngIf="f.nombre.errors.pattern">Ingresar solo letras</div>
+                <input (keyup.enter)="buscarUsuarios()" formControlName="nombre" maxlength="50" inputmode="numeric" placeholder="Nombre de Usuario" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted2 && g.nombre.errors }">
+                <div *ngIf="g.nombre.errors" class="invalid-feedback">
+                    <div *ngIf="g.nombre.errors.pattern">Ingresar solo letras</div>
                 </div>
             </div>
             
 
             <div class="col-md-4">
                 <label for="username" class="form-label">ROL</label>
-                <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
+                <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && g.rol.errors }">
+                    <ng-option *ngIf="!roles" disabled>Cargando</ng-option>
                     <ng-option value="" disabled>Seleccione una Opcion</ng-option>
                     <ng-option *ngFor="let dato of roles?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
-                </ng-select>
-
-                <select *ngIf="!roles" class="form-select" >
-                    <option value="Cargando" selected>Cargando</option>
-                </select>
-                
+                </ng-select>                
             </div>
 
             <div class="col-md-4">
                 <label for="username" class="form-label">Matricula</label>
-                <input (keyup.enter)="buscarUsuarios()" formControlName="matricula" maxlength="20" inputmode="numeric" placeholder="Matricula" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted2 && f.matricula.errors }">
-                <div *ngIf="f.matricula.errors" class="invalid-feedback">
-                    <div *ngIf="f.matricula.errors">Debe ingresar 4 caracteres como mínimo</div>
-                    <div *ngIf="f.matricula.errors.pattern">Ingresar solo números</div>
+                <input (keyup.enter)="buscarUsuarios()" formControlName="matricula" maxlength="20" inputmode="numeric" placeholder="Matricula" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted2 && g.matricula.errors }">
+                <div *ngIf="g.matricula.errors" class="invalid-feedback">
+                    <div *ngIf="g.matricula.errors">Debe ingresar 4 caracteres como mínimo</div>
+                    <div *ngIf="g.matricula.errors.pattern">Ingresar solo números</div>
                 </div>
             </div>
         
@@ -127,7 +124,7 @@
         <div class="col-md-4">
             <div class="mt-3">
                
-                <button type="button" (click)="limpiar()" class="btn btn-green float-right">Limpiar</button>
+                <button type="button" (click)="limpiar(consultaAvanzadaForm)" class="btn btn-green float-right">Limpiar</button>
             </div>
         </div>
     
