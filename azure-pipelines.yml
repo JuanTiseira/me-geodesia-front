@@ -11,6 +11,8 @@ pool:
 
 stages:
   - stage: build
+    variables:
+      - group: PROD
     jobs:
       - job:
         steps:
@@ -27,8 +29,6 @@ stages:
           - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
             displayName: 'ng build'
 
-          - script: echo $(Pipeline.Workspace)/dist
-          - script: echo dist
           - task: ArchiveFiles@2
             displayName: 'Archive dist'
             inputs:
@@ -92,23 +92,10 @@ stages:
     jobs:
       - job:
         steps:
-          - task: ArchiveFiles@2
-            displayName: 'Archive dist'
-            inputs:
-              rootFolderOrFile: dist
-          - script: echo $(Pipeline.Workspace)   
-
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact: drop'
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          - script: echo $(Build.ArtifactStagingDirectory)/$(Build.BuildId)
-
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: geodesia-frontend-dev'
             inputs:
               azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
               appType: webAppLinux
               WebAppName: 'geodesia-frontend-dev'
-              packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              StartupCommand: 'pm2 serve /home/site/wwwroot --no-daemon --spa'
+              packageForLinux: '$(Pipeline.Workspace)/dist'
