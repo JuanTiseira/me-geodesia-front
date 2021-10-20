@@ -26,11 +26,6 @@ stages:
 
           - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
             displayName: 'ng build'
-          
-          - task: ArchiveFiles@2
-            displayName: 'Archive dist'
-            inputs:
-              rootFolderOrFile: dist
 
   - stage: deploy_dev
     displayName: Deploy to development
@@ -87,6 +82,10 @@ stages:
     jobs:
       - job:
         steps:
+          - task: ArchiveFiles@2
+            displayName: 'Archive dist'
+            inputs:
+              rootFolderOrFile: dist
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact: drop'
             inputs:
