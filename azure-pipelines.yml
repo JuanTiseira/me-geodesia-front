@@ -28,9 +28,9 @@ stages:
             displayName: 'ng build'
           
           - task: ArchiveFiles@2
-            displayName: 'Archive dist/front'
+            displayName: 'Archive dist'
             inputs:
-              rootFolderOrFile: dist/front
+              rootFolderOrFile: $(Pipeline.Workspace)/dist
 
   - stage: deploy_dev
     displayName: Deploy to development
