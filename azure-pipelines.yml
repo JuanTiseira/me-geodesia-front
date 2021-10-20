@@ -16,10 +16,7 @@ stages:
     jobs:
       - deployment: DeployWeb
         environment: PROD 
-        strategy:
-          runOnce:
-            deploy:
-              steps:
+        steps:
                 - task: Npm@1
                   displayName: 'npm install'
                   inputs:
@@ -58,3 +55,4 @@ stages:
                     WebAppName: 'geodesia-frontend-dev'
                     packageForLinux: '$(Pipeline.Workspace)/dist'
                     StartupCommand: 'pm2 serve /home/site/wwwroot --no-daemon --spa'
+              
