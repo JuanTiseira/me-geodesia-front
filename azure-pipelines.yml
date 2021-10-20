@@ -26,11 +26,9 @@ stages:
 
           - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
             displayName: 'ng build'
-          
-          - task: ArchiveFiles@2
-            displayName: 'Archive dist/front'
-            inputs:
-              rootFolderOrFile: dist/front
+
+          - publish: dist
+            artifact: dist  
 
   - stage: deploy_dev
     displayName: Deploy to development
@@ -46,7 +44,7 @@ stages:
               - script: echo Hello, development world!
               - task: replacetokens@3
                 inputs:
-                  targetFiles: '$(Pipeline.Workspace)/dist/front/**/main*.js'
+                  targetFiles: '$(Pipeline.Workspace)/dist/**/main*.js'
                   encoding: 'auto'
                   writeBOM: true
                   verbosity: 'detailed'
@@ -87,6 +85,10 @@ stages:
     jobs:
       - job:
         steps:
+          - task: ArchiveFiles@2
+            displayName: 'Archive dist'
+            inputs:
+              rootFolderOrFile: dist
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact: drop'
             inputs:
