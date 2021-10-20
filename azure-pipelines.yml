@@ -27,6 +27,9 @@ stages:
           - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
             displayName: 'ng build'
 
+          - publish: dist
+            artifact: dist  
+
   - stage: deploy_dev
     displayName: Deploy to development
     variables:
