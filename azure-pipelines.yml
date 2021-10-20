@@ -88,7 +88,7 @@ stages:
           - task: ArchiveFiles@2
             displayName: 'Archive dist'
             inputs:
-              rootFolderOrFile: $(Pipeline.Workspace)/dist
+              rootFolderOrFile: $(Pipeline.Workspace)
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact: drop'
