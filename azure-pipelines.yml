@@ -32,11 +32,6 @@ stages:
             inputs:
               rootFolderOrFile: dist/front
 
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact: drop'
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-
   - stage: deploy_dev
     displayName: Deploy to development
     variables:
@@ -51,7 +46,7 @@ stages:
               - script: echo Hello, development world!
               - task: replacetokens@3
                 inputs:
-                  targetFiles: '$(Pipeline.Workspace)/dist/**/main*.js'
+                  targetFiles: '$(Pipeline.Workspace)/dist/front/**/main*.js'
                   encoding: 'auto'
                   writeBOM: true
                   verbosity: 'detailed'
@@ -92,6 +87,11 @@ stages:
     jobs:
       - job:
         steps:
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact: drop'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: geodesia-frontend-dev'
             inputs:
