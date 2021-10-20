@@ -73,7 +73,7 @@ stages:
           runOnce:
             deploy:
               steps:
-              - script: echo Hello, production world!
+              - script: echo Hello, production '$(Pipeline.Workspace)/dist/**/main*.js'!
               - task: replacetokens@3
                 inputs:
                   targetFiles: '$(Pipeline.Workspace)/dist/**/main*.js'
@@ -95,7 +95,7 @@ stages:
           - task: ArchiveFiles@2
             displayName: 'Archive dist'
             inputs:
-              rootFolderOrFile: $(Pipeline.Workspace)
+              rootFolderOrFile: dist
           - script: echo $(Pipeline.Workspace)   
 
           - task: PublishBuildArtifacts@1
