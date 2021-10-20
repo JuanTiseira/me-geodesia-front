@@ -60,7 +60,7 @@ stages:
               - task: ArchiveFiles@2
                 displayName: 'Archive dist'
                 inputs:
-                  rootFolderOrFile: dist                  
+                  rootFolderOrFile: $(Pipeline.Workspace)/dist                  
             
   - stage: deploy_app_service
     displayName: Deploy to app services
