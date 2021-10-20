@@ -75,5 +75,5 @@ stages:
                   appType: webAppLinux
                   WebAppName: 'geodesia-frontend-dev'
                   packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-                  StartupCommand: 'pm2 serve /home/site/wwwroot --no-daemon --spa'             
+                  StartupCommand: 'pm2 serve /home/site/wwwroot/dist --no-daemon --spa'             
 
