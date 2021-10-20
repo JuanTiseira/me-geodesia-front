@@ -1,7 +1,7 @@
 export const environment = {
   endpoint: '#{endpoint}#',
   production: false,
-  secret_key: "#{secret_key}#",
+  secret_key: "#{secretkey}#",
   siteKey: "#{siteKey}#"
 };
 
