@@ -1,0 +1,102 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: build
+    jobs:
+      - job:
+        steps:
+          - task: Npm@1
+            displayName: 'npm install'
+            inputs:
+              verbose: false
+
+          - task: NodeTool@0
+            displayName: 'Use Node 14.x'
+            inputs:
+              versionSpec: 14.x
+
+          - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
+            displayName: 'ng build'
+
+  - stage: deploy_dev
+    displayName: Deploy to development
+    variables:
+      - group: DEV
+    jobs:
+      - deployment: DeployWeb
+        environment: DEV
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo Hello, development world!
+              - task: replacetokens@3
+                inputs:
+                  targetFiles: '$(Pipeline.Workspace)/dist/**/main*.js'
+                  encoding: 'auto'
+                  writeBOM: true
+                  verbosity: 'detailed'
+                  actionOnMissing: 'warn'
+                  keepToken: false
+                  tokenPrefix: '#{'
+                  tokenSuffix: '}#'
+                  useLegacyPattern: false
+                  enableTelemetry: true
+
+  - stage: deploy_prod
+    displayName: Deploy to production
+    variables:
+      - group: PROD
+    jobs:
+      - deployment: DeployWeb
+        environment: PROD
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo Hello, production world!
+              - task: replacetokens@3
+                inputs:
+                  targetFiles: '$(Pipeline.Workspace)/dist/**/main*.js'
+                  encoding: 'auto'
+                  writeBOM: true
+                  verbosity: 'detailed'
+                  actionOnMissing: 'warn'
+                  keepToken: false
+                  tokenPrefix: '#{'
+                  tokenSuffix: '}#'
+                  useLegacyPattern: false
+                  enableTelemetry: true
+            
+  - stage: deploy_app_service
+    displayName: Deploy to app services
+    jobs:
+      - job:
+        steps:
+          - task: ArchiveFiles@2
+            displayName: 'Archive dist/front'
+            inputs:
+              rootFolderOrFile: dist/front
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact: drop'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: geodesia-frontend-dev'
+            inputs:
+              azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
+              appType: webAppLinux
+              WebAppName: 'geodesia-frontend-dev'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              StartupCommand: 'pm2 serve /home/site/wwwroot/front --no-daemon --spa'
