@@ -27,12 +27,12 @@ stages:
           - task: RaulARuiz.angular-cli-1.angular-cli-build-task.AngularCLI@1
             displayName: 'ng build'
 
+          - script: echo $(Pipeline.Workspace)/dist
+          - script: echo dist
           - task: ArchiveFiles@2
             displayName: 'Archive dist'
             inputs:
-              rootFolderOrFile: $(Pipeline.Workspace)/dist
-          - script: echo $(Pipeline.Workspace)/dist
-          - script: echo dist
+              rootFolderOrFile: dist
 
           - publish: dist
             artifact: dist  
