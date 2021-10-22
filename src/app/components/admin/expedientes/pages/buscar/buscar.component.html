@@ -8,7 +8,8 @@
                 <label for="param_busqueda" class="form-label">Consultar por</label>   
                
                 <ng-select id="param_busqueda" [multiple]="false" [closeOnSelect]="true" formControlName="param_busqueda" [ngClass]="{ 'is-invalid': submitted && f.param_busqueda.errors }">
-                    <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                    <ng-option *ngIf="!categories"> cargando</ng-option>
+                    <ng-option *ngIf="categories" value="" disabled>Seleccione una opcion</ng-option>
                     <ng-option *ngFor="let cat of categories" [value]="cat.value" [disabled]="cat.disabled">{{cat.name}}</ng-option>
                 </ng-select>
                 <div *ngIf="f.param_busqueda.errors" class="invalid-feedback">
@@ -141,7 +142,7 @@
                 <label for="inmueble" class="form-label">Inmueble</label>
                 <ng-select id="inmueble" [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
                     <ng-option value="" disabled>Seleccione una opcion</ng-option>
-                    <ng-option *ngFor="let inmueble of inmuebles.results" [value]="inmueble.id" [disabled]="inmueble.disabled">{{ inmueble.municipio.departamento.codigo }}-{{ inmueble.municipio.codigo }}-{{ inmueble.seccion }}-{{ inmueble.chacra }}-{{ inmueble.manzana }}-{{ inmueble.parcela }}</ng-option>
+                    <ng-option *ngFor="let inmueble of inmuebles?.results" [value]="inmueble.id" [disabled]="inmueble.disabled">{{ inmueble.municipio.departamento.codigo }}-{{ inmueble.municipio.codigo }}-{{ inmueble.seccion }}-{{ inmueble.chacra }}-{{ inmueble.manzana }}-{{ inmueble.parcela }}</ng-option>
                 </ng-select>  
             </div>
 

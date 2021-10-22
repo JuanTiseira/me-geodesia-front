@@ -13,7 +13,7 @@
                         <label for="tipo_expediente" class="form-label">Tipo</label>
                         <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
                           <ng-option value="" disabled>Seleccione una opcion</ng-option>
-                          <ng-option *ngFor="let dato of tipos_expedientes.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
+                          <ng-option *ngFor="let dato of tipos_expedientes?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
                         </ng-select>
                         <div *ngIf="submitted && f.tipo_expediente.errors" class="invalid-feedback">
                           <div *ngIf="f.tipo_expediente.errors.required">Este campo es obligatorio</div>
@@ -34,7 +34,7 @@
                       <div class="col-md-10">
                         <label for="inmueble" class="form-label">Inmueble</label>
                         <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
-                          <ng-option *ngFor="let dato of inmuebles.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.municipio.departamento.codigo}}-{{dato.municipio.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
+                          <ng-option *ngFor="let dato of inmuebles?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.municipio.departamento.codigo}}-{{dato.municipio.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
                         </ng-select>
                         <div *ngIf="submitted && f.inmueble.errors" class="invalid-feedback">
                           <div *ngIf="f.inmueble.errors.required">Este campo es obligatorio</div>
@@ -82,7 +82,7 @@
                     <div class="form-group">
                       <label for="documentos" class="form-label">Documentos</label>
                       <ng-select  [multiple]="true" [closeOnSelect]="false" formControlName="documentos" [ngClass]="{ 'is-invalid': submitted && f.documentos.errors }">
-                        <ng-option *ngFor="let dato of documentos.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
+                        <ng-option *ngFor="let dato of documentos?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
                       </ng-select>
                       <div *ngIf="submitted && f.documentos.errors" class="invalid-feedback">
                         <div *ngIf="f.documentos.errors.required">Este campo es obligatorio</div>
