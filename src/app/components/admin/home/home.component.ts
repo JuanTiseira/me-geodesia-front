@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit {
           this.expedientes = response
         })
 
+      
       this._apiService.getUsuarios()
         .then(response => {
           this.usuarios = response

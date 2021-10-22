@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import * as $ from 'jquery';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { environment } from 'src/environments/environment';
+import { ReCaptcha2Component } from 'ngx-captcha';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import { environment } from 'src/environments/environment';
 export class LoginComponent implements OnInit {
 
   @ViewChild('failSwal') failSwal: SwalComponent
+  @ViewChild('captchaElem') captchaElem: ReCaptcha2Component
   loginForm: FormGroup;
 
   Role = Role;
@@ -37,7 +39,6 @@ export class LoginComponent implements OnInit {
       recaptcha: ['', Validators.required]
     })
 
-    console.log("environment: ", environment)
     this.date = new Date()
   }
 
@@ -60,9 +61,11 @@ export class LoginComponent implements OnInit {
         } else {
           $("#btn-login").removeClass('disabled');
           this.loading = false;
-          this.failSwal.fire()
+          this.failSwal.fire();
+          this.captchaElem.resetCaptcha();
         }
 
       })
   }
+
 }
