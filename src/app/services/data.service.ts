@@ -100,7 +100,7 @@ export class DataService {
 
           })
         
-        return of(this.items).pipe( delay(500));
+        return of(this.items).pipe( delay(1));
     }
 
 
@@ -118,7 +118,7 @@ export class DataService {
 
           })
 
-        return of(this.items).pipe( delay(500));
+        return of(this.items).pipe( delay(1));
     }
 
 }
