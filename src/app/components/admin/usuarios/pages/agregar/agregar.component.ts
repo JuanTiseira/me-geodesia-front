@@ -5,6 +5,7 @@ import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import Swal from 'sweetalert2'
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 
 
@@ -15,7 +16,7 @@ import Swal from 'sweetalert2'
 })
 export class AgregarUsuarioComponent implements OnInit {
 
-  // @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+  @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   @Output() verDetallesFunction: EventEmitter<any>;
 
   
@@ -50,8 +51,6 @@ export class AgregarUsuarioComponent implements OnInit {
     console.log("add mode: ", this.id)
 
     this.usuarioForm = this.formBuilder.group({
-      
-      // user: ['', Validators.required],
       rol: ['', Validators.required],
       nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
       apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
@@ -61,7 +60,9 @@ export class AgregarUsuarioComponent implements OnInit {
       direccion:  ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
       fecha_nacimiento: ['', Validators.required],
       email:  ['', Validators.compose([Validators.required, Validators.email])],
-      telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],  
+      telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])], 
+      user: [],
+      password: [] 
     }, {});
 
 
@@ -130,23 +131,14 @@ export class AgregarUsuarioComponent implements OnInit {
     console.log(this.usuarioForm.value)
     this._apiService.setUsuario(this.usuarioForm.value)
     .then(() =>{
-      console.warn(this.usuarioForm.value);
-      Swal.fire({
-        title: 'Exito',
-        text: 'Se registro correctamente',
-        icon: 'success',
-        confirmButtonText: 'Cool',
-      })
+      this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");
+      this.mensajeSwal.fire().finally(() =>{this.limpiar()});
       this.verDetallesFunction.emit(true);
       this.loading = false;
     })
     .catch((e)=>{
-     Swal.fire({
-        title: 'Error!',
-        text: 'No se pudo registrar',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
+      this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar.`, "error", "Aceptar", "", false, "", "");
+      this.mensajeSwal.fire();
       this.loading = false;
       this.verDetallesFunction.emit(true);
     });

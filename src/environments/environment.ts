@@ -1,6 +1,6 @@
 export const environment = {
-  endpoint: '#{endpoint}#',
-  production: true,
-  secret_key: "#{secret_key}#",
-  siteKey: "#{siteKey}#"
+  endpoint: 'http://192.168.0.79:8000',
+  production: false,
+  secret_key: "clave",
+  siteKey: "6LczrNocAAAAAD0vzNtL744UUkNpbZepxB0GRyFw"
 };

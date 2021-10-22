@@ -71,10 +71,10 @@ export class AgregarComponent implements OnInit {
 
 
     this.spinner.show();
-    setTimeout(() => {
-      /** spinner ends after 5 seconds */
-      this.spinner.hide();
-    }, 3000);
+    // setTimeout(() => {
+    //   /** spinner ends after 5 seconds */
+    //   this.spinner.hide();
+    // }, 3000);
 
     this.loadPropietarios();
     this.loadGestores();
@@ -104,6 +104,9 @@ export class AgregarComponent implements OnInit {
       this.tipos_expedientes = response
       //this.tipos_expedientes = response
     })
+    .finally(() => {
+      this.spinner.hide();
+    })
     
     this._apiService.getInmueblesDisponibles().then(response => {
       this.inmuebles = response
@@ -115,10 +118,12 @@ export class AgregarComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "observaciones")
     })
 
-    this._apiService.getDocumentos().then(response => {
+    this._apiService.getDocumentos()
+      .then(response => {
       this.documentos = response
       this._functionService.imprimirMensaje(response, "documentos")
-    })
+      })
+      
 
     this.dropdownSettings=<IDropdownSettings> {
       singleSelection: false,
