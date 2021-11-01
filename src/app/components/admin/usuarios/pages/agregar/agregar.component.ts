@@ -79,25 +79,33 @@ export class AgregarUsuarioComponent implements OnInit {
       //this.tipos_usuarios = response
     })
 
-    this._apiService.getInmuebles().then(response => {
+    this._apiService.getInmuebles().subscribe((response)=>{
       this.inmuebles = response
       this._functionService.imprimirMensaje(response, "inmuebles")
     })
+      // .then(response => {
+      //   this.inmuebles = response
+      //   this._functionService.imprimirMensaje(response, "inmuebles")
+      // })
 
-    this._apiService.getObservaciones().then(response => {
-      this.observaciones = response
-      this._functionService.imprimirMensaje(response, "observaciones")
-    })
-
+    const observacionesSub = this._apiService.getObservaciones()
+      .subscribe(response => {
+        this.observaciones = response
+        this._functionService.imprimirMensaje(response, "observaciones")
+      })
+    
+    this._apiService.cargarPeticion(observacionesSub)
+    
     this._apiService.getUsuarios().then(response => {
       this.usuarios = response
       this._functionService.imprimirMensaje(response, "usuarios")
     })
 
-    this._apiService.getRoles().then(response => {
-      this.roles = response
-      this._functionService.imprimirMensaje(response, "roles")
-    })
+    this._apiService.cargarPeticion(this._apiService.getRoles()
+      .subscribe(response => {
+        this.roles = response
+        this._functionService.imprimirMensaje(response, "roles")
+      }));
 
 
   }

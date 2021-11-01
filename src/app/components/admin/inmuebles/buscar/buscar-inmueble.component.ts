@@ -99,22 +99,24 @@ export class BuscarInmuebleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this._apiService.cancelarPeticionesPendientes();
     this.spinner.show();
   
-      this._apiService.getInmuebles().then(response => {
+    const inmueblesSub = this._apiService.getInmuebles()
+      .subscribe((response)=>{
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
+    this._apiService.cargarPeticion(inmueblesSub);
 
-      this._apiService.getRoles().then(response => {
-        this.roles = response
-        this._functionService.imprimirMensaje(response, "roles")
-        
-        this.spinner.hide();
-
-      })
-     
+    const rolesSub = this._apiService.getRoles()
+        .subscribe(response => {
+          this.roles = response
+          this._functionService.imprimirMensaje(response, "roles")
+          
+          this.spinner.hide();
+        })
+    this._apiService.cargarPeticion(rolesSub);
   }
 
   onTableDataChange(event) {
@@ -122,31 +124,22 @@ export class BuscarInmuebleComponent implements OnInit {
     this.spinner.show();
    
     this._apiService.changePage(event, 'inmuebles')
-
-    .then((res) =>{
-
-      this.p = event
-
-      this.inmuebles = res
-     
-      console.log(this.inmuebles)
-      
-      if (this.inmuebles.count == 0) {
-        this.spinner.hide();
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-       
-      }else{
-        this.inmuebles = res
-        this.spinner.hide();
-      }
-
-      this.load = false;
-     
-    })
-    .catch(()=>{
-      console.log('error')
-    });
+      .then((res) =>{
+        this.p = event
+        this.inmuebles = res        
+        if (this.inmuebles.count == 0) {
+          this.spinner.hide();
+          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }else{
+          this.inmuebles = res
+          this.spinner.hide();
+        }
+        this.load = false;
+      })
+      .catch((error)=>{
+        this._functionService.imprimirMensaje(error, "error: ")
+      });
 
   } 
 
@@ -183,10 +176,15 @@ export class BuscarInmuebleComponent implements OnInit {
     this.spinner.show();
     var numero = this.consultaForm.value.numero
     var parametro = this.consultaForm.value.param_busqueda
-    this._apiService.getInmuebleWithParams(parametro, numero).then((response) => {
-      console.log("response: ",response)
-      this.inmuebles = response;
-    })
+    this._apiService.getInmuebleWithParams(parametro, numero)
+      .subscribe((response)=>{
+        this.inmuebles = response
+        this._functionService.imprimirMensaje(response, "inmuebles")
+      })
+      // .then((response) => {
+      //   console.log("response: ",response)
+      //   this.inmuebles = response;
+      // })
     
     this.spinner.hide();
   }

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-
+import { Subscription } from 'rxjs';
+import {FunctionsService} from 'src/app/services/functions.service'
 @Injectable({
   providedIn: 'root'
 })
@@ -13,16 +14,38 @@ export class ApiService {
   private url: string;
   private urlLogin: string;
   private res: string;
+  private listaPeticiones :Subscription[] = [];
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    
+    private _functionService: FunctionsService,
     ) { 
       this.url  =  environment.endpoint;
       this.urlLogin = this.url + '/auth/';
       
   }
+
+
+
+  ///////// control de peticiones /////////////
+
+  cancelarPeticionesPendientes(){
+    this._functionService.imprimirMensaje(this.listaPeticiones, "lista de peticiones a limpiar: ")
+    this.listaPeticiones.forEach((peticion)=>{
+      peticion.unsubscribe();
+    })
+    this.listaPeticiones = [];
+    this._functionService.imprimirMensaje(this.listaPeticiones, "lista de peticiones limpias: ")
+  }
+
+  cargarPeticion(peticion: Subscription){
+    console.log("peticion a guardar: ", peticion)
+    this.listaPeticiones.push(peticion);
+  }
+  
+  ///////// control de peticiones /////////////
+
 
   
 
@@ -129,13 +152,14 @@ export class ApiService {
   //OBSERVACION  ////////////////////////////////////////////////////////////////////////////////
 
   getObservaciones () {
-    return this.http.get(this.url+'/observaciones/').toPromise();
+    return this.http.get(this.url+'/observaciones/');
   }
 
   //INMUEBLE  ////////////////////////////////////////////////////////////////////////////////
 
   getInmuebles () {
-    return this.http.get(this.url+'/inmuebles/').toPromise();
+    return this.http.get(this.url+'/inmuebles/')
+    // return this.http.get(this.url+'/inmuebles/').toPromise();
   }
 
   // getWithoutPagination(){
@@ -151,7 +175,7 @@ export class ApiService {
   }
 
   getInmuebleWithParams(parametro, valor){
-    return this.http.get(this.url+`/inmuebles/?${parametro}=${valor}`).toPromise();
+    return this.http.get(this.url+`/inmuebles/?${parametro}=${valor}`);
   }
 
   setInmueble(inmueble) {
@@ -176,12 +200,12 @@ export class ApiService {
   }
 
   getRoles() {
-    return this.http.get(this.url+'/roles/').toPromise();
+    return this.http.get(this.url+'/roles/');
   }
 
-  getUsers() {
-    return this.http.get(this.url+'/roles/').toPromise();
-  }
+  // getUsers() {
+  //   return this.http.get(this.url+'/roles/').toPromise();
+  // }
 
 
   getUsuariosFiltros(filtros){

@@ -82,33 +82,46 @@ export class BuscarUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes();
+    this.spinner.show();
 
-      this._apiService.getInmuebles().then(response => {
+    const inmueblesSub = this._apiService.getInmuebles()
+      .subscribe((response)=>{
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
-  
-      this._apiService.getObservaciones().then(response => {
+
+    this._apiService.cargarPeticion(inmueblesSub)
+
+
+    const observacionesSub = this._apiService.getObservaciones()
+      .subscribe(response => {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
 
-      this._apiService.getRoles().then(response => {
+    this._apiService.cargarPeticion(observacionesSub);
+
+    const rolesSub = this._apiService.getRoles()
+      .subscribe(response => {
         this.roles = response
         this._functionService.imprimirMensaje(response, "roles")
+        
+        this.spinner.hide();
       })
+    this._apiService.cargarPeticion(rolesSub);  
 
-      this.consultaForm = this.formBuilder.group({
-        numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
-      })  
+    this.consultaForm = this.formBuilder.group({
+      numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
+    })  
 
-      this.consultaAvanzadaForm = this.formBuilder.group({
-        nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
-        matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
-        rol: [''],
-        tipo_consulta: [''],
-        param_busqueda: [''],
-      }) 
+    this.consultaAvanzadaForm = this.formBuilder.group({
+      nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
+      matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
+      rol: [''],
+      tipo_consulta: [''],
+      param_busqueda: [''],
+    }) 
   }
 
   get f() { return this.consultaForm.controls; }

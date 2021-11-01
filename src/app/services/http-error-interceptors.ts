@@ -18,27 +18,29 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           case 500:
             Swal.fire({
               title: 'Error' + ` ${error.status}`,
-              text: 'Problema del servidor',
+              text: error?.message,
               icon: 'error',
               confirmButtonText: 'Aceptar'
             })
             break;
           case 404:
             Swal.fire({
-              title: 'No encontrado' + ` ${error.status}`,
-              text: 'No se encontró el recurso solicitado',
+              title: 'No se encontró el recurso solicitado',
+              text: error?.message,
               icon: 'info',
               confirmButtonText: 'Aceptar'
             })
             break; 
           case 401:
-            // Swal.fire({
-            //   title: 'Inactivo' + ` ${error.status}`,
-            //   text: 'Por favor volver a loguearse.',
-            //   icon: 'info',
-            //   confirmButtonText: 'Aceptar'
-            // })
-            this.router.navigate(['login']);
+            Swal.fire({
+              title: 'Sin permiso' + ` ${error.status}`,
+              text: 'Por favor volver a loguearse.',
+              icon: 'info',
+              confirmButtonText: 'Aceptar'
+            }).finally(() => {
+              this.router.navigate(['login']);
+            })
+            
             break;
         }
         return throwError(error.status);

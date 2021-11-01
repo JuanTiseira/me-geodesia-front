@@ -113,10 +113,13 @@ export class AgregarComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "inmuebles")
     })
 
-    this._apiService.getObservaciones().then(response => {
-      this.observaciones = response
-      this._functionService.imprimirMensaje(response, "observaciones")
-    })
+    const observacionesSub = this._apiService.getObservaciones()
+      .subscribe(response => {
+        this.observaciones = response
+        this._functionService.imprimirMensaje(response, "observaciones")
+      })
+
+    this._apiService.cargarPeticion(observacionesSub);
 
     this._apiService.getDocumentos()
       .then(response => {

@@ -112,11 +112,14 @@ export class BuscarComponent implements OnInit {
         this.tipos_expedientes = response
       })
   
-      this._apiService.getInmuebles()
-        .then(response => {
-          this.inmuebles = response
-          this._functionService.imprimirMensaje(response, "inmuebles")
-        })
+      this._apiService.getInmuebles().subscribe((response)=>{
+        this.inmuebles = response
+        this._functionService.imprimirMensaje(response, "inmuebles")
+      })
+        // .then(response => {
+        //   this.inmuebles = response
+        //   this._functionService.imprimirMensaje(response, "inmuebles")
+        // })
        
   
       this._apiService.getUsuarios().then(response => {

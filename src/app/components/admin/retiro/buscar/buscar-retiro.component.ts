@@ -92,36 +92,27 @@ export class BuscarRetiroComponent implements OnInit {
 
     this.spinner.show();
 
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 1000);
-
-      this._apiService.getInmuebles()
-      .then(response => {
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getInmuebles().then(response => {
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-  
-      this._apiService.getObservaciones().then(response => {
+    const observacionesSub = this._apiService.getObservaciones()
+      .subscribe(response => {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
-  
-      this._apiService.getInmuebles().then(response => {
+      
+    this._apiService.cargarPeticion(observacionesSub);
+
+    this._apiService.getInmuebles()
+      .subscribe((response)=>{
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
 
-      this._apiService.getRoles().then(response => {
+
+    this._apiService.cargarPeticion(this._apiService.getRoles()
+      .subscribe(response => {
         this.roles = response
         this._functionService.imprimirMensaje(response, "roles")
-      })
+        this.spinner.hide();
+      }));
 
   }
 
