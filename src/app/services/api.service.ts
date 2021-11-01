@@ -117,8 +117,13 @@ export class ApiService {
     return this.http.get(this.url+'/tramites/').toPromise();
   }
 
+
   setNuevaTransicion(tramite){
     return this.http.get(this.url+'/tramites/nueva_transicion/?tramite='+tramite).toPromise();
+  }
+
+  setNuevaTransicionAdmin(datos){
+    return this.http.post(this.url+'/tramites/nueva_transicion_admin/', datos).toPromise();
   }
 
   //OBSERVACION  ////////////////////////////////////////////////////////////////////////////////
@@ -233,10 +238,29 @@ export class ApiService {
   }
 
 
-  getHistoriales(id){
+  // HISTORIALES
+
+  getHistorial(id){
     let params: URLSearchParams = new URLSearchParams();
     params.set('tramite', id);
     return this.http.get(this.url+`/historiales?${params.toString()}`).toPromise();
   }
 
+  getHistoriales(){
+    return this.http.get(this.url+`/historiales`).toPromise();
+  }
+
+  getHistorialesUltimos(){
+    return this.http.get(this.url+'/historiales/ultimos_historiales').toPromise();
+  }
+
+  setNuevoMovimiento(json){
+    return this.http.post(this.url+'/retiros/nuevo_movimiento/', json).toPromise();
+  }
+
+
+  //SECTORES  
+  getSectores(){
+    return this.http.get(this.url+'/sectores').toPromise();
+  }
 }

@@ -90,7 +90,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6" [ngClass]="{'col-md-12': !isAdmin}">
+        <div class="col-md-6">
           <button (click)="verHistorial()" type="button" class="btn btn-green">Ver Historial</button>
         </div>
         <div class="col-md-6">
@@ -101,19 +101,19 @@
           </button>
 
 
-          <button *ngIf="!isEditMode && isAdmin" [disabled]="loading" type="button" class="btn btn-green"
+          <button *ngIf="!isEditMode" [disabled]="loading" type="button" class="btn btn-green"
             printSectionId="acuse" printTitle="CARATULA" ngxPrint styleSheetFile="/assets/acuse.scss">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Imprimir Constancia
           </button>
         </div>
-        <div *ngIf="isAdmin && isNumeroAnio; else btnUltimoTramite" class="col-md-12">
+        <div *ngIf="isNumeroAnio; else btnUltimoTramite" class="col-md-12">
           <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearDevol"
             class="btn btn-green btn-block">Nueva Presentacion</button>
           <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearRetiro"
             class="btn btn-green btn-block">Retiro de Documentos</button>
         </div>
-        <ng-template *ngIf="isAdmin" #btnUltimoTramite>
+        <ng-template #btnUltimoTramite>
           <div class="col-md-12">
             <button type="button" (click)="verTramite()" class="btn btn-green btn-block">Ir al último trámite</button>
           </div>
@@ -308,7 +308,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Registrar Devolucion</h5>
+          <h5 class="modal-title">Registrar Nueva Presentación</h5>
           <button id="closeModalDevolButton" type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
         </div>
@@ -377,7 +377,7 @@
         <div *ngIf="resultado">
           <span>Expediente Nº &nbsp;&nbsp;</span>
           <input type="text" name="" id="" value="9945" style="margin-left: 20px;">
-          <input type="text" name="" id="" value="013" style="margin-left: 20px;">
+          <input type="text" name="" id="" value="{{tramite.expediente.numero}}" style="margin-left: 20px;">
           <input type="text" name="" id="" value="{{resultado.anio}}" style="margin-left: 20px;">
           <input type="text" name="" id="" value="" style="margin-left: 20px;">
           <input type="text" name="" id="" value="{{fecha_creacion}}" style="margin-left: 20px;">
@@ -518,7 +518,7 @@
 
 
   <!-- ETIQUETA HTML -->
-  <div hidden>
+  <div *ngIf="tramite" hidden>
 
     <div id="Etiqueta">
 
@@ -545,7 +545,7 @@
               [bc-margin-bottom]="marginBottom" [bc-margin-left]="marginLeft" [bc-margin-right]="marginRight">
             </ngx-barcode> <br>
 
-            Tramite: {{tramite.numero}} <br>
+            Tramite: {{tramite.numero}}{{tramite.codigo_verificacion}} <br>
             Expte: {{resultado.numero}} {{ resultado.anio }} <br>
             Pres: {{ fecha_creacion }} <br>
           </th>
@@ -605,10 +605,10 @@
         Cartografia</h2>
 
       <p>
-        Por la presente, se deja constancia que el <b>TRAMITE N° {{tramite.numero}}</b> del <b>Tipo
-          {{resultado.abreviatura}} </b> INICIADO EN FECHA <b>27/07/2021</b> ,
-        <b>Expediente N {{resultado.numero}} </b>
-        con <b>Presentacion {{tramite.numero_presentacion}}</b> se ha recibido con la siguiente
+        Por la presente, se deja constancia que el <b>TRAMITE N° {{tramite?.numero}}{{tramite?.codigo_verificacion}}</b> del <b>Tipo
+          {{resultado?.abreviatura}} </b> INICIADO EN FECHA <b>27/07/2021</b> ,
+        <b>Expediente N {{resultado?.numero}} </b>
+        con <b>Presentacion {{tramite?.numero_presentacion}}</b> se ha recibido con la siguiente
         documentacion:
       </p>
 
@@ -619,7 +619,7 @@
           </th>
         </tr>
 
-        <tr *ngFor="let doc of resultado.documentos">
+        <tr *ngFor="let doc of resultado?.documentos">
           <td>
             {{doc.descripcion}}
           </td>
@@ -630,19 +630,19 @@
 
       <h4 style="margin-top: 50px;"> Presentado por: </h4>
 
-      <li *ngIf="resultado.gestor"> {{resultado.gestor.nombre}} {{resultado.gestor.apellido}}</li>
-      <li *ngIf="resultado.gestor"> {{resultado.gestor.dni}}</li>
+      <li *ngIf="resultado?.gestor"> {{resultado?.gestor.nombre}} {{resultado?.gestor.apellido}}</li>
+      <li *ngIf="resultado?.gestor"> {{resultado?.gestor.dni}}</li>
 
-      <li *ngIf="!resultado.gestor"> {{resultado.agrimensor.nombre}} {{resultado.agrimensor.apellido}}</li>
-      <li *ngIf="!resultado.gestor"> {{resultado.agrimensor.dni}}</li>
+      <li *ngIf="!resultado?.gestor"> {{resultado?.agrimensor.nombre}} {{resultado?.agrimensor.apellido}}</li>
+      <li *ngIf="!resultado?.gestor"> {{resultado?.agrimensor.dni}}</li>
 
 
 
       <h4 style="margin-top: 10px;">Profesional Solicitante:</h4>
 
-      <li> {{resultado.agrimensor.nombre}} {{resultado.agrimensor.apellido}}</li>
+      <li> {{resultado?.agrimensor.nombre}} {{resultado?.agrimensor.apellido}}</li>
       <li>Agrimensor</li>
-      <li>D.N.I: {{resultado.agrimensor.dni}}</li>
+      <li>D.N.I: {{resultado?.agrimensor.dni}}</li>
 
       <p style="text-align: right;">
         <img src="assets/firma.jpg" alt="Escudo misiones" class="img-responsive" width="30%"><br>

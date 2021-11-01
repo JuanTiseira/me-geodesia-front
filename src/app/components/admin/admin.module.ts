@@ -44,6 +44,7 @@ import { DetallesInmuebleComponent } from './inmuebles/detalles/detalles-inmuebl
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
 import { InvertPipe } from 'src/app/pipes/invert.pipe';
 import { OrderByPipe } from 'src/app/pipes/order-by.pipe';
+import { TransicionesComponent } from './transiciones/transiciones.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { OrderByPipe } from 'src/app/pipes/order-by.pipe';
     DetallesInmuebleComponent,
     InvertPipe,
     OrderByPipe,
+    TransicionesComponent,
   ],
   imports: [
     NgSelectModule,

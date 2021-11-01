@@ -353,7 +353,6 @@ export class DetalleComponent implements OnInit {
 
     // let value = this.zfill(this.tramite.numero, 7)
     let value = this.tramite?.numero + this.tramite?.codigo_verificacion 
-
     return value.split('\n');
   }
 
@@ -410,7 +409,7 @@ export class DetalleComponent implements OnInit {
       .then((response:any) => {
         this._functionService.imprimirMensaje(response, "usuario")
         this.usuario = response.results[0]
-        this.retiroForm.patchValue({dni: this.usuario.dni})
+        this.retiroForm.patchValue({dni: this.usuario?.dni})
 
         if (response.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
@@ -526,7 +525,7 @@ export class DetalleComponent implements OnInit {
 
 
   setRetiro() {
-    this.loading = false;
+    this.loading = true;
     if (this.busqueda_manual != true) {
       this.retiroForm.patchValue({usuario: this.usuario.id});
     }

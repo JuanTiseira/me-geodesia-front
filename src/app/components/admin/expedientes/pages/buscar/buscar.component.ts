@@ -88,34 +88,28 @@ export class BuscarComponent implements OnInit {
   ngOnInit(): void {
 
     
-  this.consultaForm = this.formBuilder.group({
-    param_busqueda: ['', Validators.required],   
-    numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-    anio: [''],
-    tipo_expediente: [''],
-    inmueble: [''],
-    documento: [''],
-    propietario: [''],
-    gestor: [''],
-    tramite: [''],
-    observacion: [''],
-    abreviatura: [''],
-    agrimensor: [''],
-    tipo_consulta: [''],
-    });
-    this.loadPropietarios();
-    this.loadGestores();
-    this.loadAgrimensores();
-    this.loadDocumentos();
-
-      setTimeout(() => {
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-      }, 1000);
+    this.consultaForm = this.formBuilder.group({
+      param_busqueda: ['', Validators.required],   
+      numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      anio: [''],
+      tipo_expediente: [''],
+      inmueble: [''],
+      documento: [''],
+      propietario: [''],
+      gestor: [''],
+      tramite: [''],
+      observacion: [''],
+      abreviatura: [''],
+      agrimensor: [''],
+      tipo_consulta: [''],
+      });
+      this.loadPropietarios();
+      this.loadGestores();
+      this.loadAgrimensores();
+      this.loadDocumentos();
       
       this._apiService.getTipoExpedientes().then(response => {
         this.tipos_expedientes = response
-        //this.tipos_expedientes = response
       })
   
       this._apiService.getInmuebles()
@@ -123,6 +117,7 @@ export class BuscarComponent implements OnInit {
           this.inmuebles = response
           this._functionService.imprimirMensaje(response, "inmuebles")
         })
+       
   
       this._apiService.getUsuarios().then(response => {
         this.usuarios = response
@@ -136,25 +131,16 @@ export class BuscarComponent implements OnInit {
   }
 
   eliminar (id) {
-    Swal.fire({
-      title: 'Esta Seguro?',
-      text: "No podra revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, eliminar Expediente!'
-    }).then((result) => {
+    this._functionService.configSwal(this.mensajeSwal, `Está seguro de eliminar esto?.`, "warning", "Aceptar", "Cancelar", true, "", "d33");
+    this.mensajeSwal.fire()
+      .then((result) => {
       if (result.isConfirmed) {
         this._apiService.deleteExpediente(id)
         .then(() =>{ 
-          Swal.fire(
-          'Eliminado!',
-          'El expediente fue eliminado.',
-          'success'
-        ) 
-        this.buscarExpedientes()
-      })
+          this._functionService.configSwal(this.mensajeSwal, `El expediente fue eliminado.`, "success", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+          this.buscarExpedientes()
+        })
       }
     })
   }
@@ -162,27 +148,27 @@ export class BuscarComponent implements OnInit {
   onTableDataChange(event) {
     this.spinner.show();
     this._apiService.changePage(event, 'expedientes')
+      .then((res) =>{
 
-    .then((res) =>{
-
-      this.p =  event
-      this.expedientes = res
-      console.log(this.expedientes)
-      
-      if (this.expedientes.count == 0) {
-        this.spinner.hide();
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      }else{
+        this.p =  event
         this.expedientes = res
+        console.log(this.expedientes)
+        
+        if (this.expedientes.count == 0) {
+          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }else{
+          this.expedientes = res
+        }
+        this.load = false;
+      
+      })
+      .catch(()=>{
+        this._functionService.imprimirMensaje(event, "error onTableDataChange: ")
+      })
+      .finally(()=>{
         this.spinner.hide();
-      }
-      this.load = false;
-     
-    })
-    .catch(()=>{
-      console.log('error')
-    });
+      })
 
   } 
 
@@ -280,25 +266,26 @@ export class BuscarComponent implements OnInit {
     this.spinner.show();
     this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
     this._apiService.getExpedientesFiltros(this.consultaForm.value)
-    .then((res) =>{
+      .then((res) =>{
 
-      this.expedientes = res
-           
-      if (this.expedientes.count == 0) {
-        this.spinner.hide();
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      }else{
         this.expedientes = res
-        this.spinner.hide();
-      }
+            
+        if (this.expedientes.count == 0) {
+          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }else{
+          this.expedientes = res
+        }
 
-      this.load = false;
-    
-    })
-    .catch(()=>{
-      console.log('error')
-    });
+        this.load = false;
+      
+      })
+      .catch(()=>{
+        this._functionService.imprimirMensaje(this.consultaForm.value, "error expedientes filtros: ")
+      })
+      .finally(()=>{
+        this.spinner.hide();
+      })
   }
 
   limpiar() {

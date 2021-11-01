@@ -49,6 +49,8 @@ export class BuscarHistorialComponent implements OnInit {
   historiales: any;  //cambiar tipos de datos any
   id: string;
   submitted: boolean = false;
+  datos: any;
+  loading: boolean = false;
 
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
@@ -87,20 +89,18 @@ export class BuscarHistorialComponent implements OnInit {
 
   buscarHistorial() {
 
-    console.log("swal: ", this.mensajeSwal)
     if(this.id == null) {
       this.submitted = true;
       if (this.consultaForm.invalid) return;
     };
     
     
-
+    this.loading = true;
     this.spinner.show();
     var numeroanio = this.consultaForm.value.numero
     
     if (this.consultaForm.value.param_busqueda == 'expediente' && this.id == null) {
 
-       
       var numero = 0 
       let z = 1
 
@@ -114,17 +114,15 @@ export class BuscarHistorialComponent implements OnInit {
       
       }
 
-
-
       var anio = numeroanio.slice(-4);
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
       this._apiService.getExpedienteNumero(numero, anio)
         .then((x:any) =>{
-          this._apiService.getHistoriales(x.id).then((x:any) =>{
-            console.log(x.results);
+          this._apiService.getHistorial(x.id).then((x:any) =>{
             this.historiales = x.results;
+            this.datos = this.historiales[0]
           })         
       }).catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
@@ -141,9 +139,9 @@ export class BuscarHistorialComponent implements OnInit {
 
       this._apiService.getExpedienteTramite(numeroanio)
         .then((x:any) =>{
-          this._apiService.getHistoriales(x.id).then((x:any) =>{
-            console.log(x.results);
+          this._apiService.getHistorial(x.id).then((x:any) =>{
             this.historiales = x.results;
+            this.datos = this.historiales[0]
           })
           // this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
@@ -153,6 +151,7 @@ export class BuscarHistorialComponent implements OnInit {
       });
 
     }
+    this.loading = false;
     this.spinner.hide();
   }
 

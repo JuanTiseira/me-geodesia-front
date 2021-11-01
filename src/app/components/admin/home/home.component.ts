@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.submitted = false;
 
-      if (this.isAdmin || this.isEmpleado) {
+      if (this.isAdmin || this.isEmpleadoMe || this.isEmpleado ) {
         this.spinner.show();
         this._apiService.getExpedientes()
         .then(response => {
@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['login']);
       }
 
-      if(this.isEmpleado){
+      if(this.isEmpleado || this.isEmpleadoMe || this.isAdmin){
         this.cargarExpedientesEstado()
       }
 
@@ -110,13 +110,16 @@ export class HomeComponent implements OnInit {
     return this.authService.hasRole(Role.ROL_EMPLEADO);
   }
 
+  get isEmpleadoMe() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO_ME);
+  }
+
   get isProfesional() {
     return this.authService.hasRole(Role.ROL_PROFESIONAL);
   }
 
   cargarExpedienteAlSector(){
     this.submitted = true;
-
     if(this.consultaForm.invalid) return
     
     var tramite = this.consultaForm.value.numero;

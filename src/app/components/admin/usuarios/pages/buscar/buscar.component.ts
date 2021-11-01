@@ -210,16 +210,45 @@ export class BuscarUsuarioComponent implements OnInit {
       .then((x:any) =>{
         this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
           
-    }).catch(()=>{
+      })
+      .catch(()=>{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
-      });
-      
+      })
+      .finally(()=>{
+        this.spinner.hide();
+      })
 
     
-    this.spinner.hide();
+    
   }
   
+
+  onTableDataChange(event) {
+    this.spinner.show();
+    this._apiService.changePage(event, 'usuarios')
+      .then((res) =>{
+
+        this.p =  event
+        this.usuarios = res
+        
+        if (this.usuarios.count == 0) {
+          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }else{
+          this.usuarios = res
+        }
+        this.load = false;
+      
+      })
+      .catch(()=>{
+        this._functionService.imprimirMensaje(event, "error onTableDataChange: ")
+      })
+      .finally(()=>{
+        this.spinner.hide();
+      })
+
+  } 
 
 
 }

@@ -57,7 +57,7 @@
 
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="Año" class="form-label">Abreviatura</label>
-                <input  formControlName="abreviatura" maxlength="5" inputmode="text" placeholder="Abreviatura" class="form-control" autocomplete="off">
+                <input  formControlName="abreviatura" maxlength="20" inputmode="text" placeholder="Abreviatura" class="form-control" autocomplete="off">
             </div>
 
             <div class="col-md-4">
@@ -173,7 +173,7 @@
                     <td *ngIf="exp.habilitado == false"><b>Inactivo</b></td>
                     <td>
                         <a [routerLink]="['/expediente/', exp.id ]" ><span style="color: white; background-color: black; padding: 5px 10px 5px 10px; border-radius: 100px;"><i class="fa fa-info"></i></span></a>
-                        <a (click)="eliminar(exp.id)" ><span style="color: rgb(248, 9, 9); padding: 10px; border-radius: 50px;"><i class="fa fa-times"></i></span></a>
+                        <a *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrleliminar(exp.id)" ><span style="color: rgb(248, 9, 9); padding: 10px; border-radius: 50px;"><i class="fa fa-times"></i></span></a>
                         <a [routerLink]="['/expediente/editar/', exp.id ]"  ><span><span style="color: rgb(248, 152, 9); padding: 10px; border-radius: 50px;"><i class="fas fa-edit"></i></span></span></a>
                     </td>
                 </tr>

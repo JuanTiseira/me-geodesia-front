@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute , Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import Swal from 'sweetalert2'
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -19,21 +20,21 @@ export class AgregarUsuarioComponent implements OnInit {
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   @Output() verDetallesFunction: EventEmitter<any>;
 
-  
+
   public tipos_usuarios: any;
-  public documentos: any; 
+  public documentos: any;
   public tramites: any;
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
   public roles: any;
-  usuarioForm : FormGroup
+  usuarioForm: FormGroup
   // form: FormGroup;
   id: string;
   isAddMode: boolean;
   loading = false;
   submitted = false;
-  
+
 
   constructor(
     private _apiService: ApiService,
@@ -42,10 +43,10 @@ export class AgregarUsuarioComponent implements OnInit {
     private _location: Location,
     private route: ActivatedRoute,
     private router: Router,
-    ) {this.verDetallesFunction = new EventEmitter(); }
+  ) { this.verDetallesFunction = new EventEmitter(); }
 
   ngOnInit(): void {
-   
+
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
     console.log("add mode: ", this.id)
@@ -57,12 +58,12 @@ export class AgregarUsuarioComponent implements OnInit {
       cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
       dni: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
       matricula: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-      direccion:  ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
+      direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
       fecha_nacimiento: ['', Validators.required],
-      email:  ['', Validators.compose([Validators.required, Validators.email])],
-      telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])], 
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
       user: [],
-      password: [] 
+      password: []
     }, {});
 
 
@@ -70,14 +71,14 @@ export class AgregarUsuarioComponent implements OnInit {
     //     this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
     //     .then(x => this.form.patchValue(x));
     // }
-    
+
 
     this._apiService.getTipoExpedientes().then(response => {
-      
+
       this.tipos_usuarios = response
       //this.tipos_usuarios = response
     })
-    
+
     this._apiService.getInmuebles().then(response => {
       this.inmuebles = response
       this._functionService.imprimirMensaje(response, "inmuebles")
@@ -98,54 +99,52 @@ export class AgregarUsuarioComponent implements OnInit {
       this._functionService.imprimirMensaje(response, "roles")
     })
 
-  
+
   }
 
   get f() { return this.usuarioForm.controls; }
 
-  
+
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.usuarioForm.invalid) {
-
-        console.log(this.usuarioForm)
-        return;
+      return;
     }
 
-    this.loading = true;    
+    this.loading = true;
     this.createUsuario();
-  
-}
 
-  limpiar(){
-    this.usuarioForm.reset();
   }
 
-  volver(){
+  limpiar() {
+    this.usuarioForm.reset();
+    this.submitted = false;
+  }
+
+  volver() {
     this._location.back();
   }
-  
+
   createUsuario() {
-    
-    console.log(this.usuarioForm.value)
     this._apiService.setUsuario(this.usuarioForm.value)
-    .then(() =>{
-      this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");
-      this.mensajeSwal.fire().finally(() =>{this.limpiar()});
-      this.verDetallesFunction.emit(true);
-      this.loading = false;
-    })
-    .catch((e)=>{
-      this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar.`, "error", "Aceptar", "", false, "", "");
-      this.mensajeSwal.fire();
-      this.loading = false;
-      this.verDetallesFunction.emit(true);
-    });
-    
-    
-    document.getElementById("closeModalButton").click();
+      .then(() => {
+        this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire().finally(() => { this.limpiar() });
+        this.verDetallesFunction.emit(true);
+        this.loading = false;
+      })
+      .catch((e: HttpErrorResponse) => {
+        console.error(e.error.message);
+        this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar. \n ${e.error}`, "error", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire();
+        this.loading = false;
+        this.verDetallesFunction.emit(true);
+      })
+
+
+    document?.getElementById("closeModalButton")?.click();
   }
 
-  
+
 }

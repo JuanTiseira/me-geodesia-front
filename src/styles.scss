@@ -101,6 +101,12 @@ a {
   width: 100% !important;
 }
 
+
+.ngx-pagination .current {
+    background: #A5AE39 !important;
+    border-radius: 0.3rem;
+}
+
 .btn-green {
   /* padding: 10px 20px !important;
     border: 1px solid rgb(204, 204, 204) !important; */
