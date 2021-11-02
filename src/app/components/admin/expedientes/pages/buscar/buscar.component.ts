@@ -108,10 +108,12 @@ export class BuscarComponent implements OnInit {
       this.loadAgrimensores();
       this.loadDocumentos();
       
-      this._apiService.getTipoExpedientes().then(response => {
-        this.tipos_expedientes = response
-      })
-  
+      const tipoExpedientesSub = this._apiService.getTipoExpedientes()
+        .subscribe(response => {
+          this.tipos_expedientes = response
+        })
+      this._apiService.cargarPeticion(tipoExpedientesSub);
+
       this._apiService.getInmuebles().subscribe((response)=>{
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
@@ -122,10 +124,12 @@ export class BuscarComponent implements OnInit {
         // })
        
   
-      this._apiService.getUsuarios().then(response => {
-        this.usuarios = response
-        this._functionService.imprimirMensaje(response, "usuarios")
-      })
+      const usuariosSub = this._apiService.getUsuarios()
+        .subscribe(response => {
+          this.usuarios = response
+          this._functionService.imprimirMensaje(response, "usuarios")
+        })
+      this._apiService.cargarPeticion(usuariosSub)
 
   }
 
@@ -138,13 +142,14 @@ export class BuscarComponent implements OnInit {
     this.mensajeSwal.fire()
       .then((result) => {
       if (result.isConfirmed) {
-        this._apiService.deleteExpediente(id)
-        .then(() =>{ 
-          this._functionService.configSwal(this.mensajeSwal, `El expediente fue eliminado.`, "success", "Aceptar", "", false, "", "");
-          this.mensajeSwal.fire()
-          this.buscarExpedientes()
-        })
-      }
+        const deleteExpedienteSub = this._apiService.deleteExpediente(id)
+          .subscribe(() =>{ 
+            this._functionService.configSwal(this.mensajeSwal, `El expediente fue eliminado.`, "success", "Aceptar", "", false, "", "");
+            this.mensajeSwal.fire()
+            this.buscarExpedientes()
+          })
+        this._apiService.cargarPeticion(deleteExpedienteSub)  
+        }
     })
   }
 
@@ -154,9 +159,7 @@ export class BuscarComponent implements OnInit {
       .then((res) =>{
 
         this.p =  event
-        this.expedientes = res
-        console.log(this.expedientes)
-        
+        this.expedientes = res        
         if (this.expedientes.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
@@ -223,34 +226,22 @@ export class BuscarComponent implements OnInit {
       }else{
         this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
       }
-      
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
-      this._apiService.getExpedienteNumero(numero, anio)
-        .then((x:any) =>{
-          console.warn(x);
+      const expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
+        .subscribe((x:any) =>{
           this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
-          
-      }).catch(()=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      });
-
+        })
+      this._apiService.cargarPeticion(expedienteSub)
     }else{
 
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-      this._apiService.getExpedienteTramite(numeroanio)
-        .then((x:any) =>{
-
-          console.warn(x);
-          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
-          
-      }).catch(()=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      });
-
+      const expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
+        .subscribe((x:any) =>{
+          this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE 
+        })
+      this._apiService.cargarPeticion(expedienteSub);
     }
     this.spinner.hide();
   }
@@ -268,27 +259,25 @@ export class BuscarComponent implements OnInit {
   buscarExpedientes() {
     this.spinner.show();
     this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
-    this._apiService.getExpedientesFiltros(this.consultaForm.value)
-      .then((res) =>{
-
+    const expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
+      .subscribe((res) =>{
         this.expedientes = res
-            
         if (this.expedientes.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
         }else{
           this.expedientes = res
         }
-
         this.load = false;
-      
-      })
-      .catch(()=>{
-        this._functionService.imprimirMensaje(this.consultaForm.value, "error expedientes filtros: ")
-      })
-      .finally(()=>{
+        alert("jksadjkas")
         this.spinner.hide();
+      },(error)=>{
+        this.expedientes = []
+        console.log("12312312 ",this.expedientes)
+        this.spinner.hide();
+        
       })
+    this._apiService.cargarPeticion(expedientesSub);
   }
 
   limpiar() {

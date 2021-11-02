@@ -9,11 +9,13 @@ import Swal from 'sweetalert2'
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router,) {}
+  constructor(private router: Router,
+              private _functionService: FunctionsService) {}
   
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError(error => {
+        this._functionService.imprimirMensaje(error, "error INTERCEPTOR: ")
         switch (error.status) {
           case 500:
             Swal.fire({
@@ -24,13 +26,23 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             })
             break;
           case 404:
+            let mensaje = error.error.detail!=null?error.error.detail:error.error
             Swal.fire({
-              title: 'No se encontró el recurso solicitado',
-              text: error?.message,
+              title: error?.status,
+              text: mensaje,
               icon: 'info',
               confirmButtonText: 'Aceptar'
             })
             break; 
+            case 400:
+              let mensaje2 = error.error.detail!=null?error.error.detail : error.error.error!=null?error.error.error : error.error
+              Swal.fire({
+                title: error?.status,
+                text: mensaje2,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              })
+              break;             
           case 401:
             Swal.fire({
               title: 'Sin permiso' + ` ${error.status}`,

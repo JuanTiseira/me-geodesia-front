@@ -83,20 +83,17 @@ export class DetalleUsuarioComponent implements OnInit {
     
     this.idEdit = false
 
-    this._apiService.getUsuario(this.route.snapshot.paramMap.get('id'))
-      .then(response => {
-      
-      this.usuario = response
-      this.usuarioForm.patchValue(response)
-      this.selecteditem = this.usuario.tipo_usuario
+    const usuarioSub = this._apiService.getUsuario(this.route.snapshot.paramMap.get('id'))
+      .subscribe(response => {
+        this.usuario = response
+        this.usuarioForm.patchValue(response)
+        this.selecteditem = this.usuario.tipo_usuario
 
-      this._functionService.imprimirMensaje(response, "usuario")
-      this.spinner.hide()
-     
-    })
-
+        this._functionService.imprimirMensaje(response, "usuario")
+        this.spinner.hide()
+      })
+    this._apiService.cargarPeticion(usuarioSub)
   
-    
   }
 
   compareFn(value, option): boolean {
@@ -118,8 +115,6 @@ export class DetalleUsuarioComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.usuarioForm.invalid) {
-        alert('errores')
-        console.log(this.usuarioForm)
         return;
     }
 
@@ -130,29 +125,18 @@ export class DetalleUsuarioComponent implements OnInit {
 
   get f() { return this.usuarioForm.controls; }
 
-  updateExpediente() {
-    
-    
-    this._apiService.editExpediente(this.usuarioForm.value)
-    .then(() =>{
-      console.warn(this.usuarioForm.value);
-      Swal.fire({
-        title: 'Exito',
-        text: 'Se registro correctamente',
-        icon: 'error',
-        confirmButtonText: 'Cool',
+  updateExpediente() {    
+    const editExpedienteSub = this._apiService.editExpediente(this.usuarioForm.value)
+      .subscribe(() =>{
+        Swal.fire({
+          title: 'Exito',
+          text: 'Se registro correctamente',
+          icon: 'error',
+          confirmButtonText: 'Cool',
+        })
       })
-    })
-    .catch((e)=>{
-     Swal.fire({
-        title: 'Error!',
-        text: 'No se guardo correctamente',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-      this.loading = false;
-    });
-
+    this._apiService.cargarPeticion(editExpedienteSub)
+    this.loading = false;
   }
 
 }

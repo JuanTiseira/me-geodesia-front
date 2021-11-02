@@ -160,18 +160,16 @@ export class BuscarRetiroComponent implements OnInit {
       confirmButtonText: 'Si, eliminar Inmueble!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this._apiService.deleteInmueble(id)
-        .then(() =>{ 
-          Swal.fire(
-          'Eliminado!',
-          'El inmueble fue eliminado.',
-          'success'
-        ) 
-        this.router.navigate(['/inmueble/buscar']);
-      })
-          
-
-        
+        const eliminarInmuebleSub = this._apiService.deleteInmueble(id)
+          .subscribe(() =>{ 
+            Swal.fire(
+            'Eliminado!',
+            'El inmueble fue eliminado.',
+            'success'
+          )
+          this.router.navigate(['/inmueble/buscar']);
+          })
+        this._apiService.cargarPeticion(eliminarInmuebleSub)  
       }
     })
   }
@@ -195,28 +193,8 @@ export class BuscarRetiroComponent implements OnInit {
     this.spinner.show();
     var numero = this.consultaForm.value.numero
     
-    
     this.spinner.hide();
   }
-  
-  onSubmit() {
     
-    
-    this._apiService.getInmueble(this.consultaForm.value)
-    .then(() =>{
-      console.warn(this.consultaForm.value);
-      //this._functionService.configSwal(this.mensajeSwal, `El inmueble ${this.inmuebleForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-      // this.mensajeSwal.fire().finally(()=> {
-      //   this.ngOnInit();
-      //   //this.mostrarLista();
-      // });
-    })
-    .catch(()=>{
-     // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el inmueble ${this.inmuebleForm.value}`, "error", "Aceptar", "", false, "", "");
-      //this.mensajeSwal.fire();
-    });
-  }
-
-  
 
 }

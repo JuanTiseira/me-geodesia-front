@@ -128,7 +128,7 @@
 
   <!-- MODAL CREAR RETIRO -->
 
-  <div *ngIf="isAdmin" class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro"
+  <div *ngIf="isAdmin || isEmpleado" class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -304,7 +304,7 @@
 
   <!-- MODAL CREAR DEVOLUCION -->
 
-  <div *ngIf="isAdmin" class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
+  <div *ngIf="isAdmin || isEmpleado" class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">

@@ -113,7 +113,6 @@ export class BuscarInmuebleComponent implements OnInit {
         .subscribe(response => {
           this.roles = response
           this._functionService.imprimirMensaje(response, "roles")
-          
           this.spinner.hide();
         })
     this._apiService.cargarPeticion(rolesSub);
@@ -148,11 +147,12 @@ export class BuscarInmuebleComponent implements OnInit {
     this.mensajeSwal.fire()
       .then((result) => {
         if (result.isConfirmed) {
-          this._apiService.deleteInmueble(id)
-          .then(() =>{ 
-            this._functionService.configSwal(this.mensajeSwal, `El inmueble fue eliminado.`, "success", "Aceptar", "", false, "", "");
-          this.ngOnInit();
-        }) 
+          const eliminarInmuebleSub = this._apiService.deleteInmueble(id)
+            .subscribe(() =>{ 
+              this._functionService.configSwal(this.mensajeSwal, `El inmueble fue eliminado.`, "success", "Aceptar", "", false, "", "");
+              this.ngOnInit();
+            }) 
+          this._apiService.cargarPeticion(eliminarInmuebleSub);
         }
       })
   }

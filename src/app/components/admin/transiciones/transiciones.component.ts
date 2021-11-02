@@ -52,8 +52,8 @@ export class TransicionesComponent implements OnInit {
 
   buscarTramites() {
     this.spinner.show();
-    this._apiService.getHistorialesUltimos()
-      .then((res:any) =>{
+    const historialesSub = this._apiService.getHistorialesUltimos()
+      .subscribe((res:any) =>{
 
         this.tramites = res  
         if (this.tramites.count == 0) {
@@ -61,25 +61,24 @@ export class TransicionesComponent implements OnInit {
           this.mensajeSwal.fire()
         }
         this.load = false;
-      })
-      .catch((error)=>{
+      },(error)=>{
 
-      })
-      .finally(()=>{
+      },()=>{
         this.spinner.hide();
       })
+    this._apiService.cargarPeticion(historialesSub);
   }
 
   buscarSectores(){
     this.spinner.show();
-    this._apiService.getSectores()
-      .then((res:any)=>{
+    const sectorSub = this._apiService.getSectores()
+      .subscribe((res:any)=>{
         this.sectores = res.results
-      })
-      .catch((error)=>{
+      },(error)=>{
         this._functionService.configSwal(this.mensajeSwal, 'No se encuentran sectores', "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       })
+    this._apiService.cargarPeticion(sectorSub)
   }
 
   onChange(value) {
@@ -89,11 +88,12 @@ export class TransicionesComponent implements OnInit {
       'tramite': value[1]
     }
 
-    this._apiService.setNuevaTransicionAdmin(json)
-      .then((res:any)=>{
+    const transicionSub = this._apiService.setNuevaTransicionAdmin(json)
+      .subscribe((res:any)=>{
         this._functionService.configSwal(this.mensajeSwal, res.message, "success", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       })
+    this._apiService.cargarPeticion(transicionSub)
 }
 
 

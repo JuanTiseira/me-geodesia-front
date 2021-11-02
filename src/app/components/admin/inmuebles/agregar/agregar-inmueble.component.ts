@@ -66,15 +66,17 @@ export class AgregarInmuebleComponent implements OnInit {
 
 
     if (!this.isAddMode) {
-        this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-        .then(x => this.form.patchValue(x));
+        const expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+          .subscribe(x => this.form.patchValue(x));
+        this._apiService.cargarPeticion(expedienteSub);  
     }
 
-    this._apiService.getMunicipios().then(response => {
-      this.municipios = response
-      this._functionService.imprimirMensaje(response, "municipios")
-    })
-
+    const municipiosSub = this._apiService.getMunicipios()
+      .subscribe(response => {
+        this.municipios = response
+        this._functionService.imprimirMensaje(response, "municipios")
+      })
+    this._apiService.cargarPeticion(municipiosSub)
   
   }
 
@@ -95,8 +97,8 @@ export class AgregarInmuebleComponent implements OnInit {
 }
   
   createInmueble() {
-    this._apiService.setInmueble(this.inmuebleForm.value)
-      .then(() =>{     
+    const inmuebleSub = this._apiService.setInmueble(this.inmuebleForm.value)
+      .subscribe(() =>{     
         this.loading = false;
         this.verDetallesInmuebles.emit(true);
         this._functionService.configSwal(this.mensajeSwal, 'Inmueble registrado correctamente', "success", "Aceptar", "", false, "", "")
@@ -105,13 +107,8 @@ export class AgregarInmuebleComponent implements OnInit {
           this.submitted = false;
         })
       })
-      .catch((e)=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar`, "error", "Aceptar", "", false, "", "")
-        this.mensajeSwal.fire()
-    
-        this.loading = false;
-    
-      });
+      this._apiService.cargarPeticion(inmuebleSub)
+      this.loading = false;
     document.getElementById("closeModalInmuebleButton").click();
   }
 

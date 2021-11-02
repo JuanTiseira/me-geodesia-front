@@ -156,15 +156,12 @@ export class DetalleComponent implements OnInit {
     this.user = this._tokenService.getUserName();
 
     this.spinner.show()
-    this._apiService.getDocumentos()
-      .then(response => {
+    const documentosSub = this._apiService.getDocumentos()
+      .subscribe(response => {
         this.documentos = response
         this._functionService.imprimirMensaje(response, "documentos")
-        // this.documentosexpediente = this.documentos.results
       })
-      .catch(err => {
-        this._functionService.imprimirMensaje(err, "error documento: ")
-      })
+    this._apiService.cargarPeticion(documentosSub)
 
     this.loadPropietarios();
   
@@ -186,9 +183,8 @@ export class DetalleComponent implements OnInit {
     this.retiroForm.controls['dni'].setValue('');
     //BUSQUEDA Y CARGA CON FILTROS 
     if (this.anioParam) {
-      this._apiService.getExpedienteNumero(this.numeroParam, this.anioParam)
-        .then((x:any) =>{
-
+      const expedienteSub = this._apiService.getExpedienteNumero(this.numeroParam, this.anioParam)
+        .subscribe((x:any) =>{
           this.tramite = x
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
@@ -196,11 +192,9 @@ export class DetalleComponent implements OnInit {
           this.expedienteForm.patchValue(this.resultado)
           this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
           
-
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
           }
-
           this.selecteditem = this.resultado.tipo_expediente
           this.selectedInmuebles = this.resultado.inmueble
           this.selectedDocumentos = this.resultado.documentos
@@ -210,62 +204,51 @@ export class DetalleComponent implements OnInit {
           this.selectedtramite = this.resultado.tramit
           this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
-      }).catch((e)=>{
-        
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-        this.spinner.hide()
-      });
+        })
+      this._apiService.cargarPeticion(expedienteSub)
     }else if (this.id && !this.anioParam && !this.numeroParam)
       {
-        this._apiService.getExpediente(this.id)
-        .then((x:any) =>{
+        const expedienteSub = this._apiService.getExpediente(this.id)
+          .subscribe((x:any) =>{
+            this.tramite = x
+            this.resultado = x.expediente
+            this.documentosexpediente  = this.resultado.documentos
 
-          this.tramite = x
-
-          this.resultado = x.expediente
-          this.documentosexpediente  = this.resultado.documentos
-
-          this.expedienteForm.patchValue(this.resultado)
-          this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
+            this.expedienteForm.patchValue(this.resultado)
+            this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
+            
+            if (x.observacion != null) {
+              this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
+            }
           
-          if (x.observacion != null) {
-            this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
-          }
-        
-          this.selecteditem = this.resultado.tipo_expediente
-          this.selectedInmuebles = this.resultado.inmueble
-          this.selectedDocumentos = this.resultado.documentos
-         
-          this.selectedPropietarios = this.resultado.propietario
-          this.selectedGestores = this.resultado.gestor
-          this.selectedAgrimensores = this.resultado.agrimensor
-          this.selectedtramite = this.resultado.tramite
+            this.selecteditem = this.resultado.tipo_expediente
+            this.selectedInmuebles = this.resultado.inmueble
+            this.selectedDocumentos = this.resultado.documentos
+          
+            this.selectedPropietarios = this.resultado.propietario
+            this.selectedGestores = this.resultado.gestor
+            this.selectedAgrimensores = this.resultado.agrimensor
+            this.selectedtramite = this.resultado.tramite
 
-          this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
-          this.spinner.hide()
-      }).catch((e)=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-        this.spinner.hide()
-      });
+            this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
+            this.spinner.hide()
+          })
+
+        this._apiService.cargarPeticion(expedienteSub)
       this.retiroForm.patchValue({descripcion: ''});
           
-
     }
     
     else{
-      
-      this._apiService.getExpedienteTramite(this.numeroParam)
-        .then((x:any) =>{
+      const expedienteSub = this._apiService.getExpedienteTramite(this.numeroParam)
+        .subscribe((x:any) =>{
 
           this.tramite = x
           this.resultado = x.expediente
           this.documentosexpediente  = this.resultado.documentos
           
           this.expedienteForm.patchValue(this.resultado)
-          this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
-          
+          this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra}); 
 
           if (x.observacion != null) {
             this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
@@ -281,11 +264,8 @@ export class DetalleComponent implements OnInit {
 
           this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
-      }).catch((e)=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-        this.spinner.hide()
-      });
+      })
+      this._apiService.cargarPeticion(expedienteSub)
       
     }
   
@@ -405,8 +385,8 @@ export class DetalleComponent implements OnInit {
       }
     }
   
-    this._apiService.getUsuarioNumero(dni)
-      .then((response:any) => {
+    const usuarioSub = this._apiService.getUsuarioNumero(dni)
+      .subscribe((response:any) => {
         this._functionService.imprimirMensaje(response, "usuario")
         this.usuario = response.results[0]
         this.retiroForm.patchValue({dni: this.usuario?.dni})
@@ -416,6 +396,7 @@ export class DetalleComponent implements OnInit {
           this.mensajeSwal.fire()
         }
       })
+    this._apiService.cargarPeticion(usuarioSub)
 
   }
 
@@ -508,19 +489,19 @@ export class DetalleComponent implements OnInit {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
 
+  get isEmpleado() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO);
+  }
+
   updateExpediente() {
     
-    this._apiService.editExpediente(this.expedienteForm.value)
-    .then(() =>{
-      this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
-      this.mensajeSwal.fire();
-    })
-    .catch((e)=>{
-      this._functionService.configSwal(this.mensajeSwal, `No se pudo editar el expediente`, "error", "Aceptar", "", false, "", "")
-      this.mensajeSwal.fire();
-      this.loading = false;
-    });
-
+    const editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)
+      .subscribe(() =>{
+        this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire();
+      })
+    this._apiService.cargarPeticion(editExpedienteSub)  
+    this.loading = false;
   }
 
 
@@ -535,60 +516,60 @@ export class DetalleComponent implements OnInit {
         this.retiroForm.patchValue({documento: id});
         this.retiroForm.patchValue({tramite: this.tramite.id});
   
-        this._apiService.setRetiro(this.retiroForm.value)
-          .then((res: any) =>{
+        const retiroSub = this._apiService.setRetiro(this.retiroForm.value)
+          .subscribe((res: any) => {
             this._functionService.configSwal(this.mensajeSwal, `Se ha registrado correctamente`, "success", "Aceptar", "", false, "", "")
             this.mensajeSwal.fire();
             this.loading = false;
             document.getElementById("closeModalRetiroButton").click();
-          })
-          .catch((e)=>{
+          },(e)=> {
             this._functionService.configSwal(this.mensajeSwal, `No se ha podido registrar el retiro`, "error", "Aceptar", "", false, "", "")
             this.mensajeSwal.fire();
             this.loading = false;
-          })
-          .finally(() =>{
+          },() => {
             this.retiroForm.reset()
             this.usuario = ""
             this.ngOnInit()
           })
+
+        this._apiService.cargarPeticion(retiroSub);
       } 
     }else{
       this.loading = false;
     }
-    
-    
   }
 
   setDevol() {
-
-      this.devolForm.patchValue({num_tramite: this.tramite.numero});
-      this._apiService.setDevol(this.devolForm.value)
-        .then((res: any) =>{        
-          this.loading = false;
-          this._functionService.configSwal(this.mensajeSwal, 'Nueva presentación registrada', "success", "Aceptar", "", false, "", "")
-          this.mensajeSwal.fire();
-          document.getElementById("closeModalDevolButton").click();
-          this.ngOnInit()
-        })
-        .catch((e)=>{
-          this._functionService.configSwal(this.mensajeSwal, `No se pudo realizar la presentación`, "error", "Aceptar", "", false, "", "")
-          this.mensajeSwal.fire();
-          this.loading = false;
-        });
+    this.devolForm.patchValue({num_tramite: this.tramite.numero});
+    const devolucionSub = this._apiService.setDevol(this.devolForm.value)
+      .subscribe((res: any) =>{        
+        this.loading = false;
+        this._functionService.configSwal(this.mensajeSwal, 'Nueva presentación registrada', "success", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire();
+        document.getElementById("closeModalDevolButton").click();
+        this.ngOnInit()
+      }, (e)=>{
+        this._functionService.configSwal(this.mensajeSwal, `No se pudo realizar la presentación`, "error", "Aceptar", "", false, "", "")
+        this.mensajeSwal.fire();
+        this.loading = false;
+      });
+    this._apiService.cargarPeticion(devolucionSub)
   }
 
   
   verDetalles(dato:boolean){
-    this._apiService.getInmueblesDisponibles().then(response => {
+    const inmueblesSub = this._apiService.getInmueblesDisponibles().subscribe(response => {
       this.inmuebles = response
     })
+    this._apiService.cargarPeticion(inmueblesSub)
   } 
 
   verDetallesUsuarios(dato:boolean){
-    this._apiService.getUsuarios().then(response => {
-      this.usuarios = response
-    })
+    const usuariosSub = this._apiService.getUsuarios()
+      .subscribe(response => {
+        this.usuarios = response
+      })
+    this._apiService.cargarPeticion(usuariosSub)
   } 
 
   verTramite(){

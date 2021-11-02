@@ -25,10 +25,11 @@ export class DetalleHistorialComponent implements OnInit {
   ngOnInit(): void {
     this.message = '';
 
-    this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-    .then(response => {
-      this.expediente = response
-      this._functionService.imprimirMensaje(response, "historial")
-    })
+    const expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+      .subscribe(response => {
+        this.expediente = response
+        this._functionService.imprimirMensaje(response, "historial")
+      })
+    this._apiService.cargarPeticion(expedienteSub);  
   }
 }

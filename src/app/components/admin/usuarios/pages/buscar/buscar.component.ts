@@ -134,28 +134,22 @@ export class BuscarUsuarioComponent implements OnInit {
       return;
     }
     this.spinner.show();
-    this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
-    .then((res) =>{
-
-      this.usuarios = res
-     
-      this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
-      
-      if (this.usuarios.count == 0) {
-        this.spinner.hide();
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      }else{
+    const usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
+      .subscribe((res) =>{
         this.usuarios = res
-        this.spinner.hide();
-      }
-
-      this.load = false;
-    
-    })
-    .catch(()=>{
-      console.log('error')
-    });
+        this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
+        
+        if (this.usuarios.count == 0) {
+          this.spinner.hide();
+          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }else{
+          this.usuarios = res
+          this.spinner.hide();
+        }
+        this.load = false;
+      })
+    this._apiService.cargarPeticion(usuariosSub)
   }
 
   limpiar(form){
@@ -174,18 +168,15 @@ export class BuscarUsuarioComponent implements OnInit {
       cancelButtonText : 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this._apiService.deleteUsuario(id)
-        .then(() =>{ 
-          Swal.fire(
-          'Eliminado!',
-          'El usuario fue eliminado.',
-          'success'
-        ) 
-        this.buscarUsuarios()
-      })
-          
-
-        
+        const eliminarUsuarioSub = this._apiService.deleteUsuario(id)
+          .subscribe(() =>{ 
+            Swal.fire(
+              'Eliminado!',
+              'El usuario fue eliminado.',
+              'success') 
+            this.buscarUsuarios()
+          })
+        this._apiService.cargarPeticion(eliminarUsuarioSub)
       }
     })
   }
@@ -219,21 +210,12 @@ export class BuscarUsuarioComponent implements OnInit {
     var numero = this.consultaForm.value.numero
     
     //BUSCA POR NUMERO DE DNI
-    this._apiService.getUsuarioNumero(numero)
-      .then((x:any) =>{
-        this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
-          
+    const usuarioSub = this._apiService.getUsuarioNumero(numero)
+      .subscribe((x:any) =>{
+        this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE   
       })
-      .catch(()=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      })
-      .finally(()=>{
-        this.spinner.hide();
-      })
-
-    
-    
+    this.spinner.hide();
+    this._apiService.cargarPeticion(usuarioSub)
   }
   
 

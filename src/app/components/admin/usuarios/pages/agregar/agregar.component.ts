@@ -73,11 +73,11 @@ export class AgregarUsuarioComponent implements OnInit {
     // }
 
 
-    this._apiService.getTipoExpedientes().then(response => {
-
-      this.tipos_usuarios = response
-      //this.tipos_usuarios = response
-    })
+    const tipoExpedientesSub = this._apiService.getTipoExpedientes()
+      .subscribe(response => {
+        this.tipos_usuarios = response
+      })
+    this._apiService.cargarPeticion(tipoExpedientesSub);
 
     this._apiService.getInmuebles().subscribe((response)=>{
       this.inmuebles = response
@@ -96,10 +96,12 @@ export class AgregarUsuarioComponent implements OnInit {
     
     this._apiService.cargarPeticion(observacionesSub)
     
-    this._apiService.getUsuarios().then(response => {
-      this.usuarios = response
-      this._functionService.imprimirMensaje(response, "usuarios")
-    })
+    const usuariosSub = this._apiService.getUsuarios()
+      .subscribe(response => {
+        this.usuarios = response
+        this._functionService.imprimirMensaje(response, "usuarios")
+      })
+    this._apiService.cargarPeticion(usuariosSub);
 
     this._apiService.cargarPeticion(this._apiService.getRoles()
       .subscribe(response => {
@@ -135,21 +137,14 @@ export class AgregarUsuarioComponent implements OnInit {
   }
 
   createUsuario() {
-    this._apiService.setUsuario(this.usuarioForm.value)
-      .then(() => {
+    const usuarioSub = this._apiService.setUsuario(this.usuarioForm.value)
+      .subscribe(() => {
         this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire().finally(() => { this.limpiar() });
         this.verDetallesFunction.emit(true);
-        this.loading = false;
       })
-      .catch((e: HttpErrorResponse) => {
-        console.error(e.error.message);
-        this._functionService.configSwal(this.mensajeSwal, `No se pudo registrar. \n ${e.error}`, "error", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire();
-        this.loading = false;
-        this.verDetallesFunction.emit(true);
-      })
-
+      this.loading = false;
+    this._apiService.cargarPeticion(usuarioSub)
 
     document?.getElementById("closeModalButton")?.click();
   }

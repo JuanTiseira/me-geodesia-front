@@ -100,18 +100,19 @@ export class AgregarComponent implements OnInit {
       documentos: ['', Validators.required]
       });
 
-    this._apiService.getTipoExpedientes().then(response => {
-      this.tipos_expedientes = response
-      //this.tipos_expedientes = response
-    })
-    .finally(() => {
-      this.spinner.hide();
-    })
+    const tipoExpedientesSub = this._apiService.getTipoExpedientes()
+      .subscribe(response => {
+        this.tipos_expedientes = response
+      })
+    this._apiService.cargarPeticion(tipoExpedientesSub);
+    this.spinner.hide(); 
     
-    this._apiService.getInmueblesDisponibles().then(response => {
-      this.inmuebles = response
-      this._functionService.imprimirMensaje(response, "inmuebles")
-    })
+    const inmueblesSub = this._apiService.getInmueblesDisponibles()
+      .subscribe(response => {
+        this.inmuebles = response
+        this._functionService.imprimirMensaje(response, "inmuebles")
+      })
+    this._apiService.cargarPeticion(inmueblesSub);
 
     const observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
@@ -121,12 +122,12 @@ export class AgregarComponent implements OnInit {
 
     this._apiService.cargarPeticion(observacionesSub);
 
-    this._apiService.getDocumentos()
-      .then(response => {
-      this.documentos = response
-      this._functionService.imprimirMensaje(response, "documentos")
+    const documentosSub = this._apiService.getDocumentos()
+      .subscribe(response => {
+        this.documentos = response
+        this._functionService.imprimirMensaje(response, "documentos")
       })
-      
+    this._apiService.cargarPeticion(documentosSub)
 
     this.dropdownSettings=<IDropdownSettings> {
       singleSelection: false,
@@ -213,38 +214,34 @@ export class AgregarComponent implements OnInit {
   }
   
   createExpediente() {
-    this._apiService.setExpediente(this.expedienteForm.value)
-    .then((res: any) =>{
-      Swal.fire({
-        title: 'Exito',
-        text: 'Se registro correctamente',
-        icon: 'success',
-        confirmButtonText: 'Aceptar',
+    const setExpedienteSub = this._apiService.setExpediente(this.expedienteForm.value)
+      .subscribe((res: any) =>{
+        Swal.fire({
+          title: 'Exito',
+          text: 'Se registro correctamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        })
+        this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
       })
-      this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
-    })
-    .catch((e)=>{
-     Swal.fire({
-        title: 'Error!',
-        text: 'No se pudo registrar',
-        icon: 'error',
-        confirmButtonText: 'Aceptar'
-      })
-      this.loading = false;
-    });
-    
+    this._apiService.cargarPeticion(setExpedienteSub)
+     this.loading = false;
   }
 
   verDetalles(dato:boolean){
-    this._apiService.getInmueblesDisponibles().then(response => {
-      this.inmuebles = response
-    })
+    const inmueblesSub = this._apiService.getInmueblesDisponibles()
+      .subscribe(response => {
+        this.inmuebles = response
+      })
+    this._apiService.cargarPeticion(inmueblesSub)
   } 
 
   verDetallesUsuarios(dato:boolean){
-    this._apiService.getUsuarios().then(response => {
-      this.usuarios = response
-    })
+    const usuariosSub = this._apiService.getUsuarios()
+      .subscribe(response => {
+        this.usuarios = response
+      })
+    this._apiService.cargarPeticion(usuariosSub)
   } 
 
   limpiar(){

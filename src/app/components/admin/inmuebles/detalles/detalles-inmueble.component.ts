@@ -30,16 +30,12 @@ export class DetallesInmuebleComponent implements OnInit {
 
   buscarInmueble() {
     this.spinner.show();
-    this._apiService.getInmueble(this.id)
-    .then((response) => {
-      this.inmueble = response;
-    })
-    .catch((error) => {
-      this._functionService.configSwal(this.mensajeSwal, `No se encuentró ningún inmueble`, "error", "Aceptar", "", false, "", "");
-    })
-    .finally(() => {
-      this.spinner.hide();
-    })
+    const inmueblesSub = this._apiService.getInmueble(this.id)
+      .subscribe((response) => {
+        this.inmueble = response;
+      })
+    this._apiService.cargarPeticion(inmueblesSub)  
+    this.spinner.hide();
   }
 
 }

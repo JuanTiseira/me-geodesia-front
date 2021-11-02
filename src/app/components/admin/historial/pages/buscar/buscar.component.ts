@@ -118,17 +118,16 @@ export class BuscarHistorialComponent implements OnInit {
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
-      this._apiService.getExpedienteNumero(numero, anio)
-        .then((x:any) =>{
-          this._apiService.getHistorial(x.id).then((x:any) =>{
-            this.historiales = x.results;
-            this.datos = this.historiales[0]
-          })         
-      }).catch(()=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      });
-      
+      const expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
+          .subscribe((x:any) =>{
+            const historialSub = this._apiService.getHistorial(x.id)
+              .subscribe((x:any) =>{
+                this.historiales = x.results;
+                this.datos = this.historiales[0]
+              }) 
+            this._apiService.cargarPeticion(historialSub)        
+          })
+      this._apiService.cargarPeticion(expedienteSub);
 
     }else{
 
@@ -137,19 +136,16 @@ export class BuscarHistorialComponent implements OnInit {
         numeroanio = this.id
       }
 
-      this._apiService.getExpedienteTramite(numeroanio)
-        .then((x:any) =>{
-          this._apiService.getHistorial(x.id).then((x:any) =>{
-            this.historiales = x.results;
-            this.datos = this.historiales[0]
-          })
-          // this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
-          
-      }).catch(()=>{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
-      });
-
+      const expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
+        .subscribe((x:any) =>{
+          const historialSub = this._apiService.getHistorial(x.id)
+            .subscribe((x:any) =>{
+              this.historiales = x.results;
+              this.datos = this.historiales[0]
+            })
+          this._apiService.cargarPeticion(historialSub)     
+      })
+      this._apiService.cargarPeticion(expedienteSub);
     }
     this.loading = false;
     this.spinner.hide();

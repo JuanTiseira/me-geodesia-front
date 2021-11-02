@@ -75,20 +75,18 @@ export class HomeComponent implements OnInit {
 
       if (this.isAdmin || this.isEmpleadoMe || this.isEmpleado ) {
         this.spinner.show();
-        this._apiService.getExpedientes()
-        .then(response => {
-          this.expedientes = response
-        })
+        const expedientesSub = this._apiService.getExpedientes()
+          .subscribe(response => {
+            this.expedientes = response
+          })
+        this._apiService.cargarPeticion(expedientesSub);
 
       
-      this._apiService.getUsuarios()
-        .then(response => {
+      const usuariosSub = this._apiService.getUsuarios()
+        .subscribe(response => {
           this.usuarios = response
         })
-        .catch(error => {
-          this._functionService.imprimirMensaje(error, "error en home: ");
-          this.router.navigate(['login']);
-        })
+      this._apiService.cargarPeticion(usuariosSub)
       }else{
         this.router.navigate(['login']);
       }
@@ -124,18 +122,13 @@ export class HomeComponent implements OnInit {
     
     var tramite = this.consultaForm.value.numero;
     this._functionService.imprimirMensaje(tramite, "numero tramite: ");
-    this._apiService.setNuevaTransicion(tramite)
-      .then((response) => {
+    const transicionSub = this._apiService.setNuevaTransicion(tramite)
+      .subscribe((response) => {
         this._functionService.imprimirMensaje(response, "response: ")
         this._functionService.configSwal(this.mensajeSwal, 'Expediente cargado', "success", "Aceptar", "", false, "", "")
-        this.mensajeSwal.fire()
-          .finally(() => {this.cargarExpedientesEstado()})
+        this.mensajeSwal.fire().finally(() => {this.cargarExpedientesEstado()})
       })
-      .catch((error) => {
-        this._functionService.imprimirMensaje(error, "error 2222: ")
-        this._functionService.configSwal(this.mensajeSwal, 'No es posible cargar este tramite', "error", "Aceptar", "", false, "", "")
-        this.mensajeSwal.fire()
-      })
+    this._apiService.cargarPeticion(transicionSub)
   }
 
 
@@ -143,30 +136,23 @@ export class HomeComponent implements OnInit {
     this.consultaForm.reset();
     this.submitted = false;
 
-    this._apiService.getExpedientesSector()
-      .then((response:any) => {
+    const expedientesSectorSub = this._apiService.getExpedientesSector()
+      .subscribe((response:any) => {
         this.expedientes_sector = response.data
       })
-      .catch(error => {
-        this._functionService.imprimirMensaje(error, "error al traer los expedientes del sector en home")
-      })
+    this._apiService.cargarPeticion(expedientesSectorSub);
 
-    this._apiService.getExpedientesSectorSalida()
-      .then((response:any) => {
+    const expedientesSalidaSub = this._apiService.getExpedientesSectorSalida()
+      .subscribe((response:any) => {
         this.expedientes_salida = response.data
-      })
-      .catch(error => {
-        this._functionService.imprimirMensaje(error, "error al traer los expedientes de salida de home")
-      })
+      });
+    this._apiService.cargarPeticion(expedientesSalidaSub)
 
-    this._apiService.getExpedientesSectorEntrada()
-      .then((response:any) => {
+    const expedientesEntradaSub = this._apiService.getExpedientesSectorEntrada()
+      .subscribe((response:any) => {
         this.expedientes_a_entrar = response.data
-      })
-      .catch(error => {
-        this._functionService.imprimirMensaje(error, "error al traer los expedientes de entrada de home")
-      })
-
+      });
+    this._apiService.cargarPeticion(expedientesEntradaSub);
 
   }
 }

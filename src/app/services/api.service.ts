@@ -40,7 +40,7 @@ export class ApiService {
   }
 
   cargarPeticion(peticion: Subscription){
-    console.log("peticion a guardar: ", peticion)
+    this._functionService.imprimirMensaje(peticion, "Peticiones a guardar: ")
     this.listaPeticiones.push(peticion);
   }
   
@@ -53,8 +53,6 @@ export class ApiService {
     var data = new FormData();
     data.append('username', username);
     data.append('password', password);
-
-   
     return this.http.post(this.urlLogin, data).toPromise();
   }
 
@@ -71,7 +69,7 @@ export class ApiService {
   //EXPEDIENTES  ////////////////////////////////////////////////////////////////////////////////
 
   getExpedientes(){
-    return this.http.get(this.url+'/expedientes/').toPromise();
+    return this.http.get(this.url+'/expedientes/');
   }
 
   getExpedientesFiltros(filtros){
@@ -79,45 +77,43 @@ export class ApiService {
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
     }
-    return this.http.get(this.url+`/expedientes?${params.toString()}`).toPromise();
+    return this.http.get(this.url+`/expedientes?${params.toString()}`);
   }
 
   getExpediente(id){
-    return this.http.get(this.url+`/expedientes/expediente_tramite/?id=${id}`).toPromise();
+    return this.http.get(this.url+`/expedientes/expediente_tramite/?id=${id}`);
   }
 
   getExpedienteNumero(numero, anio) {
-    return this.http.get(this.url+`/expedientes/expediente_tramite/?anio=${anio}&numero=${numero}`).toPromise();
+    return this.http.get(this.url+`/expedientes/expediente_tramite/?anio=${anio}&numero=${numero}`);
   }
 
   getExpedientesSector(){
-    return this.http.get(this.url+'/expedientes/sector/').toPromise();
+    return this.http.get(this.url+'/expedientes/sector/');
   }
 
   getExpedientesSectorSalida(){
-    return this.http.get(this.url+'/expedientes/sector_salida/').toPromise();
+    return this.http.get(this.url+'/expedientes/sector_salida/');
   }
 
   getExpedientesSectorEntrada(){
-    return this.http.get(this.url+'/expedientes/sector_entrada/').toPromise();
+    return this.http.get(this.url+'/expedientes/sector_entrada/');
   }
 
   getExpedienteTramite(numero){
-    return this.http.get(this.url+`/expedientes/expediente_tramite/?tramite=${numero}`).toPromise();
+    return this.http.get(this.url+`/expedientes/expediente_tramite/?tramite=${numero}`);
   }
 
   setExpediente(expediente) {
-    return this.http.post(this.url+'/expedientes/', expediente).toPromise();
+    return this.http.post(this.url+'/expedientes/', expediente);
   }
 
   editExpediente(expediente) {
-    return this.http.put(this.url+'/expedientes/', expediente).toPromise();
+    return this.http.put(this.url+'/expedientes/', expediente);
   }
 
   deleteExpediente(expediente) {
-    return this.http.patch(this.url+`/expedientes/${expediente}/`, {
-      "habilitado": false 
-      } ).toPromise();
+    return this.http.patch(this.url+`/expedientes/${expediente}/`, {"habilitado": false});
   }
 
 
@@ -125,28 +121,28 @@ export class ApiService {
   //TIPO EXPETIENTE  ////////////////////////////////////////////////////////////////////////////////
   
   getTipoExpedientes () { 
-    return this.http.get(this.url+'/tipo_expedientes/').toPromise();
+    return this.http.get(this.url+'/tipo_expedientes/');
   }
 
   //DOCUMENTO  ////////////////////////////////////////////////////////////////////////////////
 
   getDocumentos () {
-    return this.http.get(this.url+'/documentos/').toPromise();
+    return this.http.get(this.url+'/documentos/');
   }
 
   //TRAMITE  ////////////////////////////////////////////////////////////////////////////////
 
   getTramites () {
-    return this.http.get(this.url+'/tramites/').toPromise();
+    return this.http.get(this.url+'/tramites/');
   }
 
 
   setNuevaTransicion(tramite){
-    return this.http.get(this.url+'/tramites/nueva_transicion/?tramite='+tramite).toPromise();
+    return this.http.get(this.url+'/tramites/nueva_transicion/?tramite='+tramite)
   }
 
   setNuevaTransicionAdmin(datos){
-    return this.http.post(this.url+'/tramites/nueva_transicion_admin/', datos).toPromise();
+    return this.http.post(this.url+'/tramites/nueva_transicion_admin/', datos);
   }
 
   //OBSERVACION  ////////////////////////////////////////////////////////////////////////////////
@@ -167,11 +163,11 @@ export class ApiService {
   // }
 
   getInmueblesDisponibles () {
-    return this.http.get(this.url+'/inmuebles/?disponibles=1234').toPromise();
+    return this.http.get(this.url+'/inmuebles/?disponibles=1234');
   }
 
   getInmueble(id){
-    return this.http.get(this.url+`/inmuebles/${id}`).toPromise();
+    return this.http.get(this.url+`/inmuebles/${id}`);
   }
 
   getInmuebleWithParams(parametro, valor){
@@ -180,14 +176,14 @@ export class ApiService {
 
   setInmueble(inmueble) {
     console.warn(inmueble);
-    return this.http.post(this.url+'/inmuebles/', inmueble).toPromise();
+    return this.http.post(this.url+'/inmuebles/', inmueble);
   }
 
   deleteInmueble(inmueble) {;
     let params = {
       "habilitado": false
     }
-    return this.http.patch(this.url+`/inmuebles/${inmueble}/`, params).toPromise();
+    return this.http.patch(this.url+`/inmuebles/${inmueble}/`, params);
   }
 
 
@@ -196,7 +192,7 @@ export class ApiService {
   //USUARIOS ////////////////////////////////////////////////////////////////////////////////
 
   getUsuarios () {
-    return this.http.get(this.url+'/usuarios/').toPromise();
+    return this.http.get(this.url+'/usuarios/');
   }
 
   getRoles() {
@@ -214,39 +210,37 @@ export class ApiService {
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
     }   
-    return this.http.get(this.url+`/usuarios?${params.toString()}`).toPromise();
+    return this.http.get(this.url+`/usuarios?${params.toString()}`);
   }
 
   getUsuario(id){
-    return this.http.get(this.url+`/usuarios/${id}`).toPromise();
+    return this.http.get(this.url+`/usuarios/${id}`);
   }
 
   getUsuarioNumero(numero) {
-    return this.http.get(this.url+`/usuarios/?dni=${numero}`).toPromise();
+    return this.http.get(this.url+`/usuarios/?dni=${numero}`);
     
   }
 
   setUsuario(usuario) {
-    return this.http.post(this.url+'/usuarios/', usuario).toPromise();
+    return this.http.post(this.url+'/usuarios/', usuario);
   }
 
   deleteUsuario(usuario) {
-    return this.http.patch(this.url+`/usuarios/${usuario}/`, {
-      "habilitado": false 
-      } ).toPromise();
+    return this.http.patch(this.url+`/usuarios/${usuario}/`, {"habilitado": false});
   }
 
 
   // DEPARTAMENTOS //////////////////////////////////////////////////////
 
   getDepartamentos() {
-    return this.http.get(this.url+'/departamentos/').toPromise();
+    return this.http.get(this.url+'/departamentos/');
   }
 
   // MUNICIPIOS
 
   getMunicipios() {
-    return this.http.get(this.url+'/municipios/').toPromise();
+    return this.http.get(this.url+'/municipios/');
   }
 
 
@@ -254,11 +248,11 @@ export class ApiService {
   // RETIROS / DEVOLUCIONES ////////////////////////////////////////////
 
   setRetiro(retiro) {
-    return this.http.post(this.url+'/retiros/', retiro).toPromise()
+    return this.http.post(this.url+'/retiros/', retiro);
   }
 
   setDevol(retiro) {
-    return this.http.post(this.url+'/retiros/devolver/', retiro).toPromise();
+    return this.http.post(this.url+'/retiros/devolver/', retiro);
   }
 
 
@@ -267,24 +261,23 @@ export class ApiService {
   getHistorial(id){
     let params: URLSearchParams = new URLSearchParams();
     params.set('tramite', id);
-    return this.http.get(this.url+`/historiales?${params.toString()}`).toPromise();
+    return this.http.get(this.url+`/historiales?${params.toString()}`);
   }
 
   getHistoriales(){
-    return this.http.get(this.url+`/historiales`).toPromise();
+    return this.http.get(this.url+`/historiales`);
   }
 
   getHistorialesUltimos(){
-    return this.http.get(this.url+'/historiales/ultimos_historiales').toPromise();
+    return this.http.get(this.url+'/historiales/ultimos_historiales');
   }
 
   setNuevoMovimiento(json){
-    return this.http.post(this.url+'/retiros/nuevo_movimiento/', json).toPromise();
+    return this.http.post(this.url+'/retiros/nuevo_movimiento/', json);
   }
-
 
   //SECTORES  
   getSectores(){
-    return this.http.get(this.url+'/sectores').toPromise();
+    return this.http.get(this.url+'/sectores');
   }
 }
