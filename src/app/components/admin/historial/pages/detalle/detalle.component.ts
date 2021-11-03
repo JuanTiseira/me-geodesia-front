@@ -23,6 +23,7 @@ export class DetalleHistorialComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes()
     this.message = '';
 
     const expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))

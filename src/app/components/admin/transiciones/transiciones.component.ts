@@ -26,6 +26,7 @@ export class TransicionesComponent implements OnInit {
               private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes()
     this.consultaForm = this.formBuilder.group({
       param_busqueda: ['', Validators.required],   
       numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],

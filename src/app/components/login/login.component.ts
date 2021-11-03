@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { environment } from 'src/environments/environment';
 import { ReCaptcha2Component } from 'ngx-captcha';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -30,9 +31,11 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private _functionService: FunctionsService,) { }
+    private _functionService: FunctionsService,
+    private _apiService: ApiService) { }
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes()
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],

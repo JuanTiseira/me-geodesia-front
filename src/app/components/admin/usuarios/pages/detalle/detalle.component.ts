@@ -58,6 +58,7 @@ export class DetalleUsuarioComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes()
     this.spinner.show();
       
     this.id = this.route.snapshot.params['id'];

@@ -71,6 +71,7 @@ export class HomeComponent implements OnInit {
 });
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes()
     this.submitted = false;
 
       if (this.isAdmin || this.isEmpleadoMe || this.isEmpleado ) {

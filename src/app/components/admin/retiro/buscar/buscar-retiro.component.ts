@@ -89,7 +89,7 @@ export class BuscarRetiroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this._apiService.cancelarPeticionesPendientes()
     this.spinner.show();
 
     const observacionesSub = this._apiService.getObservaciones()

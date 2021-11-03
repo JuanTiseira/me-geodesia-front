@@ -43,7 +43,7 @@ export class AgregarInmuebleComponent implements OnInit {
      }
 
   ngOnInit(): void {
-   
+    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 

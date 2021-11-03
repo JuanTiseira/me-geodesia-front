@@ -46,7 +46,7 @@ export class AgregarUsuarioComponent implements OnInit {
   ) { this.verDetallesFunction = new EventEmitter(); }
 
   ngOnInit(): void {
-
+    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
     console.log("add mode: ", this.id)

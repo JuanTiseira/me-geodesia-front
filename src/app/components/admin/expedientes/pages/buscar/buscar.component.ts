@@ -86,7 +86,7 @@ export class BuscarComponent implements OnInit {
                 ) { this.load = false; }
 
   ngOnInit(): void {
-
+    this._apiService.cancelarPeticionesPendientes()
     
     this.consultaForm = this.formBuilder.group({
       param_busqueda: ['', Validators.required],   
@@ -269,11 +269,9 @@ export class BuscarComponent implements OnInit {
           this.expedientes = res
         }
         this.load = false;
-        alert("jksadjkas")
         this.spinner.hide();
       },(error)=>{
         this.expedientes = []
-        console.log("12312312 ",this.expedientes)
         this.spinner.hide();
         
       })

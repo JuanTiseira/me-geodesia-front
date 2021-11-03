@@ -75,6 +75,7 @@ export class BuscarHistorialComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     if( this.id != null){
       this.buscarHistorial();

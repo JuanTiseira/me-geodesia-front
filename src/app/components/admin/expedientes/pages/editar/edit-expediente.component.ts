@@ -107,7 +107,7 @@ export class EditComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    this._apiService.cancelarPeticionesPendientes()
     this.date = moment(new Date()).format('DD/MM/YYYY');
     this.fecha_hora = moment(new Date()).format('hh:mm:ss')
     this.user = this._tokenService.getUserName();

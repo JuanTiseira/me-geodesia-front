@@ -146,7 +146,7 @@ export class DetalleComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    this._apiService.cancelarPeticionesPendientes()
     this.numeroParam = ""
     this.anioParam = ""
     this.submitted = false;
