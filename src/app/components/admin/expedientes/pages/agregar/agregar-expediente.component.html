@@ -41,7 +41,7 @@
                         </div>
                       </div>
                       <div class="col-md-2">
-                        <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearInmueble"  class="btn btn-green btn-agregar">+</button>
+                        <button type="button" data-bs-toggle="modal" id="btn-edit-user" (click)="habilitarModal('inmueble')" data-bs-target="#crearInmueble"  class="btn btn-green btn-agregar">+</button>
                       </div>
                     </div>
                   </div>
@@ -71,7 +71,7 @@
                       </div>
   
                       <div class="col-md-2">
-                        <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
+                        <button type="button" data-bs-toggle="modal" id="btn-edit-user" (click)="habilitarModal('usuario')" data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
                       </div>
                     </div>
                    
@@ -131,7 +131,7 @@
                           </div>
                         </div>
                         <div class="col-md-2">
-                          <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
+                          <button type="button" data-bs-toggle="modal" id="btn-edit-user" (click)="habilitarModal('usuario')" data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
                         </div>
                       </div>
                     </div>
@@ -156,7 +156,7 @@
                           </ng-select>
                         </div>
                         <div class="col-md-2">
-                          <button type="button" data-bs-toggle="modal" id="btn-edit-user"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
+                          <button type="button" data-bs-toggle="modal" id="btn-edit-user" (click)="habilitarModal('usuario')"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
                         </div>
                       </div>
                     </div>
@@ -189,7 +189,7 @@
                 <h5 class="modal-title">Ingresar Registro</h5>
                 <button id="closeModalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div *ngIf="usuarioModal" class="modal-body">
                 <app-crear-usuario (verDetallesFunction)="verDetallesUsuarios($event)"></app-crear-usuario>
             </div>
         </div>
@@ -204,7 +204,7 @@
               <h5 class="modal-title">Ingresar Registro</h5>
               <button id="closeModalInmuebleButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
+          <div *ngIf="inmuebleModal" class="modal-body">
               <app-crear-inmueble (verDetallesInmuebles)="verDetalles($event)" ></app-crear-inmueble>
           </div>
           <!-- <div class="modal-footer">

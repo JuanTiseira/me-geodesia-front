@@ -1,5 +1,5 @@
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { Subscription } from 'rxjs';
 
 
 
@@ -25,7 +26,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 })
   
 
-export class BuscarUsuarioComponent implements OnInit {
+export class BuscarUsuarioComponent implements OnInit, OnDestroy{
 
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
@@ -50,6 +51,13 @@ export class BuscarUsuarioComponent implements OnInit {
   submitted2 = false;
   consultaForm : FormGroup
   consultaAvanzadaForm : FormGroup
+
+  inmueblesSub: Subscription;
+  observacionesSub: Subscription;
+  rolesSub: Subscription;
+  usuariosSub: Subscription;
+  eliminarUsuarioSub: Subscription;
+  usuarioSub: Subscription;
 
 
   constructor( private _apiService: ApiService,
@@ -82,34 +90,33 @@ export class BuscarUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes();
     this.spinner.show();
 
-    const inmueblesSub = this._apiService.getInmuebles()
+    this.inmueblesSub = this._apiService.getInmuebles()
       .subscribe((response)=>{
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
 
-    this._apiService.cargarPeticion(inmueblesSub)
+    this._apiService.cargarPeticion(this.inmueblesSub)
 
 
-    const observacionesSub = this._apiService.getObservaciones()
+    this.observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
 
-    this._apiService.cargarPeticion(observacionesSub);
+    this._apiService.cargarPeticion(this.observacionesSub);
 
-    const rolesSub = this._apiService.getRoles()
+    this.rolesSub = this._apiService.getRoles()
       .subscribe(response => {
         this.roles = response
         this._functionService.imprimirMensaje(response, "roles")
         
         this.spinner.hide();
       })
-    this._apiService.cargarPeticion(rolesSub);  
+    this._apiService.cargarPeticion(this.rolesSub);  
 
     this.consultaForm = this.formBuilder.group({
       numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
@@ -127,14 +134,17 @@ export class BuscarUsuarioComponent implements OnInit {
   get f() { return this.consultaForm.controls; }
   get g() { return this.consultaAvanzadaForm.controls; }
 
-
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
+  }
+  
   buscarUsuarios() {
     this.submitted2 = true;
     if (this.consultaAvanzadaForm.invalid) {
       return;
     }
     this.spinner.show();
-    const usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
+    this.usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
       .subscribe((res) =>{
         this.usuarios = res
         this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
@@ -149,7 +159,7 @@ export class BuscarUsuarioComponent implements OnInit {
         }
         this.load = false;
       })
-    this._apiService.cargarPeticion(usuariosSub)
+    this._apiService.cargarPeticion(this.usuariosSub)
   }
 
   limpiar(form){
@@ -168,7 +178,7 @@ export class BuscarUsuarioComponent implements OnInit {
       cancelButtonText : 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        const eliminarUsuarioSub = this._apiService.deleteUsuario(id)
+        this.eliminarUsuarioSub = this._apiService.deleteUsuario(id)
           .subscribe(() =>{ 
             Swal.fire(
               'Eliminado!',
@@ -176,7 +186,7 @@ export class BuscarUsuarioComponent implements OnInit {
               'success') 
             this.buscarUsuarios()
           })
-        this._apiService.cargarPeticion(eliminarUsuarioSub)
+        this._apiService.cargarPeticion(this.eliminarUsuarioSub)
       }
     })
   }
@@ -210,12 +220,17 @@ export class BuscarUsuarioComponent implements OnInit {
     var numero = this.consultaForm.value.numero
     
     //BUSCA POR NUMERO DE DNI
-    const usuarioSub = this._apiService.getUsuarioNumero(numero)
+    this.usuarioSub = this._apiService.getUsuarioNumero(numero)
       .subscribe((x:any) =>{
-        this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE   
+        if ( x.count > 0){
+          this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE 
+        } else {
+          this._functionService.configSwal(this.mensajeSwal, `No se encontró ningún usuario.`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire();
+        }
       })
     this.spinner.hide();
-    this._apiService.cargarPeticion(usuarioSub)
+    this._apiService.cargarPeticion(this.usuarioSub)
   }
   
 

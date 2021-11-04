@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 import { Role } from 'src/app/models/role.models';
@@ -8,13 +8,14 @@ import { AuthService } from 'src/app/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
@@ -29,7 +30,13 @@ export class HomeComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public tipo_consulta: any;
-  
+
+  expedientesSub: Subscription;
+  usuariosSub: Subscription;
+  transicionSub: Subscription;
+  expedientesSectorSub: Subscription;
+  expedientesSalidaSub: Subscription;
+  expedientesEntradaSub: Subscription;
 
   expedientes_a_entrar= "";
   expedientes_salida= "";
@@ -71,23 +78,22 @@ export class HomeComponent implements OnInit {
 });
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.submitted = false;
 
       if (this.isAdmin || this.isEmpleadoMe || this.isEmpleado ) {
         this.spinner.show();
-        const expedientesSub = this._apiService.getExpedientes()
+        this.expedientesSub = this._apiService.getExpedientes()
           .subscribe(response => {
             this.expedientes = response
           })
-        this._apiService.cargarPeticion(expedientesSub);
+        this._apiService.cargarPeticion(this.expedientesSub);
 
       
-      const usuariosSub = this._apiService.getUsuarios()
+      this.usuariosSub = this._apiService.getUsuarios()
         .subscribe(response => {
           this.usuarios = response
         })
-      this._apiService.cargarPeticion(usuariosSub)
+      this._apiService.cargarPeticion(this.usuariosSub)
       }else{
         this.router.navigate(['login']);
       }
@@ -98,6 +104,11 @@ export class HomeComponent implements OnInit {
 
       this.spinner.hide();
   }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
+  }
+
 
   get r (){ return this.consultaForm.controls;}
 
@@ -123,13 +134,13 @@ export class HomeComponent implements OnInit {
     
     var tramite = this.consultaForm.value.numero;
     this._functionService.imprimirMensaje(tramite, "numero tramite: ");
-    const transicionSub = this._apiService.setNuevaTransicion(tramite)
+    this.transicionSub = this._apiService.setNuevaTransicion(tramite)
       .subscribe((response) => {
         this._functionService.imprimirMensaje(response, "response: ")
         this._functionService.configSwal(this.mensajeSwal, 'Expediente cargado', "success", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire().finally(() => {this.cargarExpedientesEstado()})
       })
-    this._apiService.cargarPeticion(transicionSub)
+    this._apiService.cargarPeticion(this.transicionSub)
   }
 
 
@@ -137,23 +148,23 @@ export class HomeComponent implements OnInit {
     this.consultaForm.reset();
     this.submitted = false;
 
-    const expedientesSectorSub = this._apiService.getExpedientesSector()
+    this.expedientesSectorSub = this._apiService.getExpedientesSector()
       .subscribe((response:any) => {
         this.expedientes_sector = response.data
       })
-    this._apiService.cargarPeticion(expedientesSectorSub);
+    this._apiService.cargarPeticion(this.expedientesSectorSub);
 
-    const expedientesSalidaSub = this._apiService.getExpedientesSectorSalida()
+    this.expedientesSalidaSub = this._apiService.getExpedientesSectorSalida()
       .subscribe((response:any) => {
         this.expedientes_salida = response.data
       });
-    this._apiService.cargarPeticion(expedientesSalidaSub)
+    this._apiService.cargarPeticion(this.expedientesSalidaSub)
 
-    const expedientesEntradaSub = this._apiService.getExpedientesSectorEntrada()
+    this.expedientesEntradaSub = this._apiService.getExpedientesSectorEntrada()
       .subscribe((response:any) => {
         this.expedientes_a_entrar = response.data
       });
-    this._apiService.cargarPeticion(expedientesEntradaSub);
+    this._apiService.cargarPeticion(this.expedientesEntradaSub);
 
   }
 }

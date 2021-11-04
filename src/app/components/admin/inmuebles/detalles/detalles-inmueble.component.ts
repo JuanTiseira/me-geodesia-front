@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 
@@ -10,11 +11,12 @@ import { FunctionsService } from 'src/app/services/functions.service';
   templateUrl: './detalles-inmueble.component.html',
   styleUrls: ['./detalles-inmueble.component.scss']
 })
-export class DetallesInmuebleComponent implements OnInit {
+export class DetallesInmuebleComponent implements OnInit, OnDestroy{
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   inmueble: any;
   id: string;
+  inmueblesSub: Subscription;
 
   constructor(
     private _apiService: ApiService,
@@ -24,18 +26,21 @@ export class DetallesInmuebleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     this.buscarInmueble();
   }
 
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
+  }
+
   buscarInmueble() {
     this.spinner.show();
-    const inmueblesSub = this._apiService.getInmueble(this.id)
+    this.inmueblesSub = this._apiService.getInmueble(this.id)
       .subscribe((response) => {
         this.inmueble = response;
       })
-    this._apiService.cargarPeticion(inmueblesSub)  
+    this._apiService.cargarPeticion(this.inmueblesSub)  
     this.spinner.hide();
   }
 

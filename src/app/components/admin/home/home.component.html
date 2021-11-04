@@ -1,6 +1,13 @@
 <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
+        <!-- <div class="row">
+            
+            <div class="d-flex justify-content-center">
+                <h1>EXPEDIENTES</h1> 
+            </div>
+            
+        </div>  -->
         <div class="row mb-4" *ngIf="isAdmin">
             <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex" data-sr-id="10" style="background-color: rgba(127, 214, 255, 0.267);">
@@ -44,7 +51,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Expedientes Aprobados</div> 
+                                        <div class="md-text">Expedientes en Mesa de Entrada</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -70,7 +77,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Expedientes Rechazados</div> 
+                                        <div class="md-text">Expedientes en Lindero</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -97,7 +104,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Expedientes en revision</div> 
+                                        <div class="md-text">Expedientes en Revision</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -124,7 +131,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Usuarios en el sistema</div> 
+                                        <div class="md-text">Administradores</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -151,7 +158,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Usuarios en el sistema</div> 
+                                        <div class="md-text">Empleados</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -179,7 +186,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Usuarios en el sistema</div> 
+                                        <div class="md-text">Propietarios</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -206,7 +213,7 @@
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Usuarios en el sistema</div> 
+                                        <div class="md-text">Agrimensores</div> 
                                     </div> 
                                 </div>
                         </div>
@@ -221,7 +228,7 @@
             <div class="container">
     
                 <div class="row">
-                    <h1 style="font-weight: bold;">Consulta de Expediente</h1>
+                    <h1>Consulta de Expediente</h1>
                 </div>
                 
                 <br>  
@@ -254,7 +261,7 @@
                     <div class="row" *ngIf="isEmpleado || isAdmin || isEmpleadoMe">
 
                         <div class="row">
-                            <h1 style="font-weight: bold;">Expedientes</h1>
+                            <h1>Expedientes</h1>
                         </div>
                         
                         <div class="col-md-4">

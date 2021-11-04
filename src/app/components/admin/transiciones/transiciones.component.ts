@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 
@@ -11,13 +12,17 @@ import { FunctionsService } from 'src/app/services/functions.service';
   templateUrl: './transiciones.component.html',
   styleUrls: ['./transiciones.component.scss']
 })
-export class TransicionesComponent implements OnInit {
+export class TransicionesComponent implements OnInit, OnDestroy {
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   load: boolean = false;
   consultaForm : FormGroup;
   tramites: any;
   p: number = 1;
   sectores:any;
+
+  historialesSub: Subscription;
+  sectorSub: Subscription;
+  transicionSub: Subscription;
   
   constructor(private _apiService: ApiService,
               private _functionService: FunctionsService ,
@@ -26,7 +31,6 @@ export class TransicionesComponent implements OnInit {
               private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.consultaForm = this.formBuilder.group({
       param_busqueda: ['', Validators.required],   
       numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
@@ -48,12 +52,14 @@ export class TransicionesComponent implements OnInit {
       this.buscarSectores();
   }
 
-
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
+  }
 
 
   buscarTramites() {
     this.spinner.show();
-    const historialesSub = this._apiService.getHistorialesUltimos()
+    this.historialesSub = this._apiService.getHistorialesUltimos()
       .subscribe((res:any) =>{
 
         this.tramites = res  
@@ -67,19 +73,19 @@ export class TransicionesComponent implements OnInit {
       },()=>{
         this.spinner.hide();
       })
-    this._apiService.cargarPeticion(historialesSub);
+    this._apiService.cargarPeticion(this.historialesSub);
   }
 
   buscarSectores(){
     this.spinner.show();
-    const sectorSub = this._apiService.getSectores()
+    this.sectorSub = this._apiService.getSectores()
       .subscribe((res:any)=>{
         this.sectores = res.results
       },(error)=>{
         this._functionService.configSwal(this.mensajeSwal, 'No se encuentran sectores', "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       })
-    this._apiService.cargarPeticion(sectorSub)
+    this._apiService.cargarPeticion(this.sectorSub)
   }
 
   onChange(value) {
@@ -89,12 +95,12 @@ export class TransicionesComponent implements OnInit {
       'tramite': value[1]
     }
 
-    const transicionSub = this._apiService.setNuevaTransicionAdmin(json)
+    this.transicionSub = this._apiService.setNuevaTransicionAdmin(json)
       .subscribe((res:any)=>{
         this._functionService.configSwal(this.mensajeSwal, res.message, "success", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire()
       })
-    this._apiService.cargarPeticion(transicionSub)
+    this._apiService.cargarPeticion(this.transicionSub)
 }
 
 

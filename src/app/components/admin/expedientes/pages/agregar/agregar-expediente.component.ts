@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -6,7 +6,7 @@ import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { concat, Observable, of, Subject } from 'rxjs';
+import { concat, Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService, Person, Documento } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
 })
 
 
-export class AgregarComponent implements OnInit {
+export class AgregarComponent implements OnInit, OnDestroy {
 
     public tipos_expedientes: any;
     public documentos: any; 
@@ -34,6 +34,13 @@ export class AgregarComponent implements OnInit {
     gestor$: Observable<Person[]>;
     propietario$: Observable<Person[]>;
     documento$: Observable<Documento[]>;
+
+    tipoExpedientesSub: Subscription;
+    inmueblesSub: Subscription;
+    observacionesSub: Subscription;
+    documentosSub: Subscription;
+    setExpedienteSub: Subscription;
+    usuariosSub: Subscription;
 
     agrimensorLoading = false;
     gestorLoading = false;
@@ -56,6 +63,8 @@ export class AgregarComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
+    usuarioModal: boolean = false;
+    inmuebleModal: boolean = false;
 
   constructor(
     private dataService: DataService,
@@ -68,7 +77,6 @@ export class AgregarComponent implements OnInit {
     ) { }
     
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.spinner.show();
 
 
@@ -94,34 +102,34 @@ export class AgregarComponent implements OnInit {
       documentos: ['', Validators.required]
       });
 
-    const tipoExpedientesSub = this._apiService.getTipoExpedientes()
+    this.tipoExpedientesSub = this._apiService.getTipoExpedientes()
       .subscribe(response => {
         this.tipos_expedientes = response
       })
-    this._apiService.cargarPeticion(tipoExpedientesSub);
+    this._apiService.cargarPeticion(this.tipoExpedientesSub);
     this.spinner.hide(); 
     
-    const inmueblesSub = this._apiService.getInmueblesDisponibles()
+    this.inmueblesSub = this._apiService.getInmueblesDisponibles()
       .subscribe(response => {
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
-    this._apiService.cargarPeticion(inmueblesSub);
+    this._apiService.cargarPeticion(this.inmueblesSub);
 
-    const observacionesSub = this._apiService.getObservaciones()
+    this.observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
 
-    this._apiService.cargarPeticion(observacionesSub);
+    this._apiService.cargarPeticion(this.observacionesSub);
 
-    const documentosSub = this._apiService.getDocumentos()
+    this.documentosSub = this._apiService.getDocumentos()
       .subscribe(response => {
         this.documentos = response
         this._functionService.imprimirMensaje(response, "documentos")
       })
-    this._apiService.cargarPeticion(documentosSub)
+    this._apiService.cargarPeticion(this.documentosSub)
 
     this.dropdownSettings=<IDropdownSettings> {
       singleSelection: false,
@@ -132,6 +140,10 @@ export class AgregarComponent implements OnInit {
       itemsShowLimit: 10,
       allowSearchFilter: true
     };
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   trackByFn(item: Person) {
@@ -208,7 +220,7 @@ export class AgregarComponent implements OnInit {
   }
   
   createExpediente() {
-    const setExpedienteSub = this._apiService.setExpediente(this.expedienteForm.value)
+    this.setExpedienteSub = this._apiService.setExpediente(this.expedienteForm.value)
       .subscribe((res: any) =>{
         Swal.fire({
           title: 'Exito',
@@ -218,25 +230,30 @@ export class AgregarComponent implements OnInit {
         })
         this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
       })
-    this._apiService.cargarPeticion(setExpedienteSub)
+    this._apiService.cargarPeticion(this.setExpedienteSub)
      this.loading = false;
   }
 
   verDetalles(dato:boolean){
-    const inmueblesSub = this._apiService.getInmueblesDisponibles()
+    this.inmueblesSub = this._apiService.getInmueblesDisponibles()
       .subscribe(response => {
         this.inmuebles = response
       })
-    this._apiService.cargarPeticion(inmueblesSub)
+    this._apiService.cargarPeticion(this.inmueblesSub)
   } 
 
   verDetallesUsuarios(dato:boolean){
-    const usuariosSub = this._apiService.getUsuarios()
+    this.usuariosSub = this._apiService.getUsuarios()
       .subscribe(response => {
         this.usuarios = response
       })
-    this._apiService.cargarPeticion(usuariosSub)
+    this._apiService.cargarPeticion(this.usuariosSub)
   } 
+
+  habilitarModal(modal:string){
+    if(modal=="usuario") this.usuarioModal = true;
+    else this.inmuebleModal = true
+  }
 
   limpiar(){
     this.expedienteForm.reset();

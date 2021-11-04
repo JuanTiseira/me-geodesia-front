@@ -1,14 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import Swal from 'sweetalert2'
 import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { concat, Observable, of, Subject } from 'rxjs';
+import { concat, Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService, Documento, Person } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import * as moment from 'moment'
@@ -21,7 +20,7 @@ import { TokenService } from 'src/app/services/token.service';
 
 
 
-export class DetalleComponent implements OnInit {
+export class DetalleComponent implements OnInit, OnDestroy{
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   
@@ -48,32 +47,41 @@ export class DetalleComponent implements OnInit {
   public busqueda_manual: boolean = false
 
 
-    agrimensor$: Observable<Person[]>;
-    gestor$: Observable<Person[]>;
-    propietario$: Observable<Person[]>;
-    documento$: Observable<Documento[]>;
-    documentos$: Observable<Documento[]>;
-    usuario$: Observable<Person[]>;
+  agrimensor$: Observable<Person[]>;
+  gestor$: Observable<Person[]>;
+  propietario$: Observable<Person[]>;
+  documento$: Observable<Documento[]>;
+  documentos$: Observable<Documento[]>;
+  usuario$: Observable<Person[]>;
 
-    agrimensorLoading = false;
-    gestorLoading = false;
-    propietarioLoading = false;
-    documentoLoading = false;
-    usuarioLoading = false;
-
-
-    agrimensorInput$ = new Subject<string>();
-    propietarioInput$ = new Subject<string>();
-    gestorInput$ = new Subject<string>();
-    documentoInput$ = new Subject<string>();
-    usuarioInput$ = new Subject<string>();
+  agrimensorLoading = false;
+  gestorLoading = false;
+  propietarioLoading = false;
+  documentoLoading = false;
+  usuarioLoading = false;
 
 
-    selectedAgrimensores: Person[] = <any>[{}];
-    selectedPropietarios: Person[] = <any>[{}];
-    selectedGestores: Person[] = <any>[{}];
-    selectedDocumentos: Documento[] = <any>[{}];
-    usuarioDocumentos: Documento[] = <any>[{}];
+  agrimensorInput$ = new Subject<string>();
+  propietarioInput$ = new Subject<string>();
+  gestorInput$ = new Subject<string>();
+  documentoInput$ = new Subject<string>();
+  usuarioInput$ = new Subject<string>();
+
+
+  selectedAgrimensores: Person[] = <any>[{}];
+  selectedPropietarios: Person[] = <any>[{}];
+  selectedGestores: Person[] = <any>[{}];
+  selectedDocumentos: Documento[] = <any>[{}];
+  usuarioDocumentos: Documento[] = <any>[{}];
+
+  documentosSub: Subscription;
+  expedienteSub: Subscription;
+  usuarioSub: Subscription;
+  editExpedienteSub: Subscription;
+  retiroSub: Subscription;
+  devolucionSub: Subscription;
+  inmueblesSub: Subscription;
+  usuariosSub: Subscription;
 
 
   public tipos_expedientes: any;
@@ -146,7 +154,6 @@ export class DetalleComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.numeroParam = ""
     this.anioParam = ""
     this.submitted = false;
@@ -156,12 +163,12 @@ export class DetalleComponent implements OnInit {
     this.user = this._tokenService.getUserName();
 
     this.spinner.show()
-    const documentosSub = this._apiService.getDocumentos()
+    this.documentosSub = this._apiService.getDocumentos()
       .subscribe(response => {
         this.documentos = response
         this._functionService.imprimirMensaje(response, "documentos")
       })
-    this._apiService.cargarPeticion(documentosSub)
+    this._apiService.cargarPeticion(this.documentosSub)
 
     this.loadPropietarios();
   
@@ -183,7 +190,7 @@ export class DetalleComponent implements OnInit {
     this.retiroForm.controls['dni'].setValue('');
     //BUSQUEDA Y CARGA CON FILTROS 
     if (this.anioParam) {
-      const expedienteSub = this._apiService.getExpedienteNumero(this.numeroParam, this.anioParam)
+      this.expedienteSub = this._apiService.getExpedienteNumero(this.numeroParam, this.anioParam)
         .subscribe((x:any) =>{
           this.tramite = x
           this.resultado = x.expediente
@@ -205,10 +212,10 @@ export class DetalleComponent implements OnInit {
           this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
         })
-      this._apiService.cargarPeticion(expedienteSub)
+      this._apiService.cargarPeticion(this.expedienteSub)
     }else if (this.id && !this.anioParam && !this.numeroParam)
       {
-        const expedienteSub = this._apiService.getExpediente(this.id)
+        this.expedienteSub = this._apiService.getExpediente(this.id)
           .subscribe((x:any) =>{
             this.tramite = x
             this.resultado = x.expediente
@@ -234,13 +241,13 @@ export class DetalleComponent implements OnInit {
             this.spinner.hide()
           })
 
-        this._apiService.cargarPeticion(expedienteSub)
+        this._apiService.cargarPeticion(this.expedienteSub)
       this.retiroForm.patchValue({descripcion: ''});
           
     }
     
     else{
-      const expedienteSub = this._apiService.getExpedienteTramite(this.numeroParam)
+      this.expedienteSub = this._apiService.getExpedienteTramite(this.numeroParam)
         .subscribe((x:any) =>{
 
           this.tramite = x
@@ -265,7 +272,7 @@ export class DetalleComponent implements OnInit {
           this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
       })
-      this._apiService.cargarPeticion(expedienteSub)
+      this._apiService.cargarPeticion(this.expedienteSub)
       
     }
   
@@ -275,6 +282,10 @@ export class DetalleComponent implements OnInit {
     this.loadPropietarios()
     
   //FIN CARGAR DATOS PARA SELECTS
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   trackByFn(item: Person) {
@@ -385,7 +396,7 @@ export class DetalleComponent implements OnInit {
       }
     }
   
-    const usuarioSub = this._apiService.getUsuarioNumero(dni)
+    this.usuarioSub = this._apiService.getUsuarioNumero(dni)
       .subscribe((response:any) => {
         this._functionService.imprimirMensaje(response, "usuario")
         this.usuario = response.results[0]
@@ -396,7 +407,7 @@ export class DetalleComponent implements OnInit {
           this.mensajeSwal.fire()
         }
       })
-    this._apiService.cargarPeticion(usuarioSub)
+    this._apiService.cargarPeticion(this.usuarioSub)
 
   }
 
@@ -495,12 +506,12 @@ export class DetalleComponent implements OnInit {
 
   updateExpediente() {
     
-    const editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)
+    this.editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)
       .subscribe(() =>{
         this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire();
       })
-    this._apiService.cargarPeticion(editExpedienteSub)  
+    this._apiService.cargarPeticion(this.editExpedienteSub)  
     this.loading = false;
   }
 
@@ -516,7 +527,7 @@ export class DetalleComponent implements OnInit {
         this.retiroForm.patchValue({documento: id});
         this.retiroForm.patchValue({tramite: this.tramite.id});
   
-        const retiroSub = this._apiService.setRetiro(this.retiroForm.value)
+        this.retiroSub = this._apiService.setRetiro(this.retiroForm.value)
           .subscribe((res: any) => {
             this._functionService.configSwal(this.mensajeSwal, `Se ha registrado correctamente`, "success", "Aceptar", "", false, "", "")
             this.mensajeSwal.fire();
@@ -532,7 +543,7 @@ export class DetalleComponent implements OnInit {
             this.ngOnInit()
           })
 
-        this._apiService.cargarPeticion(retiroSub);
+        this._apiService.cargarPeticion(this.retiroSub);
       } 
     }else{
       this.loading = false;
@@ -541,7 +552,7 @@ export class DetalleComponent implements OnInit {
 
   setDevol() {
     this.devolForm.patchValue({num_tramite: this.tramite.numero});
-    const devolucionSub = this._apiService.setDevol(this.devolForm.value)
+    this.devolucionSub = this._apiService.setDevol(this.devolForm.value)
       .subscribe((res: any) =>{        
         this.loading = false;
         this._functionService.configSwal(this.mensajeSwal, 'Nueva presentación registrada', "success", "Aceptar", "", false, "", "")
@@ -553,23 +564,23 @@ export class DetalleComponent implements OnInit {
         this.mensajeSwal.fire();
         this.loading = false;
       });
-    this._apiService.cargarPeticion(devolucionSub)
+    this._apiService.cargarPeticion(this.devolucionSub)
   }
 
   
   verDetalles(dato:boolean){
-    const inmueblesSub = this._apiService.getInmueblesDisponibles().subscribe(response => {
+    this.inmueblesSub = this._apiService.getInmueblesDisponibles().subscribe(response => {
       this.inmuebles = response
     })
-    this._apiService.cargarPeticion(inmueblesSub)
+    this._apiService.cargarPeticion(this.inmueblesSub)
   } 
 
   verDetallesUsuarios(dato:boolean){
-    const usuariosSub = this._apiService.getUsuarios()
+    this.usuariosSub = this._apiService.getUsuarios()
       .subscribe(response => {
         this.usuarios = response
       })
-    this._apiService.cargarPeticion(usuariosSub)
+    this._apiService.cargarPeticion(this.usuariosSub)
   } 
 
   verTramite(){

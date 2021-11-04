@@ -49,26 +49,27 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
-    }
-
-    this.loading = true;
-    $("#btn-login").toggleClass('disabled');
-    this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
-      .then(response => {
-        if (response) {
-          this.router.navigate(['home']);
-        } else {
-          $("#btn-login").removeClass('disabled');
-          this.loading = false;
-          this.failSwal.fire();
-          this.captchaElem.resetCaptcha();
-        }
-
-      })
+    if(!this.loading){
+      this.submitted = true;
+      // stop here if form is invalid
+      if (this.loginForm.invalid) {
+        return;
+      }
+  
+      this.loading = true;
+      $("#btn-login").toggleClass('disabled');
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
+        .then(response => {
+          if (response) {
+            this.router.navigate(['home']);
+          } else {
+            $("#btn-login").removeClass('disabled');
+            this.loading = false;
+            this.failSwal.fire();
+            this.captchaElem.resetCaptcha();
+          }
+        })
+    } 
   }
 
 }

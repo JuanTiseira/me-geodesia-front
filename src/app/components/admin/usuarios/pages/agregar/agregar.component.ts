@@ -7,6 +7,7 @@ import { FunctionsService } from '../../../../../services/functions.service';
 import Swal from 'sweetalert2'
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 
 
@@ -35,6 +36,10 @@ export class AgregarUsuarioComponent implements OnInit {
   loading = false;
   submitted = false;
 
+  tipoExpedientesSub: Subscription;
+  observacionesSub: Subscription;
+  usuariosSub: Subscription;
+  usuarioSub: Subscription;
 
   constructor(
     private _apiService: ApiService,
@@ -46,10 +51,8 @@ export class AgregarUsuarioComponent implements OnInit {
   ) { this.verDetallesFunction = new EventEmitter(); }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
-    console.log("add mode: ", this.id)
 
     this.usuarioForm = this.formBuilder.group({
       rol: ['', Validators.required],
@@ -73,11 +76,11 @@ export class AgregarUsuarioComponent implements OnInit {
     // }
 
 
-    const tipoExpedientesSub = this._apiService.getTipoExpedientes()
+    this.tipoExpedientesSub = this._apiService.getTipoExpedientes()
       .subscribe(response => {
         this.tipos_usuarios = response
       })
-    this._apiService.cargarPeticion(tipoExpedientesSub);
+    this._apiService.cargarPeticion(this.tipoExpedientesSub);
 
     this._apiService.getInmuebles().subscribe((response)=>{
       this.inmuebles = response
@@ -88,20 +91,20 @@ export class AgregarUsuarioComponent implements OnInit {
       //   this._functionService.imprimirMensaje(response, "inmuebles")
       // })
 
-    const observacionesSub = this._apiService.getObservaciones()
+    this.observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
     
-    this._apiService.cargarPeticion(observacionesSub)
+    this._apiService.cargarPeticion(this.observacionesSub)
     
-    const usuariosSub = this._apiService.getUsuarios()
+    this.usuariosSub = this._apiService.getUsuarios()
       .subscribe(response => {
         this.usuarios = response
         this._functionService.imprimirMensaje(response, "usuarios")
       })
-    this._apiService.cargarPeticion(usuariosSub);
+    this._apiService.cargarPeticion(this.usuariosSub);
 
     this._apiService.cargarPeticion(this._apiService.getRoles()
       .subscribe(response => {
@@ -112,6 +115,10 @@ export class AgregarUsuarioComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
+  }
+  
   get f() { return this.usuarioForm.controls; }
 
 
@@ -137,14 +144,14 @@ export class AgregarUsuarioComponent implements OnInit {
   }
 
   createUsuario() {
-    const usuarioSub = this._apiService.setUsuario(this.usuarioForm.value)
+    this.usuarioSub = this._apiService.setUsuario(this.usuarioForm.value)
       .subscribe(() => {
         this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire().finally(() => { this.limpiar() });
         this.verDetallesFunction.emit(true);
       })
       this.loading = false;
-    this._apiService.cargarPeticion(usuarioSub)
+    this._apiService.cargarPeticion(this.usuarioSub)
 
     document?.getElementById("closeModalButton")?.click();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 
 
-export class DetalleUsuarioComponent implements OnInit {
+export class DetalleUsuarioComponent implements OnInit, OnDestroy{
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
@@ -38,6 +39,9 @@ export class DetalleUsuarioComponent implements OnInit {
   selectedpropietario: string; 
   selectedagrimensor: string;
 
+  usuarioSub: Subscription;
+  editExpedienteSub: Subscription;
+
 
   public tipos_usuarios: any;
   public documentos: any; 
@@ -58,7 +62,6 @@ export class DetalleUsuarioComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.spinner.show();
       
     this.id = this.route.snapshot.params['id'];
@@ -84,7 +87,7 @@ export class DetalleUsuarioComponent implements OnInit {
     
     this.idEdit = false
 
-    const usuarioSub = this._apiService.getUsuario(this.route.snapshot.paramMap.get('id'))
+    this.usuarioSub = this._apiService.getUsuario(this.route.snapshot.paramMap.get('id'))
       .subscribe(response => {
         this.usuario = response
         this.usuarioForm.patchValue(response)
@@ -93,8 +96,12 @@ export class DetalleUsuarioComponent implements OnInit {
         this._functionService.imprimirMensaje(response, "usuario")
         this.spinner.hide()
       })
-    this._apiService.cargarPeticion(usuarioSub)
+    this._apiService.cargarPeticion(this.usuarioSub)
   
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   compareFn(value, option): boolean {
@@ -127,7 +134,7 @@ export class DetalleUsuarioComponent implements OnInit {
   get f() { return this.usuarioForm.controls; }
 
   updateExpediente() {    
-    const editExpedienteSub = this._apiService.editExpediente(this.usuarioForm.value)
+    this.editExpedienteSub = this._apiService.editExpediente(this.usuarioForm.value)
       .subscribe(() =>{
         Swal.fire({
           title: 'Exito',
@@ -136,7 +143,7 @@ export class DetalleUsuarioComponent implements OnInit {
           confirmButtonText: 'Cool',
         })
       })
-    this._apiService.cargarPeticion(editExpedienteSub)
+    this._apiService.cargarPeticion(this.editExpedienteSub)
     this.loading = false;
   }
 

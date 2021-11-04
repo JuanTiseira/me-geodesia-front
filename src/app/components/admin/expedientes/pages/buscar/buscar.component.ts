@@ -1,15 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
-import Swal from 'sweetalert2';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { concat, Observable, of, Subject } from 'rxjs';
+import { concat, Observable, of, Subject, Subscription} from 'rxjs';
 import { DataService, Documento, Person } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 /**
@@ -21,7 +19,7 @@ import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators
   styleUrls: ['./buscar.component.scss']
 })
 
-export class BuscarComponent implements OnInit {
+export class BuscarComponent implements OnInit, OnDestroy {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   closeResult = '';
@@ -49,6 +47,12 @@ export class BuscarComponent implements OnInit {
   gestor$: Observable<Person[]>;
   propietario$: Observable<Person[]>;
   documento$: Observable<Documento[]>;
+
+  tipoExpedientesSub: Subscription;
+  usuariosSub: Subscription;
+  deleteExpedienteSub: Subscription;
+  expedienteSub: Subscription;
+  expedientesSub: Subscription;
 
   agrimensorLoading = false;
   gestorLoading = false;
@@ -85,9 +89,7 @@ export class BuscarComponent implements OnInit {
                 private spinner: NgxSpinnerService
                 ) { this.load = false; }
 
-  ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
-    
+  ngOnInit(): void {    
     this.consultaForm = this.formBuilder.group({
       param_busqueda: ['', Validators.required],   
       numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
@@ -108,11 +110,11 @@ export class BuscarComponent implements OnInit {
       this.loadAgrimensores();
       this.loadDocumentos();
       
-      const tipoExpedientesSub = this._apiService.getTipoExpedientes()
+      this.tipoExpedientesSub = this._apiService.getTipoExpedientes()
         .subscribe(response => {
           this.tipos_expedientes = response
         })
-      this._apiService.cargarPeticion(tipoExpedientesSub);
+      this._apiService.cargarPeticion(this.tipoExpedientesSub);
 
       this._apiService.getInmuebles().subscribe((response)=>{
         this.inmuebles = response
@@ -124,13 +126,17 @@ export class BuscarComponent implements OnInit {
         // })
        
   
-      const usuariosSub = this._apiService.getUsuarios()
+      this.usuariosSub = this._apiService.getUsuarios()
         .subscribe(response => {
           this.usuarios = response
           this._functionService.imprimirMensaje(response, "usuarios")
         })
-      this._apiService.cargarPeticion(usuariosSub)
+      this._apiService.cargarPeticion(this.usuariosSub)
 
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   buscar () {
@@ -142,13 +148,13 @@ export class BuscarComponent implements OnInit {
     this.mensajeSwal.fire()
       .then((result) => {
       if (result.isConfirmed) {
-        const deleteExpedienteSub = this._apiService.deleteExpediente(id)
+        this.deleteExpedienteSub = this._apiService.deleteExpediente(id)
           .subscribe(() =>{ 
             this._functionService.configSwal(this.mensajeSwal, `El expediente fue eliminado.`, "success", "Aceptar", "", false, "", "");
             this.mensajeSwal.fire()
             this.buscarExpedientes()
           })
-        this._apiService.cargarPeticion(deleteExpedienteSub)  
+        this._apiService.cargarPeticion(this.deleteExpedienteSub)  
         }
     })
   }
@@ -229,19 +235,19 @@ export class BuscarComponent implements OnInit {
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
-      const expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
+      this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
         .subscribe((x:any) =>{
           this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
         })
-      this._apiService.cargarPeticion(expedienteSub)
+      this._apiService.cargarPeticion(this.expedienteSub)
     }else{
 
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-      const expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
+      this.expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
         .subscribe((x:any) =>{
           this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numeroanio } }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE 
         })
-      this._apiService.cargarPeticion(expedienteSub);
+      this._apiService.cargarPeticion(this.expedienteSub);
     }
     this.spinner.hide();
   }
@@ -259,7 +265,7 @@ export class BuscarComponent implements OnInit {
   buscarExpedientes() {
     this.spinner.show();
     this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
-    const expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
+    this.expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
       .subscribe((res) =>{
         this.expedientes = res
         if (this.expedientes.count == 0) {
@@ -275,7 +281,7 @@ export class BuscarComponent implements OnInit {
         this.spinner.hide();
         
       })
-    this._apiService.cargarPeticion(expedientesSub);
+    this._apiService.cargarPeticion(this.expedientesSub);
   }
 
   limpiar() {

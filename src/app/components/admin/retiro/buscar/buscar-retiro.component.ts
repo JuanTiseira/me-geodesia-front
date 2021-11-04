@@ -1,5 +1,5 @@
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Role } from 'src/app/models/role.models';
@@ -10,6 +10,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Subscription } from 'rxjs';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -21,7 +22,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
   
 
-export class BuscarRetiroComponent implements OnInit {
+export class BuscarRetiroComponent implements OnInit, OnDestroy {
 
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
@@ -38,6 +39,9 @@ export class BuscarRetiroComponent implements OnInit {
   public tipo_consulta: any;
   public param_busqueda: any
   public load: boolean;
+
+  observacionesSub: Subscription;
+  eliminarInmuebleSub: Subscription;
 
   p: number = 1;
   inmueble: string
@@ -89,16 +93,15 @@ export class BuscarRetiroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.spinner.show();
 
-    const observacionesSub = this._apiService.getObservaciones()
+    this.observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
         this.observaciones = response
         this._functionService.imprimirMensaje(response, "observaciones")
       })
       
-    this._apiService.cargarPeticion(observacionesSub);
+    this._apiService.cargarPeticion(this.observacionesSub);
 
     this._apiService.getInmuebles()
       .subscribe((response)=>{
@@ -114,6 +117,10 @@ export class BuscarRetiroComponent implements OnInit {
         this.spinner.hide();
       }));
 
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   onTableDataChange(event) {
@@ -160,7 +167,7 @@ export class BuscarRetiroComponent implements OnInit {
       confirmButtonText: 'Si, eliminar Inmueble!'
     }).then((result) => {
       if (result.isConfirmed) {
-        const eliminarInmuebleSub = this._apiService.deleteInmueble(id)
+        this.eliminarInmuebleSub = this._apiService.deleteInmueble(id)
           .subscribe(() =>{ 
             Swal.fire(
             'Eliminado!',
@@ -169,7 +176,7 @@ export class BuscarRetiroComponent implements OnInit {
           )
           this.router.navigate(['/inmueble/buscar']);
           })
-        this._apiService.cargarPeticion(eliminarInmuebleSub)  
+        this._apiService.cargarPeticion(this.eliminarInmuebleSub)  
       }
     })
   }

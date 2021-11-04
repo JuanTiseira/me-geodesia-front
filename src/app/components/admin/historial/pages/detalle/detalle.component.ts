@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,10 +11,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './detalle.component.html',
   styleUrls: ['./detalle.component.scss']
 })
-export class DetalleHistorialComponent implements OnInit {
+export class DetalleHistorialComponent implements OnInit, OnDestroy {
 
   expediente = null;
   message = '';
+  expedienteSub: Subscription;
 
   constructor(
     private _apiService: ApiService,
@@ -23,14 +25,17 @@ export class DetalleHistorialComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.message = '';
 
-    const expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+    this.expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
       .subscribe(response => {
         this.expediente = response
         this._functionService.imprimirMensaje(response, "historial")
       })
-    this._apiService.cargarPeticion(expedienteSub);  
+    this._apiService.cargarPeticion(this.expedienteSub);  
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 }

@@ -1,5 +1,5 @@
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 
 
@@ -24,7 +25,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 
 
-export class BuscarHistorialComponent implements OnInit {
+export class BuscarHistorialComponent implements OnInit, OnDestroy {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
@@ -42,6 +43,10 @@ export class BuscarHistorialComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public tipo_consulta: any;
+
+  expedienteSub: Subscription;
+  historialSub: Subscription;
+
 
   expediente: string
   tramite: string
@@ -75,11 +80,14 @@ export class BuscarHistorialComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     if( this.id != null){
       this.buscarHistorial();
     }
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   get r() { return this.consultaForm.controls; }
@@ -119,16 +127,16 @@ export class BuscarHistorialComponent implements OnInit {
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
-      const expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
+      this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
           .subscribe((x:any) =>{
-            const historialSub = this._apiService.getHistorial(x.id)
+            this.historialSub = this._apiService.getHistorial(x.id)
               .subscribe((x:any) =>{
                 this.historiales = x.results;
                 this.datos = this.historiales[0]
               }) 
-            this._apiService.cargarPeticion(historialSub)        
+            this._apiService.cargarPeticion(this.historialSub)        
           })
-      this._apiService.cargarPeticion(expedienteSub);
+      this._apiService.cargarPeticion(this.expedienteSub);
 
     }else{
 
@@ -137,16 +145,16 @@ export class BuscarHistorialComponent implements OnInit {
         numeroanio = this.id
       }
 
-      const expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
+      this.expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
         .subscribe((x:any) =>{
-          const historialSub = this._apiService.getHistorial(x.id)
+          this.historialSub = this._apiService.getHistorial(x.id)
             .subscribe((x:any) =>{
               this.historiales = x.results;
               this.datos = this.historiales[0]
             })
-          this._apiService.cargarPeticion(historialSub)     
+          this._apiService.cargarPeticion(this.historialSub)     
       })
-      this._apiService.cargarPeticion(expedienteSub);
+      this._apiService.cargarPeticion(this.expedienteSub);
     }
     this.loading = false;
     this.spinner.hide();

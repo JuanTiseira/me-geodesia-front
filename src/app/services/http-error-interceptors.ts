@@ -22,16 +22,17 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               title: 'Error' + ` ${error.status}`,
               text: error?.message,
               icon: 'error',
-              confirmButtonText: 'Aceptar'
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#53BAAB'
             })
             break;
           case 404:
             let mensaje = error.error.detail!=null?error.error.detail:error.error
             Swal.fire({
-              title: error?.status,
-              text: mensaje,
+              title: mensaje,
               icon: 'info',
-              confirmButtonText: 'Aceptar'
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#53BAAB'
             })
             break; 
             case 400:
@@ -40,7 +41,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 title: error?.status,
                 text: mensaje2,
                 icon: 'error',
-                confirmButtonText: 'Aceptar'
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#53BAAB'
               })
               break;             
           case 401:
@@ -48,7 +50,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               title: 'Sin permiso' + ` ${error.status}`,
               text: 'Por favor volver a loguearse.',
               icon: 'info',
-              confirmButtonText: 'Aceptar'
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#53BAAB'
             }).finally(() => {
               this.router.navigate(['login']);
             })

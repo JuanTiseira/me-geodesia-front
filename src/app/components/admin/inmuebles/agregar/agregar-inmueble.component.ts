@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2'
   templateUrl: './agregar-inmueble.component.html',
   styleUrls: ['./agregar-inmueble.component.scss']
 })
-export class AgregarInmuebleComponent implements OnInit {
+export class AgregarInmuebleComponent implements OnInit, OnDestroy{
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
 
@@ -29,6 +30,10 @@ export class AgregarInmuebleComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+
+  expedienteSub: Subscription;
+  municipiosSub: Subscription;
+  inmuebleSub: Subscription;
   
 
   constructor(
@@ -43,7 +48,6 @@ export class AgregarInmuebleComponent implements OnInit {
      }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes()
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
@@ -66,18 +70,22 @@ export class AgregarInmuebleComponent implements OnInit {
 
 
     if (!this.isAddMode) {
-        const expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
+        this.expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
           .subscribe(x => this.form.patchValue(x));
-        this._apiService.cargarPeticion(expedienteSub);  
+        this._apiService.cargarPeticion(this.expedienteSub);  
     }
 
-    const municipiosSub = this._apiService.getMunicipios()
+    this.municipiosSub = this._apiService.getMunicipios()
       .subscribe(response => {
         this.municipios = response
         this._functionService.imprimirMensaje(response, "municipios")
       })
-    this._apiService.cargarPeticion(municipiosSub)
+    this._apiService.cargarPeticion(this.municipiosSub)
   
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   get f() { 
@@ -97,7 +105,7 @@ export class AgregarInmuebleComponent implements OnInit {
 }
   
   createInmueble() {
-    const inmuebleSub = this._apiService.setInmueble(this.inmuebleForm.value)
+    this.inmuebleSub = this._apiService.setInmueble(this.inmuebleForm.value)
       .subscribe(() =>{     
         this.loading = false;
         this.verDetallesInmuebles.emit(true);
@@ -107,7 +115,7 @@ export class AgregarInmuebleComponent implements OnInit {
           this.submitted = false;
         })
       })
-      this._apiService.cargarPeticion(inmuebleSub)
+      this._apiService.cargarPeticion(this.inmuebleSub)
       this.loading = false;
     document.getElementById("closeModalInmuebleButton").click();
   }

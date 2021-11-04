@@ -1,5 +1,5 @@
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -11,8 +11,7 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-
-
+import { Subscription } from 'rxjs';
 
 
 /**
@@ -25,7 +24,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 })
   
 
-export class BuscarInmuebleComponent implements OnInit {
+export class BuscarInmuebleComponent implements OnInit, OnDestroy {
 
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
@@ -42,6 +41,10 @@ export class BuscarInmuebleComponent implements OnInit {
   public tipo_consulta: any;
   public param_busqueda: any
   public load: boolean;
+  
+  inmueblesSub: Subscription;
+  rolesSub: Subscription;
+  eliminarInmuebleSub: Subscription;
 
   p: number = 1;
   inmueble: string
@@ -99,23 +102,26 @@ export class BuscarInmuebleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._apiService.cancelarPeticionesPendientes();
     this.spinner.show();
   
-    const inmueblesSub = this._apiService.getInmuebles()
+    this.inmueblesSub = this._apiService.getInmuebles()
       .subscribe((response)=>{
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
-    this._apiService.cargarPeticion(inmueblesSub);
+    this._apiService.cargarPeticion(this.inmueblesSub);
 
-    const rolesSub = this._apiService.getRoles()
+    this.rolesSub = this._apiService.getRoles()
         .subscribe(response => {
           this.roles = response
           this._functionService.imprimirMensaje(response, "roles")
           this.spinner.hide();
         })
-    this._apiService.cargarPeticion(rolesSub);
+    this._apiService.cargarPeticion(this.rolesSub);
+  }
+
+  ngOnDestroy(): void {
+    this._apiService.cancelarPeticionesPendientes()
   }
 
   onTableDataChange(event) {
@@ -147,12 +153,12 @@ export class BuscarInmuebleComponent implements OnInit {
     this.mensajeSwal.fire()
       .then((result) => {
         if (result.isConfirmed) {
-          const eliminarInmuebleSub = this._apiService.deleteInmueble(id)
+          this.eliminarInmuebleSub = this._apiService.deleteInmueble(id)
             .subscribe(() =>{ 
               this._functionService.configSwal(this.mensajeSwal, `El inmueble fue eliminado.`, "success", "Aceptar", "", false, "", "");
               this.ngOnInit();
             }) 
-          this._apiService.cargarPeticion(eliminarInmuebleSub);
+          this._apiService.cargarPeticion(this.eliminarInmuebleSub);
         }
       })
   }
