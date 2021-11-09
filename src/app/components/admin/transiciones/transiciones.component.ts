@@ -81,9 +81,8 @@ export class TransicionesComponent implements OnInit, OnDestroy {
     this.sectorSub = this._apiService.getSectores()
       .subscribe((res:any)=>{
         this.sectores = res.results
-      },(error)=>{
-        this._functionService.configSwal(this.mensajeSwal, 'No se encuentran sectores', "info", "Aceptar", "", false, "", "");
-        this.mensajeSwal.fire()
+      }, error=>{
+        this.spinner.hide()
       })
     this._apiService.cargarPeticion(this.sectorSub)
   }

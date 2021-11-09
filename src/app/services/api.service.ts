@@ -89,16 +89,16 @@ export class ApiService {
   }
 
   getExpedientesSector(){
-    return this.http.get(this.url+'/expedientes/sector/');
+    return this.http.get(this.url+'/expedientes/sector_unificado/');
   }
 
-  getExpedientesSectorSalida(){
-    return this.http.get(this.url+'/expedientes/sector_salida/');
-  }
+  // getExpedientesSectorSalida(){
+  //   return this.http.get(this.url+'/expedientes/sector_salida/');
+  // }
 
-  getExpedientesSectorEntrada(){
-    return this.http.get(this.url+'/expedientes/sector_entrada/');
-  }
+  // getExpedientesSectorEntrada(){
+  //   return this.http.get(this.url+'/expedientes/sector_entrada/');
+  // }
 
   getExpedienteTramite(numero){
     return this.http.get(this.url+`/expedientes/expediente_tramite/?tramite=${numero}`);

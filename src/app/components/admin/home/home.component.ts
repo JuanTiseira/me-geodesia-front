@@ -150,21 +150,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.expedientesSectorSub = this._apiService.getExpedientesSector()
       .subscribe((response:any) => {
-        this.expedientes_sector = response.data
+        console.log(response)
+        this.expedientes_sector = response.data.sector
+        this.expedientes_salida = response.data.sector_salida
+        this.expedientes_a_entrar = response.data.sector_entrada
       })
     this._apiService.cargarPeticion(this.expedientesSectorSub);
-
-    this.expedientesSalidaSub = this._apiService.getExpedientesSectorSalida()
-      .subscribe((response:any) => {
-        this.expedientes_salida = response.data
-      });
-    this._apiService.cargarPeticion(this.expedientesSalidaSub)
-
-    this.expedientesEntradaSub = this._apiService.getExpedientesSectorEntrada()
-      .subscribe((response:any) => {
-        this.expedientes_a_entrar = response.data
-      });
-    this._apiService.cargarPeticion(this.expedientesEntradaSub);
 
   }
 }
