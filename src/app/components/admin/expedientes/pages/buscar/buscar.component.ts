@@ -219,6 +219,8 @@ export class BuscarComponent implements OnInit, OnDestroy {
     if (this.consultaForm.value.param_busqueda == 'expediente') {
       
       if(numeroanio.toString().length > 5) {
+        this._functionService.imprimirMensaje(numeroanio.toString().length, "numero anio: ")
+
         var numero = 0 
         let z = 1
   
@@ -233,17 +235,18 @@ export class BuscarComponent implements OnInit, OnDestroy {
         }
         var anio = numeroanio.toString().slice(-4);
         this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
-      }else{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-      }
+              //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
-      //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-
-      this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
+        this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
         .subscribe((x:any) =>{
           this.router.navigate(['/expediente/'+x.expediente.id],{ queryParams: { numero: numero , anio: anio} }); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE
         })
-      this._apiService.cargarPeticion(this.expedienteSub)
+        this._apiService.cargarPeticion(this.expedienteSub)
+      }else{
+        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire();
+      }
+
     }else{
 
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
