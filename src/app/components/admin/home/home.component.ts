@@ -79,8 +79,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.submitted = false;
-
-      if (this.isAdmin || this.isEmpleadoMe || this.isEmpleado ) {
+      if (this.isAdmin || this.isEmpleadoME || this.isEmpleado ) {
+        
         this.spinner.show();
         this.expedientesSub = this._apiService.getExpedientes()
           .subscribe(response => {
@@ -88,7 +88,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           })
         this._apiService.cargarPeticion(this.expedientesSub);
 
-      
       this.usuariosSub = this._apiService.getUsuarios()
         .subscribe(response => {
           this.usuarios = response
@@ -98,7 +97,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.router.navigate(['login']);
       }
 
-      if(this.isEmpleado || this.isEmpleadoMe || this.isAdmin){
+      if(this.isEmpleado || this.isEmpleadoME || this.isAdmin){
         this.cargarExpedientesEstado()
       }
 
@@ -106,7 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._apiService.cancelarPeticionesPendientes()
+    // this._apiService.cancelarPeticionesPendientes()
   }
 
 
@@ -120,8 +119,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.authService.hasRole(Role.ROL_EMPLEADO);
   }
 
-  get isEmpleadoMe() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO_ME);
+  get isEmpleadoME() {
+    return this.authService.hasRole(Role.ROL_EMPLEADOME);
   }
 
   get isProfesional() {
@@ -147,7 +146,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   cargarExpedientesEstado(){
     this.consultaForm.reset();
     this.submitted = false;
-
     this.expedientesSectorSub = this._apiService.getExpedientesSector()
       .subscribe((response:any) => {
         console.log(response)
@@ -155,6 +153,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.expedientes_salida = response.data.sector_salida
         this.expedientes_a_entrar = response.data.sector_entrada
       })
+
     this._apiService.cargarPeticion(this.expedientesSectorSub);
 
   }

@@ -196,6 +196,10 @@ export class BuscarComponent implements OnInit, OnDestroy {
     return this.authService.hasRole(Role.ROL_EMPLEADO);
   }
 
+  get isEmpleadoME() {
+    return this.authService.hasRole(Role.ROL_EMPLEADOME);
+  }
+
   buscarExpediente() {
 
     this.submitted = true;

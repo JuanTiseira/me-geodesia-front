@@ -35,6 +35,7 @@ export class AgregarUsuarioComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  credenciales = false;
 
   tipoExpedientesSub: Subscription;
   observacionesSub: Subscription;
@@ -86,10 +87,7 @@ export class AgregarUsuarioComponent implements OnInit {
       this.inmuebles = response
       this._functionService.imprimirMensaje(response, "inmuebles")
     })
-      // .then(response => {
-      //   this.inmuebles = response
-      //   this._functionService.imprimirMensaje(response, "inmuebles")
-      // })
+
 
     this.observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
@@ -125,6 +123,14 @@ export class AgregarUsuarioComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
+    if((!this.usuarioForm.value.user != !this.usuarioForm.value.password)){
+      console.log("user: ",!this.usuarioForm.value.user, "  pass: ", !this.usuarioForm.value.password)
+      this.credenciales = true;
+      return;
+    }else{
+      this.credenciales = false;
+    }
+
     if (this.usuarioForm.invalid) {
       return;
     }

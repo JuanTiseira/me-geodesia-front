@@ -504,6 +504,10 @@ export class DetalleComponent implements OnInit, OnDestroy{
     return this.authService.hasRole(Role.ROL_EMPLEADO);
   }
 
+  get isEmpleadoME() {
+    return this.authService.hasRole(Role.ROL_EMPLEADOME);
+  }
+
   updateExpediente() {
     
     this.editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)

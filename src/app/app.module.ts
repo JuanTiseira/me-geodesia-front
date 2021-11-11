@@ -29,7 +29,6 @@ import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAr, 'es-Ar');
 
-// const globalSettings: RecaptchaSettings = { siteKey: '6LfahdocAAAAAFkL015n25F3anhRBpr-nNmAdY2n' };
 
 @NgModule({
   declarations: [

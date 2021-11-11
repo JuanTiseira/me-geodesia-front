@@ -32,10 +32,10 @@
             <div class="col-md-4">
                 <div class="mt-3">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" [ngClass]="{'col-md-12': !isAdmin && !isEmpleadoME}">
                             <button type="button" (click)="buscarExpediente()" class="btn btn-green">Buscar</button>
                         </div>
-                        <div class="col-md-6">
+                        <div *ngIf="isAdmin || isEmpleadoME" class="col-md-6" >
                             <button routerLink="/expediente/agregar" type="button" class="btn btn-green">Nuevo</button>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
 
         <hr />
 
-        <div class="row justify-content-between" *ngIf="isAdmin || isEmpleado">
+        <div class="row justify-content-between" *ngIf="isAdmin || isEmpleado || isEmpleadoME">
             <h2 style="font-weight: bold;">Filtrar expedientes</h2>
 
             <div class="col-lg-4 col-md-4 col-sm-12">
@@ -172,7 +172,7 @@
                     <td *ngIf="exp.habilitado == true"><b>Activo</b></td>
                     <td *ngIf="exp.habilitado == false"><b>Inactivo</b></td>
                     <td>
-                        <a class="mx-1" [routerLink]="['/expediente/', exp.id ]" >
+                        <a class="mx-1" [ngClass]="{'mx-3': isEmpleado}" [routerLink]="['/expediente/', exp.id ]" >
                             <span style="color: gray;">
                                 <svg id="i-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                 <path d="M16 14 L16 23 M16 8 L16 10" />
@@ -187,7 +187,7 @@
                                 </svg>
                             </span>
                         </a>
-                        <a  class="mx-1" [routerLink]="['/expediente/editar/', exp.id ]"  >
+                        <a *ngIf="isAdmin || isEmpleadoME" class="mx-1" [routerLink]="['/expediente/editar/', exp.id ]"  >
                             <span style="color: rgb(248, 152, 9);">
                                 <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />

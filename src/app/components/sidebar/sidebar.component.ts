@@ -26,6 +26,15 @@ export class SidebarComponent implements OnInit {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
 
+  get isEmpleado() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO);
+  }
+
+  get isEmpleadoME() {
+    return this.authService.hasRole(Role.ROL_EMPLEADOME);
+  }
+
+
 
   ngOnInit(): void {
   }

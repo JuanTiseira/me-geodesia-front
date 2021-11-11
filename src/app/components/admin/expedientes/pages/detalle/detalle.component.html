@@ -101,13 +101,13 @@
           </button>
 
 
-          <button *ngIf="!isEditMode" [disabled]="loading" type="button" class="btn btn-green"
+          <button *ngIf="!isEditMode && (isEmpleadoME || isAdmin)" [disabled]="loading" type="button" class="btn btn-green"
             printSectionId="acuse" printTitle="CARATULA" ngxPrint styleSheetFile="/assets/acuse.scss">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Imprimir Constancia
           </button>
         </div>
-        <div *ngIf="isNumeroAnio; else btnUltimoTramite" class="col-md-12">
+        <div *ngIf="isNumeroAnio && (isAdmin || isEmpleadoME); else btnUltimoTramite" class="col-md-12">
           <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearDevol"
             class="btn btn-green btn-block">Nueva Presentacion</button>
           <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearRetiro"
@@ -128,7 +128,7 @@
 
   <!-- MODAL CREAR RETIRO -->
 
-  <div *ngIf="isAdmin || isEmpleado" class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro"
+  <div *ngIf="isAdmin || isEmpleadoME" class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -304,7 +304,7 @@
 
   <!-- MODAL CREAR DEVOLUCION -->
 
-  <div *ngIf="isAdmin || isEmpleado" class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
+  <div *ngIf="isAdmin || isEmpleadoME" class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -573,7 +573,7 @@
 
   <!-- ACUSE DE RECIBO -->
 
-  <div *ngIf="isAdmin && resultado" hidden>
+  <div *ngIf="(isEmpleadoME || isAdmin) && resultado" hidden>
     <div id="acuse">
       <table style="width:100%">
         <tr>

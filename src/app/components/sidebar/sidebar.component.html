@@ -1,18 +1,18 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-content">
-        <a class="link" routerLinkActive="active" (click)="cambioUrl('home')" [routerLink]="['home']">
+        <a *ngIf="isEmpleadoME || isEmpleado || isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('home')" [routerLink]="['home']">
             <i class="far fa-home"></i>Inicio</a>
         
-        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('expedientes')" [routerLink]="['expediente/buscar']">
+        <a class="link" *ngIf="isEmpleadoME || isEmpleado || isAdmin" routerLinkActive="active" (click)="cambioUrl('expedientes')" [routerLink]="['expediente/buscar']">
             <i class="far fa-file"></i>Expedientes</a>
         
-        <a class="link" *ngIf="true" routerLinkActive="active" (click)="cambioUrl('historial')" [routerLink]="['historial/buscar']">
+        <a class="link" *ngIf="isEmpleadoME || isEmpleado || isAdmin" routerLinkActive="active" (click)="cambioUrl('historial')" [routerLink]="['historial/buscar']">
             <i class="fas fa-history"></i>Historial</a>
 
-        <a  *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['usuario/buscar']">
+        <a  *ngIf="isEmpleadoME || isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('usuarios')" [routerLink]="['usuario/buscar']">
             <i class="fad fa-users"></i>Usuarios</a>
 
-        <a  *ngIf="isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('inmuebles')" [routerLink]="['inmueble/buscar']">
+        <a  *ngIf="isEmpleadoME || isAdmin" class="link" routerLinkActive="active" (click)="cambioUrl('inmuebles')" [routerLink]="['inmueble/buscar']">
             <i class="fab fa-houzz"></i>Inmuebles</a>
     
 

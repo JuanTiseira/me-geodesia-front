@@ -39,14 +39,18 @@ export class DashboardComponent implements OnInit {
       return this.authService.hasRole(Role.ROL_EMPLEADO);
     }
 
+    get isEmpleadoME() {
+      return this.authService.hasRole(Role.ROL_EMPLEADOME);
+    }
+
     get isExterno() {
       return this.authService.hasRole(Role.ROL_PROFESIONAL);
     }
   
 
   ngOnInit(): void {
-    if(!this.isAdmin && !this.isEmpleado){
-      // console.log("admin: ", this.isAdmin);
+    if(!this.isAdmin && !this.isEmpleado && !this.isEmpleadoME){
+      console.log("admin: ", this.isAdmin);
       this.router.navigate(['login']);
     }
    

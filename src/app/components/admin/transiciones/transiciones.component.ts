@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { Role } from 'src/app/models/role.models';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 
 @Component({
@@ -27,7 +29,7 @@ export class TransicionesComponent implements OnInit, OnDestroy {
   constructor(private _apiService: ApiService,
               private _functionService: FunctionsService ,
               private formBuilder: FormBuilder,
-              private router: Router,
+              private authService: AuthService,
               private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
@@ -56,6 +58,16 @@ export class TransicionesComponent implements OnInit, OnDestroy {
     this._apiService.cancelarPeticionesPendientes()
   }
 
+
+  get isAdmin() {
+    return this.authService.hasRole(Role.ROL_ADMIN);
+  }
+  get isEmpleadoME() {
+    return this.authService.hasRole(Role.ROL_EMPLEADOME);
+  }
+  get isEmpleado() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO);
+  }
 
   buscarTramites() {
     this.spinner.show();

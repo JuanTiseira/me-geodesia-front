@@ -58,9 +58,9 @@ export class ApiService {
 
   
 
-  errorPeticion(){
-    this.router.navigate(['login']);
-  }
+  // errorPeticion(){
+  //   this.router.navigate(['login']);
+  // }
 
   changePage(page, module){
     return this.http.get(this.url+`/${module}/?page=${page}`).toPromise();
@@ -92,13 +92,6 @@ export class ApiService {
     return this.http.get(this.url+'/expedientes/sector_unificado/');
   }
 
-  // getExpedientesSectorSalida(){
-  //   return this.http.get(this.url+'/expedientes/sector_salida/');
-  // }
-
-  // getExpedientesSectorEntrada(){
-  //   return this.http.get(this.url+'/expedientes/sector_entrada/');
-  // }
 
   getExpedienteTramite(numero){
     return this.http.get(this.url+`/expedientes/expediente_tramite/?tramite=${numero}`);

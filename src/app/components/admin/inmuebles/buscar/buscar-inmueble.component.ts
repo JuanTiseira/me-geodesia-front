@@ -7,7 +7,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -67,7 +66,6 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
                 private authService: AuthService,
-                private router: Router,
                 private spinner: NgxSpinnerService
                 ) { }
 
@@ -178,7 +176,7 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   }
 
   buscarInmueble() {
-  
+    this.p = 1
     this.spinner.show();
     var numero = this.consultaForm.value.numero
     var parametro = this.consultaForm.value.param_busqueda
@@ -187,10 +185,6 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
-      // .then((response) => {
-      //   console.log("response: ",response)
-      //   this.inmuebles = response;
-      // })
     
     this.spinner.hide();
   }
@@ -200,25 +194,6 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     this.consultaForm.reset();
     this.ngOnInit();
   }
-  
-  // onSubmit() {
-    
-    
-  //   this._apiService.getInmueble(this.consultaForm.value)
-  //   .then(() =>{
-  //     console.warn(this.consultaForm.value);
-  //     //this._functionService.configSwal(this.mensajeSwal, `El inmueble ${this.inmuebleForm.value} fue creado correctamente.`, "success", "Aceptar", "", false, "", "");
-  //     // this.mensajeSwal.fire().finally(()=> {
-  //     //   this.ngOnInit();
-  //     //   //this.mostrarLista();
-  //     // });
-  //   })
-  //   .catch(()=>{
-  //    // this._functionService.configSwal(this.mensajeSwal, `Error al intentar crear el inmueble ${this.inmuebleForm.value}`, "error", "Aceptar", "", false, "", "");
-  //     //this.mensajeSwal.fire();
-  //   });
-  // }
-
   
 
 }

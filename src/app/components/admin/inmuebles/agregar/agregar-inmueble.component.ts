@@ -120,5 +120,10 @@ export class AgregarInmuebleComponent implements OnInit, OnDestroy{
     document.getElementById("closeModalInmuebleButton").click();
   }
 
+  limpiar(form){
+    form.reset();
+    this.submitted = false;
+  }
+
   
 }

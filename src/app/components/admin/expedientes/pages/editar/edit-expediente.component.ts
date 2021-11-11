@@ -331,10 +331,8 @@ export class EditComponent implements OnInit, OnDestroy{
 
 
     if (this.texto[0] != "@") {
-      console.log(this.texto)
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
         if (this.texto[i] == '@') {
-          console.log(this.texto)
           cont++
         }
 
@@ -348,7 +346,6 @@ export class EditComponent implements OnInit, OnDestroy{
     if (this.texto[0] == "@") {
       for (let i = 0; i <= this.texto.length; i++) { //DNI NO COMIENZA CON @
         if (this.texto[i] == '@') {
-          console.log(this.texto)
           cont++
         }
         if (cont == 1 && this.texto[i] != '@' && this.texto[i] != " ") {

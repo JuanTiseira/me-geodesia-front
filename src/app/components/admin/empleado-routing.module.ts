@@ -4,6 +4,7 @@ import { BuscarComponent } from './expedientes/pages/buscar/buscar.component';
 import { DetalleComponent } from './expedientes/pages/detalle/detalle.component';
 import { EditComponent } from './expedientes/pages/editar/edit-expediente.component';
 import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
+import { TransicionesComponent } from './transiciones/transiciones.component';
 
 
 
@@ -19,4 +20,9 @@ export const APP_ROUTES: Routes = [
     {path: 'expediente/caratula', component: CaratulaComponent},
   
     {path: 'expediente/:id', component: DetalleComponent },
+
+
+      //TRANSICIONES
+
+    {path: 'transiciones', component: TransicionesComponent},
 ];

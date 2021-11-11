@@ -27,6 +27,7 @@ const routes: Routes = [
       roles: [
         Role.ROL_ADMIN,
         Role.ROL_EMPLEADO,
+        Role.ROL_EMPLEADOME,
         Role.ROL_PROFESIONAL,
       ]
     }
@@ -39,6 +40,7 @@ const routes: Routes = [
   data: {
     roles: [
       Role.ROL_EMPLEADO,
+      Role.ROL_EMPLEADOME,
       Role.ROL_ADMIN
     ]
   }
@@ -50,15 +52,12 @@ const routes: Routes = [
     loadChildren: () => import('../app/components/admin/admin.module').then(m => m.AdminModule),
     data: {
       roles: [
-        Role.ROL_ADMIN
+        Role.ROL_ADMIN,
+        Role.ROL_EMPLEADOME,
       ]
     }
   
   },
-
-
-
-
 
 {
   path:'**', pathMatch: 'full', redirectTo: '/home'

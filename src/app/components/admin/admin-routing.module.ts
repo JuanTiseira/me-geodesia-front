@@ -11,7 +11,6 @@ import { BuscarInmuebleComponent } from './inmuebles/buscar/buscar-inmueble.comp
 import { DetallesInmuebleComponent } from './inmuebles/detalles/detalles-inmueble.component';
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
 import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
-import { TransicionesComponent } from 'src/app/components/admin/transiciones/transiciones.component';
 
 
 
@@ -64,8 +63,6 @@ export const APP_ROUTES: Routes = [
 
   {path: 'retiro/buscar', component: BuscarRetiroComponent},
 
-  //TRANSICIONES
 
-  {path: 'transiciones', component: TransicionesComponent},
 
 ];

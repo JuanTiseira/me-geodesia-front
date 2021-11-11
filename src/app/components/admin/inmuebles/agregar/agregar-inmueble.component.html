@@ -126,10 +126,9 @@
                   </div>
                   
 
-                    <div class="row">
+                    <div class="row mt-3">
                       <div class="col-md-6">
-                        <button type="button" [routerLink]="['/inmueble/buscar']" class="btn btn-green">Cancelar</button>
-                        <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
+                        <button type="button" (click)="limpiar(inmuebleForm)" class="btn btn-green">Limpiar</button>
                       </div>
                       <div class="col-md-6">
                         <button type="submit" [disabled]="loading" class="btn btn-green">

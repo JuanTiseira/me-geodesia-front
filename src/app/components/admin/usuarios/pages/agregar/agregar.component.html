@@ -70,9 +70,9 @@
                   <div class="form-group">
                     
                     <label for="user" class="form-label">Usuario</label>
-                    <input formControlName="user" type="text" class="form-control" id="user" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.user.errors }">
-                    <div *ngIf="submitted && f.user.errors" class="invalid-feedback">
-                      <div *ngIf="f.user.errors.required">Este campo es obligatorio</div>
+                    <input formControlName="user" type="text" class="form-control" id="user" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.user.errors || credenciales }">
+                    <div *ngIf="submitted && credenciales" class="invalid-feedback">
+                      <div *ngIf="credenciales">Este campo es obligatorio si se carga una contraseña</div>
                     </div>
 
                   </div>
@@ -137,11 +137,9 @@
                   <div class="form-group">
                     
                     <label for="password" class="form-label">Contraseña</label>
-                    <input formControlName="password" type="password" class="form-control" style="text-transform:none;" id="password" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
-                    <div *ngIf="f.password.errors" class="invalid-feedback">
-                      <div *ngIf="submitted && f.password.errors.required">Este campo es obligatorio</div>
-                      <div *ngIf="f.password.errors.pattern">Ingrese solo números</div>                      
-                      <div *ngIf="f.password.errors">Este campo requiere como mínimo 6 caracteres.</div>
+                    <input formControlName="password" type="password" class="form-control" style="text-transform:none;" id="password" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.password.errors || credenciales }">
+                    <div *ngIf="submitted && credenciales" class="invalid-feedback">
+                      <div *ngIf="credenciales">Este campo es obligatorio si se carga un usuario</div>
                     </div>
 
                   </div>

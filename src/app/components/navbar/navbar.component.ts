@@ -26,10 +26,7 @@ export class NavbarComponent implements OnInit {
     private _tokenService: TokenService) { 
     //Si cambia de ruta el menú desplegable se cierra
     this.router.events.subscribe((ev) => {
-          if (ev instanceof NavigationEnd) { 
-            // if(jQuery( ".sidebar .sidebar-content .link" ).hasClass("active")) {
-            //   console.log("activado");
-            // }      
+          if (ev instanceof NavigationEnd) {  
             jQuery(".sidebar").removeClass("open-sidebar");    
             jQuery(".dark-coat").removeClass("opacity");  
       
@@ -96,7 +93,7 @@ export class NavbarComponent implements OnInit {
        $("#sidebar").toggleClass("open-sidebar")
        $(".dark-coat").toggleClass("opacity");
        
-       //  Menú desplegable sensible al tacto
+       //  Menú desplegable sensible al toque
        $("#sidebar, .dark-coat ").swipe({
                  swipeStatus:function(event, phase, direction, distance, duration, fingers)
             {
