@@ -120,10 +120,6 @@ export class BuscarComponent implements OnInit, OnDestroy {
         this.inmuebles = response
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
-        // .then(response => {
-        //   this.inmuebles = response
-        //   this._functionService.imprimirMensaje(response, "inmuebles")
-        // })
        
   
       this.usuariosSub = this._apiService.getUsuarios()
@@ -167,7 +163,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
         this.p =  event
         this.expedientes = res        
         if (this.expedientes.count == 0) {
-          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
         }else{
           this.expedientes = res
@@ -243,7 +239,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
         })
         this._apiService.cargarPeticion(this.expedienteSub)
       }else{
-        this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+        this._functionService.configSwal(this.mensajeSwal, `No se encontró un trámite con esos datos.`, "info", "Aceptar", "", false, "", "");
         this.mensajeSwal.fire();
       }
 
@@ -276,7 +272,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
       .subscribe((res) =>{
         this.expedientes = res
         if (this.expedientes.count == 0) {
-          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
         }else{
           this.expedientes = res

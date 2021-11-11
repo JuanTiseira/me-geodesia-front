@@ -5,12 +5,14 @@ import {catchError} from 'rxjs/internal/operators';
 import { FunctionsService } from './functions.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'
+import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private router: Router,
-              private _functionService: FunctionsService) {}
+              private _functionService: FunctionsService,
+              private _tokenService: TokenService) {}
   
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
@@ -53,6 +55,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               confirmButtonText: 'Aceptar',
               confirmButtonColor: '#53BAAB'
             }).finally(() => {
+              this._tokenService.logOut()
               this.router.navigate(['login']);
             })
             

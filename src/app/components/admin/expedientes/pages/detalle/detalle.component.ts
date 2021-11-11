@@ -166,7 +166,10 @@ export class DetalleComponent implements OnInit, OnDestroy{
     this.documentosSub = this._apiService.getDocumentos()
       .subscribe(response => {
         this.documentos = response
+        this.spinner.hide()
         this._functionService.imprimirMensaje(response, "documentos")
+      }, complete => {
+        this.spinner.hide()
       })
     this._apiService.cargarPeticion(this.documentosSub)
 
@@ -211,6 +214,8 @@ export class DetalleComponent implements OnInit, OnDestroy{
           this.selectedtramite = this.resultado.tramit
           this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
+        }, complete => {
+          this.spinner.hide()
         })
       this._apiService.cargarPeticion(this.expedienteSub)
     }else if (this.id && !this.anioParam && !this.numeroParam)
@@ -236,8 +241,9 @@ export class DetalleComponent implements OnInit, OnDestroy{
             this.selectedGestores = this.resultado.gestor
             this.selectedAgrimensores = this.resultado.agrimensor
             this.selectedtramite = this.resultado.tramite
-
+            this.spinner.hide()
             this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
+          }, complete => {
             this.spinner.hide()
           })
 
@@ -268,9 +274,10 @@ export class DetalleComponent implements OnInit, OnDestroy{
           this.selectedGestores = this.resultado.gestor
           this.selectedAgrimensores = this.resultado.agrimensor
           this.selectedtramite = this.resultado.tramite
-
-          this._functionService.imprimirMensaje(x, "expediente")
           this.spinner.hide()
+          this._functionService.imprimirMensaje(x, "expediente")
+      }, complete => {
+        this.spinner.hide()
       })
       this._apiService.cargarPeticion(this.expedienteSub)
       

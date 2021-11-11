@@ -148,7 +148,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.expedientesSectorSub = this._apiService.getExpedientesSector()
       .subscribe((response:any) => {
-        console.log(response)
         this.expedientes_sector = response.data.sector
         this.expedientes_salida = response.data.sector_salida
         this.expedientes_a_entrar = response.data.sector_entrada
