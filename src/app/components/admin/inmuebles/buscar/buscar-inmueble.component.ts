@@ -2,7 +2,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
@@ -48,6 +48,7 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   p: number = 1;
   inmueble: string
   tramite: string
+  submitted:boolean = false;
 
   categories = [
     {id: 1, name: 'Unidad Funcional', value: 'unidad_funcional'},
@@ -71,12 +72,9 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
 
 
   consultaForm = new FormGroup({
-    numero: new FormControl(''),
-    nombre: new FormControl(''),
-    matricula: new FormControl(''),
-    rol: new FormControl(''),
+    numero: new FormControl('', Validators.required),
     tipo_consulta: new FormControl(''),
-    param_busqueda: new FormControl('')
+    param_busqueda: new FormControl('', Validators.required)
 
   });
 
@@ -146,6 +144,8 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
 
   } 
 
+  get r(){ return this.consultaForm.controls;}
+
   eliminar (id) {
     this._functionService.configSwal(this.mensajeSwal, `¿Está seguro de que desea eliminar el inmueble?`, "warning", "Aceptar", "Cancelar", true, "", "");
     this.mensajeSwal.fire()
@@ -176,10 +176,14 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   }
 
   buscarInmueble() {
+    this.submitted = true;
     this.p = 1
-    this.spinner.show();
     var numero = this.consultaForm.value.numero
     var parametro = this.consultaForm.value.param_busqueda
+    if(this.consultaForm.invalid){
+      return
+    }
+    this.spinner.show();
     this._apiService.getInmuebleWithParams(parametro, numero)
       .subscribe((response)=>{
         this.inmuebles = response

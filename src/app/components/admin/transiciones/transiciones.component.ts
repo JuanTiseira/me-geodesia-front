@@ -103,7 +103,8 @@ export class TransicionesComponent implements OnInit, OnDestroy {
     value = value.split(",");
     let json = {
       'sector':value[0],
-      'tramite': value[1]
+      'tramite': value[1],
+      'tipo_expediente':value[2]
     }
 
     this.transicionSub = this._apiService.setNuevaTransicionAdmin(json)

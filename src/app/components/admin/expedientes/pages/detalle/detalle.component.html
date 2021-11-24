@@ -10,22 +10,27 @@
         <table class="table table-striped">
           <tbody>
             <tr>
-              <th>Numero</th>
+              <th>Número</th>
               <td>{{ resultado.numero }}</td>
+            </tr>
+            <tr>
+              <th>Año</th>
+              <td>{{ resultado.anio }}</td>
             </tr>
             <tr>
               <th>Presentacion Numero</th>
               <td>{{ tramite.numero_presentacion }}</td>
             </tr>
             <tr>
+              <th>Número de trámite</th>
+              <td>{{ tramite.numero }}{{tramite.codigo_verificacion}}</td>
+            </tr>
+            <tr>
               <th>Abreviatura</th>
               <td>{{ resultado.abreviatura }}</td>
             </tr>
 
-            <tr>
-              <th>Año</th>
-              <td>{{ resultado.anio }}</td>
-            </tr>
+
 
             <tr>
               <th>Tipo de Expediente</th>
@@ -39,13 +44,13 @@
 
             <tr *ngIf="resultado.gestor != null">
               <th>Gestor</th>
-              <td>{{ resultado.gestor.nombre }} </td>
-            </tr>
+              <td>{{ resultado.gestor.nombre}} {{ resultado.gestor.apellido }}</td>
+          </tr>
 
-            <tr *ngIf="resultado.gestor == null">
+          <tr *ngIf="resultado.gestor == null">
               <th>Gestor</th>
-              <td>{{ resultado.agrimensor.nombre}} {{ resultado.agrimensor.apellido }}</td>
-            </tr>
+              <td>---</td>
+          </tr>
 
             <tr>
               <th>Propietario</th>
@@ -163,11 +168,11 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group mt-2">
                     <label *ngIf="!busqueda_manual" for="dni" class="form-label">DNI</label>
                     <input *ngIf="!busqueda_manual" (keyup.enter)="leerDni()" formControlName="dni"
-                      placeholder="Ingrese numero de DNI" type="text" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted }">
+                      placeholder="Ingresar o escanear el DNI" type="text" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && !busqueda_manual}">
                     <div *ngIf="submitted && !busqueda_manual" class="invalid-feedback">
                       <div *ngIf="submitted">Este campo es obligatorio</div>
                     </div>
@@ -177,9 +182,9 @@
                       <div class="col-md-10">
                         <ng-select [items]="propietario$ | async" bindLabel="fullName" bindValue="id" [addTag]="false"
                           [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn" [minTermLength]="5"
-                          [loading]="propietarioLoading" typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                          [loading]="propietarioLoading" typeToSearchText="Ingresar nombre, apellido o CUIT"
                           [typeahead]="propietarioInput$" formControlName="usuario"
-                          [ngClass]="{ 'is-invalid': submitted }">
+                          [ngClass]="{ 'is-invalid': submitted && busqueda_manual}">
                         </ng-select>
                         <div *ngIf="submitted && busqueda_manual" class="invalid-feedback">
                           <div *ngIf="submitted">Este campo es obligatorio</div>
@@ -211,7 +216,7 @@
                       </div>
                     </div>
 
-                    <label for="">Busqueda manual </label>
+                    <label class="me-2" for="">Búsqueda manual </label>
                     <input #busquedamanualCheckBox id="busquedamanualCheckBox" type="checkbox"
                       [checked]="busqueda_manual" (change)="onbusquedamanualChanged(busquedamanualCheckBox.checked)" />
 

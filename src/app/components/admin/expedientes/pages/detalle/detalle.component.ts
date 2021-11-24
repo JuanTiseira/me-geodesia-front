@@ -8,7 +8,7 @@ import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
-import { DataService, Documento, Person } from 'src/app/services/data.service';
+import { DataService, Documento, Person, Inmueble } from 'src/app/services/data.service';
 import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import * as moment from 'moment'
 import { TokenService } from 'src/app/services/token.service';
@@ -50,6 +50,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   agrimensor$: Observable<Person[]>;
   gestor$: Observable<Person[]>;
   propietario$: Observable<Person[]>;
+  inmueble$: Observable<Inmueble[]>;
   documento$: Observable<Documento[]>;
   documentos$: Observable<Documento[]>;
   usuario$: Observable<Person[]>;
@@ -57,12 +58,14 @@ export class DetalleComponent implements OnInit, OnDestroy{
   agrimensorLoading = false;
   gestorLoading = false;
   propietarioLoading = false;
+  inmuebleLoading = false;
   documentoLoading = false;
   usuarioLoading = false;
 
 
   agrimensorInput$ = new Subject<string>();
   propietarioInput$ = new Subject<string>();
+  inmuebleInput$ = new Subject<string>();
   gestorInput$ = new Subject<string>();
   documentoInput$ = new Subject<string>();
   usuarioInput$ = new Subject<string>();
@@ -150,6 +153,9 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
   public onbusquedamanualChanged(value:boolean){
     this.busqueda_manual = value;
+    if(value){
+      this.usuario = null;
+    }
   }
 
 
@@ -175,7 +181,9 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
     this.loadPropietarios();
   
-    this.loadDocumentos()
+    this.loadDocumentos();
+
+    this.loadInmuebles();
 
     this.id = this.route.snapshot.params['id'];
     this.anioParam = this.route.snapshot.queryParams['anio'];
@@ -372,8 +380,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
   leerDni(){
     this.texto =  this.retiroForm.value["dni"]
-    // console.log("texto: ", this.texto)
-    //this.retiroForm.controls['dni'].setValue('');
     this.verificarUsuario()
   }
 
@@ -397,24 +403,49 @@ export class DetalleComponent implements OnInit, OnDestroy{
         if (this.texto[i] == '"') {
           cont++
         }
+
         if (cont == 1 && this.texto[i] != '"' && this.texto[i] != " ") {
           dni = dni + this.texto[i].toString()
         }
+
+        if(cont > 1) break;
       }
     }
-  
-    this.usuarioSub = this._apiService.getUsuarioNumero(dni)
+
+    if(this.texto.length <= 10 && this.texto.length > 0){
+      dni = this.texto
+    }
+    
+    if(this.texto.length > 0){
+      this.usuarioSub = this._apiService.getUsuarioNumero(dni)
       .subscribe((response:any) => {
         this._functionService.imprimirMensaje(response, "usuario")
-        this.usuario = response.results[0]
-        this.retiroForm.patchValue({dni: this.usuario?.dni})
 
-        if (response.count == 0) {
-          this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "Error", "Aceptar", "", false, "", "")
-          this.mensajeSwal.fire()
-        }
+        switch (response.count) {
+          case 0:
+            this._functionService.configSwal(this.mensajeSwal, `No existe el usuario`, "info", "Aceptar", "", false, "", "")
+            this.mensajeSwal.fire()
+            this.usuario = null
+            this.retiroForm.patchValue({dni: null})
+            break;
+
+          case 1:
+            this.usuario = response.results[0]
+            this.retiroForm.patchValue({dni: this.usuario?.dni})
+            break; 
+        
+          default:
+            this._functionService.configSwal(this.mensajeSwal, `Hay más de un usuario con el mismo DNI`, "info", "Aceptar", "", false, "", "")
+            this.mensajeSwal.fire()
+            this.usuario = null
+            this.retiroForm.patchValue({dni: null})
+            break;
+        }     
+
+
       })
     this._apiService.cargarPeticion(this.usuarioSub)
+    }
 
   }
 
@@ -432,8 +463,23 @@ export class DetalleComponent implements OnInit, OnDestroy{
             ))
         )
     );
+    console.log("propietario: ", this.propietario$, " \n\n propinput: ", this.propietarioInput$)
   }
 
+  private loadInmuebles() {
+
+    // this.inmueble$ = concat(
+    //     of([]), // items por defecto
+    //     this.inmuebleInput$.pipe(
+    //         distinctUntilChanged(),
+    //         tap(() => this.inmuebleLoading = true),
+    //         switchMap(term => this.dataService.getInmuebles(term).pipe(
+    //             catchError(() => of([])), // limpiar lista error
+    //             tap(() => this.inmuebleLoading = false)
+    //         ))
+    //     )
+    // );
+  }
 
   private loadDocumentos() {
 
@@ -461,23 +507,26 @@ export class DetalleComponent implements OnInit, OnDestroy{
     this.expedienteForm.enable();
   }
 
-  onSubmit() {
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.expedienteForm.invalid) {
-        return;
-    }
+  // onSubmit() {
+  //   this.submitted = true;
+  //   // stop here if form is invalid
+  //   if (this.expedienteForm.invalid) {
+  //       return;
+  //   }
 
-    this.loading = true;    
-    this.updateExpediente();
+  //   this.loading = true;    
+  //   this.updateExpediente();
   
-  }
+  // }
 
   guardarRetiro(){
     this.submitted = true;
     // stop here if form is invalid
-    if(this.retiroForm.value["dni"]=="" && this.retiroForm.value["usuario"]=="") return
-    if (this.retiroForm.invalid) {       
+    this.retiroForm.patchValue({tramite: this.tramite.id});
+    if(this.retiroForm.value["dni"]=="" && this.retiroForm.value["usuario"]=="") {
+      return
+    }
+    if (this.retiroForm.invalid) {   
         return;
     }else{
       this.loading = true;    
@@ -515,25 +564,27 @@ export class DetalleComponent implements OnInit, OnDestroy{
     return this.authService.hasRole(Role.ROL_EMPLEADOME);
   }
 
-  updateExpediente() {
+  // updateExpediente() {
     
-    this.editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)
-      .subscribe(() =>{
-        this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
-        this.mensajeSwal.fire();
-      })
-    this._apiService.cargarPeticion(this.editExpedienteSub)  
-    this.loading = false;
-  }
+  //   this.editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)
+  //     .subscribe(() =>{
+  //       this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
+  //       this.mensajeSwal.fire();
+  //     })
+  //   this._apiService.cargarPeticion(this.editExpedienteSub)  
+  //   this.loading = false;
+  // }
 
 
   setRetiro() {
     this.loading = true;
     if (this.busqueda_manual != true) {
-      this.retiroForm.patchValue({usuario: this.usuario.id});
+      this.retiroForm.patchValue({usuario: this.usuario?.id});
     }
 
-    if(this.retiroForm.value.documento != null){
+    console.log("usuario: ", this.usuario)
+
+    if(this.retiroForm.value.documento != null && this.usuario != null){
       for (var id of this.retiroForm.value.documento) {
         this.retiroForm.patchValue({documento: id});
         this.retiroForm.patchValue({tramite: this.tramite.id});

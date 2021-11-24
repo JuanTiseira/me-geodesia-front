@@ -119,32 +119,32 @@ export class DetalleUsuarioComponent implements OnInit, OnDestroy{
     this.usuarioForm.enable();
   }
 
-  onSubmit() {
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.usuarioForm.invalid) {
-        return;
-    }
+  // onSubmit() {
+  //   this.submitted = true;
+  //   // stop here if form is invalid
+  //   if (this.usuarioForm.invalid) {
+  //       return;
+  //   }
 
-    this.loading = true;    
-    this.updateExpediente();
+  //   this.loading = true;    
+  //   this.updateExpediente();
   
-  }
+  // }
 
   get f() { return this.usuarioForm.controls; }
 
-  updateExpediente() {    
-    this.editExpedienteSub = this._apiService.editExpediente(this.usuarioForm.value)
-      .subscribe(() =>{
-        Swal.fire({
-          title: 'Exito',
-          text: 'Se registro correctamente',
-          icon: 'error',
-          confirmButtonText: 'Cool',
-        })
-      })
-    this._apiService.cargarPeticion(this.editExpedienteSub)
-    this.loading = false;
-  }
+  // updateExpediente() {    
+  //   this.editExpedienteSub = this._apiService.editExpediente(this.usuarioForm.value)
+  //     .subscribe(() =>{
+  //       Swal.fire({
+  //         title: 'Exito',
+  //         text: 'Se registro correctamente',
+  //         icon: 'error',
+  //         confirmButtonText: 'Cool',
+  //       })
+  //     })
+  //   this._apiService.cargarPeticion(this.editExpedienteSub)
+  //   this.loading = false;
+  // }
 
 }

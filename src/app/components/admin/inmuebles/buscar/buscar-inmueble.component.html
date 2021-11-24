@@ -13,14 +13,20 @@
     <form [formGroup]="consultaForm">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12">
-                <label for="username" class="form-label">Consultar por</label>   
-                <select formControlName="param_busqueda" class="form-select" aria-label="Default select example">
+                <label for="param_busqueda" class="form-label">Consultar por</label>   
+                <select formControlName="param_busqueda" class="form-select" aria-label="Default select example" [ngClass]="{ 'is-invalid': submitted && r.param_busqueda.errors }">
                     <option *ngFor="let cat of categories" [ngValue]="cat.value">{{cat.name}}</option>
                 </select>
+                <div *ngIf="submitted && r.param_busqueda.errors" class="invalid-feedback">
+                    <div *ngIf="r.param_busqueda.errors.required">Este campo es obligatorio</div>
+                  </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Ingresar</label>
-                <input  (keyup.enter)="buscarInmueble()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off">
+                <input  (keyup.enter)="buscarInmueble()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
+                <div *ngIf="submitted && r.numero.errors" class="invalid-feedback">
+                  <div *ngIf="r.numero.errors.required">Este campo es obligatorio</div>
+                </div>
             </div>
             
             <div class="col-md-4">

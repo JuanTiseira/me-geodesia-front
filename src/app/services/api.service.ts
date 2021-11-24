@@ -101,8 +101,8 @@ export class ApiService {
     return this.http.post(this.url+'/expedientes/', expediente);
   }
 
-  editExpediente(expediente) {
-    return this.http.put(this.url+'/expedientes/', expediente);
+  editExpediente(id, expediente) {
+    return this.http.patch(this.url+`/expedientes/${id}/`, expediente);
   }
 
   deleteExpediente(expediente) {

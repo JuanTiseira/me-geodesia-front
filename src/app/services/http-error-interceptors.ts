@@ -38,7 +38,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             })
             break; 
             case 400:
-              let mensaje2 = error.error.detail!=null?error.error.detail : error.error.error!=null?error.error.error : error.error
+              let mensaje2 = error.error.message!=null?error.error.message : error.error.detail!=null?error.error.detail : error.error.error!=null?error.error.error : error.error
               Swal.fire({
                 title: error?.status,
                 text: mensaje2,

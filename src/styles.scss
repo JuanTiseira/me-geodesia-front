@@ -261,3 +261,11 @@ body {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+
+
+
+.is-invalid {
+    border: 1px solid rgb(238, 32, 32);
+    border-radius: 6px;
+}

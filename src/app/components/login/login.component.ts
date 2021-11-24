@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
-      recaptcha: ['', Validators.required]
+      // recaptcha: ['', Validators.required]
     })
 
     this.date = new Date()
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
             $("#btn-login").removeClass('disabled');
             this.loading = false;
             this.failSwal.fire();
-            this.captchaElem.resetCaptcha();
+            // this.captchaElem.resetCaptcha();
           }
         })
     } 
