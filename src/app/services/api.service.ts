@@ -223,6 +223,10 @@ export class ApiService {
     return this.http.patch(this.url+`/usuarios/${usuario}/`, {"habilitado": false});
   }
 
+  getCantidadUsuarios(){
+    return this.http.get(this.url+'/usuarios/cantidad_usuarios')
+  }
+
 
   // DEPARTAMENTOS //////////////////////////////////////////////////////
 
@@ -248,6 +252,10 @@ export class ApiService {
     return this.http.post(this.url+'/retiros/devolver/', retiro);
   }
 
+  setNuevoMovimiento(json){
+    return this.http.post(this.url+'/retiros/nuevo_movimiento/', json);
+  }
+
 
   // HISTORIALES
 
@@ -265,8 +273,8 @@ export class ApiService {
     return this.http.get(this.url+'/historiales/ultimos_historiales');
   }
 
-  setNuevoMovimiento(json){
-    return this.http.post(this.url+'/retiros/nuevo_movimiento/', json);
+  getExpedientesPorSector(){
+    return this.http.get(this.url+'/historiales/expedientes_por_sector')
   }
 
   //SECTORES  

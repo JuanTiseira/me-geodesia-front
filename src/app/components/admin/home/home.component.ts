@@ -37,6 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   expedientesSectorSub: Subscription;
   expedientesSalidaSub: Subscription;
   expedientesEntradaSub: Subscription;
+  cantidadSectoresSub: Subscription;
+  cantidadUsuariosSub: Subscription;
 
   expedientes_a_entrar= "";
   expedientes_salida= "";
@@ -46,6 +48,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   submitted: boolean;
   tramite: string
   param_busqueda: ''
+  cantidad_sectores= []
+  cantidad_usuarios= []
   // consultaForm : FormGroup
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
@@ -82,24 +86,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (this.isAdmin || this.isEmpleadoME || this.isEmpleado ) {
         
         this.spinner.show();
-        this.expedientesSub = this._apiService.getExpedientes()
-          .subscribe(response => {
-            this.expedientes = response
-          })
-        this._apiService.cargarPeticion(this.expedientesSub);
-
-      this.usuariosSub = this._apiService.getUsuarios()
-        .subscribe(response => {
-          this.usuarios = response
+        this.cargarExpedientesEstado()
+        this.cantidadSectoresSub = this._apiService.getExpedientesPorSector().subscribe((response:any) => {
+          this.cantidad_sectores = response;
         })
-      this._apiService.cargarPeticion(this.usuariosSub)
+        this._apiService.cargarPeticion(this.cantidadSectoresSub)
+
+        this.cantidadUsuariosSub = this._apiService.getCantidadUsuarios().subscribe((response:any) => {
+          this.cantidad_usuarios = response;
+        })
+        this._apiService.cargarPeticion(this.cantidadUsuariosSub)
+
+
+        // this.usuariosSub = this._apiService.getUsuarios()
+        //   .subscribe(response => {
+        //     this.usuarios = response
+        //   })
+      // this._apiService.cargarPeticion(this.usuariosSub)
       }else{
         this.router.navigate(['login']);
       }
 
-      if(this.isEmpleado || this.isEmpleadoME || this.isAdmin){
-        this.cargarExpedientesEstado()
-      }
 
       this.spinner.hide();
   }

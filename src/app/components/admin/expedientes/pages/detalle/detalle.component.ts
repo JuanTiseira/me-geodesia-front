@@ -564,16 +564,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
     return this.authService.hasRole(Role.ROL_EMPLEADOME);
   }
 
-  // updateExpediente() {
-    
-  //   this.editExpedienteSub = this._apiService.editExpediente(this.expedienteForm.value)
-  //     .subscribe(() =>{
-  //       this._functionService.configSwal(this.mensajeSwal, `Se ha editado correctamente`, "success", "Aceptar", "", false, "", "")
-  //       this.mensajeSwal.fire();
-  //     })
-  //   this._apiService.cargarPeticion(this.editExpedienteSub)  
-  //   this.loading = false;
-  // }
 
 
   setRetiro() {
@@ -582,7 +572,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
       this.retiroForm.patchValue({usuario: this.usuario?.id});
     }
 
-    console.log("usuario: ", this.usuario)
 
     if(this.retiroForm.value.documento != null && this.usuario != null){
       for (var id of this.retiroForm.value.documento) {

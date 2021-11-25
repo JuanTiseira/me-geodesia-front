@@ -60,6 +60,16 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             })
             
             break;
+
+            case 403:
+              Swal.fire({
+                title:  "No tienes los permisos necesarios para realizar esta acción",
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#53BAAB'
+              })
+              
+              break;            
         }
         return throwError(error.status);
       })
