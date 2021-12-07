@@ -11,6 +11,7 @@ import { BuscarInmuebleComponent } from './inmuebles/buscar/buscar-inmueble.comp
 import { DetallesInmuebleComponent } from './inmuebles/detalles/detalles-inmueble.component';
 import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
 import { CaratulaComponent } from './expedientes/pages/reporte/caratula/caratula.component';
+import { EditarComponent } from './usuarios/pages/editar/editar.component';
 
 
 
@@ -39,6 +40,8 @@ export const APP_ROUTES: Routes = [
   {path: 'usuario/buscar', component: BuscarUsuarioComponent},
 
   {path: 'usuario/:id', component: DetalleUsuarioComponent},
+
+  {path: 'usuario/editar/:id', component: EditarComponent},
 
 
   //HISTORIAL

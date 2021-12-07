@@ -1,0 +1,173 @@
+<div class="container">
+    <app-detalle-usuario></app-detalle-usuario>
+
+    <h2 style="font-weight: bold;">Modificar campos</h2>
+
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+            <form class="row g-3" [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input formControlName="nombre" maxlength="50" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+                    <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                      <div *ngIf="f.nombre.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.nombre.errors.pattern">Solo se permiten letras.</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="cuit" class="form-label">CUIT</label>
+                    <input formControlName="cuit" type="text" class="form-control" maxlength="11" id="cuit" [ngClass]="{ 'is-invalid': submitted && f.cuit.errors }">
+                    <div *ngIf="submitted && f.cuit.errors" class="invalid-feedback">
+                      <div *ngIf="f.cuit.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.cuit.errors">Ingresar 11 números.</div>
+                      <div *ngIf="f.cuit.errors.pattern">Ingresar solamente números.</div>
+                    </div>
+
+                  </div>
+
+
+                  <div class="form-group">
+                    
+                    <label for="dni" class="form-label">DNI</label>
+                    <input formControlName="dni" type="text" maxlength="8" class="form-control" id="dni" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }">
+                    <div *ngIf="submitted && f.dni.errors" class="invalid-feedback">
+                      <div *ngIf="f.dni.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.dni.errors">Ingresar mínimo 7 números.</div>
+                      <div *ngIf="f.dni.errors.pattern">Ingresar solamente números.</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="rol" class="form-label">Rol</label>
+                    <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol.errors }">
+                      <ng-option value="" disabled>Seleccione una Opcion</ng-option>
+                      <ng-option *ngFor="let dato of roles?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
+                    </ng-select>
+                    <div *ngIf="submitted && f.rol.errors" class="invalid-feedback">
+                      <div *ngIf="f.rol.errors.required">Este campo es obligatorio</div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="email" class="form-label">Email</label>
+                    <input formControlName="email" type="text" class="form-control" id="email" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.email.errors.email">Este campo requiere un correo válido.</div>
+                    </div>
+
+                  </div>
+                  <div class="form-group">
+                    
+                    <label for="user" class="form-label">Usuario</label>
+                    <input formControlName="user" type="text" class="form-control" id="user" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.user.errors || credenciales }">
+                    <div *ngIf="submitted && credenciales" class="invalid-feedback">
+                      <div *ngIf="credenciales">Este campo es obligatorio si se carga una contraseña</div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input formControlName="apellido" type="text" maxlength="50" class="form-control" id="apellido" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
+                    <div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
+                      <div *ngIf="f.apellido.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.apellido.errors.pattern">Solo se permiten letras.</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="matricula" class="form-label">Matrícula</label>
+                    <input formControlName="matricula" type="text" class="form-control" id="matricula" maxlength="25" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.matricula.errors }">
+                    <div *ngIf="submitted && f.matricula.errors" class="invalid-feedback">
+                      <div *ngIf="f.matricula.errors.required">Este campo es obligatorio.</div>
+                      <div *ngIf="f.matricula.errors">Ingrese como mínimo 4 números.</div>
+                      <div *ngIf="f.matricula.errors.pattern">Ingrese solamente números.</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input formControlName="direccion" type="text" maxlength="100" class="form-control" id="direccion" [ngClass]="{ 'is-invalid': submitted && f.direccion.errors }">
+                    <div *ngIf="submitted && f.direccion.errors" class="invalid-feedback">
+                      <div *ngIf="f.direccion.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.direccion.errors.pattern">Ingrese letras y números. Ej: [Gral Paz 1836]</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                    <input formControlName="fecha_nacimiento" type="date" class="form-control" id="fecha_nacimiento" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento.errors }">
+                    <div *ngIf="submitted && f.fecha_nacimiento.errors" class="invalid-feedback">
+                      <div *ngIf="f.fecha_nacimiento.errors.required">Este campo es obligatorio</div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input formControlName="telefono" type="text"  maxlength="15" class="form-control" id="telefono" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
+                    <div *ngIf="f.telefono.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.telefono.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="f.telefono.errors.pattern">Ingrese solo números</div>                      
+                      <div *ngIf="f.telefono.errors">Este campo requiere como mínimo 6 caracteres.</div>
+                    </div>
+
+                  </div>
+                  <div class="form-group">
+                    
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input formControlName="password" type="password" class="form-control" style="text-transform:none;" id="password" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.password.errors || credenciales }">
+                    <div *ngIf="submitted && credenciales" class="invalid-feedback">
+                      <div *ngIf="credenciales">Este campo es obligatorio si se carga un usuario</div>
+                    </div>
+
+                  </div>
+
+                    <div class="row">
+
+                      <div class="col-md-4" >
+                        <button type="button" (click)="limpiar()" class="btn btn-green">Limpiar</button>
+                        <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
+                      </div>
+
+                      <div class="col-md-4">
+
+                        <button type="submit" [disabled]="loading" class="btn btn-green">
+                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                          Modificar
+                        </button>
+
+                      </div>
+                      
+                    </div>  
+                </div>
+            </form>  
+    </div>
+    </div>
+    
+    <hr>
+
+  <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
+
+

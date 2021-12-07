@@ -10,16 +10,26 @@
                             <th>Numero</th>
                             <td>{{ resultado.numero }}</td>
                         </tr>
-                        <tr>
-                            <th>Abreviatura</th>
-                            <td>{{ resultado.abreviatura }}</td>
-                        </tr>
 
                         <tr>
                             <th>Año</th>
                             <td>{{ resultado.anio }}</td>
                         </tr>
 
+                        <tr>
+                            <th>Tramite</th>
+                            <td>{{ tramite?.numero}}{{ tramite?.codigo_verificacion}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Abreviatura</th>
+                            <td>{{ resultado.mensura?.abreviatura }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Mensura</th>
+                            <td>{{ resultado.mensura?.nombre }}</td>
+                        </tr>
                         <tr>
                             <th>Tipo de Expediente</th>
                             <td>{{ resultado.tipo_expediente.descripcion }} </td>
@@ -107,11 +117,7 @@
                                     <div *ngIf="f.inmueble.errors.required">Este campo es obligatorio</div>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-2">
-                                <button type="button" data-bs-toggle="modal" id="btn-edit-user"
-                                    (click)="habilitarModal('inmueble')" data-bs-target="#crearInmueble"
-                                    class="btn btn-green btn-agregar">+</button>
-                            </div> -->
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -130,12 +136,6 @@
                                     <div *ngIf="f.propietario.errors.required">Este campo es obligatorio</div>
                                 </div>
                             </div>
-
-                            <!-- <div class="col-md-2">
-                                <button type="button" data-bs-toggle="modal" id="btn-edit-user"
-                                    (click)="habilitarModal('usuario')" data-bs-target="#crearUsuario"
-                                    class="btn btn-green btn-agregar">+</button>
-                            </div> -->
                         </div>
 
                     </div>
@@ -155,7 +155,6 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <!-- <button type="button" [routerLink]="['/expediente/buscar']" class="btn btn-green">Volver</button> -->
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -187,11 +186,6 @@
                                     <div *ngIf="f.agrimensor.errors.required">Este campo es obligatorio</div>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-2">
-                                <button type="button" data-bs-toggle="modal" id="btn-edit-user"
-                                    (click)="habilitarModal('usuario')" data-bs-target="#crearUsuario"
-                                    class="btn btn-green btn-agregar">+</button>
-                            </div> -->
                         </div>
                     </div>
 
@@ -206,19 +200,10 @@
                                     formControlName="gestor">
                                 </ng-select>
                             </div>
-                            <!-- <div class="col-md-2">
-                                <button type="button" data-bs-toggle="modal" id="btn-edit-user"
-                                    (click)="habilitarModal('usuario')" data-bs-target="#crearUsuario"
-                                    class="btn btn-green btn-agregar">+</button>
-                            </div> -->
                         </div>
                     </div>
 
                     <div class="row" style="margin-top: 10vh">
-                        <!-- <div class="col-md-6">
-                            <button type="button" (click)="limpiar()" class="btn btn-green">Limpiar</button>
-
-                        </div> -->
 
                         <div class="col-md-6">
                             <button type="submit" [disabled]="loading" class="btn btn-green">

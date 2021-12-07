@@ -4,13 +4,12 @@ import { FunctionsService } from '../../../../../services/functions.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import Swal from 'sweetalert2'
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-detalle',
+  selector: 'app-detalle-usuario',
   templateUrl: './detalle.component.html',
   styleUrls: ['./detalle.component.scss']
 })
@@ -119,32 +118,6 @@ export class DetalleUsuarioComponent implements OnInit, OnDestroy{
     this.usuarioForm.enable();
   }
 
-  // onSubmit() {
-  //   this.submitted = true;
-  //   // stop here if form is invalid
-  //   if (this.usuarioForm.invalid) {
-  //       return;
-  //   }
-
-  //   this.loading = true;    
-  //   this.updateExpediente();
-  
-  // }
-
   get f() { return this.usuarioForm.controls; }
-
-  // updateExpediente() {    
-  //   this.editExpedienteSub = this._apiService.editExpediente(this.usuarioForm.value)
-  //     .subscribe(() =>{
-  //       Swal.fire({
-  //         title: 'Exito',
-  //         text: 'Se registro correctamente',
-  //         icon: 'error',
-  //         confirmButtonText: 'Cool',
-  //       })
-  //     })
-  //   this._apiService.cargarPeticion(this.editExpedienteSub)
-  //   this.loading = false;
-  // }
 
 }

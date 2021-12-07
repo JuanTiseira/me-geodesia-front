@@ -11,9 +11,9 @@
                     <div class="col-md-10">
                       <div class="form-group">
                         <label for="tipo_expediente" class="form-label">Tipo</label>
-                        <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
+                        <ng-select (change)="tipoExpedienteChanged($event)"  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
                           <ng-option value="" disabled>Seleccione una opcion</ng-option>
-                          <ng-option *ngFor="let dato of tipos_expedientes?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
+                          <ng-option *ngFor="let dato of tipos_expedientes?.results" [value]="dato" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
                         </ng-select>
                         <div *ngIf="submitted && f.tipo_expediente.errors" class="invalid-feedback">
                           <div *ngIf="f.tipo_expediente.errors.required">Este campo es obligatorio</div>
@@ -23,7 +23,7 @@
 
                     <div class="col col-md-2">   
                       <div class="form-group">
-                        <label for="abreviatura" class="form-label">Tramite Urgente</label>
+                        <label for="tramite_urgente" class="form-label">Tramite Urgente</label>
                         <input type="checkbox" formControlName="tramite_urgente">
                       </div>
                     </div>
@@ -97,7 +97,10 @@
                   <div class="col-md-10">
                     <div class="form-group">
                       <label for="abreviatura" class="form-label">Abreviatura</label>
-                      <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
+                      <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="abreviatura" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
+                        <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                        <ng-option *ngFor="let dato of abreviaturas" [value]="dato.id">{{dato.abreviatura}}</ng-option>
+                      </ng-select>
                       <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
                         <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
                       </div>

@@ -77,7 +77,7 @@ export class ApiService {
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
     }
-    return this.http.get(this.url+`/expedientes?${params.toString()}`);
+    return this.http.get(this.url+`/expedientes/?${params.toString()}`);
   }
 
   getExpediente(id){
@@ -203,16 +203,24 @@ export class ApiService {
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
     }   
-    return this.http.get(this.url+`/usuarios?${params.toString()}`);
+    return this.http.get(this.url+`/usuarios/?${params.toString()}`);
   }
 
   getUsuario(id){
-    return this.http.get(this.url+`/usuarios/${id}`);
+    return this.http.get(this.url+`/usuarios/${id}/`);
   }
 
   getUsuarioNumero(numero) {
     return this.http.get(this.url+`/usuarios/?dni=${numero}`);
-    
+  }
+
+  getUsuarioCuit(cuit) {
+    return this.http.get(this.url+`/usuarios/?cuit=${cuit}`);
+  }
+
+
+  editUsuario(id, values){
+    return this.http.patch(this.url+`/usuarios/${id}/`, values);
   }
 
   setUsuario(usuario) {
@@ -224,7 +232,7 @@ export class ApiService {
   }
 
   getCantidadUsuarios(){
-    return this.http.get(this.url+'/usuarios/cantidad_usuarios')
+    return this.http.get(this.url+'/usuarios/cantidad_usuarios/')
   }
 
 
@@ -262,23 +270,23 @@ export class ApiService {
   getHistorial(id){
     let params: URLSearchParams = new URLSearchParams();
     params.set('tramite', id);
-    return this.http.get(this.url+`/historiales?${params.toString()}`);
+    return this.http.get(this.url+`/historiales/?${params.toString()}`);
   }
 
   getHistoriales(){
-    return this.http.get(this.url+`/historiales`);
+    return this.http.get(this.url+`/historiales/`);
   }
 
   getHistorialesUltimos(){
-    return this.http.get(this.url+'/historiales/ultimos_historiales');
+    return this.http.get(this.url+'/historiales/ultimos_historiales/');
   }
 
   getExpedientesPorSector(){
-    return this.http.get(this.url+'/historiales/expedientes_por_sector')
+    return this.http.get(this.url+'/historiales/expedientes_por_sector/')
   }
 
   //SECTORES  
   getSectores(){
-    return this.http.get(this.url+'/sectores');
+    return this.http.get(this.url+'/sectores/');
   }
 }

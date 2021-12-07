@@ -45,6 +45,7 @@ import { BuscarRetiroComponent } from './retiro/buscar/buscar-retiro.component';
 import { InvertPipe } from 'src/app/pipes/invert.pipe';
 import { OrderByPipe } from 'src/app/pipes/order-by.pipe';
 import { TransicionesComponent } from './transiciones/transiciones.component';
+import { EditarComponent } from './usuarios/pages/editar/editar.component';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { TransicionesComponent } from './transiciones/transiciones.component';
     InvertPipe,
     OrderByPipe,
     TransicionesComponent,
+    EditarComponent,
   ],
   imports: [
     NgSelectModule,

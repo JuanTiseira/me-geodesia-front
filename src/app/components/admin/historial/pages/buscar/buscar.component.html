@@ -65,9 +65,19 @@
                     <th>Número Presentación</th>
                     <td>{{datos?.tramite.numero_presentacion}}</td>
                 </tr>
+
+                <tr>
+                    <th>Trámite</th>
+                    <td>{{datos?.tramite.numero}}{{datos?.tramite.codigo_verificacion}}</td>
+                </tr>
+
+                <tr>
+                    <th>Mensura</th>
+                    <td>{{datos?.tramite.expediente.mensura?.nombre}}</td>
+                </tr>
                 <tr>
                     <th>Abreviatura</th>
-                    <td>{{datos?.tramite.expediente.abreviatura}}</td>
+                    <td>{{datos?.tramite.expediente.mensura?.abreviatura}}</td>
                 </tr>
                 <tr>
                     <th>Tipo de Expediente</th>

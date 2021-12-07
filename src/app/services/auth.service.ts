@@ -47,7 +47,7 @@ export class AuthService {
 
   login(user: string, password: string): Promise<boolean> {
     var log = false;
-    return this._apiService.getLogin(user, password)
+    return this._apiService.getLogin(user.toUpperCase(), password)
       .then(response => {
         this._tokenService.setData(response);              
         this.usert = response['user'];

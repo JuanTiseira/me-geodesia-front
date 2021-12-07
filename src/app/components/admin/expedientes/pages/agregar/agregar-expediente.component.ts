@@ -65,6 +65,8 @@ export class AgregarComponent implements OnInit, OnDestroy {
     submitted = false;
     usuarioModal: boolean = false;
     inmuebleModal: boolean = false;
+    abreviaturas: any[] = [];
+    idTipoExpediente: string;
 
   constructor(
     private dataService: DataService,
@@ -210,6 +212,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
   
   onSubmit() {
     this.submitted = true;
+    this.expedienteForm.value.tipo_expediente = this.idTipoExpediente
 
     if (this.expedienteForm.invalid) {
       this._functionService.imprimirMensaje(this.expedienteForm.invalid, "expediente form invalid: ")
@@ -232,6 +235,13 @@ export class AgregarComponent implements OnInit, OnDestroy {
       })
     this._apiService.cargarPeticion(this.setExpedienteSub)
      this.loading = false;
+  }
+
+
+  tipoExpedienteChanged(e){
+    console.log(e)
+    this.abreviaturas = e.mensuras
+    this.idTipoExpediente = e.id
   }
 
   verDetalles(dato:boolean){

@@ -29,6 +29,7 @@ export class AgregarUsuarioComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public roles: any;
+  public permisos: any;
   usuarioForm: FormGroup
   // form: FormGroup;
   id: string;
@@ -36,6 +37,14 @@ export class AgregarUsuarioComponent implements OnInit {
   loading = false;
   submitted = false;
   credenciales = false;
+  selectedRol: any;
+  descripcionRol: any;
+
+  accesoTodos = [1,2,3,4,5]
+  accesoUsuarios = [1,2,3,5]
+  accesoProfesionalPropietario = [3, 4]
+  accesoProfesional = [3]
+
 
   tipoExpedientesSub: Subscription;
   observacionesSub: Subscription;
@@ -55,26 +64,14 @@ export class AgregarUsuarioComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
-    this.usuarioForm = this.formBuilder.group({
-      rol: ['', Validators.required],
-      nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
-      apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
-      cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
-      dni: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
-      matricula: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-      direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
-      fecha_nacimiento: ['', Validators.required],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-      user: [],
-      password: []
-    }, {});
-
-
     // if (!this.isAddMode) {
     //     this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
     //     .then(x => this.form.patchValue(x));
     // }
+
+    this.usuarioForm = this.formBuilder.group({
+      rol: ['', Validators.required]
+    }, {});
 
 
     this.tipoExpedientesSub = this._apiService.getTipoExpedientes()
@@ -116,6 +113,64 @@ export class AgregarUsuarioComponent implements OnInit {
   ngOnDestroy(): void {
     this._apiService.cancelarPeticionesPendientes()
   }
+
+  rolChanged(e){
+    this.selectedRol = e.descripcion
+    this.descripcionRol = e.id
+
+    switch (e.id) {
+      case 3:
+        this.usuarioForm = this.formBuilder.group({
+          rol: [e.descripcion, Validators.required],
+          nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
+          apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
+          cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
+          dni: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
+          matricula: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
+          fecha_nacimiento: ['', Validators.required],
+          email: ['', Validators.compose([Validators.required, Validators.email])],
+          telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          user: [],
+          password: [],
+        }, {});
+        break;
+
+      case 4:
+        this.usuarioForm = this.formBuilder.group({
+          rol: [e.descripcion, Validators.required],
+          nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
+          apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
+          cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
+          dni: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
+          matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
+          fecha_nacimiento: ['', Validators.required],
+          email: ['', Validators.compose([Validators.email])],
+          telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          user: [],
+          password: [],
+        }, {});
+        break;
+    
+      default: //1,2,5
+        this.usuarioForm = this.formBuilder.group({
+          rol: [e.descripcion, Validators.required],
+          nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
+          apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
+          cuit: ['', Validators.compose([Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
+          dni: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
+          matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          direccion: ['', Validators.compose([Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
+          fecha_nacimiento: [''],
+          email: ['', Validators.compose([Validators.required, Validators.email])],
+          telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          user: ['', Validators.required],
+          password: ['', Validators.required],
+        }, {});
+        break;
+    }
+  }
   
   get f() { return this.usuarioForm.controls; }
 
@@ -124,7 +179,6 @@ export class AgregarUsuarioComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if((!this.usuarioForm.value.user != !this.usuarioForm.value.password)){
-      console.log("user: ",!this.usuarioForm.value.user, "  pass: ", !this.usuarioForm.value.password)
       this.credenciales = true;
       return;
     }else{
@@ -150,6 +204,7 @@ export class AgregarUsuarioComponent implements OnInit {
   }
 
   createUsuario() {
+    this.usuarioForm.value.rol = this.descripcionRol
     this.usuarioSub = this._apiService.setUsuario(this.usuarioForm.value)
       .subscribe(() => {
         this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");

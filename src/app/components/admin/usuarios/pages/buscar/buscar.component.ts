@@ -92,23 +92,6 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.spinner.show();
 
-    this.inmueblesSub = this._apiService.getInmuebles()
-      .subscribe((response)=>{
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
-
-    this._apiService.cargarPeticion(this.inmueblesSub)
-
-
-    this.observacionesSub = this._apiService.getObservaciones()
-      .subscribe(response => {
-        this.observaciones = response
-        this._functionService.imprimirMensaje(response, "observaciones")
-      })
-
-    this._apiService.cargarPeticion(this.observacionesSub);
-
     this.rolesSub = this._apiService.getRoles()
       .subscribe(response => {
         this.roles = response
@@ -118,11 +101,13 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
       })
     this._apiService.cargarPeticion(this.rolesSub);  
 
+    this.spinner.hide();
     this.consultaForm = this.formBuilder.group({
-      numero: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
+      numero: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
     })  
 
     this.consultaAvanzadaForm = this.formBuilder.group({
+      dni: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
       nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
       matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
       rol: [''],
@@ -138,29 +123,7 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
     this._apiService.cancelarPeticionesPendientes()
   }
   
-  buscarUsuarios() {
-    this.submitted2 = true;
-    if (this.consultaAvanzadaForm.invalid) {
-      return;
-    }
-    this.spinner.show();
-    this.usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
-      .subscribe((res) =>{
-        this.usuarios = res
-        this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
-        
-        if (this.usuarios.count == 0) {
-          this.spinner.hide();
-          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
-          this.mensajeSwal.fire()
-        }else{
-          this.usuarios = res
-          this.spinner.hide();
-        }
-        this.load = false;
-      })
-    this._apiService.cargarPeticion(this.usuariosSub)
-  }
+
 
   limpiar(form){
     form.reset();
@@ -212,7 +175,7 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
   buscarUsuario() {
     this.submitted = true;
     if(this.consultaForm.value.numero < 1){
-      this._functionService.configSwal(this.mensajeSwal, `Debe ingresar un DNI`, "info", "Aceptar", "", false, "", "");
+      this._functionService.configSwal(this.mensajeSwal, `Debe ingresar un CUIT/CUIL`, "info", "Aceptar", "", false, "", "");
       this.mensajeSwal.fire();
       return;
     }
@@ -223,8 +186,8 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
     this.spinner.show();
     var numero = this.consultaForm.value.numero
     
-    //BUSCA POR NUMERO DE DNI
-    this.usuarioSub = this._apiService.getUsuarioNumero(numero)
+    //BUSCA POR NUMERO DE CUIT
+    this.usuarioSub = this._apiService.getUsuarioCuit(numero)
       .subscribe((x:any) =>{
         if ( x.count > 0){
           this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE 
@@ -235,6 +198,30 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
       })
     this.spinner.hide();
     this._apiService.cargarPeticion(this.usuarioSub)
+  }
+
+  buscarUsuarios() {
+    this.submitted2 = true;
+    if (this.consultaAvanzadaForm.invalid) {
+      return;
+    }
+    this.spinner.show();
+    this.usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
+      .subscribe((res) =>{
+        this.usuarios = res
+        this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
+        
+        if (this.usuarios.count == 0) {
+          this.spinner.hide();
+          this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }else{
+          this.usuarios = res
+          this.spinner.hide();
+        }
+        this.load = false;
+      })
+    this._apiService.cargarPeticion(this.usuariosSub)
   }
   
 

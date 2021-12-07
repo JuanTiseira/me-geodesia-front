@@ -27,10 +27,12 @@
             </tr>
             <tr>
               <th>Abreviatura</th>
-              <td>{{ resultado.abreviatura }}</td>
+              <td>{{ resultado.mensura?.abreviatura }}</td>
             </tr>
-
-
+            <tr>
+              <th>Mensura</th>
+              <td>{{ resultado.mensura?.nombre }}</td>
+            </tr>
 
             <tr>
               <th>Tipo de Expediente</th>
@@ -99,7 +101,6 @@
           <button (click)="verHistorial()" type="button" class="btn btn-green">Ver Historial</button>
         </div>
         <div class="col-md-6">
-          <!-- <button type="submit" class="btn btn-green" >Guardar</button> -->
           <button *ngIf="isEditMode" [disabled]="loading" class="btn btn-green">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Guardar
@@ -219,13 +220,6 @@
                     <label class="me-2" for="">Búsqueda manual </label>
                     <input #busquedamanualCheckBox id="busquedamanualCheckBox" type="checkbox"
                       [checked]="busqueda_manual" (change)="onbusquedamanualChanged(busquedamanualCheckBox.checked)" />
-
-
-                    <!-- <div *ngIf="submitted && r.dni.errors" class="invalid-feedback">
-                              <div *ngIf="r.dni.errors.required">Este campo es obligatorio</div>
-                            </div> -->
-
-
                   </div>
 
 
@@ -323,7 +317,7 @@
               <form class="row g-3" [formGroup]="devolForm" (ngSubmit)="guardarDevol()">
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="abreviatura" class="form-label">Tramite Urgente</label>
+                    <label for="tramite_urgente" class="form-label">Tramite Urgente</label>
                     <input type="checkbox" formControlName="tramite_urgente">
                   </div>
 
