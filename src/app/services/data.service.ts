@@ -122,8 +122,8 @@ export class DataService {
     }
         
 
-    getUsuarios () {
-        return this.http.get(this.url+'/usuarios/').toPromise();
+    getUsuarios (term) {
+        return this.http.get(this.url+'/usuarios/?apellido='+term).toPromise();
     }
 
     getDocumentos () {
@@ -131,7 +131,7 @@ export class DataService {
     }
     
     getPeople(term: string = null): Observable<Person[]> {
-        this.getUsuarios().then((res:Respuesta) =>{          
+        this.getUsuarios(term).then((res:Respuesta) =>{          
             this.items = res.results
             this.items.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + i.cuit; return i; })
             if (term) {

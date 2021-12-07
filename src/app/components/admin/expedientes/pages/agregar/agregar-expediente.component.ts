@@ -6,9 +6,9 @@ import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { concat, Observable, of, Subject, Subscription } from 'rxjs';
+import { concat, fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService, Person, Documento } from 'src/app/services/data.service';
-import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, distinctUntilKeyChanged, filter, pluck, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-agregar-expediente',
@@ -46,6 +46,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     gestorLoading = false;
     propietarioLoading = false;
     documentoLoading = false;
+    minLengthTerm = 5;
 
     agrimensorInput$ = new Subject<string>();
     propietarioInput$ = new Subject<string>();
@@ -85,7 +86,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     this.loadPropietarios();
     this.loadGestores();
     this.loadAgrimensores();
-    this.loadDocumentos()
+    // this.loadDocumentos()
     
 
     this.id = this.route.snapshot.params['id'];
@@ -153,60 +154,51 @@ export class AgregarComponent implements OnInit, OnDestroy {
   }
 
   private loadPropietarios() {
-    this.propietario$ = concat(
-        of([]), // items por defecto
-        this.propietarioInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.propietarioLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.propietarioLoading = false)
-            ))
-        )
-    );
+    this.propietario$ = this.propietarioInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getPeople(term))
+                        )
   }
 
   private loadGestores() {
-    this.gestor$ = concat(
-        of([]), // items por defecto
-        this.gestorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.gestorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.gestorLoading = false)
-            ))
-        )
-    );
+    this.gestor$ =  this.gestorInput$.pipe(
+                      filter(res => {
+                        return res !== null && res.length >= this.minLengthTerm
+                      }),
+                      distinctUntilChanged(),
+                      tap(() => this.gestorLoading = true),
+                      debounceTime(800),
+                      switchMap(term => this.dataService.getPeople(term).pipe(
+                        tap(() => this.gestorLoading = false))
+                    ))
   }
+
 
   private loadAgrimensores() {
+    this.agrimensor$ =  this.agrimensorInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          tap(() => this.agrimensorLoading = true),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getPeople(term).pipe(
+                            tap(() => this.agrimensorLoading = false))
+                        ))
+  }
 
-    this.agrimensor$ = concat(
-        of([]), // items por defecto
-        this.agrimensorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.agrimensorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.agrimensorLoading = false)
-            ))
-        )
-    );
-  }
-  private loadDocumentos() {
-    this.documento$ = concat(
-        of([]), // items por defecto
-        this.documentoInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.documentoLoading = true),
-            switchMap(term => this.dataService.getDocs(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.documentoLoading = false)
-            ))
-        )
-    );
-  }
+
+  // private loadDocumentos() {
+  //   this.documento$ = this.documentoInput$.pipe(
+  //                       distinctUntilChanged(),
+  //                       debounceTime(350),
+  //                       switchMap(term => this.dataService.getDocs(term))
+  //                     )
+  // }
 
   get f() { return this.expedienteForm.controls; }
   
