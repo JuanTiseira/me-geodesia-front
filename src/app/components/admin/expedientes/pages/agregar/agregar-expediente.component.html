@@ -96,13 +96,13 @@
                 <div class="col-md-6">
                   <div class="col-md-10">
                     <div class="form-group">
-                      <label for="abreviatura" class="form-label">Abreviatura</label>
-                      <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="abreviatura" [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
+                      <label for="mensura" class="form-label">Abreviatura</label>
+                      <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="mensura" [ngClass]="{ 'is-invalid': submitted && f.mensura.errors }">
                         <ng-option value="" disabled>Seleccione una opcion</ng-option>
                         <ng-option *ngFor="let dato of abreviaturas" [value]="dato.id">{{dato.abreviatura}}</ng-option>
                       </ng-select>
-                      <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                        <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
+                      <div *ngIf="submitted && f.mensura.errors" class="invalid-feedback">
+                        <div *ngIf="f.mensura.errors.required">Este campo es obligatorio</div>
                       </div>
                     </div>
                   </div>

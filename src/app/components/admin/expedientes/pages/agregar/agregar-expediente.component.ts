@@ -98,7 +98,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
       inmueble: ['', Validators.required],
       propietario: ['', Validators.required],
       gestor: [''],
-      abreviatura: ['', Validators.required],
+      mensura: ['', Validators.required],
       agrimensor: ['', Validators.required],
       tramite_urgente: [''],
       documentos: ['', Validators.required]
@@ -239,7 +239,6 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
 
   tipoExpedienteChanged(e){
-    console.log(e)
     this.abreviaturas = e.mensuras
     this.idTipoExpediente = e.id
   }
