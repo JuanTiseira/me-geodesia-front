@@ -129,6 +129,10 @@ export class DataService {
     getDocumentos () {
         return this.http.get(this.url+'/documentos/').toPromise();
     }
+
+    getInmueble(params:URLSearchParams) {
+        return this.http.get(this.url+`/inmuebles/?${params.toString()}`).toPromise();
+    }
     
     getPeople(term: string = null): Observable<Person[]> {
         this.getUsuarios(term).then((res:Respuesta) =>{          
@@ -152,17 +156,26 @@ export class DataService {
         return of(this.items).pipe(delay(1));
     }
 
+    getInmuebles(term: string = null): Observable<Inmueble[]> {
 
-    // getInmuebles(term: string = null): Observable<Inmueble[]> {
-    //     this.getUsuarios().then((res:RespuestaInmueble) =>{          
-    //         this.items = res.results
-    //         this.items.map((i) => { i.fullName = i. + ' ' + i.apellido + ' ' + i.dni; return i; })
-    //         if (term) {
-    //             this.items = this.items.filter(x => x.fullName.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
-    //         }
-    //       })
+        let terms = term.split("-")
+        let params: URLSearchParams = new URLSearchParams();
+
+        if(terms.length >= 1) params.set("departamento", terms[0])
+        if(terms.length >= 2) params.set("municipio", terms[1])
+        if(terms.length >= 3) params.set("seccion", terms[2])
+        if(terms.length >= 4) params.set("chacra", terms[3])
+        if(terms.length >= 5) params.set("manzana", terms[4])
+        if(terms.length >= 6) params.set("parcela", terms[5])
+        if(terms.length >= 7) params.set("unidad_funcional", terms[6])
+
+        params.set("disponibles", "true")
+        this.getInmueble(params).then((res:RespuestaInmueble) =>{          
+            this.items = res.results
+            this.items.map((i) => { i.fullName = i.municipio.departamento.codigo + '-' + i.municipio.codigo + '-' + i.seccion + '-' + i.chacra + '-' + i.manzana + '-' + i.parcela + '-' + i.unidad_funcional; return i; })
+          })
         
-    //     return of(this.items).pipe(delay(1));
-    // }
+        return of(this.items).pipe(delay(1));
+    }
 
 }

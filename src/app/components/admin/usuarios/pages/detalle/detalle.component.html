@@ -20,20 +20,20 @@
                                 <td>{{ usuario.apellido | uppercase}}</td>
                             </tr>
 
-                            <tr>
+                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
                                 <th>CUIT</th>
                                 <td>{{ usuario.cuit }}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
                                 <th>DNI</th>
                                 <td>{{ usuario.dni }}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
                                 <th>Fecha de Nacimiento</th>
                                 <td>{{ usuario.fecha_nacimiento }}</td>
                             </tr>
 
-                            <tr>
+                            <tr *ngIf="!isPropietario && !isAdmin && !isEmpleado && !isEmpleadoME">
                                 <th>Matricula</th>
                                 <td>{{ usuario.matricula }} </td>
                             </tr>
@@ -48,13 +48,13 @@
                                 <td>{{ usuario.email }} </td>
                             </tr>
 
-                            <tr>
+                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
                                 <th>Dirección</th>
                                 <td>{{ usuario.direccion }}</td>
                             </tr>
                             <tr>
                                 <th>Rol</th>
-                                <td>{{ usuario.rol.nombre }}</td>
+                                <td>{{ usuario.rol.descripcion }}</td>
                             </tr>
                         </tbody>
                     </table>

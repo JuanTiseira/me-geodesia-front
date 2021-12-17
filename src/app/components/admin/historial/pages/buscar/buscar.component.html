@@ -77,7 +77,7 @@
                 </tr>
                 <tr>
                     <th>Abreviatura</th>
-                    <td>{{datos?.tramite.expediente.mensura?.abreviatura}}</td>
+                    <td>{{datos?.tramite.expediente.mensura?.abreviatura}} <span *ngIf="datos?.tramite?.tramite_urgente">[(U)]</span></td>
                 </tr>
                 <tr>
                     <th>Tipo de Expediente</th>

@@ -23,8 +23,8 @@
 
                         <tr>
                             <th>Abreviatura</th>
-                            <td>{{ resultado.mensura?.abreviatura }}</td>
-                        </tr>
+                            <td>{{ resultado.mensura?.abreviatura }} <span *ngIf="tramite?.tramite_urgente">[(U)]</span></td>
+                          </tr>
 
                         <tr>
                             <th>Mensura</th>
@@ -82,15 +82,11 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <label for="tipo_expediente" class="form-label">Tipo</label>
-                                <ng-select [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente"
-                                    [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
+                                <ng-select (clear)="limpiarMensuras()" (change)="tipoExpedienteChanged($event)" [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente">
                                     <ng-option value="" disabled>Seleccione una opcion</ng-option>
                                     <ng-option *ngFor="let dato of tipos_expedientes?.results" [value]="dato.id"
                                         [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
                                 </ng-select>
-                                <div *ngIf="submitted && f.tipo_expediente.errors" class="invalid-feedback">
-                                    <div *ngIf="f.tipo_expediente.errors.required">Este campo es obligatorio</div>
-                                </div>
                             </div>
                         </div>
 
@@ -106,16 +102,21 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <label for="inmueble" class="form-label">Inmueble</label>
-                                <ng-select [multiple]="false" [closeOnSelect]="true" formControlName="inmueble"
-                                    [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
-                                    <ng-option *ngFor="let dato of inmuebles?.results" [value]="dato.id"
-                                        [disabled]="dato.disabled">
-                                        {{dato.municipio.departamento.codigo}}-{{dato.municipio.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}
-                                    </ng-option>
+                                <ng-select 
+                                [items]="inmueble$ | async"
+                                bindLabel="fullName"
+                                bindValue="id"
+                                [addTag]="false"
+                                [multiple]="false"
+                                [hideSelected]="true"
+                                [trackByFn]="trackByFn"
+                                [minTermLength]="2"
+                                [loading]="inmuebleLoading"
+                                typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                                [typeahead]="inmuebleInput$"
+                                formControlName="inmueble">
+                                
                                 </ng-select>
-                                <div *ngIf="submitted && f.inmueble.errors" class="invalid-feedback">
-                                    <div *ngIf="f.inmueble.errors.required">Este campo es obligatorio</div>
-                                </div>
                             </div>
 
                         </div>
@@ -126,15 +127,12 @@
                                 <label for="propietario" class="form-label">Propietario</label>
                                 <ng-select [items]="propietario$ | async" bindLabel="fullName" bindValue="id"
                                     [addTag]="false" [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn"
-                                    [minTermLength]="5" [loading]="propietarioLoading"
+                                    [minTermLength]="minLengthTerm" [loading]="propietarioLoading"
                                     typeToSearchText="Por favor, ingrese 2 o mas caracteres"
                                     [typeahead]="propietarioInput$" formControlName="propietario"
                                     [ngClass]="{ 'is-invalid': submitted && f.propietario.errors }">
 
                                 </ng-select>
-                                <div *ngIf="submitted && f.propietario.errors" class="invalid-feedback">
-                                    <div *ngIf="f.propietario.errors.required">Este campo es obligatorio</div>
-                                </div>
                             </div>
                         </div>
 
@@ -149,9 +147,7 @@
                                 <ng-option *ngFor="let dato of documentos?.results" [value]="dato.id"
                                     [disabled]="dato.disabled">{{dato.descripcion}}</ng-option>
                             </ng-select>
-                            <div *ngIf="submitted && f.documentos.errors" class="invalid-feedback">
-                                <div *ngIf="f.documentos.errors.required">Este campo es obligatorio</div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="col-3">
@@ -160,12 +156,11 @@
                 <div class="col-md-6">
                     <div class="col-md-10">
                         <div class="form-group">
-                            <label for="abreviatura" class="form-label">Abreviatura</label>
-                            <input formControlName="abreviatura" type="text" class="form-control" id="inputPassword4"
-                                [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
-                            <div *ngIf="submitted && f.abreviatura.errors" class="invalid-feedback">
-                                <div *ngIf="f.abreviatura.errors.required">Este campo es obligatorio</div>
-                            </div>
+                            <label for="mensura" class="form-label">Mensura</label>
+                            <ng-select #ngselectmensura [multiple]="false" [closeOnSelect]="true" formControlName="mensura">
+                                <ng-option value="" disabled>Seleccione una opcion</ng-option>
+                                <ng-option *ngFor="let dato of abreviaturas" [value]="dato.id">{{dato.abreviatura}}</ng-option>
+                              </ng-select>
                         </div>
                     </div>
 
@@ -176,15 +171,11 @@
 
                                 <ng-select [items]="agrimensor$ | async" bindLabel="fullName" bindValue="id"
                                     [addTag]="false" [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn"
-                                    [minTermLength]="5" [loading]="agrimensorLoading"
+                                    [minTermLength]="minLengthTerm" [loading]="agrimensorLoading"
                                     typeToSearchText="Por favor, ingrese 2 o mas caracteres"
                                     [typeahead]="agrimensorInput$" formControlName="agrimensor"
                                     [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }">
                                 </ng-select>
-
-                                <div *ngIf="submitted && f.agrimensor.errors" class="invalid-feedback">
-                                    <div *ngIf="f.agrimensor.errors.required">Este campo es obligatorio</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -195,7 +186,7 @@
                                 <label for="gestor" class="form-label">Gestor</label>
                                 <ng-select [items]="gestor$ | async" bindLabel="fullName" bindValue="id"
                                     [addTag]="false" [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn"
-                                    [minTermLength]="5" [loading]="gestorLoading"
+                                    [minTermLength]="minLengthTerm" [loading]="gestorLoading"
                                     typeToSearchText="Por favor, ingrese 2 o mas caracteres" [typeahead]="gestorInput$"
                                     formControlName="gestor">
                                 </ng-select>

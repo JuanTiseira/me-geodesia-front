@@ -123,6 +123,12 @@ export class ApiService {
     return this.http.get(this.url+'/documentos/');
   }
 
+  //ABREVIATURAS /////////////////////////////////////////////////////////////////////////
+
+  getAbreviaturas () { 
+    return this.http.get(this.url+'/mensuras/');
+  }
+
   //TRAMITE  ////////////////////////////////////////////////////////////////////////////////
 
   getTramites () {

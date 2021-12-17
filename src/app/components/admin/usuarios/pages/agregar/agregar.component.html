@@ -12,7 +12,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="rol" class="form-label">Rol</label>
-                      <ng-select (change)="rolChanged($event)" [multiple]="false" [closeOnSelect]="true" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol?.errors }">
+                      <ng-select (change)="rolChanged($event)" [multiple]="false" [closeOnSelect]="true" id="rol" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol?.errors }">
                         <ng-option value="" disabled>Seleccione una Opcion</ng-option>
                         <ng-option *ngFor="let dato of roles?.results" [value]="dato">{{dato.descripcion}}</ng-option>
                       </ng-select>
@@ -51,7 +51,7 @@
                     <div *ngIf="accesoTodos.includes(descripcionRol)" class="form-group">
                       
                       <label for="nombre" class="form-label">Nombre</label>
-                      <input formControlName="nombre" maxlength="50" type="text" class="form-control" id="" [ngClass]="{ 'is-invalid': submitted && f.nombre?.errors }">
+                      <input formControlName="nombre" maxlength="50" type="text" class="form-control" id="nombre" [ngClass]="{ 'is-invalid': submitted && f.nombre?.errors }">
                       <div *ngIf="submitted && f.nombre?.errors" class="invalid-feedback">
                         <div *ngIf="f.nombre?.errors.required">Este campo es obligatorio.</div>
                         <div *ngIf="f.nombre?.errors.pattern">Solo se permiten letras.</div>

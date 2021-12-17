@@ -9,7 +9,7 @@ import { Role } from 'src/app/models/role.models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService, Documento, Person, Inmueble } from 'src/app/services/data.service';
-import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, switchMap, tap, debounceTime, filter } from 'rxjs/operators';
 import * as moment from 'moment'
 import { TokenService } from 'src/app/services/token.service';
 @Component({
@@ -99,6 +99,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   tramite: any;
   fecha_hora: string;
   user: any;
+  minLengthTerm = 3;
 
 
 
@@ -182,8 +183,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
     this.loadPropietarios();
   
     this.loadDocumentos();
-
-    this.loadInmuebles();
 
     this.id = this.route.snapshot.params['id'];
     this.anioParam = this.route.snapshot.queryParams['anio'];
@@ -451,35 +450,16 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
 
   private loadPropietarios() {
-
-    this.propietario$ = concat(
-        of([]), // items por defecto
-        this.propietarioInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.propietarioLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.propietarioLoading = false)
-            ))
-        )
-    );
-    console.log("propietario: ", this.propietario$, " \n\n propinput: ", this.propietarioInput$)
+    this.propietario$ = this.propietarioInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getPeople(term))
+                        )
   }
 
-  private loadInmuebles() {
-
-    // this.inmueble$ = concat(
-    //     of([]), // items por defecto
-    //     this.inmuebleInput$.pipe(
-    //         distinctUntilChanged(),
-    //         tap(() => this.inmuebleLoading = true),
-    //         switchMap(term => this.dataService.getInmuebles(term).pipe(
-    //             catchError(() => of([])), // limpiar lista error
-    //             tap(() => this.inmuebleLoading = false)
-    //         ))
-    //     )
-    // );
-  }
 
   private loadDocumentos() {
 
@@ -507,21 +487,11 @@ export class DetalleComponent implements OnInit, OnDestroy{
     this.expedienteForm.enable();
   }
 
-  // onSubmit() {
-  //   this.submitted = true;
-  //   // stop here if form is invalid
-  //   if (this.expedienteForm.invalid) {
-  //       return;
-  //   }
-
-  //   this.loading = true;    
-  //   this.updateExpediente();
-  
-  // }
 
   guardarRetiro(){
     this.submitted = true;
     // stop here if form is invalid
+    console.warn(this.retiroForm)
     this.retiroForm.patchValue({tramite: this.tramite.id});
     if(this.retiroForm.value["dni"]=="" && this.retiroForm.value["usuario"]=="") {
       return
@@ -568,12 +538,14 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
   setRetiro() {
     this.loading = true;
-    if (this.busqueda_manual != true) {
+    // console.warn(this.retiroForm)
+
+    if (!this.busqueda_manual) {
       this.retiroForm.patchValue({usuario: this.usuario?.id});
     }
 
 
-    if(this.retiroForm.value.documento != null && this.usuario != null){
+    if(this.retiroForm.value.documento != null && this.retiroForm.value.usuario != null){
       for (var id of this.retiroForm.value.documento) {
         this.retiroForm.patchValue({documento: id});
         this.retiroForm.patchValue({tramite: this.tramite.id});

@@ -97,12 +97,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         })
         this._apiService.cargarPeticion(this.cantidadUsuariosSub)
 
-
-        // this.usuariosSub = this._apiService.getUsuarios()
-        //   .subscribe(response => {
-        //     this.usuarios = response
-        //   })
-      // this._apiService.cargarPeticion(this.usuariosSub)
       }else{
         this.router.navigate(['login']);
       }
@@ -112,7 +106,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this._apiService.cancelarPeticionesPendientes()
+    this._apiService.cancelarPeticionesPendientes()
   }
 
 

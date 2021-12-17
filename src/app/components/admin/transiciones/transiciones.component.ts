@@ -28,28 +28,10 @@ export class TransicionesComponent implements OnInit, OnDestroy {
   
   constructor(private _apiService: ApiService,
               private _functionService: FunctionsService ,
-              private formBuilder: FormBuilder,
               private authService: AuthService,
               private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
-    this.consultaForm = this.formBuilder.group({
-      param_busqueda: ['', Validators.required],   
-      numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-      anio: [''],
-      tipo_expediente: [''],
-      inmueble: [''],
-      documento: [''],
-      propietario: [''],
-      gestor: [''],
-      tramite: [''],
-      observacion: [''],
-      abreviatura: [''],
-      agrimensor: [''],
-      tipo_consulta: [''],
-      });
-
-
       this.buscarTramites();
       this.buscarSectores();
   }
@@ -74,7 +56,7 @@ export class TransicionesComponent implements OnInit, OnDestroy {
     this.historialesSub = this._apiService.getHistorialesUltimos()
       .subscribe((res:any) =>{
 
-        this.tramites = res  
+        this.tramites = res
         if (this.tramites.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, 'No se encuentran registros', "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
@@ -119,7 +101,7 @@ export class TransicionesComponent implements OnInit, OnDestroy {
   onTableDataChange(event) {
     this.spinner.show();
     this._apiService.changePage(event, 'historiales/ultimos_historiales')
-      .then((res) =>{
+      .then((res:any) =>{
 
         this.p =  event
         this.tramites = res

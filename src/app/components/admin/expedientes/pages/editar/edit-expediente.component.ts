@@ -9,10 +9,11 @@ import { AuthService } from '../../../../../services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
-import { DataService, Documento, Person } from 'src/app/services/data.service';
-import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { DataService, Documento, Inmueble, Person } from 'src/app/services/data.service';
+import { catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import * as moment from 'moment'
 import { TokenService } from 'src/app/services/token.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
 @Component({
   selector: 'app-editar',
   templateUrl: './edit-expediente.component.html',
@@ -24,6 +25,7 @@ import { TokenService } from 'src/app/services/token.service';
 export class EditComponent implements OnInit, OnDestroy{
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+  @ViewChild('ngselectmensura') ngselectmensura: NgSelectComponent;
   
   idEdit: boolean
   resultado = null;
@@ -48,6 +50,7 @@ export class EditComponent implements OnInit, OnDestroy{
   documento$: Observable<Documento[]>;
   documentos$: Observable<Documento[]>;
   usuario$: Observable<Person[]>;
+  inmueble$: Observable<Inmueble[]>;
 
   documentosSub: Subscription;
   expedienteSub: Subscription;
@@ -55,6 +58,7 @@ export class EditComponent implements OnInit, OnDestroy{
   editExpedienteSub: Subscription;
   retiroSub: Subscription;
   tipoExpedientesSub: Subscription;
+  abreviaturasSub: Subscription;
   
 
   agrimensorLoading = false;
@@ -62,9 +66,12 @@ export class EditComponent implements OnInit, OnDestroy{
   propietarioLoading = false;
   documentoLoading = false;
   usuarioLoading = false;
+  inmuebleLoading = false;
+  
 
 
   agrimensorInput$ = new Subject<string>();
+  inmuebleInput$ = new Subject<string>();
   propietarioInput$ = new Subject<string>();
   gestorInput$ = new Subject<string>();
   documentoInput$ = new Subject<string>();
@@ -85,11 +92,13 @@ export class EditComponent implements OnInit, OnDestroy{
   public observaciones: any;
   public usuarios: any;
   documentosexpediente: any;
+  abreviaturas:any;
   imprimir: boolean;
   date: any;
   tramite: any;
   fecha_hora: string;
   user: any;
+  minLengthTerm = 3;
 
 
 
@@ -133,6 +142,13 @@ export class EditComponent implements OnInit, OnDestroy{
     this.loadGestores();
     this.loadAgrimensores();
     this.loadDocumentos()
+    this.loadInmuebles();
+
+    // this.abreviaturasSub = this._apiService.getAbreviaturas()
+    // .subscribe((response:any) => {
+    //   this.abreviaturas = response.results
+    // })
+    // this._apiService.cargarPeticion(this.abreviaturasSub);
 
     this.id = this.route.snapshot.params['id'];
 
@@ -146,7 +162,7 @@ export class EditComponent implements OnInit, OnDestroy{
         gestor: [],
         tramite: [],
         observacion: [],
-        abreviatura: [],
+        mensura: [],
         agrimensor: [],
         tramite_urgente: []
       });
@@ -161,10 +177,12 @@ export class EditComponent implements OnInit, OnDestroy{
         this.expedienteSub = this._apiService.getExpediente(this.route.snapshot.params['id'])
           .subscribe((x:any) =>{
             this.tramite = x
+            this.expedienteForm.patchValue({tramite_urgente: this.tramite?.tramite_urgente});
             this.resultado = x.expediente
             this.documentosexpediente  = this.resultado.documentos
 
             this.selecteditem = this.resultado.tipo_expediente
+            this.abreviaturas = this.resultado.tipo_expediente?.mensuras
             this.selectedInmuebles = this.resultado.inmueble
             this.selectedDocumentos = this.resultado.documentos
           
@@ -193,6 +211,7 @@ export class EditComponent implements OnInit, OnDestroy{
     this.loadGestores();
     this.loadDocumentos();
     this.loadAgrimensores();
+    this.loadInmuebles();
     
   }
 
@@ -206,47 +225,56 @@ export class EditComponent implements OnInit, OnDestroy{
   
 
   private loadPropietarios() {
-    this.propietario$ = concat(
-        of([]), // items por defecto
-        this.propietarioInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.propietarioLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.propietarioLoading = false)
-            ))
-        )
-    );
+    this.propietario$ = this.propietarioInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getPeople(term))
+                        )
   }
 
   private loadGestores() {
-    this.gestor$ = concat(
-        of([]), // items por defecto
-        this.gestorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.gestorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.gestorLoading = false)
-            ))
-        )
-    );
+    this.gestor$ =  this.gestorInput$.pipe(
+                      filter(res => {
+                        return res !== null && res.length >= this.minLengthTerm
+                      }),
+                      distinctUntilChanged(),
+                      tap(() => this.gestorLoading = true),
+                      debounceTime(800),
+                      switchMap(term => this.dataService.getPeople(term).pipe(
+                        tap(() => this.gestorLoading = false))
+                    ))
   }
 
 
   private loadAgrimensores() {
-    this.agrimensor$ = concat(
-        of([]), // items por defecto
-        this.agrimensorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.agrimensorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.agrimensorLoading = false)
-            ))
-        )
-    );
+    this.agrimensor$ =  this.agrimensorInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          tap(() => this.agrimensorLoading = true),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getPeople(term).pipe(
+                            tap(() => this.agrimensorLoading = false))
+                        ))
   }
+
+  private loadInmuebles() {
+    this.inmueble$ =  this.inmuebleInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= 2
+                          }),
+                          distinctUntilChanged(),
+                          tap(() => this.inmuebleLoading = true),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getInmuebles(term).pipe(
+                            tap(() => this.inmuebleLoading = false))
+                        ))
+  }
+  
 
   private loadDocumentos() {
     this.documentos$ = this.dataService.getDocs()
@@ -278,24 +306,37 @@ export class EditComponent implements OnInit, OnDestroy{
   updateExpediente() {
     let formulario = {}
     for(let i in this.expedienteForm.value){
-      if(this.expedienteForm.value[i]){
+      console.log(this.expedienteForm.value[i])
+      if(this.expedienteForm.value[i] != null){
         formulario[i] = this.expedienteForm.value[i]
       }
+    }
+
+    if(this.expedienteForm.value.tipo_expediente != null && this.expedienteForm.value.mensura == null){
+      this._functionService.configSwal(this.mensajeSwal, `Si se modifica el tipo de expediente debe modificar la mensura.`, "error", "Aceptar", "", false, "", "");
+      this.mensajeSwal.fire()
+      this.loading = false;  
+      return;
     }
       
     this.editExpedienteSub = this._apiService.editExpediente(this.id, formulario)
       .subscribe((res) =>{
-        Swal.fire({
-          title: 'Exito',
-          text: 'Se modificó correctamente',
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
-        }).finally(() => {
-          this.ngOnInit();
-        })
+        this._functionService.configSwal(this.mensajeSwal, `Se modificó correctamente.`, "success", "Aceptar", "", false, "", "");
+        this.mensajeSwal.fire().finally(() => this.ngOnInit())
       })
     this._apiService.cargarPeticion(this.editExpedienteSub);  
     this.loading = false;
+  }
+
+
+  tipoExpedienteChanged(e){
+    this.ngselectmensura.handleClearClick();
+    let tipo_expediente = this.tipos_expedientes.results.find(mensuras => mensuras.id === e)
+    this.abreviaturas = tipo_expediente.mensuras
+  }
+
+  limpiarMensuras(){
+    this.abreviaturas = null;
   }
 
  

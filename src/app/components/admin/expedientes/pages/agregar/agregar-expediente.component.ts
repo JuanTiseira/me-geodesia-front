@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
-import { DataService, Person, Documento } from 'src/app/services/data.service';
+import { DataService, Person, Documento, Inmueble } from 'src/app/services/data.service';
 import { catchError, debounceTime, distinctUntilChanged, distinctUntilKeyChanged, filter, pluck, switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -34,6 +34,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     gestor$: Observable<Person[]>;
     propietario$: Observable<Person[]>;
     documento$: Observable<Documento[]>;
+    inmueble$: Observable<Inmueble[]>;
 
     tipoExpedientesSub: Subscription;
     inmueblesSub: Subscription;
@@ -46,12 +47,14 @@ export class AgregarComponent implements OnInit, OnDestroy {
     gestorLoading = false;
     propietarioLoading = false;
     documentoLoading = false;
-    minLengthTerm = 5;
+    inmuebleLoading = false;
+    minLengthTerm = 4;
 
     agrimensorInput$ = new Subject<string>();
     propietarioInput$ = new Subject<string>();
     gestorInput$ = new Subject<string>();
     documentoInput$ = new Subject<string>();
+    inmuebleInput$ = new Subject<string>();
 
     selectedAgrimensores: Person[] = <any>[{}];
     selectedPropietarios: Person[] = <any>[{}];
@@ -86,7 +89,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     this.loadPropietarios();
     this.loadGestores();
     this.loadAgrimensores();
-    // this.loadDocumentos()
+    this.loadInmuebles();
     
 
     this.id = this.route.snapshot.params['id'];
@@ -191,14 +194,19 @@ export class AgregarComponent implements OnInit, OnDestroy {
                         ))
   }
 
+  private loadInmuebles() {
+    this.inmueble$ =  this.inmuebleInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= 2
+                          }),
+                          distinctUntilChanged(),
+                          tap(() => this.inmuebleLoading = true),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getInmuebles(term).pipe(
+                            tap(() => this.inmuebleLoading = false))
+                        ))
+  }
 
-  // private loadDocumentos() {
-  //   this.documento$ = this.documentoInput$.pipe(
-  //                       distinctUntilChanged(),
-  //                       debounceTime(350),
-  //                       switchMap(term => this.dataService.getDocs(term))
-  //                     )
-  // }
 
   get f() { return this.expedienteForm.controls; }
   

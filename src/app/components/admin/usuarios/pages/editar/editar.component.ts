@@ -34,7 +34,6 @@ export class EditarComponent implements OnInit, OnDestroy {
   selecteditem: string;
   selectedInmuebles: string;
   selectedtramite: string;
-  usuario: any;
   texto: any;
 
   usuario$: Observable<Person[]>;
@@ -56,12 +55,11 @@ export class EditarComponent implements OnInit, OnDestroy {
 
   usuarioDocumentos: Documento[] = <any>[{}];
 
-  public usuarios: any;
   public roles: any;
   documentosexpediente: any;
   imprimir: boolean;
   date: any;
-  tramite: any;
+  usuario: any;
   fecha_hora: string;
   user: any;
 
@@ -100,18 +98,18 @@ export class EditarComponent implements OnInit, OnDestroy {
     this.isEditMode = false;
     
     this.usuarioForm = this.formBuilder.group({
-      rol: [],
-      nombre: [],
-      apellido: [],
-      cuit: [],
-      dni: [],
-      matricula: [],
-      direccion: [],
-      fecha_nacimiento: [],
-      email: [],
-      telefono: [],
-      user: [],
-      password: []
+      rol: [''],
+      nombre: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
+      apellido: ['', Validators.pattern(/^[a-zA-Z\s]+$/)],
+      cuit: ['', Validators.compose([Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
+      dni: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
+      matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      direccion: ['', Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)],
+      fecha_nacimiento: [''],
+      email: ['', Validators.email],
+      telefono: ['', Validators.compose([Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+      user: [''],
+      password: [''],
     }, {});
  
       
@@ -123,8 +121,7 @@ export class EditarComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.params['id']){
         this.usuarioSub = this._apiService.getUsuario(this.route.snapshot.params['id'])
           .subscribe((x:any) =>{
-            this.tramite = x
-            this.resultado = x.usuario
+            this.usuario = x
             this.spinner.hide()
           }, (err) => {
             this.spinner.hide()
@@ -166,15 +163,35 @@ export class EditarComponent implements OnInit, OnDestroy {
     }else{
       this.credenciales = false;
     }
-    this.loading = true;    
-    this.updateExpediente();
-  
+
+    if(this.usuarioForm.invalid){
+      return;
+    }else{
+      this.loading = true;    
+      this.updateExpediente();
+    }  
   }
 
   get f() { return this.usuarioForm.controls; }
 
   get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
+    return this.usuario?.rol?.nombre == Role.ROL_ADMIN
+  }
+
+  get isEmpleadoME() {
+  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADOME
+  }
+
+  get isEmpleado() {
+  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADO
+  }
+
+  get isProfesional() {
+    return this.usuario?.rol?.nombre == Role.ROL_PROFESIONAL
+  }
+
+  get isPropietario() {
+    return this.usuario?.rol?.nombre == Role.ROL_PROPIETARIO
   }
 
   updateExpediente() {

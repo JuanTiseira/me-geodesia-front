@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { FunctionsService } from '../../../../../services/functions.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { Role } from 'src/app/models/role.models';
 
 
 @Component({
@@ -19,10 +20,11 @@ import { Subscription } from 'rxjs';
 export class DetalleUsuarioComponent implements OnInit, OnDestroy{
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+  @Input() usuario: any;
 
   
   idEdit: boolean
-  usuario = null;
+  // usuario = null;
   message = '';
   usuarioForm: FormGroup;
   id: string;
@@ -119,5 +121,25 @@ export class DetalleUsuarioComponent implements OnInit, OnDestroy{
   }
 
   get f() { return this.usuarioForm.controls; }
+
+  get isAdmin() {
+    return this.usuario?.rol?.nombre == Role.ROL_ADMIN
+  }
+
+  get isEmpleadoME() {
+  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADOME
+  }
+
+  get isEmpleado() {
+  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADO
+  }
+
+  get isProfesional() {
+    return this.usuario?.rol?.nombre == Role.ROL_PROFESIONAL
+  }
+
+  get isPropietario() {
+    return this.usuario?.rol?.nombre == Role.ROL_PROPIETARIO
+  }
 
 }

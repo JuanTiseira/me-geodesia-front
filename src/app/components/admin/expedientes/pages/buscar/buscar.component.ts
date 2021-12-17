@@ -8,8 +8,8 @@ import { Role } from 'src/app/models/role.models';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject, Subscription} from 'rxjs';
-import { DataService, Documento, Person } from 'src/app/services/data.service';
-import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { DataService, Documento, Person, Inmueble } from 'src/app/services/data.service';
+import { catchError, debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
@@ -24,12 +24,12 @@ export class BuscarComponent implements OnInit, OnDestroy {
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   closeResult = '';
   
-  public page: number = 0;
   public search: string = '';
   public expedientes: any;
   public load: boolean;
 
   public tipos_expedientes: any;
+  abreviaturas:any;
   public documentos: any; 
   public tramites: any;
   public inmuebles: any;
@@ -37,8 +37,9 @@ export class BuscarComponent implements OnInit, OnDestroy {
   public usuarios: any;
   public tipo_consulta: any;
 
-  public selectedItems: any
-  public tramite_urgente: boolean = false
+  public selectedItems: any;
+  public tramite_urgente: boolean = false;
+  minLengthTerm = 3;
 
   p: number = 1;
   submitted = false;
@@ -47,23 +48,27 @@ export class BuscarComponent implements OnInit, OnDestroy {
   gestor$: Observable<Person[]>;
   propietario$: Observable<Person[]>;
   documento$: Observable<Documento[]>;
+  inmueble$: Observable<Inmueble[]>;
 
   tipoExpedientesSub: Subscription;
   usuariosSub: Subscription;
   deleteExpedienteSub: Subscription;
   expedienteSub: Subscription;
   expedientesSub: Subscription;
+  abreviaturasSub: Subscription;
 
   agrimensorLoading = false;
   gestorLoading = false;
   propietarioLoading = false;
   documentoLoading = false;
+  inmuebleLoading = false;
 
 
   agrimensorInput$ = new Subject<string>();
   propietarioInput$ = new Subject<string>();
   gestorInput$ = new Subject<string>();
   documentoInput$ = new Subject<string>();
+  inmuebleInput$ = new Subject<string>();
 
 
   selectedAgrimensores: Person[] = <any>[{}];
@@ -75,6 +80,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
   tramite: string
   param_busqueda: ''
   consultaForm : FormGroup
+  expedienteForm: FormGroup
   categories = [
     {id: 1, name: 'Expediente', value: 'expediente'},
     {id: 2, name: 'Tramite', value: 'tramite'},
@@ -91,8 +97,6 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {    
     this.consultaForm = this.formBuilder.group({
-      param_busqueda: ['', Validators.required],   
-      numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
       anio: [''],
       tipo_expediente: [''],
       inmueble: [''],
@@ -101,20 +105,33 @@ export class BuscarComponent implements OnInit, OnDestroy {
       gestor: [''],
       tramite: [''],
       observacion: [''],
-      abreviatura: [''],
+      mensura: [''],
       agrimensor: [''],
       tipo_consulta: [''],
       });
+
+    this.expedienteForm = this.formBuilder.group({
+      param_busqueda: ['', Validators.required],   
+      numero: ['', Validators.compose([Validators.required, Validators.maxLength(8), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+    });
+
       this.loadPropietarios();
       this.loadGestores();
       this.loadAgrimensores();
       this.loadDocumentos();
+      this.loadInmuebles();
       
       this.tipoExpedientesSub = this._apiService.getTipoExpedientes()
         .subscribe(response => {
           this.tipos_expedientes = response
         })
       this._apiService.cargarPeticion(this.tipoExpedientesSub);
+
+      this.abreviaturasSub = this._apiService.getAbreviaturas()
+      .subscribe(response => {
+        this.abreviaturas = response
+      })
+      this._apiService.cargarPeticion(this.abreviaturasSub);
 
       this._apiService.getInmuebles().subscribe((response)=>{
         this.inmuebles = response
@@ -135,9 +152,6 @@ export class BuscarComponent implements OnInit, OnDestroy {
     this._apiService.cancelarPeticionesPendientes()
   }
 
-  buscar () {
-    alert('buscado')
-  }
 
   eliminar (id) {
     this._functionService.configSwal(this.mensajeSwal, `Está seguro de eliminar esto?.`, "warning", "Aceptar", "Cancelar", true, "", "d33");
@@ -180,10 +194,6 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   } 
 
-  buscarAnterior() {
-    alert('anterior pagina')
-  }
-
   get isAdmin() {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
@@ -197,22 +207,22 @@ export class BuscarComponent implements OnInit, OnDestroy {
   }
 
   buscarExpediente() {
-
+    this._functionService.imprimirMensaje(this.expedienteForm, "consulta form: ")
     this.submitted = true;
-    if (this.consultaForm.invalid) {
-      this._functionService.imprimirMensaje(this.consultaForm, "consulta form: ")
+    if (this.expedienteForm.invalid) {
+      this._functionService.imprimirMensaje(this.expedienteForm, "consulta form: ")
       return;
     
     }
     this.spinner.show();
     
-    var numeroanio = this.consultaForm.value.numero
+    var numeroanio = this.expedienteForm.value.numero
 
     this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
 
     
     
-    if (this.consultaForm.value.param_busqueda == 'expediente') {
+    if (this.expedienteForm.value.param_busqueda == 'expediente') {
       
       if(numeroanio.toString().length > 5) {
         this._functionService.imprimirMensaje(numeroanio.toString().length, "numero anio: ")
@@ -268,6 +278,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
   buscarExpedientes() {
     this.spinner.show();
     this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
+    
     this.expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
       .subscribe((res) =>{
         this.expedientes = res
@@ -296,6 +307,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
   }
 
   get f() { return this.consultaForm.controls; }
+  get e() { return this.expedienteForm.controls; }
 
   private loadPropietarios() {
     this.propietario$ = concat(
@@ -312,18 +324,16 @@ export class BuscarComponent implements OnInit, OnDestroy {
   }
 
   private loadGestores() {
-
-    this.gestor$ = concat(
-        of([]), // items por defecto
-        this.gestorInput$.pipe(
-            distinctUntilChanged(),
-            tap(() => this.gestorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
-                catchError(() => of([])), // limpiar lista error
-                tap(() => this.gestorLoading = false)
-            ))
-        )
-    );
+    this.gestor$ =  this.gestorInput$.pipe(
+                      filter(res => {
+                        return res !== null && res.length >= this.minLengthTerm
+                      }),
+                      distinctUntilChanged(),
+                      tap(() => this.gestorLoading = true),
+                      debounceTime(800),
+                      switchMap(term => this.dataService.getPeople(term).pipe(
+                        tap(() => this.gestorLoading = false))
+                    ))
   }
 
 
@@ -340,6 +350,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
         )
     );
   }
+  
 
   private loadDocumentos() {
     this.documento$ = concat(
@@ -350,6 +361,20 @@ export class BuscarComponent implements OnInit, OnDestroy {
             switchMap(term => this.dataService.getDocs(term).pipe(
                 catchError(() => of([])), // limpiar lista error
                 tap(() => this.documentoLoading = false)
+            ))
+        )
+    );
+  }
+
+  private loadInmuebles() {
+    this.inmueble$ = concat(
+        of([]), // items por defecto
+        this.inmuebleInput$.pipe(
+            distinctUntilChanged(),
+            tap(() => this.inmuebleLoading = true),
+            switchMap(term => this.dataService.getInmuebles(term).pipe(
+                catchError(() => of([])), // limpiar lista error
+                tap(() => this.inmuebleLoading = false)
             ))
         )
     );
