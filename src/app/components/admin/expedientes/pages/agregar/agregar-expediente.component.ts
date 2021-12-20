@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService, Person, Documento, Inmueble } from 'src/app/services/data.service';
 import { catchError, debounceTime, distinctUntilChanged, distinctUntilKeyChanged, filter, pluck, switchMap, tap } from 'rxjs/operators';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-agregar-expediente',
@@ -18,6 +19,8 @@ import { catchError, debounceTime, distinctUntilChanged, distinctUntilKeyChanged
 
 
 export class AgregarComponent implements OnInit, OnDestroy {
+
+  @ViewChild('ngselectmensura') ngselectmensura: NgSelectComponent;
 
     public tipos_expedientes: any;
     public documentos: any; 
@@ -239,6 +242,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
 
   tipoExpedienteChanged(e){
+    this.ngselectmensura.handleClearClick();
     this.abreviaturas = e.mensuras
     this.idTipoExpediente = e.id
   }
@@ -267,4 +271,9 @@ export class AgregarComponent implements OnInit, OnDestroy {
   limpiar(){
     this.expedienteForm.reset();
   }
+
+  limpiarMensuras(){
+    this.abreviaturas = null;
+  }
+
 }

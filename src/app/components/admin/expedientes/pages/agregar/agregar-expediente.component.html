@@ -11,7 +11,7 @@
                     <div class="col-md-10">
                       <div class="form-group">
                         <label for="tipo_expediente" class="form-label">Tipo</label>
-                        <ng-select (change)="tipoExpedienteChanged($event)"  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
+                        <ng-select (clear)="limpiarMensuras()" (change)="tipoExpedienteChanged($event)"  [multiple]="false" [closeOnSelect]="true" formControlName="tipo_expediente" [ngClass]="{ 'is-invalid': submitted && f.tipo_expediente.errors }">
                           <ng-option value="" disabled>Seleccione una opcion</ng-option>
                           <ng-option *ngFor="let dato of tipos_expedientes?.results" [value]="dato" [disabled]="dato.disabled">{{dato.nombre}}</ng-option>
                         </ng-select>
@@ -114,7 +114,7 @@
                   <div class="col-md-10">
                     <div class="form-group">
                       <label for="mensura" class="form-label">Abreviatura</label>
-                      <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="mensura" [ngClass]="{ 'is-invalid': submitted && f.mensura.errors }">
+                      <ng-select #ngselectmensura [multiple]="false" [closeOnSelect]="true" formControlName="mensura" [ngClass]="{ 'is-invalid': submitted && f.mensura.errors }">
                         <ng-option value="" disabled>Seleccione una opcion</ng-option>
                         <ng-option *ngFor="let dato of abreviaturas" [value]="dato.id">{{dato.abreviatura}}</ng-option>
                       </ng-select>
