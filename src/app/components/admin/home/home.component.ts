@@ -135,9 +135,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     var tramite = this.consultaForm.value.numero;
     this._functionService.imprimirMensaje(tramite, "numero tramite: ");
     this.transicionSub = this._apiService.setNuevaTransicion(tramite)
-      .subscribe((response) => {
+      .subscribe((response:any) => {
         this._functionService.imprimirMensaje(response, "response: ")
-        this._functionService.configSwal(this.mensajeSwal, 'Expediente cargado', "success", "Aceptar", "", false, "", "")
+        this._functionService.configSwal(this.mensajeSwal, response.message, "success", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire().finally(() => {this.cargarExpedientesEstado()})
       })
     this._apiService.cargarPeticion(this.transicionSub)

@@ -171,7 +171,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   onTableDataChange(event) {
     this.spinner.show();
-    this._apiService.changePage(event, 'expedientes')
+    this._apiService.changePage(event, 'expedientes/expedientes_tramites')
       .then((res) =>{
 
         this.p =  event
@@ -275,18 +275,38 @@ export class BuscarComponent implements OnInit, OnDestroy {
     return years
   }
   
+  // buscarExpedientes() {
+  //   this.spinner.show();
+  //   this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
+    
+  //   this.expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
+  //     .subscribe((res) =>{
+  //       this.expedientes = res
+  //       if (this.expedientes.count == 0) {
+  //         this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
+  //         this.mensajeSwal.fire()
+  //       }
+  //       this.load = false;
+  //       this.spinner.hide();
+  //     },(error)=>{
+  //       this.expedientes = []
+  //       this.spinner.hide();
+        
+  //     })
+  //   this._apiService.cargarPeticion(this.expedientesSub);
+  // }
+
   buscarExpedientes() {
     this.spinner.show();
     this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
     
-    this.expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
-      .subscribe((res) =>{
+    this.expedientesSub = this._apiService.getExpedientesTramitesFiltros(this.consultaForm.value)
+      .subscribe((res:any) =>{
         this.expedientes = res
+        console.log(this.expedientes)
         if (this.expedientes.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
-        }else{
-          this.expedientes = res
         }
         this.load = false;
         this.spinner.hide();
@@ -297,6 +317,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
       })
     this._apiService.cargarPeticion(this.expedientesSub);
   }
+
 
   limpiar() {
     this.consultaForm.reset();

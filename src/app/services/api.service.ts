@@ -72,12 +72,24 @@ export class ApiService {
     return this.http.get(this.url+'/expedientes/');
   }
 
-  getExpedientesFiltros(filtros){
+  esUrgente(id){
+    return this.http.get(this.url+'/expedientes/es_urgente/?id='+id);
+  }
+
+  // getExpedientesFiltros(filtros){
+  //   let params: URLSearchParams = new URLSearchParams();
+  //   for(let i in filtros){
+  //     if(filtros[i]) params.set(i, filtros[i])
+  //   }
+  //   return this.http.get(this.url+`/expedientes/?${params.toString()}`);
+  // }
+
+  getExpedientesTramitesFiltros(filtros){
     let params: URLSearchParams = new URLSearchParams();
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
     }
-    return this.http.get(this.url+`/expedientes/?${params.toString()}`);
+    return this.http.get(this.url+`/expedientes/expedientes_tramites/?${params.toString()}`);
   }
 
   getExpediente(id){
