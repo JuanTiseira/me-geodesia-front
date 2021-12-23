@@ -166,7 +166,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
                           }),
                           distinctUntilChanged(),
                           debounceTime(800),
-                          switchMap(term => this.dataService.getPeople(term))
+                          switchMap(term => this.dataService.getPeople(term, "ROL_PROPIETARIO"))
                         )
   }
 
@@ -178,7 +178,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
                       distinctUntilChanged(),
                       tap(() => this.gestorLoading = true),
                       debounceTime(800),
-                      switchMap(term => this.dataService.getPeople(term).pipe(
+                      switchMap(term => this.dataService.getPeople(term, "ROL_PROFESIONAL").pipe(
                         tap(() => this.gestorLoading = false))
                     ))
   }
@@ -192,7 +192,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
                           distinctUntilChanged(),
                           tap(() => this.agrimensorLoading = true),
                           debounceTime(800),
-                          switchMap(term => this.dataService.getPeople(term).pipe(
+                          switchMap(term => this.dataService.getPeople(term, "ROL_PROFESIONAL").pipe(
                             tap(() => this.agrimensorLoading = false))
                         ))
   }

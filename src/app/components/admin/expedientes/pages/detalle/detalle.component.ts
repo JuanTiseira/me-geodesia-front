@@ -456,7 +456,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
                           }),
                           distinctUntilChanged(),
                           debounceTime(800),
-                          switchMap(term => this.dataService.getPeople(term))
+                          switchMap(term => this.dataService.getPeople(term, "ROL_PROPIETARIO"))
                         )
   }
 

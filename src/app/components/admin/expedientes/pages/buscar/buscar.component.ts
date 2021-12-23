@@ -336,7 +336,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
         this.propietarioInput$.pipe(
             distinctUntilChanged(),
             tap(() => this.propietarioLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
+            switchMap(term => this.dataService.getPeople(term, "ROL_PROPIETARIO").pipe(
                 catchError(() => of([])), // limpiar lista error
                 tap(() => this.propietarioLoading = false)
             ))
@@ -352,7 +352,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
                       distinctUntilChanged(),
                       tap(() => this.gestorLoading = true),
                       debounceTime(800),
-                      switchMap(term => this.dataService.getPeople(term).pipe(
+                      switchMap(term => this.dataService.getPeople(term, "ROL_PROFESIONAL").pipe(
                         tap(() => this.gestorLoading = false))
                     ))
   }
@@ -364,7 +364,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
         this.agrimensorInput$.pipe(
             distinctUntilChanged(),
             tap(() => this.agrimensorLoading = true),
-            switchMap(term => this.dataService.getPeople(term).pipe(
+            switchMap(term => this.dataService.getPeople(term, "ROL_PROFESIONAL").pipe(
                 catchError(() => of([])), // limpiar lista error
                 tap(() => this.agrimensorLoading = false)
             ))

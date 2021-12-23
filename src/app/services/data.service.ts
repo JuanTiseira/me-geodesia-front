@@ -122,8 +122,8 @@ export class DataService {
     }
         
 
-    getUsuarios (term) {
-        return this.http.get(this.url+'/usuarios/?apellido='+term).toPromise();
+    getUsuarios (term, rolDescripcion) {
+        return this.http.get(this.url+'/usuarios/?apellido='+term+'&rol_descripcion='+rolDescripcion).toPromise();
     }
 
     getDocumentos () {
@@ -134,8 +134,8 @@ export class DataService {
         return this.http.get(this.url+`/inmuebles/?${params.toString()}`).toPromise();
     }
     
-    getPeople(term: string = null): Observable<Person[]> {
-        this.getUsuarios(term).then((res:Respuesta) =>{          
+    getPeople(term: string = null, rolDescripcion): Observable<Person[]> {
+        this.getUsuarios(term, rolDescripcion).then((res:Respuesta) =>{          
             this.items = res.results
             this.items.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + i.cuit; return i; })
             if (term) {
