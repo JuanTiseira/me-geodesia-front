@@ -31,23 +31,25 @@ export class TokenService {
 
 
   public getToken(): string {
-    var dato: LoginUser = this._localService.getJsonValue("data");
+    var dato: LoginUser = this.getData();
     var token = dato != null? dato.token: null;
     return token
   }
 
   public getUserName(): string {
-    var dato: LoginUser = this._localService.getJsonValue("data");
-    var user_name = dato != null? dato.user_name: null;
-    return user_name;
-    // return localStorage.getItem(USERNAME_KEY);
+    var dato: LoginUser = this.getData();
+    var username = dato != null? dato.username: null;
+    return username;
   }
 
-  public getAuthorities(): Authority[] {
-    //this._functionService.imprimirMensaje(this._localService.getJsonValue("dato"), "dato en localstorage, getAuthorities")
+  public getGrupos(): Array<string> {
+    var dato: LoginUser = this.getData();
+    var grupos = dato != null? dato.grupos: null;
+    return grupos;
+  }
 
-    
-    var dato: LoginUser = this._localService.getJsonValue("dato");
+  public getAuthorities(): Authority[] {   
+    var dato: LoginUser = this.getData();
     this.roles = dato != null? dato.authorities: null;
     // this.roles = [];
     // if (localStorage.getItem(AUTHORITIES_KEY)) {

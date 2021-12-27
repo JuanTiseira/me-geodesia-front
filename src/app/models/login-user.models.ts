@@ -5,5 +5,6 @@ export class LoginUser{
     token: string;
     authorities: Authority[]
     expired_in: string; 
-    user_name: string
+    username: string;
+    grupos: Array<string>
 }
