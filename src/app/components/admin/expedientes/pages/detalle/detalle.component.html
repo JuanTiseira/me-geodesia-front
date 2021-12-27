@@ -197,13 +197,13 @@
                       <div *ngIf="submitted">Este campo es obligatorio</div>
                     </div>
 
-                    <label *ngIf="busqueda_manual" for="usuario" class="form-label">Usuario</label>
+                    <label *ngIf="busqueda_manual" for="usuario" class="form-label">Profesional</label>
                     <div *ngIf="busqueda_manual" class="row">
                       <div class="col-md-10">
-                        <ng-select [items]="propietario$ | async" bindLabel="fullName" bindValue="id" [addTag]="false"
+                        <ng-select [items]="profesionale$ | async" bindLabel="fullName" bindValue="id" [addTag]="false"
                           [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn" [minTermLength]="minLengthTerm"
-                          [loading]="propietarioLoading" typeToSearchText="Ingresar apellido"
-                          [typeahead]="propietarioInput$" formControlName="usuario"
+                          [loading]="profesionalLoading" typeToSearchText="Ingresar apellido"
+                          [typeahead]="profesionalInput$" formControlName="usuario"
                           [ngClass]="{ 'is-invalid': submitted && busqueda_manual}">
                         </ng-select>
                         <div *ngIf="submitted && busqueda_manual" class="invalid-feedback">

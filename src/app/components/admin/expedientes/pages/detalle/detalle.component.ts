@@ -50,6 +50,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   agrimensor$: Observable<Person[]>;
   gestor$: Observable<Person[]>;
   propietario$: Observable<Person[]>;
+  profesionale$: Observable<Person[]>;
   inmueble$: Observable<Inmueble[]>;
   documento$: Observable<Documento[]>;
   documentos$: Observable<Documento[]>;
@@ -58,6 +59,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   agrimensorLoading = false;
   gestorLoading = false;
   propietarioLoading = false;
+  profesionalLoading = false;
   inmuebleLoading = false;
   documentoLoading = false;
   usuarioLoading = false;
@@ -65,6 +67,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
   agrimensorInput$ = new Subject<string>();
   propietarioInput$ = new Subject<string>();
+  profesionalInput$ = new Subject<string>();
   inmuebleInput$ = new Subject<string>();
   gestorInput$ = new Subject<string>();
   documentoInput$ = new Subject<string>();
@@ -181,6 +184,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
     this._apiService.cargarPeticion(this.documentosSub)
 
     this.loadPropietarios();
+    this.loadProfesionales();
   
     this.loadDocumentos();
 
@@ -294,6 +298,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
     //CARGA DE DATOS PARA SELECTS
  
     this.loadPropietarios()
+    this.loadProfesionales()
     
   //FIN CARGAR DATOS PARA SELECTS
   }
@@ -430,6 +435,13 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
           case 1:
             this.usuario = response.results[0]
+            if(this.usuario.rol.nombre != "ROL_PROFESIONAL"){
+              this._functionService.configSwal(this.mensajeSwal, `La persona ${this.usuario?.apellido} ${this.usuario.nombre} no es un profesional`, "info", "Aceptar", "", false, "", "")
+              this.mensajeSwal.fire()
+              this.usuario = null;
+              this.retiroForm.patchValue({dni: null})
+              break;
+            }
             this.retiroForm.patchValue({dni: this.usuario?.dni})
             break; 
         
@@ -457,6 +469,17 @@ export class DetalleComponent implements OnInit, OnDestroy{
                           distinctUntilChanged(),
                           debounceTime(800),
                           switchMap(term => this.dataService.getPeople(term, "ROL_PROPIETARIO"))
+                        )
+  }
+
+  private loadProfesionales() {
+    this.profesionale$ = this.profesionalInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getPeople(term, "ROL_PROFESIONAL"))
                         )
   }
 
