@@ -514,7 +514,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
   guardarRetiro(){
     this.submitted = true;
     // stop here if form is invalid
-    console.warn(this.retiroForm)
     this.retiroForm.patchValue({tramite: this.tramite.id});
     if(this.retiroForm.value["dni"]=="" && this.retiroForm.value["usuario"]=="") {
       return
@@ -561,8 +560,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
   setRetiro() {
     this.loading = true;
-    // console.warn(this.retiroForm)
-
     if (!this.busqueda_manual) {
       this.retiroForm.patchValue({usuario: this.usuario?.id});
     }
