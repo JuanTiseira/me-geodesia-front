@@ -69,11 +69,11 @@ stages:
               - script: echo $(Build.ArtifactStagingDirectory)/$(Build.BuildId)
 
               - task: AzureRmWebAppDeployment@4
-                displayName: 'Azure App Service Deploy: geodesia-frontend-dev'
+                displayName: 'Azure App Service Deploy: geodesia-frontend-prod'
                 inputs:
                   azureSubscription: 'Relex - Azure (ee62cf73-b21b-47a0-a669-07acec034432)'
                   appType: webAppLinux
-                  WebAppName: 'geodesia-frontend-dev'
+                  WebAppName: 'geodesia-frontend-prod'
                   packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
                   StartupCommand: 'pm2 serve /home/site/wwwroot/dist --no-daemon --spa'             
 
