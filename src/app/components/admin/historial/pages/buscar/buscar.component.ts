@@ -127,16 +127,16 @@ export class BuscarHistorialComponent implements OnInit, OnDestroy {
 
       //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
-      this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
-          .subscribe((x:any) =>{
-            this.historialSub = this._apiService.getHistorial(x.id)
+      // this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
+      //     .subscribe((x:any) =>{
+            this.historialSub = this._apiService.getHistorial(numero, anio)
               .subscribe((x:any) =>{
                 this.historiales = x.results;
                 this.datos = this.historiales[0]
               }) 
             this._apiService.cargarPeticion(this.historialSub)        
-          })
-      this._apiService.cargarPeticion(this.expedienteSub);
+      //     })
+      // this._apiService.cargarPeticion(this.expedienteSub);
 
     }else{
 
@@ -145,16 +145,20 @@ export class BuscarHistorialComponent implements OnInit, OnDestroy {
         numeroanio = this.id
       }
 
-      this.expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
-        .subscribe((x:any) =>{
-          this.historialSub = this._apiService.getHistorial(x.id)
+      if(this.consultaForm.value.param_busqueda == 'tramite' && this.id == null){
+        numeroanio = this.consultaForm.value.numero
+      }
+
+      // this.expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
+      //   .subscribe((x:any) =>{
+          this.historialSub = this._apiService.getHistorial(null, null, numeroanio)
             .subscribe((x:any) =>{
               this.historiales = x.results;
               this.datos = this.historiales[0]
             })
           this._apiService.cargarPeticion(this.historialSub)     
-      })
-      this._apiService.cargarPeticion(this.expedienteSub);
+      // })
+      // this._apiService.cargarPeticion(this.expedienteSub);
     }
     this.loading = false;
     this.spinner.hide();

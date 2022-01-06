@@ -274,27 +274,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
     }
     return years
   }
-  
-  // buscarExpedientes() {
-  //   this.spinner.show();
-  //   this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
-    
-  //   this.expedientesSub = this._apiService.getExpedientesFiltros(this.consultaForm.value)
-  //     .subscribe((res) =>{
-  //       this.expedientes = res
-  //       if (this.expedientes.count == 0) {
-  //         this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
-  //         this.mensajeSwal.fire()
-  //       }
-  //       this.load = false;
-  //       this.spinner.hide();
-  //     },(error)=>{
-  //       this.expedientes = []
-  //       this.spinner.hide();
-        
-  //     })
-  //   this._apiService.cargarPeticion(this.expedientesSub);
-  // }
+
 
   buscarExpedientes() {
     this.spinner.show();
@@ -303,7 +283,6 @@ export class BuscarComponent implements OnInit, OnDestroy {
     this.expedientesSub = this._apiService.getExpedientesTramitesFiltros(this.consultaForm.value)
       .subscribe((res:any) =>{
         this.expedientes = res
-        console.log(this.expedientes)
         if (this.expedientes.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()

@@ -285,9 +285,11 @@ export class ApiService {
 
   // HISTORIALES
 
-  getHistorial(id){
+  getHistorial(numero = null, anio = null, num_tramite = null){
     let params: URLSearchParams = new URLSearchParams();
-    params.set('tramite', id);
+    params.set('numero', numero);
+    params.set('anio', anio);
+    params.set('num_tramite', num_tramite);
     return this.http.get(this.url+`/historiales/?${params.toString()}`);
   }
 
