@@ -137,7 +137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if(this.consultaForm.invalid) return
     
     var tramite = this.consultaForm.value.numero;
-    this._functionService.imprimirMensaje(tramite, "numero tramite: ");
+    this._functionService.imprimirMensaje(tramite, "numero tramite cargaExpedientealSector: ");
     this.transicionSub = this._apiService.setNuevaTransicion(tramite)
       .subscribe((response:any) => {
         this._functionService.imprimirMensaje(response, "response: ")
