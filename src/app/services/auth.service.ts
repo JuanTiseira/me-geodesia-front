@@ -39,8 +39,6 @@ export class AuthService {
   }
 
   hasRole(role: Role) {
-    // this._functionsService.imprimirMensaje(role, "hasRole: ")
-    // this._functionsService.imprimirMensaje(this.usert?.authorities[0]?.authority, "Role user: ")
     return this.isAuthorized() && this.usert.authorities[0].authority === role;
   }
 

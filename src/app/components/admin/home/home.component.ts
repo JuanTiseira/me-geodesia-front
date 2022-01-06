@@ -102,7 +102,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
       this._apiService.cargarPeticion(this.cantidadUsuariosSub)
 
-    }else{
+    }
+
+    if(!this.isEmpleado && !this.isEmpleadoME && !this.isAdmin){
       this.router.navigate(['login']);
     }
 
