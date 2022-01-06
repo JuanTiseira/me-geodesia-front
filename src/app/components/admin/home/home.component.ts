@@ -85,12 +85,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.spinner.show();
 
-    if(this.isEmpleadoME || this.isEmpleado){
+    if((this.isEmpleadoME || this.isEmpleado) && !this.isAdmin){
       this.cargarExpedientesEstado()
     }
 
     if (this.isAdmin) {
      
+      this.cargarExpedientesEstado()
       this.cantidadSectoresSub = this._apiService.getExpedientesPorSector().subscribe((response:any) => {
         this.cantidad_sectores = response;
       })
