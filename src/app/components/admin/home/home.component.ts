@@ -83,23 +83,27 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.submitted = false;
-      if (this.isAdmin || this.isEmpleadoME || this.isEmpleado ) {
-        
-        this.spinner.show();
-        this.cargarExpedientesEstado()
-        this.cantidadSectoresSub = this._apiService.getExpedientesPorSector().subscribe((response:any) => {
-          this.cantidad_sectores = response;
-        })
-        this._apiService.cargarPeticion(this.cantidadSectoresSub)
+    this.spinner.show();
 
-        this.cantidadUsuariosSub = this._apiService.getCantidadUsuarios().subscribe((response:any) => {
-          this.cantidad_usuarios = response;
-        })
-        this._apiService.cargarPeticion(this.cantidadUsuariosSub)
+    if(this.isEmpleadoME || this.isEmpleado){
+      this.cargarExpedientesEstado()
+    }
 
-      }else{
-        this.router.navigate(['login']);
-      }
+    if (this.isAdmin) {
+     
+      this.cantidadSectoresSub = this._apiService.getExpedientesPorSector().subscribe((response:any) => {
+        this.cantidad_sectores = response;
+      })
+      this._apiService.cargarPeticion(this.cantidadSectoresSub)
+
+      this.cantidadUsuariosSub = this._apiService.getCantidadUsuarios().subscribe((response:any) => {
+        this.cantidad_usuarios = response;
+      })
+      this._apiService.cargarPeticion(this.cantidadUsuariosSub)
+
+    }else{
+      this.router.navigate(['login']);
+    }
 
 
       this.spinner.hide();
