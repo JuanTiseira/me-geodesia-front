@@ -186,7 +186,6 @@ export class ApiService {
   }
 
   setInmueble(inmueble) {
-    console.warn(inmueble);
     return this.http.post(this.url+'/inmuebles/', inmueble);
   }
 
