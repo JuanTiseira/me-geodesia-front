@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: '', component: DashboardComponent, 
     children:[
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       {path: 'home', component: HomeComponent},
       {path: 'historial/buscar', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
       {path: 'historial/buscar/:id', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
@@ -59,7 +60,7 @@ const routes: Routes = [
 
 {
   path:'**', pathMatch: 'full', redirectTo: '/home'
-}
+},
 ];
 
 @NgModule({
