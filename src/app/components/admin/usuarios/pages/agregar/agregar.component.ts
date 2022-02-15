@@ -29,6 +29,7 @@ export class AgregarUsuarioComponent implements OnInit {
   public observaciones: any;
   public usuarios: any;
   public roles: any;
+  public asignaciones: any;
   public permisos: any;
   usuarioForm: FormGroup
   // form: FormGroup;
@@ -38,10 +39,11 @@ export class AgregarUsuarioComponent implements OnInit {
   submitted = false;
   credenciales = false;
   selectedRol: any;
+  selectedAsignacion: any;
   descripcionRol: any;
 
-  accesoTodos = [1,2,3,4,5]
-  accesoUsuarios = [1,2,3,5]
+  accesoTodos = [1,2,3,4,5,6]
+  accesoUsuarios = [1,2,3,5,6]
   accesoProfesionalPropietario = [3, 4]
   accesoProfesional = [3]
 
@@ -64,13 +66,9 @@ export class AgregarUsuarioComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
-    // if (!this.isAddMode) {
-    //     this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
-    //     .then(x => this.form.patchValue(x));
-    // }
-
     this.usuarioForm = this.formBuilder.group({
-      rol: ['', Validators.required]
+      rol: ['', Validators.required],
+      asignacion: ['', Validators.required]
     }, {});
 
 
@@ -107,6 +105,12 @@ export class AgregarUsuarioComponent implements OnInit {
         this._functionService.imprimirMensaje(response, "roles")
       }));
 
+    this._apiService.cargarPeticion(this._apiService.getAsignaciones()
+    .subscribe(response => {
+      this.asignaciones = response
+      this._functionService.imprimirMensaje(response, "asignaciones")
+    }));
+
 
   }
 
@@ -114,31 +118,40 @@ export class AgregarUsuarioComponent implements OnInit {
     this._apiService.cancelarPeticionesPendientes()
   }
 
-  rolChanged(e){
-    this.selectedRol = e.descripcion
-    this.descripcionRol = e.id
+  asignacionChanged(asignacion){
+    this.selectedAsignacion = asignacion
+    this.setControlsForm();
+  }
 
-    switch (e.id) {
-      case 3:
+  rolChanged(e){
+    this.selectedRol = e
+    this.descripcionRol = e.id
+    this.setControlsForm();
+  }
+
+  setControlsForm(){
+    switch (this.selectedRol.id) {
+      case 3: // rol profesional
         this.usuarioForm = this.formBuilder.group({
-          rol: [e.descripcion, Validators.required],
+          rol: [this.selectedRol.descripcion, Validators.required],
           nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
           apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
-          cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
+          cuit: ['', Validators.compose([Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
           dni: ['', Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/^[0-9]+$/)])],
-          matricula: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          matricula: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.pattern(/^-?([0-9]\d*)?$/)])],
           direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
           fecha_nacimiento: ['', Validators.required],
           email: ['', Validators.compose([Validators.required, Validators.email])],
           telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          asignacion: [this.selectedAsignacion.descripcion, Validators.required],
           user: [],
           password: [],
         }, {});
         break;
 
-      case 4:
+      case 4: // rol propietario
         this.usuarioForm = this.formBuilder.group({
-          rol: [e.descripcion, Validators.required],
+          rol: [this.selectedRol.descripcion, Validators.required],
           nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
           apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
           cuit: ['', Validators.compose([Validators.required, Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
@@ -148,6 +161,7 @@ export class AgregarUsuarioComponent implements OnInit {
           fecha_nacimiento: ['', Validators.required],
           email: ['', Validators.compose([Validators.email])],
           telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          asignacion: [],
           user: [],
           password: [],
         }, {});
@@ -155,7 +169,7 @@ export class AgregarUsuarioComponent implements OnInit {
     
       default: //1,2,5
         this.usuarioForm = this.formBuilder.group({
-          rol: [e.descripcion, Validators.required],
+          rol: [this.selectedRol.descripcion, Validators.required],
           nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
           apellido: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
           cuit: ['', Validators.compose([Validators.minLength(11), Validators.pattern(/^[0-9]+$/)])],
@@ -165,6 +179,7 @@ export class AgregarUsuarioComponent implements OnInit {
           fecha_nacimiento: [''],
           email: ['', Validators.compose([Validators.required, Validators.email])],
           telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
+          asignacion: [this.selectedAsignacion.descripcion, Validators.required],
           user: ['', Validators.required],
           password: ['', Validators.required],
         }, {});
@@ -205,6 +220,7 @@ export class AgregarUsuarioComponent implements OnInit {
 
   createUsuario() {
     this.usuarioForm.value.rol = this.descripcionRol
+    this.usuarioForm.value.asignacion = this.selectedAsignacion.id
     this.usuarioSub = this._apiService.setUsuario(this.usuarioForm.value)
       .subscribe(() => {
         this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");

@@ -133,18 +133,18 @@ export class BuscarComponent implements OnInit, OnDestroy {
       })
       this._apiService.cargarPeticion(this.abreviaturasSub);
 
-      this._apiService.getInmuebles().subscribe((response)=>{
-        this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
+      // this._apiService.getInmuebles().subscribe((response)=>{
+      //   this.inmuebles = response
+      //   this._functionService.imprimirMensaje(response, "inmuebles")
+      // })
        
   
-      this.usuariosSub = this._apiService.getUsuarios()
-        .subscribe(response => {
-          this.usuarios = response
-          this._functionService.imprimirMensaje(response, "usuarios")
-        })
-      this._apiService.cargarPeticion(this.usuariosSub)
+      // this.usuariosSub = this._apiService.getUsuarios()
+      //   .subscribe(response => {
+      //     this.usuarios = response
+      //     this._functionService.imprimirMensaje(response, "usuarios")
+      //   })
+      // this._apiService.cargarPeticion(this.usuariosSub)
 
   }
 
@@ -204,6 +204,10 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   get isEmpleadoME() {
     return this.authService.hasRole(Role.ROL_EMPLEADOME);
+  }
+
+  get isEmpleadoCarga() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
   }
 
   buscarExpediente() {

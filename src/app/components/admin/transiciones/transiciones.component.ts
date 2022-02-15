@@ -23,6 +23,7 @@ export class TransicionesComponent implements OnInit, OnDestroy {
   sectores:any;
 
   historialesSub: Subscription;
+  historialesSinSectorSub: Subscription;
   sectorSub: Subscription;
   transicionSub: Subscription;
   
@@ -68,6 +69,24 @@ export class TransicionesComponent implements OnInit, OnDestroy {
         this.spinner.hide();
       })
     this._apiService.cargarPeticion(this.historialesSub);
+  }
+
+  buscarTramitesSinSector(){
+    this.spinner.show();
+    this.historialesSinSectorSub = this._apiService.getHistorialesUltimosFiltro()
+      .subscribe((res:any) => {
+        this.tramites = res
+        if (this.tramites.count == 0) {
+          this._functionService.configSwal(this.mensajeSwal, 'No se encuentran registros', "info", "Aceptar", "", false, "", "");
+          this.mensajeSwal.fire()
+        }
+        this.load = false;
+      },(error)=>{
+
+      },()=>{
+        this.spinner.hide();
+      })
+    this._apiService.cargarPeticion(this.historialesSinSectorSub);
   }
 
   buscarSectores(){

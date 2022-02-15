@@ -238,8 +238,10 @@ export class DetalleComponent implements OnInit, OnDestroy{
             this.documentosexpediente  = this.resultado.documentos
 
             this.expedienteForm.patchValue(this.resultado)
-            this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
-            
+            if(this.resultado.inmueble){
+              this.expedienteForm.patchValue({inmueble: this.resultado.inmueble.chacra});
+            }
+              
             if (x.observacion != null) {
               this.expedienteForm.patchValue({observacion: x.observacion.descripcion});
             }
@@ -555,6 +557,11 @@ export class DetalleComponent implements OnInit, OnDestroy{
   get isEmpleadoME() {
     return this.authService.hasRole(Role.ROL_EMPLEADOME);
   }
+
+  get isEmpleadoCarga() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
+  }
+
 
 
 

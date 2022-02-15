@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.spinner.show();
 
-    if((this.isEmpleadoME || this.isEmpleado) && !this.isAdmin){
+    if((this.isEmpleadoME || this.isEmpleado || this.isEmpleadoCarga) && !this.isAdmin){
       this.cargarExpedientesEstado()
     }
 
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     }
 
-    if(!this.isEmpleado && !this.isEmpleadoME && !this.isAdmin){
+    if(!this.isEmpleado && !this.isEmpleadoME && !this.isAdmin && !this.isEmpleadoCarga){
       this.router.navigate(['login']);
     }
 
@@ -130,6 +130,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   get isEmpleadoME() {
     return this.authService.hasRole(Role.ROL_EMPLEADOME);
   }
+
+  get isEmpleadoCarga() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
+  }
+
 
   get isProfesional() {
     return this.authService.hasRole(Role.ROL_PROFESIONAL);

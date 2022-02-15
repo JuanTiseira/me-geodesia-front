@@ -124,22 +124,14 @@ export class BuscarHistorialComponent implements OnInit, OnDestroy {
       }
 
       var anio = numeroanio.slice(-4);
-
-      //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
-
-      // this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
-      //     .subscribe((x:any) =>{
-            this.historialSub = this._apiService.getHistorial(numero, anio)
-              .subscribe((x:any) =>{
-                this.historiales = x.results;
-                this.datos = this.historiales[0]
-              }) 
-            this._apiService.cargarPeticion(this.historialSub)        
-      //     })
-      // this._apiService.cargarPeticion(this.expedienteSub);
-
+      this.historialSub = this._apiService.getHistorial(numero, anio)
+        .subscribe((x:any) =>{
+          this.historiales = x.results;
+          this.datos = this.historiales[0]
+          this.cargarSwal();
+        }) 
+      this._apiService.cargarPeticion(this.historialSub)        
     }else{
-
       //BUSCA POR NUMERO DE TRAMITE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
       if(this.consultaForm.value.param_busqueda != 'tramite' && this.id != null){
         numeroanio = this.id
@@ -149,19 +141,27 @@ export class BuscarHistorialComponent implements OnInit, OnDestroy {
         numeroanio = this.consultaForm.value.numero
       }
 
-      // this.expedienteSub = this._apiService.getExpedienteTramite(numeroanio)
-      //   .subscribe((x:any) =>{
           this.historialSub = this._apiService.getHistorial(null, null, numeroanio)
             .subscribe((x:any) =>{
               this.historiales = x.results;
               this.datos = this.historiales[0]
+              this.cargarSwal();
             })
           this._apiService.cargarPeticion(this.historialSub)     
-      // })
-      // this._apiService.cargarPeticion(this.expedienteSub);
     }
+
+
     this.loading = false;
     this.spinner.hide();
+  }
+
+  cargarSwal(){
+    if(!this.datos){
+      this._functionService.configSwal(this.mensajeSwal, `No se encontró historial para el dato solicitado`, "warning", "Aceptar", "", false, "", "")
+      this.mensajeSwal.fire()
+      this.loading = false;
+      this.spinner.hide();
+    }
   }
 
   rangeYear () {

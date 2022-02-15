@@ -10,20 +10,36 @@
             <form class="row g-3" [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="rol" class="form-label">Rol</label>
-                      <ng-select (change)="rolChanged($event)" [multiple]="false" [closeOnSelect]="true" id="rol" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol?.errors }">
-                        <ng-option value="" disabled>Seleccione una Opcion</ng-option>
-                        <ng-option *ngFor="let dato of roles?.results" [value]="dato">{{dato.descripcion}}</ng-option>
-                      </ng-select>
-                      <div *ngIf="submitted && f.rol?.errors" class="invalid-feedback">
-                        <div *ngIf="f.rol?.errors.required">Este campo es obligatorio</div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="rol" class="form-label">Rol</label>
+                          <ng-select (change)="rolChanged($event)" [multiple]="false" [closeOnSelect]="true" id="rol" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol?.errors }">
+                            <ng-option value="" disabled>Seleccione una Opcion</ng-option>
+                            <ng-option *ngFor="let dato of roles?.results" [value]="dato">{{dato.descripcion}}</ng-option>
+                          </ng-select>
+                          <div *ngIf="submitted && f.rol?.errors" class="invalid-feedback">
+                            <div *ngIf="f.rol?.errors.required">Este campo es obligatorio</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="rol" class="form-label">Sector a asignar</label>
+                          <ng-select (change)="asignacionChanged($event)" [multiple]="false" [closeOnSelect]="true" id="asignacion" formControlName="asignacion" [ngClass]="{ 'is-invalid': submitted && f.asignacion?.errors }">
+                            <ng-option value="" disabled>Seleccione una Opcion</ng-option>
+                            <ng-option *ngFor="let dato of asignaciones?.results" [value]="dato">{{dato.descripcion}}</ng-option>
+                          </ng-select>
+                          <div *ngIf="submitted && f.asignacion?.errors" class="invalid-feedback">
+                            <div *ngIf="f.asignacion?.errors.required">Este campo es obligatorio</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="row">
-                      <div *ngIf="accesoUsuarios.includes(descripcionRol)" class="form-group col-md-6">
+                      <div *ngIf="accesoUsuarios.includes(descripcionRol) && selectedAsignacion != null" class="form-group col-md-6">
                       
                         <label for="user" class="form-label">Usuario</label>
                         <input formControlName="user" type="text" class="form-control" id="user" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.user?.errors || credenciales }">
@@ -33,7 +49,7 @@
     
                       </div>
     
-                      <div *ngIf="accesoUsuarios.includes(descripcionRol)" class="form-group col-md-6">
+                      <div *ngIf="accesoUsuarios.includes(descripcionRol) && selectedAsignacion != null" class="form-group col-md-6">
                         
                         <label for="password" class="form-label">Contraseña</label>
                         <input formControlName="password" type="password" class="form-control" style="text-transform:none;" id="password" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.password?.errors || credenciales }">
@@ -48,7 +64,7 @@
                 <div class="row">
                   <div class="col-md-6">
 
-                    <div *ngIf="accesoTodos.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoTodos.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="nombre" class="form-label">Nombre</label>
                       <input formControlName="nombre" maxlength="50" type="text" class="form-control" id="nombre" [ngClass]="{ 'is-invalid': submitted && f.nombre?.errors }">
@@ -59,7 +75,7 @@
   
                     </div>
   
-                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="cuit" class="form-label">CUIT</label>
                       <input formControlName="cuit" type="text" class="form-control" maxlength="11" id="cuit" [ngClass]="{ 'is-invalid': submitted && f.cuit?.errors }">
@@ -72,7 +88,7 @@
                     </div>
   
   
-                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="dni" class="form-label">DNI</label>
                       <input formControlName="dni" type="text" maxlength="8" class="form-control" id="dni" [ngClass]="{ 'is-invalid': submitted && f.dni?.errors }">
@@ -84,7 +100,7 @@
   
                     </div>
   
-                    <div *ngIf="accesoUsuarios.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoUsuarios.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="email" class="form-label">Email</label>
                       <input formControlName="email" type="text" class="form-control" id="email" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email?.errors }">
@@ -98,7 +114,7 @@
                   </div>
                   <div class="col-md-6">
   
-                    <div *ngIf="accesoTodos.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoTodos.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="apellido" class="form-label">Apellido</label>
                       <input formControlName="apellido" type="text" maxlength="50" class="form-control" id="apellido" [ngClass]="{ 'is-invalid': submitted && f.apellido?.errors }">
@@ -109,7 +125,7 @@
   
                     </div>
   
-                    <div *ngIf="accesoProfesional.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoProfesional.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="matricula" class="form-label">Matrícula</label>
                       <input formControlName="matricula" type="text" class="form-control" id="matricula" maxlength="25" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.matricula?.errors }">
@@ -121,7 +137,7 @@
   
                     </div>
   
-                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="direccion" class="form-label">Dirección</label>
                       <input formControlName="direccion" type="text" maxlength="100" class="form-control" id="direccion" [ngClass]="{ 'is-invalid': submitted && f.direccion?.errors }">
@@ -132,7 +148,7 @@
   
                     </div>
   
-                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoProfesionalPropietario.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
                       <input formControlName="fecha_nacimiento" type="date" class="form-control" id="fecha_nacimiento" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.fecha_nacimiento?.errors }">
@@ -142,7 +158,7 @@
   
                     </div>
   
-                    <div *ngIf="accesoTodos.includes(descripcionRol)" class="form-group">
+                    <div *ngIf="accesoTodos.includes(descripcionRol) && selectedAsignacion != null" class="form-group">
                       
                       <label for="telefono" class="form-label">Teléfono</label>
                       <input formControlName="telefono" type="text"  maxlength="15" class="form-control" id="telefono" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.telefono?.errors }">
@@ -154,7 +170,7 @@
   
                     </div>
   
-                      <div *ngIf="accesoTodos.includes(descripcionRol)" class="row">
+                      <div *ngIf="accesoTodos.includes(descripcionRol) && selectedAsignacion != null" class="row">
                         <div *ngIf="!isAddMode" class="col-md-4">
                           <button type="button" (click)="volver()" class="btn btn-green">Volver</button>
                         </div>

@@ -102,13 +102,13 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
     this.expedienteForm = this.formBuilder.group({
       tipo_expediente: ['', Validators.required],
-      inmueble: ['', Validators.required],
+      inmueble: [],
       propietario: ['', Validators.required],
-      gestor: [''],
+      gestor: [],
       mensura: ['', Validators.required],
       agrimensor: ['', Validators.required],
       tramite_urgente: [''],
-      documentos: ['', Validators.required]
+      documentos: []
       });
 
     this.tipoExpedientesSub = this._apiService.getTipoExpedientes()

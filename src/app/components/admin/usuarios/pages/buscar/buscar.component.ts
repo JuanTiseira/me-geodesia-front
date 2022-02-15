@@ -172,6 +172,10 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
     return this.authService.hasRole(Role.ROL_EMPLEADOME);
   }
 
+  get isEmpleadoCarga() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
+  }
+
   buscarUsuario() {
     this.submitted = true;
     if(this.consultaForm.value.numero < 1){

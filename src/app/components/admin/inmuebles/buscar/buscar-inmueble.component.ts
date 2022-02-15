@@ -59,7 +59,7 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     {id: 6, name: 'Manzana', value: 'manzana'},
     {id: 7, name: 'Parcela', value: 'parcela'},
     {id: 8, name: 'Número de mensura', value: 'numero_mensura'},
-    {id: 9, name: 'Municipio', value: 'municipio'},
+    {id: 9, name: 'Municipio', value: 'municipio_nombre'},
     {id: 10, name: 'Observaciones', value: 'observaciones'},
   ]
 
@@ -103,17 +103,18 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     this.inmueblesSub = this._apiService.getInmuebles()
       .subscribe((response)=>{
         this.inmuebles = response
+        this.spinner.hide();
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
     this._apiService.cargarPeticion(this.inmueblesSub);
 
-    this.rolesSub = this._apiService.getRoles()
-        .subscribe(response => {
-          this.roles = response
-          this._functionService.imprimirMensaje(response, "roles")
-          this.spinner.hide();
-        })
-    this._apiService.cargarPeticion(this.rolesSub);
+    // this.rolesSub = this._apiService.getRoles()
+    //     .subscribe(response => {
+    //       this.roles = response
+    //       this._functionService.imprimirMensaje(response, "roles")
+    //       this.spinner.hide();
+    //     })
+    // this._apiService.cargarPeticion(this.rolesSub);
   }
 
   ngOnDestroy(): void {

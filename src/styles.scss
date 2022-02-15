@@ -270,7 +270,20 @@ body {
     border-radius: 6px;
 }
 
+.btn-disabled{
+  background-color : rgb(194, 192, 192)!important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
-// .bg-urgente{
-//   background-color: rgb(240, 133, 133) !important;
-// }
+.bg-verde-agua {
+  background-color: rgba(127, 255, 212, 0.267) !important;
+}
+
+.bg-rojo-claro {
+  background-color: rgba(255, 127, 127, 0.267) !important; 
+}
+
+.bg-warning{
+  background-color: rgb(250, 208, 71) !important;
+}

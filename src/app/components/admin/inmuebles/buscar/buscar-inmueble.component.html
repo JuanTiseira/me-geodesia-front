@@ -6,9 +6,6 @@
     </div>
     
     <br>
-
-
-   
     
     <form [formGroup]="consultaForm">
         <div class="row">
@@ -23,7 +20,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <label for="username" class="form-label">Ingresar</label>
-                <input  (keyup.enter)="buscarInmueble()" formControlName="numero" maxlength="10" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
+                <input  (keyup.enter)="buscarInmueble()" formControlName="numero" maxlength="25" inputmode="numeric" placeholder="Número" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
                 <div *ngIf="submitted && r.numero.errors" class="invalid-feedback">
                   <div *ngIf="r.numero.errors.required">Este campo es obligatorio</div>
                 </div>

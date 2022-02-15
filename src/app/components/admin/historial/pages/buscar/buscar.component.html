@@ -45,7 +45,7 @@
 
 <hr>
 
-<div *ngIf="historiales" class="container2">
+<div *ngIf="datos" class="container2">
     <div class="row mt-5">
         <h2 style="font-weight: bold;">Historial de Estado</h2>
     </div>
@@ -99,7 +99,7 @@
                 </tr>
                 <tr>
                     <th>Inmueble</th>
-                    <td>{{datos?.tramite.expediente.inmueble.seccion}}-{{datos?.tramite.expediente.inmueble.chacra}}-{{datos?.tramite.expediente.inmueble.manzana}}-{{datos?.tramite.expediente.inmueble.parcela}}-{{datos?.tramite.expediente.inmueble.unidad_funcional}}</td>
+                    <td>{{datos?.tramite.expediente.inmueble?.seccion}}-{{datos?.tramite.expediente.inmueble?.chacra}}-{{datos?.tramite.expediente.inmueble?.manzana}}-{{datos?.tramite.expediente.inmueble?.parcela}}-{{datos?.tramite.expediente.inmueble?.unidad_funcional}}</td>
                 </tr>
             </tbody>
         </table>        
@@ -112,7 +112,8 @@
             <div class="bullet green" [ngClass]="{ 'red': isLast}"></div>
             <div class="time">
                 <h3>{{historial.transicion.sector_sucesor.nombre}}</h3>
-                <h4>{{historial.fecha_entrada | date : 'fullDate'}} - {{historial.fecha_entrada | date : 'shortTime'}} Hrs.</h4>
+                <h4><b>Ingresó:</b> {{historial.fecha_entrada | date : 'fullDate'}} - {{historial.fecha_entrada | date : 'shortTime'}} Hrs.</h4>
+                <h4 *ngIf="historial.fecha_salida"><b>Salió:</b> {{historial.fecha_salida | date : 'fullDate'}} - {{historial.fecha_salida | date : 'shortTime'}} Hrs.</h4>
             </div> 
              <div>{{historial.transicion.estado.nombre | uppercase}}</div>                      
           </li>

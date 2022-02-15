@@ -12,22 +12,18 @@ import { CaratulaComponent } from './components/admin/expedientes/pages/reporte/
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
-
   { path: '', component: DashboardComponent, 
     children:[
       {path: 'home', component: HomeComponent},
-      // {path: 'expediente/buscar', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarComponent},
-      // {path: 'expediente/caratula', component: CaratulaComponent},
-      // {path: 'expediente/:id', component: DetalleComponent},
       {path: 'historial/buscar', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
       {path: 'historial/buscar/:id', canLoad: [AuthGuard],  canActivate: [AuthGuard], component: BuscarHistorialComponent},
-      // { path: 'contacto', component: ContactoComponent}
     ],
     data: {
       roles: [
         Role.ROL_ADMIN,
         Role.ROL_EMPLEADO,
         Role.ROL_EMPLEADOME,
+        Role.ROL_EMPLEADO_CARGA,
         Role.ROL_PROFESIONAL,
       ]
     }
@@ -41,6 +37,7 @@ const routes: Routes = [
     roles: [
       Role.ROL_EMPLEADO,
       Role.ROL_EMPLEADOME,
+      Role.ROL_EMPLEADO_CARGA,
       Role.ROL_ADMIN
     ]
   }
@@ -54,6 +51,7 @@ const routes: Routes = [
       roles: [
         Role.ROL_ADMIN,
         Role.ROL_EMPLEADOME,
+        Role.ROL_EMPLEADO_CARGA,
       ]
     }
   

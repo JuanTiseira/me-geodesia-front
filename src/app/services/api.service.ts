@@ -209,6 +209,10 @@ export class ApiService {
     return this.http.get(this.url+'/roles/');
   }
 
+  getAsignaciones() {
+    return this.http.get(this.url+'/asignaciones/');
+  }
+
   // getUsers() {
   //   return this.http.get(this.url+'/roles/').toPromise();
   // }
@@ -298,6 +302,10 @@ export class ApiService {
 
   getHistorialesUltimos(){
     return this.http.get(this.url+'/historiales/ultimos_historiales/');
+  }
+
+  getHistorialesUltimosFiltro(){
+    return this.http.get(this.url+'/historiales/ultimos_historiales_filtros/');
   }
 
   getExpedientesPorSector(){

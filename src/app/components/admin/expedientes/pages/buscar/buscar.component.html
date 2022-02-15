@@ -46,7 +46,7 @@
     <form [formGroup]="consultaForm">
         <hr />
 
-        <div class="row justify-content-end" *ngIf="isAdmin || isEmpleado || isEmpleadoME">
+        <div class="row justify-content-end" *ngIf="isAdmin || isEmpleado || isEmpleadoME || isEmpleadoCarga">
             <h2 style="font-weight: bold;">Filtrar expedientes</h2>
 
             <div class="col-lg-4 col-md-4 col-sm-12">
@@ -149,28 +149,26 @@
     </form>
     
     <hr *ngIf="expedientes"/>
-
     <div *ngIf="expedientes">
         <table class="table table-striped" >
             <thead>
                 <tr>
-                    <th>Numero</th>
-                    <th>Año</th>
+                    <th>N° Expediente</th>
                     <th>Gestor / Iniciador</th>
                     <th>Propietario</th>
+                    <th>Creado</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let exp of expedientes?.results | paginate: { itemsPerPage: 10, currentPage: p, totalItems: expedientes.count }" [ngClass]="{ 'bg-warning': exp.tramite_urgente }">
-                    <td>{{ exp.expediente.numero }}</td>
-                    <td>{{ exp.expediente.anio }}</td>
+                    <td>{{ exp.expediente.numero }}/{{ exp.expediente.anio }} / {{exp.tramite_urgente}}</td>
                     <td *ngIf="exp.expediente.gestor"> {{ exp.expediente.gestor.nombre }} {{ exp.expediente.gestor.apellido }}</td> 
                     <td *ngIf="!exp.expediente.gestor"> {{ exp.expediente.agrimensor.nombre }} {{ exp.expediente.agrimensor.apellido }}</td> 
                     <td> {{ exp.expediente.propietario.nombre }} {{ exp.expediente.propietario.apellido }}</td>
-                    <td *ngIf="exp.expediente.habilitado == true"><b>Activo</b></td>
-                    <td *ngIf="exp.expediente.habilitado == false"><b>Inactivo</b></td>
+                    <td>{{ exp.expediente.created_at | date:'short'}}</td>
+                    <td><b *ngIf="exp.expediente.habilitado == true; else inactivo">Activo</b> <ng-template #inactivo><b>Inactivo</b></ng-template></td>
                     <td>
                         <a id="btnDetalle" class="mx-1" [ngClass]="{'mx-3': isEmpleado}" [routerLink]="['/expediente/', exp.expediente.id ]" >
                             <span style="color: gray;">
@@ -187,7 +185,7 @@
                                 </svg>
                             </span>
                         </a>
-                        <a id="btnEditar" *ngIf="isAdmin || isEmpleadoME" class="mx-1" [routerLink]="['/expediente/editar/', exp.expediente.id ]"  >
+                        <a id="btnEditar" *ngIf="isAdmin || isEmpleadoME || isEmpleadoCarga" class="mx-1" [routerLink]="['/expediente/editar/', exp.expediente.id ]"  >
                             <span style="color: rgb(248, 152, 9);">
                                 <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
