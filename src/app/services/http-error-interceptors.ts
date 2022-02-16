@@ -6,13 +6,16 @@ import { FunctionsService } from './functions.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'
 import { TokenService } from './token.service';
+import { ApiService } from './api.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private router: Router,
               private _functionService: FunctionsService,
-              private _tokenService: TokenService) {}
+              private _tokenService: TokenService,
+              private _apiService: ApiService) {}
   
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
@@ -48,6 +51,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               })
               break;             
           case 401:
+            this._apiService.cancelarPeticionesPendientes();
             Swal.fire({
               title: 'Sin permiso' + ` ${error.status}`,
               text: 'Por favor volver a loguearse.',

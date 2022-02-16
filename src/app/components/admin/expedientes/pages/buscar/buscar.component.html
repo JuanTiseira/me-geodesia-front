@@ -163,7 +163,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let exp of expedientes?.results | paginate: { itemsPerPage: 10, currentPage: p, totalItems: expedientes.count }" [ngClass]="{ 'bg-warning': exp.tramite_urgente }">
-                    <td>{{ exp.expediente.numero }}/{{ exp.expediente.anio }} / {{exp.tramite_urgente}}</td>
+                    <td>{{ exp.expediente.numero }}/{{ exp.expediente.anio }}</td>
                     <td *ngIf="exp.expediente.gestor"> {{ exp.expediente.gestor.nombre }} {{ exp.expediente.gestor.apellido }}</td> 
                     <td *ngIf="!exp.expediente.gestor"> {{ exp.expediente.agrimensor.nombre }} {{ exp.expediente.agrimensor.apellido }}</td> 
                     <td> {{ exp.expediente.propietario.nombre }} {{ exp.expediente.propietario.apellido }}</td>
