@@ -164,9 +164,15 @@ export class ApiService {
 
   //INMUEBLE  ////////////////////////////////////////////////////////////////////////////////
 
-  getInmuebles () {
-    return this.http.get(this.url+'/inmuebles/')
-    // return this.http.get(this.url+'/inmuebles/').toPromise();
+  getInmuebles(parametros = null) {
+    if(parametros == null) return this.http.get(this.url+'/inmuebles/')
+    else {
+      let params: URLSearchParams = new URLSearchParams();
+      for(let i in parametros){
+        if(parametros[i]) params.set(i, parametros[i])
+      } 
+      return this.http.get(this.url+`/inmuebles/?${params.toString()}`)
+    }
   }
 
   // getWithoutPagination(){

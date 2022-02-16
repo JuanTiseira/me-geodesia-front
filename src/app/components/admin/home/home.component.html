@@ -1,13 +1,6 @@
 <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
-        <!-- <div class="row">
-            
-            <div class="d-flex justify-content-center">
-                <h1>EXPEDIENTES</h1> 
-            </div>
-            
-        </div>  -->
         <div class="row mb-4" *ngIf="isAdmin">
             <div class="col-xl-6 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex" data-sr-id="10" style="background-color: rgba(127, 214, 255, 0.267);">
@@ -16,7 +9,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10 col-sm-6">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.total_expedientes }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.total_expedientes }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2 col-sm-6">
@@ -28,8 +22,7 @@
                                         <div class="md-text">Expedientes en el sistema</div> 
                                     </div> 
                                 </div>
-                        </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
+                        </div>  
                     </div>
                 </div>
             </div>
@@ -40,7 +33,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10 col-sm-6">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.sin_sector_asignado }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.sin_sector_asignado }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2 col-sm-6">
@@ -53,7 +47,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
                     </div>
                 </div>
             </div>
@@ -66,7 +59,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.mesa_entrada }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.mesa_entrada }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2">
@@ -79,8 +73,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -92,9 +84,9 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.armado_expediente }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.armado_expediente }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
@@ -105,8 +97,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -118,9 +108,9 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.lindero }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.lindero }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
@@ -131,8 +121,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -145,9 +133,9 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.tecnico }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.tecnico }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
@@ -158,8 +146,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -171,7 +157,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.parcelamiento }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.parcelamiento }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2">
@@ -184,8 +171,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -197,7 +182,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_sectores.pposteriores }}</div>
+                                            <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.pposteriores }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2">
@@ -210,8 +196,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_sectores" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -224,7 +208,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_usuarios.administradores }}</div>
+                                            <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.administradores }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2">
@@ -237,8 +222,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -251,7 +234,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_usuarios.empleados }}</div>
+                                            <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.empleados }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2">
@@ -264,8 +248,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>
@@ -279,9 +261,9 @@
                                 <div class="px-4 flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_usuarios.propietarios }}</div>
+                                            <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.propietarios }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <i class="fa fa-user-alt icon"></i>
                                         </div>
@@ -292,7 +274,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
 
                     </div>
                 </div>
@@ -306,7 +287,8 @@
                                 <div class="px-4 flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
                                         <div class="col col-md-10">
-                                            <div class="text-success mt-2 icono">{{ cantidad_usuarios.profesionales }}</div>
+                                            <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.profesionales }}</div>
+                                            <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
                                         <div class="col col-md-2">
@@ -319,8 +301,6 @@
                                     </div> 
                                 </div>
                         </div>
-                        <span *ngIf="!cantidad_usuarios" class="spinner-border spinner-border-sm mr-1"></span>  
-
                     </div>
                 </div>
             </div>

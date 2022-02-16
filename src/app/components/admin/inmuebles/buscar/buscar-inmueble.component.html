@@ -42,10 +42,70 @@
         <hr />
 
     </form>
-    
+
+    <!-- ========================================== Filtro avanzado ============= -->
+    <form [formGroup]="consultaFormAvanzado">
+        <div class="row justify-content-end" *ngIf="isAdmin || isEmpleado || isEmpleadoME || isEmpleadoCarga">
+            <h2 style="font-weight: bold;">Filtrar Inmuebles</h2>
+
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label for="unidad_funcional" class="form-label">Unidad Funcional</label>
+                <input formControlName="unidad_funcional" maxlength="25" inputmode="numeric" class="form-control">
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label for="numero_partida" class="form-label">N° Partida</label>
+                <input formControlName="numero_partida" maxlength="25" inputmode="numeric" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+                <label for="datos" class="form-label">Datos</label> 
+                <input formControlName="datos" maxlength="25" inputmode="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                    <label for="seccion" class="form-label">Sección</label>   
+                    <input formControlName="seccion" maxlength="25" inputmode="numeric" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="chacra" class="form-label">Chacra</label>
+                <input formControlName="chacra" maxlength="25" inputmode="numeric" class="form-control"> 
+            </div>
+            <div class="col-md-4">
+                <label for="manzana" class="form-label">Manzana</label>
+                <input formControlName="manzana" maxlength="25" inputmode="numeric" class="form-control"> 
+            </div>
+            <div class="col-md-4">
+                <label for="parcela" class="form-label">Parcela</label>
+                <input formControlName="parcela" maxlength="25" inputmode="numeric" class="form-control"> 
+            </div>
+            <div class="col-md-4">
+                <label for="numero_mensura" class="form-label">N° Mensura</label>
+                <input formControlName="numero_mensura" maxlength="25" inputmode="numeric" class="form-control"> 
+            </div>
+            <div class="col-md-4">
+                <label for="municipio_nombre" class="form-label">Municipio</label>
+                <input formControlName="municipio_nombre" maxlength="25" inputmode="numeric" class="form-control"> 
+            </div>
+            <div class="col-md-4">
+                <label for="observaciones" class="form-label">Observaciones</label>
+                <input formControlName="observaciones" maxlength="25" inputmode="numeric" class="form-control"> 
+            </div>
+            <div class="col-md-4 ">
+                <div class="mt-3">
+                    <button type="button" (click)="buscarInmuebles()" class="btn btn-green">Consultar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- =========================================== Fin filtro avanzado =================================== -->
+
+
+
+
     <hr/>
 
-    <div *ngIf="inmuebles">
+    <div class="table-responsive" *ngIf="inmuebles">
         <table class="table table-striped" >
             <thead>
                 <tr>

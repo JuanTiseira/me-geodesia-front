@@ -2,7 +2,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
@@ -67,16 +67,29 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
                 private _functionService: FunctionsService ,
                 private modalService: NgbModal,
                 private authService: AuthService,
-                private spinner: NgxSpinnerService
+                private spinner: NgxSpinnerService,
+                private formBuilder: FormBuilder
                 ) { }
-
 
   consultaForm = new FormGroup({
     numero: new FormControl('', Validators.required),
     tipo_consulta: new FormControl(''),
     param_busqueda: new FormControl('', Validators.required)
-
   });
+
+  consultaFormAvanzado =this.formBuilder.group({
+    unidad_funcional:[''],
+    numero_partida: [''],
+    datos: [''],
+    seccion: [''],
+    chacra: [''],
+    manzana: [''],
+    parcela: [''],
+    numero_mensura: [''],
+    municipio_nombre: [''],
+    observaciones: ['']
+  })
+
 
   open(content, id) {
      
@@ -108,13 +121,6 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
       })
     this._apiService.cargarPeticion(this.inmueblesSub);
 
-    // this.rolesSub = this._apiService.getRoles()
-    //     .subscribe(response => {
-    //       this.roles = response
-    //       this._functionService.imprimirMensaje(response, "roles")
-    //       this.spinner.hide();
-    //     })
-    // this._apiService.cargarPeticion(this.rolesSub);
   }
 
   ngOnDestroy(): void {
@@ -176,6 +182,18 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     return this.authService.hasRole(Role.ROL_ADMIN);
   }
 
+  get isEmpleado() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO);
+  }
+
+  get isEmpleadoME() {
+    return this.authService.hasRole(Role.ROL_EMPLEADOME);
+  }
+
+  get isEmpleadoCarga() {
+    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
+  }
+
   buscarInmueble() {
     this.submitted = true;
     this.p = 1
@@ -191,6 +209,17 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
         this._functionService.imprimirMensaje(response, "inmuebles")
       })
     
+    this.spinner.hide();
+  }
+
+  buscarInmuebles(){
+    console.warn("consultaFormAvanzado: ", this.consultaFormAvanzado.value)
+    this.spinner.show();
+    this._apiService.getInmuebles(this.consultaFormAvanzado.value)
+      .subscribe((response)=>{
+        this.inmuebles = response;
+        this._functionService.imprimirMensaje(response, "Inmuebles consulta avanzada")
+      })
     this.spinner.hide();
   }
 
