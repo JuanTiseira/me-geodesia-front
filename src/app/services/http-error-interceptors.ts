@@ -54,7 +54,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             this._apiService.cancelarPeticionesPendientes();
             Swal.fire({
               title: 'Sin permiso' + ` ${error.status}`,
-              text: 'Por favor volver a loguearse.',
+              text: 'Por favor volver a ingresar.',
               icon: 'info',
               confirmButtonText: 'Aceptar',
               confirmButtonColor: '#53BAAB'
