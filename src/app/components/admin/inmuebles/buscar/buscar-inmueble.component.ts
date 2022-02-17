@@ -112,15 +112,16 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.spinner.show();
-  
+    
     this.inmueblesSub = this._apiService.getInmuebles()
       .subscribe((response)=>{
-        this.inmuebles = response
-        this.spinner.hide();
-        this._functionService.imprimirMensaje(response, "inmuebles")
-      })
+          this.inmuebles = response
+          this.spinner.hide();
+          this._functionService.imprimirMensaje(response, "inmuebles")
+    })
+    
     this._apiService.cargarPeticion(this.inmueblesSub);
-
+    this.spinner.hide()
   }
 
   ngOnDestroy(): void {
