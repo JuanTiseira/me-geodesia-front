@@ -205,9 +205,9 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     }
     this.spinner.show();
     this._apiService.getInmuebleWithParams(parametro, numero)
-      .subscribe((response)=>{
+      .subscribe((response:any)=>{
         this.inmuebles = response
-        this._functionService.imprimirMensaje(response, "inmuebles")
+        this._functionService.imprimirTabla(response.results)
       })
     
     this.spinner.hide();
@@ -226,7 +226,7 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
 
 
   limpiar(){
-    this.consultaForm.reset();
+    this.consultaFormAvanzado.reset();
     this.ngOnInit();
   }
   

@@ -52,6 +52,54 @@ export interface Inmueble {
     habilitado: boolean;
 }
 
+export interface Tramite {
+    id: string,
+    numero: string,
+    numero_presentacion: number,
+    codigo_verificacion: number,
+    tramite_urgente: boolean,
+    observacion: Observacion,
+    tramite_previo: Tramite,
+    expediente: Expediente,
+    habilitado: boolean,
+    created_at: string,
+    url: string
+}
+
+export interface Observacion {
+    id: string,
+    descripcion: string,
+    habilitado: boolean
+}
+
+export interface Expediente {
+    id: string,
+    numero: string,
+    anio: number,
+    mensura: Mensura,
+    documentos: Documento[],
+    tipo_expediente: TipoExpediente,
+    inmueble: Inmueble,
+    propietario: Usuario,
+    agrimensor: Usuario,
+    gestor: Usuario,
+    habilitado: boolean
+}
+
+export interface TipoExpediente {
+    id: string,
+    nombre: string,
+    descripcion: string,
+    mensuras: Mensura[],
+    habilitado: boolean
+}
+
+export interface Mensura {
+    id: string,
+    nombre: string,
+    abreviatura: string,
+    habilitado: boolean
+}
 export interface Respuesta {
     count:    number;
     next:     null;
@@ -133,6 +181,10 @@ export class DataService {
     getInmueble(params:URLSearchParams) {
         return this.http.get(this.url+`/inmuebles/?${params.toString()}`).toPromise();
     }
+
+    getTramitePrevio(params:URLSearchParams){
+        return this.http.get(this.url+`/expedientes/expedientes_tramites/?${params.toString()}`).toPromise();
+    }
     
     getPeople(term: string = null, rolDescripcion): Observable<Person[]> {
         this.getUsuarios(term, rolDescripcion).then((res:Respuesta) =>{          
@@ -161,20 +213,38 @@ export class DataService {
         let terms = term.split("-")
         let params: URLSearchParams = new URLSearchParams();
 
-        if(terms.length >= 1) params.set("departamento", terms[0])
-        if(terms.length >= 2) params.set("municipio", terms[1])
-        if(terms.length >= 3) params.set("seccion", terms[2])
-        if(terms.length >= 4) params.set("chacra", terms[3])
-        if(terms.length >= 5) params.set("manzana", terms[4])
-        if(terms.length >= 6) params.set("parcela", terms[5])
-        if(terms.length >= 7) params.set("unidad_funcional", terms[6])
+        if(terms.length >= 1 && terms[0] != "") params.set("departamento", terms[0])
+        if(terms.length >= 2 && terms[1] != "") params.set("municipio", terms[1])
+        if(terms.length >= 3 && terms[2] != "") params.set("seccion", terms[2])
+        if(terms.length >= 4 && terms[3] != "") params.set("chacra", terms[3])
+        if(terms.length >= 5 && terms[4] != "") params.set("manzana", terms[4])
+        if(terms.length >= 6 && terms[5] != "") params.set("parcela", terms[5])
+        if(terms.length >= 7 && terms[6] != "") params.set("unidad_funcional", terms[6])
 
         params.set("disponibles", "true")
         this.getInmueble(params).then((res:RespuestaInmueble) =>{          
             this.items = res.results
-            this.items.map((i) => { i.fullName = i.municipio.departamento.codigo + '-' + i.municipio.codigo + '-' + i.seccion + '-' + i.chacra + '-' + i.manzana + '-' + i.parcela + '-' + i.unidad_funcional; return i; })
+            this.items.map((i) => { i.nomenclatura = i.municipio.departamento.codigo + '-' + i.municipio.codigo + '-' + i.seccion + '-' + i.chacra + '-' + i.manzana + '-' + i.parcela + '-' + i.unidad_funcional; return i; })
+            if(term){
+                this.items = this.items.filter(x=>x.nomenclatura.include(term))
+            }
           })
         
+        return of(this.items).pipe(delay(1));
+    }
+
+    getTramitesPrevios(term: string = null): Observable<Tramite[]> {
+        let params: URLSearchParams = new URLSearchParams();
+        if(term.length >=1 && term.length <= 7) params.set("numero", term)
+
+        this.getTramitePrevio(params).then((res:Respuesta) =>{
+            this.items = res.results
+            this.items.map((i) => { i.numtramite = `${i.numero}${i.codigo_verificacion}`; return i; })
+            if (term) {
+                // console.log("term: ", term, "      items: ", this.items)
+                this.items = this.items.filter(x => x.numtramite.include(term));
+            }
+          })
         return of(this.items).pipe(delay(1));
     }
 

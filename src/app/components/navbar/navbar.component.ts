@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
   public showAviso:boolean;
   public showMsj:boolean;
   public showPerfil:boolean;
+  sector:string[];
 
   constructor( 
     private router: Router,
@@ -43,7 +44,8 @@ export class NavbarComponent implements OnInit {
     this.showAviso = false;
 
     var user = this._tokenService.getUserName();
-    this.header= `Hola, ${user}`;
+    this.sector = this._tokenService.getData().sectores
+    this.header= `Hola, ${user}. ${this.sector}`;
 
   }
 

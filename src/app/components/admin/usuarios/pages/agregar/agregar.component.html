@@ -9,9 +9,9 @@
         <div class="col-12">
             <form class="row g-3" [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-12">
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                           <label for="rol" class="form-label">Rol</label>
                           <ng-select (change)="rolChanged($event)" [multiple]="false" [closeOnSelect]="true" id="rol" formControlName="rol" [ngClass]="{ 'is-invalid': submitted && f.rol?.errors }">
@@ -23,7 +23,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                           <label for="rol" class="form-label">Sector a asignar</label>
                           <ng-select (change)="asignacionChanged($event)" [multiple]="false" [closeOnSelect]="true" id="asignacion" formControlName="asignacion" [ngClass]="{ 'is-invalid': submitted && f.asignacion?.errors }">
@@ -37,7 +37,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-12">
                     <div class="row">
                       <div *ngIf="accesoUsuarios.includes(descripcionRol) && selectedAsignacion != null" class="form-group col-md-6">
                       

@@ -438,7 +438,7 @@
             uppercase }} {{resultado.agrimensor.apellido | uppercase }}</th>
         </tr>
         <tr>
-          <td style="text-align: right;"><strong>{{resultado.abreviatura}}}</strong> </td>
+          <td style="text-align: right;"><strong>{{resultado.mensura.abreviatura}}</strong> </td>
         </tr>
         <tr>
           <td style="text-align: left;">Asunto: APROBACION DE MENSURA DE</td>
@@ -574,7 +574,7 @@
           </th>
 
           <th style="font-weight: normal; font-size: 7.5px;">
-            <b>Tipo:</b> {{ resultado.abreviatura }} <br>
+            <b>Tipo:</b> {{ resultado.mensura.abreviatura }} <br>
             <b> Prof:</b> {{fullName(resultado.agrimensor.nombre , resultado.agrimensor.apellido )}} <br>
             {{ resultado.agrimensor.dni }} <br>
             <b>Tit:</b> {{fullName(resultado.propietario.nombre , resultado.propietario.apellido )}} <br>
@@ -629,7 +629,7 @@
 
       <p>
         Por la presente, se deja constancia que el <b>TRAMITE N° {{tramite?.numero}}{{tramite?.codigo_verificacion}}</b> del <b>Tipo
-          {{resultado?.abreviatura}} </b> INICIADO EN FECHA <b>{{tramite?.created_at | date}}</b> ,
+          {{resultado?.mensura.abreviatura}} </b> INICIADO EN FECHA <b>{{tramite?.created_at | date}}</b> ,
         <b>Expediente N° {{resultado?.numero}} - {{resultado?.anio}} </b>
         en la <b>Presentacion {{tramite?.numero_presentacion}}</b> se ha recibido con la siguiente
         documentacion:

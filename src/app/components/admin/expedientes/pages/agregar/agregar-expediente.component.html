@@ -39,7 +39,7 @@
                         <label for="inmueble" class="form-label">Inmueble</label>
                           <ng-select 
                           [items]="inmueble$ | async"
-                          bindLabel="fullName"
+                          bindLabel="nomenclatura"
                           bindValue="id"
                           [addTag]="false"
                           [multiple]="false"
@@ -168,7 +168,7 @@
                             [multiple]="false"
                             [hideSelected]="true"
                             [trackByFn]="trackByFn"
-                            [minTermLength]="5"
+                            [minTermLength]="minLengthTerm"
                             [loading]="gestorLoading"
                             typeToSearchText="Por favor, ingrese 2 o mas caracteres"
                             [typeahead]="gestorInput$"
@@ -177,6 +177,28 @@
                         </div>
                         <div class="col-md-2">
                           <button type="button" data-bs-toggle="modal" id="btn-edit-user" (click)="habilitarModal('usuario')"  data-bs-target="#crearUsuario"  class="btn btn-green btn-agregar">+</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-10">
+                          <label for="tramite_previo" class="form-label">Tramite Previo</label>
+                          <ng-select 
+                            [items]="tramitePrevio$ | async"
+                            bindLabel="numtramite"
+                            bindValue="id"
+                            [addTag]="false"
+                            [multiple]="false"
+                            [hideSelected]="true"
+                            [trackByFn]="trackByFn"
+                            [minTermLength]="minLengthTerm"
+                            [loading]="tramitePrevioLoading"
+                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                            [typeahead]="tramitePrevioInput$"
+                            formControlName="tramite_previo">
+                          </ng-select>
                         </div>
                       </div>
                     </div>

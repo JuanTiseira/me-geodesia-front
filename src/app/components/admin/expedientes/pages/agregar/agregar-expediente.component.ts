@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, fromEvent, Observable, of, Subject, Subscription } from 'rxjs';
-import { DataService, Person, Documento, Inmueble } from 'src/app/services/data.service';
+import { DataService, Person, Documento, Inmueble, Tramite } from 'src/app/services/data.service';
 import { catchError, debounceTime, distinctUntilChanged, distinctUntilKeyChanged, filter, pluck, switchMap, tap } from 'rxjs/operators';
 import { NgSelectComponent } from '@ng-select/ng-select';
 
@@ -35,6 +35,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
     agrimensor$: Observable<Person[]>;
     gestor$: Observable<Person[]>;
+    tramitePrevio$: Observable<Tramite[]>;
     propietario$: Observable<Person[]>;
     documento$: Observable<Documento[]>;
     inmueble$: Observable<Inmueble[]>;
@@ -48,14 +49,16 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
     agrimensorLoading = false;
     gestorLoading = false;
+    tramitePrevioLoading = false;
     propietarioLoading = false;
     documentoLoading = false;
     inmuebleLoading = false;
-    minLengthTerm = 4;
+    minLengthTerm = 3;
 
     agrimensorInput$ = new Subject<string>();
     propietarioInput$ = new Subject<string>();
     gestorInput$ = new Subject<string>();
+    tramitePrevioInput$ = new Subject<string>();
     documentoInput$ = new Subject<string>();
     inmuebleInput$ = new Subject<string>();
 
@@ -63,6 +66,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     selectedPropietarios: Person[] = <any>[{}];
     selectedGestores: Person[] = <any>[{}];
     selectedDocumentos: Documento[] = <any>[{}];
+    selectedTramitePrevio: Tramite[] = <any>[{}];
 
     expedienteForm : FormGroup
     form: FormGroup;
@@ -93,6 +97,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     this.loadGestores();
     this.loadAgrimensores();
     this.loadInmuebles();
+    this.loadTramitesPrevios();
     
 
     this.id = this.route.snapshot.params['id'];
@@ -108,7 +113,8 @@ export class AgregarComponent implements OnInit, OnDestroy {
       mensura: ['', Validators.required],
       agrimensor: ['', Validators.required],
       tramite_urgente: [''],
-      documentos: []
+      documentos: [],
+      tramite_previo: []
       });
 
     this.tipoExpedientesSub = this._apiService.getTipoExpedientes()
@@ -155,9 +161,12 @@ export class AgregarComponent implements OnInit, OnDestroy {
     this._apiService.cancelarPeticionesPendientes()
   }
 
-  trackByFn(item: Person) {
-    return item.id;
-  }
+  // trackByFn(item: Person) {
+  //   return item.id;
+  // }
+  trackByFn(item: any): any {
+    return item;
+}
 
   private loadPropietarios() {
     this.propietario$ = this.propietarioInput$.pipe(
@@ -200,13 +209,26 @@ export class AgregarComponent implements OnInit, OnDestroy {
   private loadInmuebles() {
     this.inmueble$ =  this.inmuebleInput$.pipe(
                           filter(res => {
-                            return res !== null && res.length >= 2
+                            return res !== null && res.length >= this.minLengthTerm
                           }),
                           distinctUntilChanged(),
                           tap(() => this.inmuebleLoading = true),
                           debounceTime(800),
                           switchMap(term => this.dataService.getInmuebles(term).pipe(
                             tap(() => this.inmuebleLoading = false))
+                        ))
+  }
+
+  private loadTramitesPrevios() {
+    this.tramitePrevio$ =  this.tramitePrevioInput$.pipe(
+                          filter(res => {
+                            return res !== null && res.length >= this.minLengthTerm
+                          }),
+                          distinctUntilChanged(),
+                          tap(() => this.tramitePrevioLoading = true),
+                          debounceTime(800),
+                          switchMap(term => this.dataService.getTramitesPrevios(term).pipe(
+                            tap(() => this.tramitePrevioLoading = false))
                         ))
   }
 

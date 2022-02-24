@@ -50,5 +50,11 @@ export class FunctionsService {
     }
   }
 
+  imprimirTabla(obj){
+    if(!environment.production){
+      console.table(obj);
+    }
+  }
+
 
 }
