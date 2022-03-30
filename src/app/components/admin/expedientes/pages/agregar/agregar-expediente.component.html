@@ -32,10 +32,6 @@
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-10">
-                        <!-- <label for="inmueble" class="form-label">Inmueble</label>
-                        <ng-select  [multiple]="false" [closeOnSelect]="true" formControlName="inmueble" [ngClass]="{ 'is-invalid': submitted && f.inmueble.errors }">
-                          <ng-option *ngFor="let dato of inmuebles?.results" [value]="dato.id" [disabled]="dato.disabled">{{dato.municipio.departamento.codigo}}-{{dato.municipio.codigo}}-{{dato.seccion}}-{{dato.chacra}}-{{dato.manzana}}-{{dato.parcela}}</ng-option>
-                        </ng-select> -->
                         <label for="inmueble" class="form-label">Inmueble</label>
                           <ng-select 
                           [items]="inmueble$ | async"
@@ -110,7 +106,30 @@
                       <!-- <button type="button" [routerLink]="['/expediente/buscar']" class="btn btn-green">Volver</button> -->
                     </div>
                 </div>
+
+
                 <div class="col-md-6">
+                  <div *ngIf="showNumeroExpediente" class="col-md-10">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="numero" class="form-label">Número</label>
+                          <input type="text" maxlength="4" class="form-control" formControlName="numero" [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                          <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                            <div *ngIf="f.numero.errors.pattern">Ingresar solamente números.</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="anio" class="form-label">Año</label>
+                        <input type="text" maxlength="4" class="form-control" formControlName="anio" [ngClass]="{ 'is-invalid': submitted && f.anio.errors }">
+                        <div *ngIf="submitted && f.anio.errors" class="invalid-feedback">
+                          <div *ngIf="f.anio.errors.pattern">Ingresar solamente números.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="col-md-10">
                     <div class="form-group">
                       <label for="mensura" class="form-label">Abreviatura</label>

@@ -53,6 +53,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
     propietarioLoading = false;
     documentoLoading = false;
     inmuebleLoading = false;
+    showNumeroExpediente = false;
     minLengthTerm = 3;
 
     agrimensorInput$ = new Subject<string>();
@@ -106,6 +107,8 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
 
     this.expedienteForm = this.formBuilder.group({
+      numero: ['', Validators.pattern(/^-?([0-9]\d*)?$/)],
+      anio: ['', Validators.pattern(/^-?([0-9]\d*)?$/)],
       tipo_expediente: ['', Validators.required],
       inmueble: [],
       propietario: ['', Validators.required],
@@ -161,9 +164,6 @@ export class AgregarComponent implements OnInit, OnDestroy {
     this._apiService.cancelarPeticionesPendientes()
   }
 
-  // trackByFn(item: Person) {
-  //   return item.id;
-  // }
   trackByFn(item: any): any {
     return item;
 }
@@ -250,13 +250,23 @@ export class AgregarComponent implements OnInit, OnDestroy {
   createExpediente() {
     this.setExpedienteSub = this._apiService.setExpediente(this.expedienteForm.value)
       .subscribe((res: any) =>{
-        Swal.fire({
-          title: 'Exito',
-          text: 'Se registro correctamente',
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
-        })
-        this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
+        if(res.status == 200 || res.status == 201){
+          Swal.fire({
+            title: 'Exito',
+            text: 'Se registro correctamente',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+          })
+          this.router.navigate(['/expediente/'+ res.id ], { queryParams: { numero: res.numero , anio: res.anio} });
+        }else{
+          Swal.fire({
+            title: 'Error',
+            text: 'El expediente no se a registrado por: '+res.message,
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+          })
+        }
+
       })
     this._apiService.cargarPeticion(this.setExpedienteSub)
      this.loading = false;
@@ -264,9 +274,11 @@ export class AgregarComponent implements OnInit, OnDestroy {
 
 
   tipoExpedienteChanged(e){
+    this.showNumeroExpediente = true;
     this.ngselectmensura.handleClearClick();
     this.abreviaturas = e.mensuras
     this.idTipoExpediente = e.id
+    this.showNumeroExpediente = e.nombre!="PREVIA"
   }
 
   verDetalles(dato:boolean){
