@@ -261,7 +261,7 @@ export class AgregarComponent implements OnInit, OnDestroy {
         }else{
           Swal.fire({
             title: 'Error',
-            text: 'El expediente no se a registrado por: '+res.message,
+            text: 'El expediente no se ha registrado por: '+res.message,
             icon: 'error',
             confirmButtonText: 'Aceptar',
           })
