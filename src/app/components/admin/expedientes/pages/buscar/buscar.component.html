@@ -166,9 +166,9 @@
                     <td *ngIf="exp.expediente.numero; else previa">{{ exp.expediente.numero }}/{{ exp.expediente.anio }}</td>
                     <ng-template #previa><td>PREVIA</td></ng-template>
                     
-                    <td *ngIf="exp.expediente.gestor"> {{ exp.expediente.gestor.nombre }} {{ exp.expediente.gestor.apellido }}</td> 
-                    <td *ngIf="!exp.expediente.gestor"> {{ exp.expediente.agrimensor.nombre }} {{ exp.expediente.agrimensor.apellido }}</td> 
-                    <td> {{ exp.expediente.propietario.nombre }} {{ exp.expediente.propietario.apellido }}</td>
+                    <td *ngIf="exp.expediente.gestor"> {{ exp.expediente.gestor?.nombre }} {{ exp.expediente.gestor?.apellido }}</td> 
+                    <td *ngIf="!exp.expediente.gestor"> {{ exp.expediente.agrimensor?.nombre }} {{ exp.expediente.agrimensor?.apellido }}</td> 
+                    <td> {{ exp.expediente.propietario?.nombre }} {{ exp.expediente.propietario?.apellido }}</td>
                     <td>{{ exp.expediente.created_at | date:'short'}}</td>
                     <td><b *ngIf="exp.expediente.habilitado == true; else inactivo">Activo</b> <ng-template #inactivo><b>Inactivo</b></ng-template></td>
                     <td>

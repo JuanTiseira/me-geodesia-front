@@ -111,10 +111,10 @@ export class AgregarComponent implements OnInit, OnDestroy {
       anio: ['', Validators.pattern(/^-?([0-9]\d*)?$/)],
       tipo_expediente: ['', Validators.required],
       inmueble: [],
-      propietario: ['', Validators.required],
+      propietario: [],
       gestor: [],
       mensura: ['', Validators.required],
-      agrimensor: ['', Validators.required],
+      agrimensor: [],
       tramite_urgente: [''],
       documentos: [],
       tramite_previo: []

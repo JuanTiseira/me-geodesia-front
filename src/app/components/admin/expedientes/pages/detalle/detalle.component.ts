@@ -148,10 +148,11 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
     }
   
-  fullName (nombre, apellido){
-
-    var fullName = nombre.charAt(0).toUpperCase() + '. '  + apellido
-    return fullName
+  fullName (nombre: string, apellido: string){
+    var fullname: string;
+    if(nombre && apellido) fullname = nombre.charAt(0).toUpperCase() + '. '  + apellido
+    else fullname = null;
+    return fullname
 
   }
 

@@ -85,17 +85,17 @@
                 </tr>
                 <tr>
                     <th>Agrimensor</th>
-                    <td>{{datos?.tramite.expediente.agrimensor.nombre | uppercase}} {{datos?.tramite.expediente.agrimensor.apellido | uppercase}}</td>
+                    <td>{{datos?.tramite.expediente.agrimensor?.nombre | uppercase}} {{datos?.tramite.expediente.agrimensor?.apellido | uppercase}}</td>
                 </tr>
                 <tr>
                     <th>Iniciador/Gestor</th>
                     <td *ngIf="datos?.tramite.expediente.gestor;else agrimensor">{{datos?.tramite.expediente.gestor?.nombre | uppercase}} {{datos?.tramite.expediente.gestor?.apellido | uppercase}}</td>
-                    <ng-template #agrimensor><td>{{datos?.tramite.expediente.agrimensor.nombre | uppercase}} {{datos?.tramite.expediente.agrimensor.apellido | uppercase}}</td></ng-template>
+                    <ng-template #agrimensor><td>{{datos?.tramite.expediente.agrimensor?.nombre | uppercase}} {{datos?.tramite.expediente.agrimensor?.apellido | uppercase}}</td></ng-template>
                     
                 </tr>
                 <tr>
                     <th>Propietario</th>
-                    <td>{{datos?.tramite.expediente.propietario.nombre | uppercase}} {{datos?.tramite.expediente.propietario.apellido | uppercase}}</td>
+                    <td>{{datos?.tramite.expediente.propietario?.nombre | uppercase}} {{datos?.tramite.expediente.propietario?.apellido | uppercase}}</td>
                 </tr>
                 <tr>
                     <th>Inmueble</th>

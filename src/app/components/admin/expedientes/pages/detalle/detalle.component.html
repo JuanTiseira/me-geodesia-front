@@ -41,12 +41,12 @@
 
             <tr>
               <th>Agrimensor</th>
-              <td>{{ resultado.agrimensor.nombre}} {{ resultado.agrimensor.apellido }}</td>
+              <td>{{ resultado.agrimensor?.nombre}} {{ resultado.agrimensor?.apellido }}</td>
             </tr>
 
             <tr *ngIf="resultado.gestor != null">
               <th>Gestor</th>
-              <td>{{ resultado.gestor.nombre}} {{ resultado.gestor.apellido }}</td>
+              <td>{{ resultado.gestor?.nombre}} {{ resultado.gestor?.apellido }}</td>
           </tr>
 
           <tr *ngIf="resultado.gestor == null">
@@ -56,7 +56,7 @@
 
             <tr>
               <th>Propietario</th>
-              <td>{{ resultado.propietario.nombre }} {{ resultado.propietario.apellido }}</td>
+              <td>{{ resultado.propietario?.nombre }} {{ resultado.propietario?.apellido }}</td>
             </tr>
 
             <tr>
@@ -432,10 +432,10 @@
 
       <table class="table table-bordered" style="width:100%; border:1px solid black;" *ngIf="resultado">
         <tr>
-          <th style="text-align: left;" *ngIf="resultado.gestor != null">Iniciador: {{resultado.gestor.nombre |
-            uppercase }} {{resultado.gestor.apellido | uppercase }}</th>
-          <th style="text-align: left;" *ngIf="resultado.gestor == null">Iniciador: {{resultado.agrimensor.nombre |
-            uppercase }} {{resultado.agrimensor.apellido | uppercase }}</th>
+          <th style="text-align: left;" *ngIf="resultado.gestor != null">Iniciador: {{resultado.gestor?.nombre |
+            uppercase }} {{resultado.gestor?.apellido | uppercase }}</th>
+          <th style="text-align: left;" *ngIf="resultado.gestor == null">Iniciador: {{resultado.agrimensor?.nombre |
+            uppercase }} {{resultado.agrimensor?.apellido | uppercase }}</th>
         </tr>
         <tr>
           <td style="text-align: right;"><strong>{{resultado.mensura.abreviatura}}</strong> </td>
@@ -444,8 +444,8 @@
           <td style="text-align: left;">Asunto: APROBACION DE MENSURA DE</td>
         </tr>
         <tr>
-          <td style="text-align: center; font-weight: 900;">{{resultado.propietario.nombre | uppercase }}
-            {{resultado.propietario.apellido | uppercase }} </td>
+          <td style="text-align: center; font-weight: 900;">{{resultado.propietario?.nombre | uppercase }}
+            {{resultado.propietario?.apellido | uppercase }} </td>
         </tr>
         <tr>
           &nbsp;
@@ -575,12 +575,12 @@
 
           <th style="font-weight: normal; font-size: 7.5px;">
             <b>Tipo:</b> {{ resultado.mensura.abreviatura }} <br>
-            <b> Prof:</b> {{fullName(resultado.agrimensor.nombre , resultado.agrimensor.apellido )}} <br>
-            {{ resultado.agrimensor.dni }} <br>
-            <b>Tit:</b> {{fullName(resultado.propietario.nombre , resultado.propietario.apellido )}} <br>
-            {{ resultado.propietario.cuit }} <br>
+            <b> Prof:</b> {{fullName(resultado.agrimensor?.nombre , resultado.agrimensor?.apellido )}} <br>
+            {{ resultado.agrimensor?.dni }} <br>
+            <b>Tit:</b> {{fullName(resultado.propietario?.nombre , resultado.propietario?.apellido )}} <br>
+            {{ resultado.propietario?.cuit }} <br>
             <b>Usuario de Impresion:</b> <br>
-            {{user}} <br>
+            {{user}}<br>
             {{date}} {{fecha_hora}} <br>
           </th>
         </tr>
@@ -653,19 +653,21 @@
 
       <h4 style="margin-top: 50px;"> Presentado por: </h4>
 
-      <li *ngIf="resultado?.gestor"> {{resultado?.gestor.nombre}} {{resultado?.gestor.apellido}}</li>
-      <li *ngIf="resultado?.gestor">D.N.I: {{resultado?.gestor.dni}}</li>
+      <li *ngIf="resultado?.gestor"> {{resultado?.gestor?.nombre}} {{resultado?.gestor?.apellido}}</li>
+      <li *ngIf="resultado?.gestor">D.N.I: {{resultado?.gestor?.dni}}</li>
 
-      <li *ngIf="!resultado?.gestor"> {{resultado?.agrimensor.nombre}} {{resultado?.agrimensor.apellido}}</li>
-      <li *ngIf="!resultado?.gestor">D.N.I: {{resultado?.agrimensor.dni}}</li>
+      <li *ngIf="!resultado?.gestor"> {{resultado?.agrimensor?.nombre}} {{resultado?.agrimensor?.apellido}}</li>
+      <li *ngIf="!resultado?.gestor">D.N.I: {{resultado?.agrimensor?.dni}}</li>
 
 
 
       <h4 style="margin-top: 10px;">Profesional Solicitante:</h4>
 
-      <li>AGRIM. {{resultado?.agrimensor.nombre}} {{resultado?.agrimensor.apellido}}</li>
-      <li>Matricula: {{resultado?.agrimensor.matricula}}</li>
-      <li>D.N.I: {{resultado?.agrimensor.dni}}</li>
+      <li>AGRIM. <span *ngIf="!resultado?.agrimensor?.nombre; else linea">{{resultado?.agrimensor?.nombre}} {{resultado?.agrimensor?.apellido}}</span></li>
+      <li>Matricula: {{resultado?.agrimensor?.matricula}}</li>
+      <li>D.N.I: {{resultado?.agrimensor?.dni}}</li>
+      <ng-template #linea><span>--</span></ng-template>
+      
       
       <p style="text-align: right;">
         <img src="assets/firma.jpg" alt="Escudo misiones" class="img-responsive" width="30%"><br>
