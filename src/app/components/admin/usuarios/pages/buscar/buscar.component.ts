@@ -1,12 +1,9 @@
 
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from 'src/app/services/auth.service';
-import { Role } from 'src/app/models/role.models';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -24,21 +21,21 @@ import { Subscription } from 'rxjs';
   templateUrl: './buscar.component.html',
   styleUrls: ['./buscar.component.scss']
 })
-  
 
-export class BuscarUsuarioComponent implements OnInit, OnDestroy{
+
+export class BuscarUsuarioComponent implements OnInit, OnDestroy {
 
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
   closeResult = '';
 
-  public page: number = 0; 
+  public page: number = 0;
   public load: boolean;
   public search: string = '';
   public usuarios: any;
   public roles: any;
   public tipos_usuarios: any;
-  public documentos: any; 
+  public documentos: any;
   public tramites: any;
   public inmuebles: any;
   public observaciones: any;
@@ -49,8 +46,8 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
   tramite: string
   submitted = false;
   submitted2 = false;
-  consultaForm : FormGroup
-  consultaAvanzadaForm : FormGroup
+  consultaForm: FormGroup
+  consultaAvanzadaForm: FormGroup
 
   inmueblesSub: Subscription;
   observacionesSub: Subscription;
@@ -60,19 +57,18 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
   usuarioSub: Subscription;
 
 
-  constructor( private _apiService: ApiService,
-                private _functionService: FunctionsService ,
-                private modalService: NgbModal,
-                private authService: AuthService,
-                private router: Router,
-                private formBuilder: FormBuilder,
-                private spinner: NgxSpinnerService
-                ) { }
+  constructor(private _apiService: ApiService,
+    public _functionService: FunctionsService,
+    private modalService: NgbModal,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService
+  ) { }
 
 
 
   open(content, id) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -95,16 +91,16 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
     this.rolesSub = this._apiService.getRoles()
       .subscribe(response => {
         this.roles = response
-        this._functionService.imprimirMensaje(response, "roles")
-        
+        this._functionService.imprimirMensajeDebug(response, "roles")
+
         this.spinner.hide();
       })
-    this._apiService.cargarPeticion(this.rolesSub);  
+    this._apiService.cargarPeticion(this.rolesSub);
 
     this.spinner.hide();
     this.consultaForm = this.formBuilder.group({
       numero: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])]
-    })  
+    })
 
     this.consultaAvanzadaForm = this.formBuilder.group({
       dni: ['', Validators.compose([Validators.minLength(7), Validators.pattern(/^-?(0|[0-9]\d*)?$/)])],
@@ -113,7 +109,7 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
       rol: [''],
       tipo_consulta: [''],
       param_busqueda: [''],
-    }) 
+    })
   }
 
   get f() { return this.consultaForm.controls; }
@@ -122,14 +118,14 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this._apiService.cancelarPeticionesPendientes()
   }
-  
 
 
-  limpiar(form){
+
+  limpiar(form) {
     form.reset();
   }
 
-  eliminar (id) {
+  eliminar(id) {
     Swal.fire({
       title: '¿Está seguro de que desea eliminar el Usuario?',
       text: "No podra revertir la acción",
@@ -138,15 +134,15 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Eliminar',
-      cancelButtonText : 'Cancelar'
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
         this.eliminarUsuarioSub = this._apiService.deleteUsuario(id)
-          .subscribe(() =>{ 
+          .subscribe(() => {
             Swal.fire(
               'Eliminado!',
               'El usuario fue eliminado.',
-              'success') 
+              'success')
             this.buscarUsuarios()
           })
         this._apiService.cargarPeticion(this.eliminarUsuarioSub)
@@ -157,28 +153,16 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
   buscarSiguiente() {
     alert('siguiente pagina')
 
-  } 
+  }
 
   buscarAnterior() {
     alert('aterior pagina')
 
   }
 
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
-
-  get isEmpleadoME() {
-    return this.authService.hasRole(Role.ROL_EMPLEADOME);
-  }
-
-  get isEmpleadoCarga() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
-  }
-
   buscarUsuario() {
     this.submitted = true;
-    if(this.consultaForm.value.numero < 1){
+    if (this.consultaForm.value.numero < 1) {
       this._functionService.configSwal(this.mensajeSwal, `Debe ingresar un CUIT/CUIL`, "info", "Aceptar", "", false, "", "");
       this.mensajeSwal.fire();
       return;
@@ -186,15 +170,15 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
     if (this.consultaForm.invalid) {
       return;
     }
-    
+
     this.spinner.show();
     var numero = this.consultaForm.value.numero
-    
+
     //BUSCA POR NUMERO DE CUIT
     this.usuarioSub = this._apiService.getUsuarioCuit(numero)
-      .subscribe((x:any) =>{
-        if ( x.count > 0){
-          this.router.navigate(['/usuario/'+x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE 
+      .subscribe((x: any) => {
+        if (x.count > 0) {
+          this.router.navigate(['/usuario/' + x.results[0].id]); //TOMA EL ID DEL OBJETO Y MUESTRA EL DETALLE 
         } else {
           this._functionService.configSwal(this.mensajeSwal, `No se encontró ningún usuario.`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire();
@@ -204,22 +188,22 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
     this._apiService.cargarPeticion(this.usuarioSub)
   }
 
-  buscarUsuarios() {
+  buscarUsuarios(page='1') {
     this.submitted2 = true;
-    if (this.consultaAvanzadaForm.invalid) {
-      return;
-    }
+    this.p = Number(page);
+    if (this.consultaAvanzadaForm.invalid) return;
+
     this.spinner.show();
-    this.usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value)
-      .subscribe((res) =>{
+    this.usuariosSub = this._apiService.getUsuariosFiltros(this.consultaAvanzadaForm.value, page)
+      .subscribe((res) => {
         this.usuarios = res
-        this._functionService.imprimirMensaje(this.usuarios, "usuarios: ")
-        
+        this._functionService.imprimirMensajeDebug(this.usuarios, "usuarios: ")
+
         if (this.usuarios.count == 0) {
           this.spinner.hide();
           this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
-        }else{
+        } else {
           this.usuarios = res
           this.spinner.hide();
         }
@@ -227,33 +211,33 @@ export class BuscarUsuarioComponent implements OnInit, OnDestroy{
       })
     this._apiService.cargarPeticion(this.usuariosSub)
   }
-  
+
 
   onTableDataChange(event) {
     this.spinner.show();
-    this._apiService.changePage(event, 'usuarios')
-      .then((res) =>{
-
-        this.p =  event
+    this.p = event
+    if(this.submitted2) {
+      this.buscarUsuarios(event)
+    }else{
+      this._apiService.changePage(event, 'usuarios')
+      .then((res) => {
         this.usuarios = res
-        
         if (this.usuarios.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No se encuentran registros`, "info", "Aceptar", "", false, "", "");
           this.mensajeSwal.fire()
-        }else{
+        } else {
           this.usuarios = res
         }
         this.load = false;
-      
       })
-      .catch(()=>{
-        this._functionService.imprimirMensaje(event, "error onTableDataChange: ")
+      .catch(() => {
+        this._functionService.imprimirMensajeDebug(event, "error onTableDataChange: ")
       })
-      .finally(()=>{
+      .finally(() => {
         this.spinner.hide();
       })
-
-  } 
+    }
+  }
 
 
 }

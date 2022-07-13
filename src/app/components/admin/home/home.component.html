@@ -1,12 +1,12 @@
 <swal #mensajeSwal title icon confirmButtonText cancelButtonText showCancelButton cancelButtonColor confirmButtonColor confirm></swal>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
-        <div class="row mb-4" *ngIf="isAdmin">
-            <div class="col-xl-6 col-lg-4 col-md-4 col-sm-6 d-flex">
+        <div class="row mb-4" *ngIf="_functionService.isAdmin">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 d-flex">
                 <div class="card flex" data-sr-id="10" style="background-color: rgba(127, 214, 255, 0.267);">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.total_expedientes }}</div>
@@ -26,11 +26,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 d-flex">
                 <div class="card flex bg-rojo-claro" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
                                         <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.sin_sector_asignado }}</div>
@@ -51,43 +51,43 @@
                 </div>
             </div>
             
-            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex bg-verde-agua" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.mesa_entrada }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
-                                        <div class="col col-md-2">
+                                        <div class="col col-md-2 col-sm-6">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="md-text">Expedientes en Mesa de Entrada</div> 
+                                        <div class="md-text">Mesa de Entrada</div> 
                                     </div> 
                                 </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex bg-verde-agua" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.armado_expediente }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-                                        <div class="col col-md-2">
+                                        <div class="col col-md-2 col-sm-6">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
                                     </div>
@@ -100,18 +100,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex bg-verde-agua" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.lindero }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-                                        <div class="col col-md-2">
+                                        <div class="col col-md-2 col-sm-6">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
                                     </div>
@@ -125,18 +125,18 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex bg-verde-agua" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.tecnico }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-                                        <div class="col col-md-2">
+                                        <div class="col col-md-2 col-sm-6">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
                                     </div>
@@ -149,19 +149,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex bg-verde-agua" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.parcelamiento }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
-                                        <div class="col col-md-2">
+                                        <div class="col col-md-2 col-sm-6">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
                                     </div>
@@ -174,19 +174,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 d-flex">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 d-flex">
                 <div class="card flex bg-verde-agua" data-sr-id="10">
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_sectores">
+                                <div class="flex" *ngIf="cantidad_sectores">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-md-10 col-sm-6">
                                             <div *ngIf="cantidad_sectores.total_expedientes; else spinner" class="text-success mt-2 icono">{{ cantidad_sectores.pposteriores }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
-                                        <div class="col col-md-2">
+                                        <div class="col col-md-2 col-sm-6">
                                             <i class="fa fa-file-alt icon"></i>
                                         </div>
                                     </div>
@@ -205,14 +205,14 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_usuarios">
+                                <div class="flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-lg-8 col-md-10">
                                             <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.administradores }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
-                                        <div class="col col-md-2">
+                                        <div class="col col-lg-4 col-md-2">
                                             <i class="fa fa-user-alt icon"></i>
                                         </div>
                                     </div>
@@ -231,14 +231,14 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_usuarios">
+                                <div class="flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-lg-8 col-md-10">
                                             <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.empleados }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
-                                        <div class="col col-md-2">
+                                        <div class="col col-lg-4 col-md-2">
                                             <i class="fa fa-user-alt icon"></i>
                                         </div>
                                     </div>
@@ -258,13 +258,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_usuarios">
+                                <div class="flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-lg-8 col-md-10">
                                             <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.propietarios }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
-                                        <div class="col col-md-2">
+                                        <div class="col col-lg-4 col-md-2">
                                             <i class="fa fa-user-alt icon"></i>
                                         </div>
                                     </div>
@@ -284,14 +284,14 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center text-hover-success">
 
-                                <div class="px-4 flex" *ngIf="cantidad_usuarios">
+                                <div class="flex" *ngIf="cantidad_usuarios">
                                     <div class="row">
-                                        <div class="col col-md-10">
+                                        <div class="col col-lg-8 col-md-10">
                                             <div *ngIf="cantidad_usuarios.administradores; else spinner" class="text-success mt-2 icono">{{ cantidad_usuarios.profesionales }}</div>
                                             <ng-template #spinner><span class="spinner-border spinner-border-sm mr-1"></span></ng-template>
                                         </div>
 
-                                        <div class="col col-md-2">
+                                        <div class="col col-lg-4 col-md-2">
                                             <i class="fa fa-user-alt icon"></i>
                                         </div>
                                     </div>
@@ -306,11 +306,11 @@
             </div>
         </div>
 
-        <div class="row" *ngIf="isEmpleado || isAdmin || isEmpleadoME || isEmpleadoCarga">
+        <div class="row" *ngIf="_functionService.isEmpleado || _functionService.isAdmin || _functionService.isEmpleadoME || _functionService.isEmpleadoCarga">
             <div class="container">
     
                 <div class="row">
-                    <h1>Consulta de Expediente</h1>
+                    <h1>Ingresar Expediente</h1>
                 </div>
                 
                 <br>  
@@ -320,7 +320,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label for="numero" class="form-label"><b>Entrada/Salida</b></label>
                             <input (keyup.enter)="cargarExpedienteAlSector()" formControlName="numero" maxlength="8" 
-                                inputmode="numeric" placeholder="Número" class="form-control" maxlength="8" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
+                                inputmode="numeric" placeholder="Número de trámite" class="form-control" maxlength="8" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && r.numero.errors }">
                             <div *ngIf="submitted && r.numero.errors" class="invalid-feedback">
                                 <div *ngIf="r.numero.errors.required">Este campo es obligatorio</div>
                             </div>
@@ -340,7 +340,7 @@
             
                     <hr />
             
-                    <div class="row" *ngIf="isEmpleado || isAdmin || isEmpleadoME || isEmpleadoCarga">
+                    <div class="row" *ngIf="_functionService.isEmpleado || _functionService.isAdmin || _functionService.isEmpleadoME || _functionService.isEmpleadoCarga">
 
                         <div class="row">
                             <h1>Expedientes</h1>
@@ -349,7 +349,7 @@
                         <div class="col-md-4">
                             <label for="expedientes_a_entrar" class="form-label"> <b> A ingresar</b></label>
                             <select id="s-ingresar" *ngIf="expedientes_a_entrar!=''; else ninguno" class="form-select" >
-                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_a_entrar | orderBy:'id_historial'">{{dato.numero_tramite}} - {{ dato.numero_expediente}} </option>
+                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_a_entrar | orderBy:'id_historial'">{{dato.numero_tramite}} - <span *ngIf="dato.numero_expediente; else previaEntrada">{{ dato.numero_expediente}}</span><ng-template #previaEntrada>PREVIA</ng-template></option>
                             </select>
                         </div>
                         
@@ -357,7 +357,8 @@
                         <div class="col-md-4">
                             <label for="expedientes_sector" class="form-label"> <b>Ultimas Entradas</b> </label>
                             <select id="s-entrada" *ngIf="expedientes_sector!=''; else ninguno" class="form-select" >
-                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_sector | orderBy:'id_historial'">{{dato.numero_tramite}} - {{ dato.numero_expediente}}</option>
+                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_sector | orderBy:'id_historial'">{{dato.numero_tramite}} - <span *ngIf="dato.numero_expediente; else previa">{{ dato.numero_expediente}}</span><ng-template #previa>PREVIA</ng-template>
+                                </option>
                             </select>
                         </div>
             
@@ -365,7 +366,7 @@
                         <div class="col-md-4">
                             <label for="expedientes_salida" class="form-label"><b> Ultimas Salidas</b></label>
                             <select id="s-salida" *ngIf="expedientes_salida!=''; else ninguno" class="form-select" >
-                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_salida | orderBy:'id_historial'">{{dato.numero_tramite}} - {{ dato.numero_expediente}}</option>
+                                <option [value]="dato.id_historial" *ngFor="let dato of expedientes_salida | orderBy:'id_historial'">{{dato.numero_tramite}} - <span *ngIf="dato.numero_expediente; else previaSalida">{{ dato.numero_expediente}}</span><ng-template #previaSalida>PREVIA</ng-template></option>
                             </select>
 
                         </div>
@@ -389,7 +390,7 @@
             </select>
         </ng-template>
 
-        <div class="row" *ngIf="isProfesional">
+        <div class="row" *ngIf="_functionService.isExterno">
         <div class="container">
             <div class="row">
                 <h1 style="font-weight: bold;">Consulta de Expediente</h1>
@@ -398,7 +399,7 @@
             <form [formGroup]="consultaForm">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-12">
-                        <label for="username" class="form-label">Consultar por3</label>   
+                        <label for="username" class="form-label">Consultar por</label>   
                         <ng-select id="param_busqueda" [multiple]="false" [closeOnSelect]="true" formControlName="param_busqueda" >
                             <ng-option value="" disabled>Seleccione una opcion</ng-option>
                             <ng-option *ngFor="let cat of categories" [value]="cat.value" [disabled]="cat.disabled">{{cat.name}}</ng-option>

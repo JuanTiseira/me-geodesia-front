@@ -108,8 +108,6 @@ export class EditComponent implements OnInit, OnDestroy{
     private _functionService: FunctionsService ,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
     private spinner: NgxSpinnerService,
     private _tokenService: TokenService
    
@@ -124,9 +122,9 @@ export class EditComponent implements OnInit, OnDestroy{
 
 
   ngOnInit(): void {
-    this.date = moment(new Date()).format('DD/MM/YYYY');
-    this.fecha_hora = moment(new Date()).format('hh:mm:ss')
-    this.user = this._tokenService.getUserName();
+    // this.date = moment(new Date()).format('DD/MM/YYYY');
+    // this.fecha_hora = moment(new Date()).format('hh:mm:ss')
+    // this.user = this._tokenService.getUserName();
     
 
 
@@ -134,7 +132,7 @@ export class EditComponent implements OnInit, OnDestroy{
     this.documentosSub = this._apiService.getDocumentos()
       .subscribe(response => {
         this.documentos = response
-        this._functionService.imprimirMensaje(response, "documentos")
+        this._functionService.imprimirMensajeDebug(response, "documentos")
       })
     this._apiService.cargarPeticion(this.documentosSub);
 
@@ -143,12 +141,6 @@ export class EditComponent implements OnInit, OnDestroy{
     this.loadAgrimensores();
     this.loadDocumentos()
     this.loadInmuebles();
-
-    // this.abreviaturasSub = this._apiService.getAbreviaturas()
-    // .subscribe((response:any) => {
-    //   this.abreviaturas = response.results
-    // })
-    // this._apiService.cargarPeticion(this.abreviaturasSub);
 
     this.id = this.route.snapshot.params['id'];
 
@@ -191,7 +183,7 @@ export class EditComponent implements OnInit, OnDestroy{
             this.selectedAgrimensores = this.resultado.agrimensor
             this.selectedtramite = this.resultado.tramite
 
-            this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
+            this._functionService.imprimirMensajeDebug(this.selectedPropietarios, "expediente")
             this.spinner.hide()
           })
           
@@ -299,14 +291,10 @@ export class EditComponent implements OnInit, OnDestroy{
 
   get f() { return this.expedienteForm.controls; }
 
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
 
   updateExpediente() {
     let formulario = {}
     for(let i in this.expedienteForm.value){
-      console.log(this.expedienteForm.value[i])
       if(this.expedienteForm.value[i] != null){
         formulario[i] = this.expedienteForm.value[i]
       }

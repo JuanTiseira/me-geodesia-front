@@ -63,10 +63,7 @@ export class BuscarHistorialComponent implements OnInit, OnDestroy {
   ]
 
   constructor( private _apiService: ApiService,
-                private _functionService: FunctionsService ,
-                private modalService: NgbModal,
-                private authService: AuthService,
-                private router: Router,
+                public _functionService: FunctionsService ,
                 private route: ActivatedRoute,
                 private formBuilder: FormBuilder,
                 private spinner: NgxSpinnerService
@@ -91,10 +88,6 @@ export class BuscarHistorialComponent implements OnInit, OnDestroy {
   }
 
   get r() { return this.consultaForm.controls; }
-
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
 
   buscarHistorial() {
 

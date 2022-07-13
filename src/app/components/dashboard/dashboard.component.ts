@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role } from 'src/app/models/role.models';
-import { AuthService } from 'src/app/services/auth.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,54 +12,24 @@ export class DashboardComponent implements OnInit {
   clase: boolean;
 
   constructor(private router: Router, 
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private activateRoute: ActivatedRoute) {
+    public functionsService: FunctionsService) {
 
-      this.route.paramMap.subscribe(params => {
-        this.filterItem = params.get('categoria');
-        if (this.router.url != '/home') {
-          this.clase = true
-        }else{
-          this.clase = false
-        }
-      })
+      // this.route.paramMap.subscribe(params => {
+      //   this.filterItem = params.get('categoria');
+      //   if (this.router.url != '/home') {
+      //     this.clase = true
+      //   }else{
+      //     this.clase = false
+      //   }
+      // })
      }
-
-    // get isAuthorized() {
-    //   return this.authService.isAuthorized();
-    // }
-  
-    get isAdmin() {
-      return this.authService.hasRole(Role.ROL_ADMIN);
-    }
-
-    get isEmpleado() {
-      return this.authService.hasRole(Role.ROL_EMPLEADO);
-    }
-
-    get isEmpleadoME() {
-      return this.authService.hasRole(Role.ROL_EMPLEADOME);
-    }
-
-    get isEmpleadoCarga() {
-      return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
-    }
-
-    get isExterno() {
-      return this.authService.hasRole(Role.ROL_PROFESIONAL);
-    }
   
 
   ngOnInit(): void {
-    if(!this.isAdmin && !this.isEmpleado && !this.isEmpleadoME && !this.isEmpleadoCarga){
-      console.log("admin: ", this.isAdmin);
+    if(!this.functionsService.isAdmin && !this.functionsService.isEmpleado && !this.functionsService.isEmpleadoME && !this.functionsService.isEmpleadoCarga){
       this.router.navigate(['login']);
     }
    
-  }
-
-  ngOnChanges() {
   }
 
 }

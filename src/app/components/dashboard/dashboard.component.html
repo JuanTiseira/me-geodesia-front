@@ -1,13 +1,10 @@
 
 <app-navbar></app-navbar>
 
-<app-sidebar *ngIf="!isExterno" class=""></app-sidebar>
+<app-sidebar *ngIf="!this.functionsService.isExterno"></app-sidebar>
 
 <div class="content mt-5">
-    <!-- <div [ngClass]="{container: clase}"> -->
     <div>
         <router-outlet></router-outlet>
-
     </div>
-    
 </div>

@@ -7,6 +7,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { Role } from 'src/app/models/role.models';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -59,6 +60,7 @@ export class DetalleUsuarioComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
+    private authService: AuthService,
     private spinner: NgxSpinnerService
     ) {}
 
@@ -94,7 +96,7 @@ export class DetalleUsuarioComponent implements OnInit, OnDestroy{
         this.usuarioForm.patchValue(response)
         this.selecteditem = this.usuario.tipo_usuario
 
-        this._functionService.imprimirMensaje(response, "usuario")
+        this._functionService.imprimirMensajeDebug(response, "usuario")
         this.spinner.hide()
       })
     this._apiService.cargarPeticion(this.usuarioSub)
@@ -123,15 +125,19 @@ export class DetalleUsuarioComponent implements OnInit, OnDestroy{
   get f() { return this.usuarioForm.controls; }
 
   get isAdmin() {
-    return this.usuario?.rol?.nombre == Role.ROL_ADMIN
-  }
-
-  get isEmpleadoME() {
-  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADOME
+    return this.authService.hasRole([Role.ROL_ADMIN]);
   }
 
   get isEmpleado() {
-  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADO
+    return this.authService.hasRole([Role.ROL_LINDERO]);
+  }
+
+  get isEmpleadoME() {
+    return this.authService.hasRole([Role.ROL_MESA_ENTRADA]);
+  }
+
+  get isEmpleadoCarga() {
+    return this.authService.hasRole([Role.ROL_EMPLEADO_CARGA]);
   }
 
   get isProfesional() {

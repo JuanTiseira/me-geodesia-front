@@ -5,8 +5,6 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { FunctionsService } from 'src/app/services/functions.service';
-import Swal from 'sweetalert2'
-
 
 
 @Component({
@@ -42,7 +40,6 @@ export class AgregarInmuebleComponent implements OnInit, OnDestroy{
     private _functionService: FunctionsService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
     ) { 
       this.verDetallesInmuebles = new EventEmitter();
      }
@@ -78,7 +75,7 @@ export class AgregarInmuebleComponent implements OnInit, OnDestroy{
     this.municipiosSub = this._apiService.getMunicipios()
       .subscribe(response => {
         this.municipios = response
-        this._functionService.imprimirMensaje(response, "municipios")
+        this._functionService.imprimirMensajeDebug(response, "municipios")
       })
     this._apiService.cargarPeticion(this.municipiosSub)
   

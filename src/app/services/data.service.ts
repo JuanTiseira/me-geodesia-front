@@ -3,7 +3,6 @@ import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
 
 export interface Person {
     id: string;
@@ -49,6 +48,7 @@ export interface Inmueble {
     seccion: string;
     unidad_funcional: string;
     url: string;
+    nomenclatura: string;
     habilitado: boolean;
 }
 
@@ -116,6 +116,7 @@ export interface RespuestaInmueble {
 
 export interface Usuario {
     id:               number;
+    fullName:         string;
     url:              string;
     rol:              Rol;
     cuit:             number;
@@ -156,12 +157,12 @@ export class DataService {
     private url: string;
     private urlLogin: string;
     private res: string;
-    public items
+    public items;
+    public tramitesPrevios;
 
 
     constructor(
         private http: HttpClient,
-        private router: Router,
         
         ) { 
         this.url  =  environment.endpoint;
@@ -188,10 +189,9 @@ export class DataService {
     
     getPeople(term: string = null, rolDescripcion): Observable<Person[]> {
         this.getUsuarios(term, rolDescripcion).then((res:Respuesta) =>{          
-            this.items = res.results
-            this.items.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + i.cuit; return i; })
+            this.items = res.results.map((i) => { i.fullName = i.nombre + ' ' + i.apellido + ' ' + (i.cuit? i.cuit: ""); return i; })
             if (term) {
-                this.items = this.items.filter(x => x.fullName.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
+                this.items = this.items.filter(x => x.apellido.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()) > -1);
             }
           }) 
         return of(this.items);
@@ -225,8 +225,9 @@ export class DataService {
         this.getInmueble(params).then((res:RespuestaInmueble) =>{          
             this.items = res.results
             this.items.map((i) => { i.nomenclatura = i.municipio.departamento.codigo + '-' + i.municipio.codigo + '-' + i.seccion + '-' + i.chacra + '-' + i.manzana + '-' + i.parcela + '-' + i.unidad_funcional; return i; })
+            // console.warn(this.items[0].nomenclatura.includes(term))
             if(term){
-                this.items = this.items.filter(x=>x.nomenclatura.include(term))
+                this.items = this.items.filter(x=>x.nomenclatura.includes(term))
             }
           })
         
@@ -238,14 +239,14 @@ export class DataService {
         if(term.length >=1 && term.length <= 7) params.set("numero", term)
 
         this.getTramitePrevio(params).then((res:Respuesta) =>{
-            this.items = res.results
-            this.items.map((i) => { i.numtramite = `${i.numero}${i.codigo_verificacion}`; return i; })
+            this.tramitesPrevios = res.results
+            this.tramitesPrevios.map((i) => { i.numtramite = `${i.numero}${i.codigo_verificacion}`; return i; })
             if (term) {
                 // console.log("term: ", term, "      items: ", this.items)
-                this.items = this.items.filter(x => x.numtramite.include(term));
+                this.tramitesPrevios = this.tramitesPrevios.filter(x => x.numtramite.includes(term));
             }
           })
-        return of(this.items).pipe(delay(1));
+        return of(this.tramitesPrevios).pipe(delay(1));
     }
 
 }

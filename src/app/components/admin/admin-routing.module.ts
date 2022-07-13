@@ -56,7 +56,7 @@ export const APP_ROUTES: Routes = [
 
   {path: 'inmueble/agregar', component: AgregarInmuebleComponent},
 
-  {path: 'inmueble/editar/:id', component: AgregarComponent },
+  // {path: 'inmueble/editar/:id', component: AgregarComponent },
 
   {path: 'inmueble/:id', component: DetallesInmuebleComponent },
 

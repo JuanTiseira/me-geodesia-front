@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
-      // recaptcha: ['', Validators.required]
+      recaptcha: ['', Validators.required]
     })
 
     this.date = new Date()
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
   
       this.loading = true;
       $("#btn-login").toggleClass('disabled');
-      this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password, this.captchaElem['currentResponse'])
         .then(response => {
           if (response) {
             this.router.navigate(['home']);
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
             $("#btn-login").removeClass('disabled');
             this.loading = false;
             this.failSwal.fire();
-            // this.captchaElem.resetCaptcha();
+            this.captchaElem.resetCaptcha();
           }
         })
     } 

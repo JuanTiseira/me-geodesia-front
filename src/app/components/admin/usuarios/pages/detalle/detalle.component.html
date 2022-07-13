@@ -11,48 +11,48 @@
                     <table class="table table-striped">
 
                         <tbody>
-                            <tr>
+                            <tr *ngIf="usuario.nombre">
                                 <th>Nombre</th>
-                                <td>{{ usuario.nombre | uppercase}}</td>
+                                <td>{{ usuario.nombre}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="usuario.apellido">
                                 <th>Apellido</th>
-                                <td>{{ usuario.apellido | uppercase}}</td>
+                                <td>{{ usuario.apellido}}</td>
                             </tr>
 
-                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
+                            <tr *ngIf="usuario.cuit">
                                 <th>CUIT</th>
                                 <td>{{ usuario.cuit }}</td>
                             </tr>
-                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
+                            <tr *ngIf="usuario.dni">
                                 <th>DNI</th>
                                 <td>{{ usuario.dni }}</td>
                             </tr>
-                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
+                            <tr *ngIf="usuario.fecha_nacimiento">
                                 <th>Fecha de Nacimiento</th>
                                 <td>{{ usuario.fecha_nacimiento }}</td>
                             </tr>
 
-                            <tr *ngIf="!isPropietario && !isAdmin && !isEmpleado && !isEmpleadoME">
+                            <tr *ngIf="usuario.matricula">
                                 <th>Matricula</th>
                                 <td>{{ usuario.matricula }} </td>
                             </tr>
 
-                            <tr>
+                            <tr *ngIf="usuario.telefono">
                                 <th>Teléfono</th>
                                 <td>{{ usuario.telefono}}</td>
                             </tr>
 
-                            <tr>
+                            <tr *ngIf="usuario.email">
                                 <th>Email</th>
                                 <td>{{ usuario.email }} </td>
                             </tr>
 
-                            <tr *ngIf="!isAdmin && !isEmpleado && !isEmpleadoME">
+                            <tr *ngIf="usuario.direccion">
                                 <th>Dirección</th>
                                 <td>{{ usuario.direccion }}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="usuario.rol">
                                 <th>Rol</th>
                                 <td>{{ usuario.rol.descripcion }}</td>
                             </tr>

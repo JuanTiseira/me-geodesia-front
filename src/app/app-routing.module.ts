@@ -22,10 +22,13 @@ const routes: Routes = [
     data: {
       roles: [
         Role.ROL_ADMIN,
-        Role.ROL_EMPLEADO,
-        Role.ROL_EMPLEADOME,
         Role.ROL_EMPLEADO_CARGA,
         Role.ROL_PROFESIONAL,
+        Role.ROL_PARCELAMIENTO,
+        Role.ROL_PRES_POST,
+        Role.ROL_TECNICO,
+        Role.ROL_LINDERO,
+        Role.ROL_MESA_ENTRADA,
       ]
     }
   },
@@ -36,10 +39,13 @@ const routes: Routes = [
   loadChildren: () => import('../app/components/admin/empleado.module').then(m => m.EmpleadoModule),
   data: {
     roles: [
-      Role.ROL_EMPLEADO,
-      Role.ROL_EMPLEADOME,
       Role.ROL_EMPLEADO_CARGA,
-      Role.ROL_ADMIN
+      Role.ROL_PARCELAMIENTO,
+      Role.ROL_PRES_POST,
+      Role.ROL_TECNICO,
+      Role.ROL_LINDERO,
+      Role.ROL_ADMIN,
+      Role.ROL_MESA_ENTRADA,
     ]
   }
 
@@ -51,7 +57,7 @@ const routes: Routes = [
     data: {
       roles: [
         Role.ROL_ADMIN,
-        Role.ROL_EMPLEADOME,
+        Role.ROL_MESA_ENTRADA,
         Role.ROL_EMPLEADO_CARGA,
       ]
     }

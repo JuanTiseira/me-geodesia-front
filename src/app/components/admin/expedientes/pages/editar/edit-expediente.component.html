@@ -37,12 +37,12 @@
 
                         <tr>
                             <th>Agrimensor</th>
-                            <td>{{ resultado.agrimensor.nombre}} {{ resultado.agrimensor.apellido }}</td>
+                            <td>{{ resultado.agrimensor?.nombre}} {{ resultado.agrimensor?.apellido }}</td>
                         </tr>
 
                         <tr *ngIf="resultado.gestor != null">
                             <th>Gestor</th>
-                            <td>{{ resultado.gestor.nombre}} {{ resultado.gestor.apellido }}</td>
+                            <td>{{ resultado.gestor?.nombre}} {{ resultado.gestor?.apellido }}</td>
                         </tr>
 
                         <tr *ngIf="resultado.gestor == null">
@@ -52,7 +52,7 @@
 
                         <tr>
                             <th>Propietario</th>
-                            <td>{{ resultado.propietario.nombre }} {{ resultado.propietario.apellido }}</td>
+                            <td>{{ resultado.propietario?.nombre }} {{ resultado.propietario?.apellido }}</td>
                         </tr>
 
                         <tr>
@@ -104,7 +104,7 @@
                                 <label for="inmueble" class="form-label">Inmueble</label>
                                 <ng-select 
                                 [items]="inmueble$ | async"
-                                bindLabel="fullName"
+                                bindLabel="nomenclatura"
                                 bindValue="id"
                                 [addTag]="false"
                                 [multiple]="false"

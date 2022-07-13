@@ -5,7 +5,7 @@
 
 @import url('./assets/css/loading.min.css');
 @import "~@ng-select/ng-select/themes/default.theme.css";
-
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 
 @font-face {
   font-family: Roboto Regular;
@@ -114,6 +114,10 @@ a {
   background: #A5AE39 !important;
   border-radius: 0.5rem !important;
   color: white !important;
+}
+
+.b-green{
+  color: #A5AE39 !important;
 }
 
 .btn-red {
@@ -286,4 +290,12 @@ body {
 
 .bg-warning{
   background-color: rgb(250, 208, 71) !important;
+}
+
+
+.text-short{
+  width: 15rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

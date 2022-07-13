@@ -4,7 +4,6 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
-import { FunctionsService } from 'src/app/services/functions.service';
 
 @Component({
   selector: 'app-detalles',
@@ -20,7 +19,6 @@ export class DetallesInmuebleComponent implements OnInit, OnDestroy{
 
   constructor(
     private _apiService: ApiService,
-    private _functionService: FunctionsService ,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
   ) { }

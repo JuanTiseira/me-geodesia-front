@@ -1,7 +1,7 @@
 <nav>
     <div class="row w-100">
         <div class="col-6 header">
-            <img class="d-none d-sm-none d-md-block" src="assets/img/dgc_blanco_transp.png" alt="Escudo misiones" width="27%">
+            <img class="d-none d-sm-none d-md-block" src="assets/img/dgc_blanco_transp.png" alt="Dirección General de Catastro Misiones" width="27%">
             <!-- <h4> DIRECCION GENERAL <br>DE CATASTRO</h4> -->
             <div class="btn-collapsed" (click)="touchButton()">
                 <span></span>
@@ -25,15 +25,15 @@
               
                 <a (click)="show('Perfil')" style="cursor: pointer;">
                     
-                    <p class="">{{ header  | titlecase}}</p>
+                    <p>{{ nombreSector  | titlecase}}</p>
                     <div class="box-message box-perfil" *ngIf="showPerfil">
                         <!-- <div>
                             <i class="fas fa-check-circle"></i>
                             <p> No tenés mensajes nuevos</p>
                         </div> -->
-                        <div class="item">
+                        <!-- <div class="item">
                             <p>Mi perfil</p>
-                        </div>
+                        </div> -->
                         <div (click)=logOut() class="item" style="cursor: pointer;">
                             <p (click)=logOut()>Cerrar Sesion</p>
                         </div>

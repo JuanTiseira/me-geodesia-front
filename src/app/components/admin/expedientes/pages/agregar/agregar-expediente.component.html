@@ -70,9 +70,9 @@
                           [multiple]="false"
                           [hideSelected]="true"
                           [trackByFn]="trackByFn"
-                          [minTermLength]="5"
+                          [minTermLength]="minLengthTerm"
                           [loading]="propietarioLoading"
-                          typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                          typeToSearchText="Ingrese 2 o mas caracteres del apellido"
                           [typeahead]="propietarioInput$"
                           formControlName="propietario"
                           [ngClass]="{ 'is-invalid': submitted && f.propietario.errors }">
@@ -158,7 +158,7 @@
                             [trackByFn]="trackByFn"
                             [minTermLength]="minLengthTerm"
                             [loading]="agrimensorLoading"
-                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                            typeToSearchText="Ingrese 2 o mas caracteres del apellido"
                             [typeahead]="agrimensorInput$"
                             formControlName="agrimensor"
                             [ngClass]="{ 'is-invalid': submitted && f.agrimensor.errors }"
@@ -189,7 +189,7 @@
                             [trackByFn]="trackByFn"
                             [minTermLength]="minLengthTerm"
                             [loading]="gestorLoading"
-                            typeToSearchText="Por favor, ingrese 2 o mas caracteres"
+                            typeToSearchText="Ingrese 2 o mas caracteres del apellido"
                             [typeahead]="gestorInput$"
                             formControlName="gestor">
                           </ng-select>
@@ -248,10 +248,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Ingresar Registro</h5>
-                <button id="closeModalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button id="closeModalButton" (click)="cerrarModal()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div *ngIf="usuarioModal" class="modal-body">
-                <app-crear-usuario (verDetallesFunction)="verDetallesUsuarios($event)"></app-crear-usuario>
+                <app-crear-usuario (verDetallesFunction)="verDetallesUsuarios($event)" [desdeExpediente]="true"></app-crear-usuario>
             </div>
         </div>
     </div>

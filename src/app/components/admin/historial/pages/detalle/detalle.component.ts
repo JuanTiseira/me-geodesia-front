@@ -20,9 +20,7 @@ export class DetalleHistorialComponent implements OnInit, OnDestroy {
   constructor(
     private _apiService: ApiService,
     private _functionService: FunctionsService ,
-    private modalService: NgbModal,
-    private route: ActivatedRoute,
-    private router: Router) {}
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.message = '';
@@ -30,7 +28,7 @@ export class DetalleHistorialComponent implements OnInit, OnDestroy {
     this.expedienteSub = this._apiService.getExpediente(this.route.snapshot.paramMap.get('id'))
       .subscribe(response => {
         this.expediente = response
-        this._functionService.imprimirMensaje(response, "historial")
+        this._functionService.imprimirMensajeDebug(response, "historial")
       })
     this._apiService.cargarPeticion(this.expedienteSub);  
   }

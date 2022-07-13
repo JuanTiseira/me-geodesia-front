@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2'
-import { AuthService } from '../../../../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.models';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
@@ -66,13 +66,10 @@ export class EditarComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private dataService: DataService,
     private _apiService: ApiService,
-    private _functionService: FunctionsService ,
+    public _functionService: FunctionsService ,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
     private spinner: NgxSpinnerService,
     private _tokenService: TokenService
    
@@ -135,7 +132,7 @@ export class EditarComponent implements OnInit, OnDestroy {
     this._apiService.cargarPeticion(this._apiService.getRoles()
     .subscribe(response => {
       this.roles = response
-      this._functionService.imprimirMensaje(response, "roles")
+      this._functionService.imprimirMensajeDebug(response, "roles")
     }));
     
   }
@@ -174,25 +171,30 @@ export class EditarComponent implements OnInit, OnDestroy {
 
   get f() { return this.usuarioForm.controls; }
 
-  get isAdmin() {
-    return this.usuario?.rol?.nombre == Role.ROL_ADMIN
-  }
+  // get isAdmin() {
+  //   return this.authService.hasRole([Role.ROL_ADMIN]);
+  // }
 
-  get isEmpleadoME() {
-  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADOME
-  }
+  // get isEmpleado() {
+  //   return this.authService.hasRole([Role.ROL_LINDERO]);
+  // }
 
-  get isEmpleado() {
-  return this.usuario?.rol?.nombre == Role.ROL_EMPLEADO
-  }
+  // get isEmpleadoME() {
+  //   return this.authService.hasRole([Role.ROL_MESA_ENTRADA]);
+  // }
 
-  get isProfesional() {
-    return this.usuario?.rol?.nombre == Role.ROL_PROFESIONAL
-  }
+  // get isEmpleadoCarga() {
+  //   return this.authService.hasRole([Role.ROL_EMPLEADO_CARGA]);
+  // }
+  
 
-  get isPropietario() {
-    return this.usuario?.rol?.nombre == Role.ROL_PROPIETARIO
-  }
+  // get isProfesional() {
+  //   return this.usuario?.rol?.nombre == Role.ROL_PROFESIONAL
+  // }
+
+  // get isPropietario() {
+  //   return this.usuario?.rol?.nombre == Role.ROL_PROPIETARIO
+  // }
 
   updateExpediente() {
     let formulario = {}

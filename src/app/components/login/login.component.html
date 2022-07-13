@@ -3,8 +3,7 @@
         <div class="column" style="margin: 7% auto;">
             <div class="card">
                 <div class="card-header text-center text-white">
-                    <img src="assets/img/EscudoMisionesNegro.png" alt="Escudo misiones" class="img-responsive" width="100%">
-                    <!-- <h4 style="font-weight: 800;">DIRECCION GENERAL DE CATASTRO</h4> -->
+                    <img src="assets/img/dgc_1600px.png" alt="Escudo misiones" class="img-responsive" width="70%">
                 </div>
                 <div class="card-body">
                     <!-- <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div> -->
@@ -23,20 +22,16 @@
                                 <div *ngIf="f.password.errors.required">Contraseña requerida</div>
                             </div>
                         </div>
-                        <!-- <div class="mb-3">
+                        <div class="mb-3 d-flex justify-content-center">
                             <ngx-recaptcha2 #captchaElem
                                 [siteKey]='siteKey'
                                 formControlName="recaptcha"
                                 [ngClass]="{ 'is-invalid': submitted && f.recaptcha.errors }">
                             </ngx-recaptcha2>
-                            <div *ngIf="f.recaptcha.errors" class="invalid-feedback text-left">
+                            <div *ngIf="f.recaptcha.errors" class="invalid-feedback">
                                 <div *ngIf="f.recaptcha.errors.required">Captcha requerido</div>
                             </div>
-                        </div> -->
-
-
-
-
+                        </div>
                         <!-- <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="checkSesion">
                             <label class="form-check-label" for="checkSesion">Mantener la sesión inciada en este equipo</label>

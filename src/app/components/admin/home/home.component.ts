@@ -58,8 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private _apiService: ApiService,
-              private _functionService: FunctionsService ,
-              private authService: AuthService,
+              public _functionService: FunctionsService ,
               private formBuilder: FormBuilder,
               private spinner: NgxSpinnerService
   ) { }
@@ -85,11 +84,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.spinner.show();
 
-    if((this.isEmpleadoME || this.isEmpleado || this.isEmpleadoCarga) && !this.isAdmin){
+    if((this._functionService.isEmpleadoME || this._functionService.isEmpleado || this._functionService.isEmpleadoCarga) && !this._functionService.isAdmin){
       this.cargarExpedientesEstado()
     }
 
-    if (this.isAdmin) {
+    if (this._functionService.isAdmin) {
      
       this.cargarExpedientesEstado()
       this.cantidadSectoresSub = this._apiService.getExpedientesPorSector().subscribe((response:any) => {
@@ -104,7 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     }
 
-    if(!this.isEmpleado && !this.isEmpleadoME && !this.isAdmin && !this.isEmpleadoCarga){
+    if(!this._functionService.isEmpleado && !this._functionService.isEmpleadoME && !this._functionService.isAdmin && !this._functionService.isEmpleadoCarga){
       this.router.navigate(['login']);
     }
 
@@ -119,36 +118,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   get r (){ return this.consultaForm.controls;}
 
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
-
-  get isEmpleado() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO);
-  }
-
-  get isEmpleadoME() {
-    return this.authService.hasRole(Role.ROL_EMPLEADOME);
-  }
-
-  get isEmpleadoCarga() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
-  }
-
-
-  get isProfesional() {
-    return this.authService.hasRole(Role.ROL_PROFESIONAL);
-  }
 
   cargarExpedienteAlSector(){
     this.submitted = true;
     if(this.consultaForm.invalid) return
     
     var tramite = this.consultaForm.value.numero;
-    this._functionService.imprimirMensaje(tramite, "numero tramite cargaExpedientealSector: ");
+    this._functionService.imprimirMensajeDebug(tramite, "numero tramite cargaExpedientealSector: ");
     this.transicionSub = this._apiService.setNuevaTransicion(tramite)
       .subscribe((response:any) => {
-        this._functionService.imprimirMensaje(response, "response: ")
+        this._functionService.imprimirMensajeDebug(response, "response: ")
         this._functionService.configSwal(this.mensajeSwal, response.message, "success", "Aceptar", "", false, "", "")
         this.mensajeSwal.fire().finally(() => {this.cargarExpedientesEstado()})
       })

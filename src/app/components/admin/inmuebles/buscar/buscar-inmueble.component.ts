@@ -49,6 +49,7 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   inmueble: string
   tramite: string
   submitted:boolean = false;
+  submitted2:boolean = false;
 
   categories = [
     {id: 1, name: 'Unidad Funcional', value: 'unidad_funcional'},
@@ -64,9 +65,8 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   ]
 
   constructor( private _apiService: ApiService,
-                private _functionService: FunctionsService ,
+                public _functionService: FunctionsService ,
                 private modalService: NgbModal,
-                private authService: AuthService,
                 private spinner: NgxSpinnerService,
                 private formBuilder: FormBuilder
                 ) { }
@@ -111,17 +111,6 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.spinner.show();
-    
-    this.inmueblesSub = this._apiService.getInmuebles()
-      .subscribe((response)=>{
-          this.inmuebles = response
-          this.spinner.hide();
-          this._functionService.imprimirMensaje(response, "inmuebles")
-    })
-    
-    this._apiService.cargarPeticion(this.inmueblesSub);
-    this.spinner.hide()
   }
 
   ngOnDestroy(): void {
@@ -131,10 +120,14 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
   onTableDataChange(event) {
 
     this.spinner.show();
-   
-    this._apiService.changePage(event, 'inmuebles')
+    this.p = event
+
+    if(this.submitted2){
+      this.buscarInmuebles(event)
+    }else{
+      this._apiService.changePage(event, 'inmuebles')
       .then((res) =>{
-        this.p = event
+        
         this.inmuebles = res        
         if (this.inmuebles.count == 0) {
           this.spinner.hide();
@@ -147,8 +140,9 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
         this.load = false;
       })
       .catch((error)=>{
-        this._functionService.imprimirMensaje(error, "error: ")
+        this._functionService.imprimirMensajeDebug(error, "error: ")
       });
+    }
 
   } 
 
@@ -169,31 +163,6 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
       })
   }
 
-  buscarSiguiente() {
-    alert('siguiente pagina')
-
-  } 
-
-  buscarAnterior() {
-    alert('aterior pagina')
-
-  }
-
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
-
-  get isEmpleado() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO);
-  }
-
-  get isEmpleadoME() {
-    return this.authService.hasRole(Role.ROL_EMPLEADOME);
-  }
-
-  get isEmpleadoCarga() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
-  }
 
   buscarInmueble() {
     this.submitted = true;
@@ -213,13 +182,15 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     this.spinner.hide();
   }
 
-  buscarInmuebles(){
-    console.warn("consultaFormAvanzado: ", this.consultaFormAvanzado.value)
+  buscarInmuebles(page = '1'){
+    // console.warn("consultaFormAvanzado: ", this.consultaFormAvanzado.value)
     this.spinner.show();
-    this._apiService.getInmuebles(this.consultaFormAvanzado.value)
+    this.submitted2 = true;
+    this.p = Number(page);
+    this._apiService.getInmuebles(this.consultaFormAvanzado.value, page)
       .subscribe((response)=>{
         this.inmuebles = response;
-        this._functionService.imprimirMensaje(response, "Inmuebles consulta avanzada")
+        this._functionService.imprimirMensajeDebug(response, "Inmuebles consulta avanzada")
       })
     this.spinner.hide();
   }
@@ -229,6 +200,46 @@ export class BuscarInmuebleComponent implements OnInit, OnDestroy {
     this.consultaFormAvanzado.reset();
     this.ngOnInit();
   }
+
+  // (keydown)="keyDownEvent($event)" 
+  //                   (keyup)="keyUpEvent(numeros)"
+
+  // textoSinFormato: string;
+
+  // keyDownEvent(e){
+  //   // Permitir la tecla para borrar
+  //   if (e.key == 'Backspace') return true;
+
+  //   // Permitir flecha izquierda
+  //   if (e.key == 'ArrowLeft') return true;
+
+  //   // Permitir flecha derecha
+  //   if (e.key == 'ArrowRight') return true;
+
+  //   // Bloquear tecla de espacio
+  //   if (e.key == ' ') return false;
+
+  //   // Bloquear tecla si no es un numero
+  //   if (isNaN(e.key)) return false;
+  // }
+
+  // keyUpEvent(numeros){
+
+  //   numeros.value = numeros.value
+  //               // Borrar todos los espacios
+  //               .replace(/-/g, '');
+
+  //      //guardar texto sin formato en la variable textoSinFormato
+  //      this.textoSinFormato = numeros.value;
+
+  //      numeros.value = numeros.value
+  //               // Agregar un espacio cada 4 numeros
+  //               .replace(/([0-9]{4})/g, '$1-')
+
+  //               // Borrar espacio al final
+  //               .trim();
+
+  // }
   
 
 }

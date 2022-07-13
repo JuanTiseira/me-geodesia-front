@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
     const roles = route.data.roles as Role[];
-    if (roles && !roles.some(r => this.authService.hasRole(r))) {
+    if (roles && !roles.some(r => this.authService.hasRole([r]))) {
       this.router.navigate(['login']);
       return false;
     }
@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     }
 
     const roles = route.data && route.data.roles as Role[];
-    if (roles && !roles.some(r => this.authService.hasRole(r))) {
+    if (roles && !roles.some(r => this.authService.hasRole([r]))) {
       this.router.navigate(['login']);
       return false;
     }

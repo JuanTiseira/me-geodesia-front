@@ -33,6 +33,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   id: string;
   anioParam:string = '';
   numeroParam:string = '';
+  textObservacion:string = '';
 
   // isNumeroAnio:boolean = false;
   isEditMode: boolean;
@@ -96,6 +97,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   public inmuebles: any;
   public observaciones: any;
   public usuarios: any;
+  public observacionSelected: any;
   documentosexpediente: any;
   imprimir: boolean;
   date: any;
@@ -109,11 +111,10 @@ export class DetalleComponent implements OnInit, OnDestroy{
   constructor(
     private dataService: DataService,
     private _apiService: ApiService,
-    private _functionService: FunctionsService ,
+    public _functionService: FunctionsService ,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService,
     private spinner: NgxSpinnerService,
     private _tokenService: TokenService
    
@@ -178,7 +179,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
       .subscribe(response => {
         this.documentos = response
         this.spinner.hide()
-        this._functionService.imprimirMensaje(response, "documentos")
+        this._functionService.imprimirMensajeDebug(response, "documentos")
       }, complete => {
         this.spinner.hide()
       })
@@ -224,7 +225,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
           this.selectedGestores = this.resultado.gestor
           this.selectedAgrimensores = this.resultado.agrimensor
           this.selectedtramite = this.resultado.tramit
-          this._functionService.imprimirMensaje(x, "expediente")
+          this._functionService.imprimirMensajeDebug(x, "expediente")
           this.spinner.hide()
         }, complete => {
           this.spinner.hide()
@@ -256,7 +257,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
             this.selectedAgrimensores = this.resultado.agrimensor
             this.selectedtramite = this.resultado.tramite
             this.spinner.hide()
-            this._functionService.imprimirMensaje(this.selectedPropietarios, "expediente")
+            this._functionService.imprimirMensajeDebug(this.selectedPropietarios, "expediente")
           }, complete => {
             this.spinner.hide()
           })
@@ -289,7 +290,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
           this.selectedAgrimensores = this.resultado.agrimensor
           this.selectedtramite = this.resultado.tramite
           this.spinner.hide()
-          this._functionService.imprimirMensaje(x, "expediente")
+          this._functionService.imprimirMensajeDebug(x, "expediente")
       }, complete => {
         this.spinner.hide()
       })
@@ -374,16 +375,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
   }
 
 
-  codeList: string[] = [
-    '', 'CODE128',
-    'CODE128A', 'CODE128B', 'CODE128C',
-    'UPC', 'EAN8', 'EAN5', 'EAN2',
-    'CODE39',
-    'ITF14',
-    'MSI', 'MSI10', 'MSI11', 'MSI1010', 'MSI1110',
-    'pharmacode',
-    'codabar'
-  ];
+  codeList: string[] = ['', 'CODE128', 'CODE128A', 'CODE128B', 'CODE128C', 'UPC', 'EAN8', 'EAN5', 'EAN2', 'CODE39', 'ITF14', 'MSI', 'MSI10', 'MSI11', 'MSI1010', 'MSI1110', 'pharmacode', 'codabar'];
 
   leerDni(){
     this.texto =  this.retiroForm.value["dni"]
@@ -426,7 +418,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
     if(this.texto.length > 0){
       this.usuarioSub = this._apiService.getUsuarioNumero(dni)
       .subscribe((response:any) => {
-        this._functionService.imprimirMensaje(response, "usuario")
+        this._functionService.imprimirMensajeDebug(response, "usuario")
 
         switch (response.count) {
           case 0:
@@ -498,7 +490,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
 }
 
   verHistorial(){
-    this.router.navigate(['historial/buscar/'+this.tramite.numero])
+    this.router.navigate([`historial/buscar/${this.tramite.numero}${this.tramite.codigo_verificacion}`])
   }
 
   imprimirEtiqueta(){
@@ -531,6 +523,25 @@ export class DetalleComponent implements OnInit, OnDestroy{
    
   }
 
+  agregarObservacion(tramite){
+    let numero = `${tramite.numero}${tramite.codigo_verificacion}`
+    this._apiService.addObservacion(numero, this.textObservacion).subscribe(()=>{
+      this._functionService.configSwal(this.mensajeSwal, `Observación guardada correctamente.`, "success", "Aceptar", "", false, "", "")
+      this.mensajeSwal.fire().finally(()=>{
+        this.ngOnInit()
+      })
+    })
+  }
+
+  limpiarText(){
+    this.textObservacion = ""
+    this.observacionSelected = null
+  }
+
+  showModal(objeto: any){
+    this.observacionSelected = objeto
+    console.log(this.observacionSelected)
+  }
   guardarDevol(){
     this.submitted = true;
     // stop here if form is invalid
@@ -546,24 +557,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
   get f() { return this.expedienteForm.controls; }
   get r() { return this.retiroForm.controls; }
   get d() { return this.devolForm.controls; }
-
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
-
-  get isEmpleado() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO);
-  }
-
-  get isEmpleadoME() {
-    return this.authService.hasRole(Role.ROL_EMPLEADOME);
-  }
-
-  get isEmpleadoCarga() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
-  }
-
-
 
 
   setRetiro() {

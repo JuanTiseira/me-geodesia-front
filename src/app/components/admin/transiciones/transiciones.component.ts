@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
-import { Role } from 'src/app/models/role.models';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { FunctionsService } from 'src/app/services/functions.service';
@@ -16,11 +14,13 @@ import { FunctionsService } from 'src/app/services/functions.service';
 })
 export class TransicionesComponent implements OnInit, OnDestroy {
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
+
   load: boolean = false;
   consultaForm : FormGroup;
   tramites: any;
   p: number = 1;
   sectores:any;
+  sinSector:boolean = false;
 
   historialesSub: Subscription;
   historialesSinSectorSub: Subscription;
@@ -29,7 +29,6 @@ export class TransicionesComponent implements OnInit, OnDestroy {
   
   constructor(private _apiService: ApiService,
               private _functionService: FunctionsService ,
-              private authService: AuthService,
               private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
@@ -41,19 +40,10 @@ export class TransicionesComponent implements OnInit, OnDestroy {
     this._apiService.cancelarPeticionesPendientes()
   }
 
-
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
-  get isEmpleadoME() {
-    return this.authService.hasRole(Role.ROL_EMPLEADOME);
-  }
-  get isEmpleado() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO);
-  }
-
   buscarTramites() {
     this.spinner.show();
+    this.sinSector = false;
+    this.p = 1;
     this.historialesSub = this._apiService.getHistorialesUltimos()
       .subscribe((res:any) =>{
 
@@ -73,7 +63,9 @@ export class TransicionesComponent implements OnInit, OnDestroy {
 
   buscarTramitesSinSector(){
     this.spinner.show();
-    this.historialesSinSectorSub = this._apiService.getHistorialesUltimosFiltro()
+    this.sinSector = true
+    this.p = 1
+    this.historialesSinSectorSub = this._apiService.getHistorialesUltimosFiltro(1)
       .subscribe((res:any) => {
         this.tramites = res
         if (this.tramites.count == 0) {
@@ -119,7 +111,9 @@ export class TransicionesComponent implements OnInit, OnDestroy {
 
   onTableDataChange(event) {
     this.spinner.show();
-    this._apiService.changePage(event, 'historiales/ultimos_historiales')
+    let endpointHistorial = 'historiales/ultimos_historiales'
+    if(this.sinSector) endpointHistorial = 'historiales/ultimos_historiales_filtros'
+    this._apiService.changePage(event, endpointHistorial)
       .then((res:any) =>{
 
         this.p =  event
@@ -134,7 +128,7 @@ export class TransicionesComponent implements OnInit, OnDestroy {
       
       })
       .catch(()=>{
-        this._functionService.imprimirMensaje(event, "error onTableDataChange: ")
+        this._functionService.imprimirMensajeDebug(event, "error onTableDataChange: ")
       })
       .finally(()=>{
         this.spinner.hide();

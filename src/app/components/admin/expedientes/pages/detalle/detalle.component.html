@@ -6,8 +6,8 @@
 
   <div class="row">
     <div class="row" *ngIf="resultado">
-      <div class="col-6">
-        <table class="table table-striped">
+      <div class="col-5">
+        <table class="table table-sm table-striped">
           <tbody>
             <tr>
               <th>Número</th>
@@ -47,12 +47,12 @@
             <tr *ngIf="resultado.gestor != null">
               <th>Gestor</th>
               <td>{{ resultado.gestor?.nombre}} {{ resultado.gestor?.apellido }}</td>
-          </tr>
+            </tr>
 
-          <tr *ngIf="resultado.gestor == null">
+            <tr *ngIf="resultado.gestor == null">
               <th>Gestor</th>
               <td>---</td>
-          </tr>
+            </tr>
 
             <tr>
               <th>Propietario</th>
@@ -61,105 +61,221 @@
 
             <tr>
               <th>Inmueble</th>
-              <td *ngIf="resultado.inmueble">{{ resultado?.inmueble?.municipio?.departamento.codigo }} - {{ resultado?.inmueble?.municipio?.codigo }} - {{
-                resultado?.inmueble?.seccion }} - {{ resultado?.inmueble?.chacra }} - {{ resultado?.inmueble?.manzana }} - {{
+              <td *ngIf="resultado.inmueble">{{ resultado?.inmueble?.municipio?.departamento.codigo }} - {{
+                resultado?.inmueble?.municipio?.codigo }} - {{
+                resultado?.inmueble?.seccion }} - {{ resultado?.inmueble?.chacra }} - {{ resultado?.inmueble?.manzana }}
+                - {{
                 resultado.inmueble?.parcela }} - {{ resultado.inmueble?.parcela }}</td>
-                <td *ngIf="!resultado.inmueble">---</td>
+              <td *ngIf="!resultado.inmueble">---</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="col-6">
-        <table class="table table-striped">
-          <tbody>
+      <div class="col-3">
+        <table class="table table-sm table-striped">
+          <thead>
             <tr>
               <th>Documentos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
             </tr>
             <tr *ngFor="let documento of documentosexpediente">
               <td> - {{documento.descripcion}}</td>
             </tr>
             <br>
             <tr>
-              <th>Estado: <b *ngIf="resultado.habilitado == true; else inactivo">Activo</b> <ng-template #inactivo><b>Inactivo</b></ng-template></th>
+              <th>Estado: <b *ngIf="resultado.habilitado == true; else inactivo">Activo</b>
+                <ng-template #inactivo><b>Inactivo</b></ng-template>
+              </th>
             </tr>
           </tbody>
         </table>
-      </div>  
+      </div>
+      <div class="col-4">
+        <table class="table table-sm table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Observaciones</th>
+              <th>Agregado por:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let observacion of tramite.observaciones" id="observacion-{{observacion.id}}"
+              data-toggle="tooltip" data-placement="bottom" title="{{observacion.descripcion}}">
+              <td>
+                <div class="text-short"> <i (click)="showModal(observacion)" class="bi bi-search b-green" style="font-size: 0.8rem;" data-bs-toggle="modal" data-bs-target="#crearObservacion"></i>  {{observacion.descripcion}}</div>
+              </td>
+              <td> - {{observacion.changed_by?.username}}</td>
+            </tr>
+            <br>
+          </tbody>
+        </table>
+      </div>
 
       <div class="row">
 
-        <div class="col-md-6">
-          <button type="button" class="btn btn-green btn-block" [ngClass]="{'btn-disabled': !resultado.inmueble}" (click)="imprimirEtiqueta()"
-            printSectionId="mytodosItemsId" printTitle="CARATULA" ngxPrint styleSheetFile="/assets/pdf.scss" >Imprimir Solapa 
-            <span class="ms-3" data-toggle="tooltip" data-placement="right" title="Imprimir en disposición Horizontal con impresora predeterminada HP">
-              <svg id="i-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-              <path d="M16 14 L16 23 M16 8 L16 10" />
-              <circle cx="16" cy="16" r="14" />
-              </svg>
-            </span>
-          </button>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-4">
+              <button type="button" class="btn btn-green btn-block" [ngClass]="{'btn-disabled': !resultado.inmueble}"
+                (click)="imprimirEtiqueta()" [disabled]="!resultado?.habilitado" printSectionId="mytodosItemsId"
+                printTitle="CARATULA" ngxPrint styleSheetFile="/assets/pdf.scss">Imprimir Solapa
+                <span class="ms-3" data-toggle="tooltip" data-placement="right"
+                  title="Imprimir en disposición Horizontal con impresora predeterminada HP">
+                  <svg id="i-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20"
+                    fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M16 14 L16 23 M16 8 L16 10" />
+                    <circle cx="16" cy="16" r="14" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()"
+                printSectionId="Etiqueta" [disabled]="!resultado?.habilitado" ngxPrint
+                styleSheetFile="/assets/etiqueta.scss">Imprimir Etiqueta
+                <span class="ms-3" data-toggle="tooltip" data-placement="right" title="Imprimir con impresora QL-800">
+                  <svg id="i-info2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20"
+                    fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M16 14 L16 23 M16 8 L16 10" />
+                    <circle cx="16" cy="16" r="14" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div class="col-md-4">
+              <button
+                *ngIf="!isEditMode && (_functionService.isEmpleadoCarga|| _functionService.isEmpleadoME || _functionService.isAdmin)"
+                [disabled]="!resultado?.habilitado" type="button" class="btn btn-green" printSectionId="acuse"
+                printTitle="CARATULA" ngxPrint styleSheetFile="/assets/acuse.scss">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Imprimir Constancia
+                <span class="ms-3" data-toggle="tooltip" data-placement="right"
+                  title="Imprimir en disposición Vertical con impresora predeterminada HP tamaño A4">
+                  <svg id="i-info3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20"
+                    fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M16 14 L16 23 M16 8 L16 10" />
+                    <circle cx="16" cy="16" r="14" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+
         </div>
 
-
         <div class="col-md-6">
-          <button type="button" class="btn btn-green btn-block" (click)="imprimirEtiqueta()" printSectionId="Etiqueta"
-            ngxPrint styleSheetFile="/assets/etiqueta.scss">Imprimir Etiqueta
-            <span class="ms-3"  data-toggle="tooltip" data-placement="right" title="Imprimir con impresora QL-800">
-              <svg id="i-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-              <path d="M16 14 L16 23 M16 8 L16 10" />
-              <circle cx="16" cy="16" r="14" />
-              </svg>
-            </span>
-          </button>
+
+          <div class="col-md-12">
+            <button (click)="verHistorial()" type="button" class="btn btn-green">Ver Historial</button>
+          </div>
+          <div class="col-md-12">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#crearObservacion"
+              [disabled]="!resultado?.habilitado" class="btn btn-green btn-block">Agregar Observación</button>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+          <div
+            *ngIf="isNumeroAnio && (_functionService.isAdmin || _functionService.isEmpleadoME || _functionService.isEmpleadoCarga); else btnUltimoTramite"
+            class="col-md-12">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#crearDevol"
+              class="btn btn-green btn-block">Nueva Presentacion</button>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#crearRetiro"
+              [disabled]="!resultado?.habilitado" class="btn btn-green btn-block">Retiro de Documentos</button>
+          </div>
+          <ng-template #btnUltimoTramite>
+            <div class="col-md-12">
+              <button type="button" (click)="verTramite()" class="btn btn-green btn-block">Ir al último trámite</button>
+            </div>
+          </ng-template>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <button (click)="verHistorial()" type="button" class="btn btn-green">Ver Historial</button>
-        </div>
+
         <div class="col-md-6">
           <button *ngIf="isEditMode" [disabled]="loading" class="btn btn-green">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Guardar
           </button>
 
-
-          <button *ngIf="!isEditMode && (isEmpleadoCarga|| isEmpleadoME || isAdmin)" [disabled]="loading" type="button" class="btn btn-green"
-            printSectionId="acuse" printTitle="CARATULA" ngxPrint styleSheetFile="/assets/acuse.scss">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Imprimir Constancia
-            <span class="ms-3" data-toggle="tooltip" data-placement="right" title="Imprimir en disposición Vertical con impresora predeterminada HP tamaño A4">
-              <svg id="i-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-              <path d="M16 14 L16 23 M16 8 L16 10" />
-              <circle cx="16" cy="16" r="14" />
-              </svg>
-            </span>
-          </button>
         </div>
-        <div *ngIf="isNumeroAnio && (isAdmin || isEmpleadoME || isEmpleadoCarga); else btnUltimoTramite" class="col-md-12">
-          <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearDevol"
-            class="btn btn-green btn-block">Nueva Presentacion</button>
-          <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearRetiro"
-            class="btn btn-green btn-block">Retiro de Documentos</button>
-        </div>
-        <ng-template #btnUltimoTramite>
-          <div class="col-md-12">
-            <button type="button" (click)="verTramite()" class="btn btn-green btn-block">Ir al último trámite</button>
-          </div>
-        </ng-template>
-        
       </div>
-
-
     </div>
     <ngx-spinner></ngx-spinner>
   </div>
 
+
+  <!-- MODAL OBSERVACIÓN -->
+  <div class="modal fade" id="crearObservacion" tabindex="-1" aria-labelledby="crearObservacion">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><p *ngIf="!observacionSelected; else pObservacion">Agregar Observación</p>
+            <ng-template #pObservacion><p>Detalle Observación</p></ng-template>
+          </h5>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div *ngIf="observacionSelected; else taObservacion"><p>{{observacionSelected.descripcion}}</p></div>
+            <ng-template #taObservacion>
+              <div>
+                <textarea class="form-control" id="textAreaObservacion" [(ngModel)]="textObservacion" rows="3"></textarea>
+              </div>
+            </ng-template>            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-md-6" [ngClass]="{'col-md-12': observacionSelected}">
+              <button type="button" (click)="limpiarText()" class="btn btn-green" data-bs-dismiss="modal"
+                aria-label="Close">Cancelar</button>
+            </div>
+            <div *ngIf="!observacionSelected" class="col-md-6">
+              <button type="button" (click)="agregarObservacion(tramite)" class="btn btn-green"
+                data-bs-dismiss="modal" aria-label="Close">Agregar</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- MODAL VER OBSERVACIÓN -->
+    <div class="modal fade" id="crearObservacion" tabindex="-1" aria-labelledby="crearObservacion">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Observación</h5>
+            <button id="closeModalObservación" type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div>
+                <p>{{observacionSelected}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-md-6">
+                <button type="button" (click)="limpiarText()" class="btn btn-green" data-bs-dismiss="modal"
+                  aria-label="Close">Cancelar</button>
+              </div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <!-- MODAL CREAR RETIRO -->
 
-  <div *ngIf="isAdmin || isEmpleadoME || isEmpleadoCarga" class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro"
-    aria-hidden="true">
+  <div *ngIf="_functionService.isAdmin || _functionService.isEmpleadoME || _functionService.isEmpleadoCarga"
+    class="modal fade" id="crearRetiro" tabindex="-1" aria-labelledby="crearRetiro" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -206,9 +322,9 @@
                     <div *ngIf="busqueda_manual" class="row">
                       <div class="col-md-10">
                         <ng-select [items]="profesionale$ | async" bindLabel="fullName" bindValue="id" [addTag]="false"
-                          [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn" [minTermLength]="minLengthTerm"
-                          [loading]="profesionalLoading" typeToSearchText="Ingresar apellido"
-                          [typeahead]="profesionalInput$" formControlName="usuario"
+                          [multiple]="false" [hideSelected]="true" [trackByFn]="trackByFn"
+                          [minTermLength]="minLengthTerm" [loading]="profesionalLoading"
+                          typeToSearchText="Ingresar apellido" [typeahead]="profesionalInput$" formControlName="usuario"
                           [ngClass]="{ 'is-invalid': submitted && busqueda_manual}">
                         </ng-select>
                         <div *ngIf="submitted && busqueda_manual" class="invalid-feedback">
@@ -217,7 +333,7 @@
                       </div>
 
                       <div class="col-md-2">
-                        <button type="button" data-bs-toggle="modal" id="btn-edit-user" data-bs-target="#crearUsuario"
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#crearUsuario"
                           class="btn btn-green btn-agregar">+</button>
                       </div>
                     </div>
@@ -289,15 +405,8 @@
                           <th>Dni</th>
                           <td>{{ usuario.dni }}</td>
                         </tr>
-
-
-
-
                       </tbody>
                     </table>
-
-
-
                   </div>
                 </div>
 
@@ -327,7 +436,8 @@
 
   <!-- MODAL CREAR DEVOLUCION -->
 
-  <div *ngIf="isAdmin || isEmpleadoME || isEmpleadoCarga" class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
+  <div *ngIf="_functionService.isAdmin || _functionService.isEmpleadoME || _functionService.isEmpleadoCarga"
+    class="modal fade" id="crearDevol" tabindex="-1" aria-labelledby="crearDevol" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -596,7 +706,9 @@
 
   <!-- ACUSE DE RECIBO -->
 
-  <div *ngIf="(isEmpleadoME || isAdmin || isEmpleadoCarga) && resultado" hidden>
+  <div
+    *ngIf="(_functionService.isEmpleadoME || _functionService.isAdmin || _functionService.isEmpleadoCarga) && resultado"
+    hidden>
     <div id="acuse">
       <table style="width:100%">
         <tr>
@@ -628,7 +740,8 @@
         Cartografia</h2>
 
       <p>
-        Por la presente, se deja constancia que el <b>TRAMITE N° {{tramite?.numero}}{{tramite?.codigo_verificacion}}</b> del <b>Tipo
+        Por la presente, se deja constancia que el <b>TRAMITE N° {{tramite?.numero}}{{tramite?.codigo_verificacion}}</b>
+        del <b>Tipo
           {{resultado?.mensura.abreviatura}} </b> INICIADO EN FECHA <b>{{tramite?.created_at | date}}</b> ,
         <b>Expediente N° {{resultado?.numero}} - {{resultado?.anio}} </b>
         en la <b>Presentacion {{tramite?.numero_presentacion}}</b> se ha recibido con la siguiente
@@ -663,12 +776,13 @@
 
       <h4 style="margin-top: 10px;">Profesional Solicitante:</h4>
 
-      <li>AGRIM. <span *ngIf="!resultado?.agrimensor?.nombre; else linea">{{resultado?.agrimensor?.nombre}} {{resultado?.agrimensor?.apellido}}</span></li>
+      <li>AGRIM. <span *ngIf="!resultado?.agrimensor?.nombre; else linea">{{resultado?.agrimensor?.nombre}}
+          {{resultado?.agrimensor?.apellido}}</span></li>
       <li>Matricula: {{resultado?.agrimensor?.matricula}}</li>
       <li>D.N.I: {{resultado?.agrimensor?.dni}}</li>
       <ng-template #linea><span>--</span></ng-template>
-      
-      
+
+
       <p style="text-align: right;">
         <img src="assets/firma.jpg" alt="Escudo misiones" class="img-responsive" width="30%"><br>
         Nombre Directora<br>

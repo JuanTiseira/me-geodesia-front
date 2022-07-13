@@ -12,7 +12,7 @@ declare var jQuery: any;
 })
 export class NavbarComponent implements OnInit {
 
-  public header:string;
+  public nombreSector:string;
   public name:string;
   public avisos:number;
   public mensajes:number;
@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit {
 
     var user = this._tokenService.getUserName();
     this.sector = this._tokenService.getData().sectores
-    this.header= `Hola, ${user}. ${this.sector}`;
+    this.nombreSector= `Hola, ${user}. ${this.sector}`;
 
   }
 

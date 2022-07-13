@@ -1,13 +1,16 @@
 import { Location } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../../../services/api.service';
-import { FunctionsService } from '../../../../../services/functions.service';
+import { ApiService } from 'src/app/services/api.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import Swal from 'sweetalert2'
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { AuthService } from 'src/app/services/auth.service';
+import { Role } from 'src/app/models/role.models';
 
 
 
@@ -19,8 +22,10 @@ import { Subscription } from 'rxjs';
 export class AgregarUsuarioComponent implements OnInit {
 
   @ViewChild('mensajeSwal') mensajeSwal: SwalComponent
-  @Output() verDetallesFunction: EventEmitter<any>;
+  @ViewChild('rol') rolComponent: NgSelectComponent;
 
+  @Output() verDetallesFunction: EventEmitter<any>;
+  @Input() desdeExpediente: boolean;
 
   public tipos_usuarios: any;
   public documentos: any;
@@ -40,12 +45,14 @@ export class AgregarUsuarioComponent implements OnInit {
   credenciales = false;
   selectedRol: any;
   selectedAsignacion: any;
-  descripcionRol: any;
+  descripcionRol: string;
+  
+  idRol: any;
 
-  accesoTodos = [1,2,3,4,5,6]
-  accesoUsuarios = [1,2,3,5,6]
-  accesoProfesionalPropietario = [3, 4]
-  accesoProfesional = [3]
+  accesoTodos = ["Profesional", "Propietario", "Empleado: Lindero", "Empleado: Técnico", "Empleado: Parcelamiento", "Empleado: Presentaciones posteriores", "Empleado: Carga de expediente", "Empleado: Mesa de entrada", "Administrador"]
+  accesoUsuarios = ["Empleado: Lindero", "Empleado: Técnico", "Empleado: Parcelamiento", "Empleado: Presentaciones posteriores", "Empleado: Carga de expediente", "Empleado: Mesa de entrada", "Administrador"]
+  accesoProfesionalPropietario = ["Profesional", "Propietario"]
+  accesoProfesional = ["Profesional"]
 
 
   tipoExpedientesSub: Subscription;
@@ -55,11 +62,10 @@ export class AgregarUsuarioComponent implements OnInit {
 
   constructor(
     private _apiService: ApiService,
-    private _functionService: FunctionsService,
+    public _functionService: FunctionsService,
     private formBuilder: FormBuilder,
     private _location: Location,
     private route: ActivatedRoute,
-    private router: Router,
   ) { this.verDetallesFunction = new EventEmitter(); }
 
   ngOnInit(): void {
@@ -67,8 +73,8 @@ export class AgregarUsuarioComponent implements OnInit {
     this.isAddMode = !this.id;
 
     this.usuarioForm = this.formBuilder.group({
-      rol: ['', Validators.required],
-      asignacion: ['', Validators.required]
+      rol: ['', Validators.required]
+      // asignacion: ['', Validators.required]
     }, {});
 
 
@@ -80,14 +86,14 @@ export class AgregarUsuarioComponent implements OnInit {
 
     this._apiService.getInmuebles().subscribe((response)=>{
       this.inmuebles = response
-      this._functionService.imprimirMensaje(response, "inmuebles")
+      this._functionService.imprimirMensajeDebug(response, "inmuebles")
     })
 
 
     this.observacionesSub = this._apiService.getObservaciones()
       .subscribe(response => {
         this.observaciones = response
-        this._functionService.imprimirMensaje(response, "observaciones")
+        this._functionService.imprimirMensajeDebug(response, "observaciones")
       })
     
     this._apiService.cargarPeticion(this.observacionesSub)
@@ -95,43 +101,40 @@ export class AgregarUsuarioComponent implements OnInit {
     this.usuariosSub = this._apiService.getUsuarios()
       .subscribe(response => {
         this.usuarios = response
-        this._functionService.imprimirMensaje(response, "usuarios")
+        this._functionService.imprimirMensajeDebug(response, "usuarios")
       })
     this._apiService.cargarPeticion(this.usuariosSub);
 
     this._apiService.cargarPeticion(this._apiService.getRoles()
-      .subscribe(response => {
-        this.roles = response
-        this._functionService.imprimirMensaje(response, "roles")
+      .subscribe((response:any) => {
+        if(!this.desdeExpediente && this._functionService.isAdmin){
+          this.roles = response.results
+        }else{
+          this.roles = response.results.filter(element => { return element.nombre === "ROL_PROFESIONAL" || element.nombre === "ROL_PROPIETARIO"})
+        }
+        this._functionService.imprimirMensajeDebug(this.roles, "roles")
       }));
-
-    this._apiService.cargarPeticion(this._apiService.getAsignaciones()
-    .subscribe(response => {
-      this.asignaciones = response
-      this._functionService.imprimirMensaje(response, "asignaciones")
-    }));
-
-
   }
 
   ngOnDestroy(): void {
     this._apiService.cancelarPeticionesPendientes()
   }
 
-  asignacionChanged(asignacion){
-    this.selectedAsignacion = asignacion
-    this.setControlsForm();
-  }
-
   rolChanged(e){
-    this.selectedRol = e
-    this.descripcionRol = e.id
-    this.setControlsForm();
+    if(e != null){
+      this.selectedRol = e
+      this.idRol = e.id
+      this.descripcionRol = e.descripcion  
+      this.setControlsForm();
+    }else{
+      this.descripcionRol = null
+    }
+
   }
 
   setControlsForm(){
-    switch (this.selectedRol.id) {
-      case 3: // rol profesional
+    switch (this.selectedRol.descripcion) {
+      case "Profesional": // rol profesional
         this.usuarioForm = this.formBuilder.group({
           rol: [this.selectedRol.descripcion, Validators.required],
           nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
@@ -141,15 +144,15 @@ export class AgregarUsuarioComponent implements OnInit {
           matricula: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.pattern(/^-?([0-9]\d*)?$/)])],
           direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
           fecha_nacimiento: ['', Validators.required],
-          email: ['', Validators.compose([Validators.required, Validators.email])],
+          email: ['', Validators.email],
           telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-          asignacion: [this.selectedAsignacion.descripcion, Validators.required],
+          asignacion: [this.selectedRol.asignaciones[0], Validators.required],
           user: [],
           password: [],
         }, {});
         break;
 
-      case 4: // rol propietario
+      case "Propietario": // rol propietario
         this.usuarioForm = this.formBuilder.group({
           rol: [this.selectedRol.descripcion, Validators.required],
           nombre: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)])],
@@ -159,9 +162,9 @@ export class AgregarUsuarioComponent implements OnInit {
           matricula: ['', Validators.compose([Validators.minLength(4), Validators.pattern(/^-?([0-9]\d*)?$/)])],
           direccion: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z\s]+\s[0-9\s]+$/)])],
           fecha_nacimiento: ['', Validators.required],
-          email: ['', Validators.compose([Validators.email])],
+          email: ['', Validators.email],
           telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-          asignacion: [],
+          asignacion: [this.selectedRol.asignaciones[0]],
           user: [],
           password: [],
         }, {});
@@ -179,7 +182,7 @@ export class AgregarUsuarioComponent implements OnInit {
           fecha_nacimiento: [''],
           email: ['', Validators.compose([Validators.required, Validators.email])],
           telefono: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^-?([0-9]\d*)?$/)])],
-          asignacion: [this.selectedAsignacion.descripcion, Validators.required],
+          asignacion: [this.selectedRol.asignaciones[0], Validators.required],
           user: ['', Validators.required],
           password: ['', Validators.required],
         }, {});
@@ -219,8 +222,8 @@ export class AgregarUsuarioComponent implements OnInit {
   }
 
   createUsuario() {
-    this.usuarioForm.value.rol = this.descripcionRol
-    this.usuarioForm.value.asignacion = this.selectedAsignacion.id
+    this.usuarioForm.value.rol = this.idRol
+    this.usuarioForm.value.asignacion = this.selectedRol.asignaciones[0].id
     this.usuarioSub = this._apiService.setUsuario(this.usuarioForm.value)
       .subscribe(() => {
         this._functionService.configSwal(this.mensajeSwal, `Se registro correctamente.`, "success", "Aceptar", "", false, "", "");
@@ -232,6 +235,5 @@ export class AgregarUsuarioComponent implements OnInit {
 
     document?.getElementById("closeModalButton")?.click();
   }
-
 
 }

@@ -20,7 +20,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError(error => {
-        this._functionService.imprimirMensaje(error, "error INTERCEPTOR: ")
+        this._functionService.imprimirMensajeDebug(error, "error INTERCEPTOR: ")
         switch (error.status) {
           case 500:
             Swal.fire({

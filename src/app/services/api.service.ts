@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
-import {FunctionsService} from 'src/app/services/functions.service'
 @Injectable({
   providedIn: 'root'
 })
@@ -18,8 +16,6 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private _functionService: FunctionsService,
     ) { 
       this.url  =  environment.endpoint;
       this.urlLogin = this.url + '/auth/';
@@ -31,16 +27,16 @@ export class ApiService {
   ///////// control de peticiones /////////////
 
   cancelarPeticionesPendientes(){
-    this._functionService.imprimirMensaje(this.listaPeticiones, "lista de peticiones a limpiar: ")
+    // this._functionService.imprimirMensajeDebug(this.listaPeticiones, "lista de peticiones a limpiar: ")
     this.listaPeticiones.forEach((peticion)=>{
       peticion.unsubscribe();
     })
     this.listaPeticiones = [];
-    this._functionService.imprimirMensaje(this.listaPeticiones, "lista de peticiones limpias: ")
+    // this._functionService.imprimirMensajeDebug(this.listaPeticiones, "lista de peticiones limpias: ")
   }
 
   cargarPeticion(peticion: Subscription){
-    this._functionService.imprimirMensaje(peticion, "Peticiones a guardar: ")
+    // this._functionService.imprimirMensajeDebug(peticion, "Peticiones a guardar: ")
     this.listaPeticiones.push(peticion);
   }
   
@@ -49,10 +45,11 @@ export class ApiService {
 
   
 
-  getLogin(username: string, password: string){
+  getLogin(username: string, password: string, currentResponse){
     var data = new FormData();
     data.append('username', username);
     data.append('password', password);
+    data.append('currentResponse', currentResponse);
     return this.http.post(this.urlLogin, data).toPromise();
   }
 
@@ -84,11 +81,12 @@ export class ApiService {
   //   return this.http.get(this.url+`/expedientes/?${params.toString()}`);
   // }
 
-  getExpedientesTramitesFiltros(filtros){
+  getExpedientesTramitesFiltros(filtros, page = '1'){
     let params: URLSearchParams = new URLSearchParams();
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
     }
+    params.set("page", page)
     return this.http.get(this.url+`/expedientes/expedientes_tramites/?${params.toString()}`);
   }
 
@@ -161,16 +159,21 @@ export class ApiService {
   getObservaciones () {
     return this.http.get(this.url+'/observaciones/');
   }
+  
+  addObservacion(tramite, observacion){
+    return this.http.post(this.url+'/tramites/add_observacion/', {tramite: tramite, observacion: observacion});
+  }
 
   //INMUEBLE  ////////////////////////////////////////////////////////////////////////////////
 
-  getInmuebles(parametros = null) {
+  getInmuebles(parametros = null, page = "1") {
     if(parametros == null) return this.http.get(this.url+'/inmuebles/')
     else {
       let params: URLSearchParams = new URLSearchParams();
       for(let i in parametros){
         if(parametros[i]) params.set(i, parametros[i])
       } 
+      params.set("page", page)
       return this.http.get(this.url+`/inmuebles/?${params.toString()}`)
     }
   }
@@ -224,12 +227,13 @@ export class ApiService {
   // }
 
 
-  getUsuariosFiltros(filtros){
+  getUsuariosFiltros(filtros, page = '1'){
 
     let params: URLSearchParams = new URLSearchParams();
     for(let i in filtros){
       if(filtros[i]) params.set(i, filtros[i])
-    }   
+    } 
+    params.set("page",page)
     return this.http.get(this.url+`/usuarios/?${params.toString()}`);
   }
 
@@ -310,8 +314,8 @@ export class ApiService {
     return this.http.get(this.url+'/historiales/ultimos_historiales/');
   }
 
-  getHistorialesUltimosFiltro(){
-    return this.http.get(this.url+'/historiales/ultimos_historiales_filtros/');
+  getHistorialesUltimosFiltro(page:number){
+    return this.http.get(this.url+'/historiales/ultimos_historiales_filtros/?page='+page);
   }
 
   getExpedientesPorSector(){

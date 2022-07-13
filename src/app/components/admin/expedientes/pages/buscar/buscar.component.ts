@@ -43,6 +43,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   p: number = 1;
   submitted = false;
+  submitted2 = false;
   
   agrimensor$: Observable<Person[]>;
   gestor$: Observable<Person[]>;
@@ -88,8 +89,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   constructor( private _apiService: ApiService,
                 private dataService: DataService,
-                private _functionService: FunctionsService ,
-                private authService: AuthService,
+                public _functionService: FunctionsService ,
                 private formBuilder: FormBuilder,
                 private router: Router,
                 private spinner: NgxSpinnerService
@@ -133,19 +133,6 @@ export class BuscarComponent implements OnInit, OnDestroy {
       })
       this._apiService.cargarPeticion(this.abreviaturasSub);
 
-      // this._apiService.getInmuebles().subscribe((response)=>{
-      //   this.inmuebles = response
-      //   this._functionService.imprimirMensaje(response, "inmuebles")
-      // })
-       
-  
-      // this.usuariosSub = this._apiService.getUsuarios()
-      //   .subscribe(response => {
-      //     this.usuarios = response
-      //     this._functionService.imprimirMensaje(response, "usuarios")
-      //   })
-      // this._apiService.cargarPeticion(this.usuariosSub)
-
   }
 
   ngOnDestroy(): void {
@@ -171,10 +158,12 @@ export class BuscarComponent implements OnInit, OnDestroy {
 
   onTableDataChange(event) {
     this.spinner.show();
-    this._apiService.changePage(event, 'expedientes/expedientes_tramites')
+    this.p =  event
+    if(this.submitted2){
+      this.buscarExpedientes(event)
+    }else{
+      this._apiService.changePage(event, 'expedientes/expedientes_tramites')
       .then((res) =>{
-
-        this.p =  event
         this.expedientes = res        
         if (this.expedientes.count == 0) {
           this._functionService.configSwal(this.mensajeSwal, `No se encontró trámites con esos datos.`, "info", "Aceptar", "", false, "", "");
@@ -183,53 +172,37 @@ export class BuscarComponent implements OnInit, OnDestroy {
           this.expedientes = res
         }
         this.load = false;
-      
       })
       .catch(()=>{
-        this._functionService.imprimirMensaje(event, "error onTableDataChange: ")
+        this._functionService.imprimirMensajeDebug(event, "error onTableDataChange: ")
       })
       .finally(()=>{
         this.spinner.hide();
       })
-
+    }
   } 
 
-  get isAdmin() {
-    return this.authService.hasRole(Role.ROL_ADMIN);
-  }
-
-  get isEmpleado() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO);
-  }
-
-  get isEmpleadoME() {
-    return this.authService.hasRole(Role.ROL_EMPLEADOME);
-  }
-
-  get isEmpleadoCarga() {
-    return this.authService.hasRole(Role.ROL_EMPLEADO_CARGA);
-  }
 
   buscarExpediente() {
-    this._functionService.imprimirMensaje(this.expedienteForm, "consulta form: ")
+    this._functionService.imprimirMensajeDebug(this.expedienteForm, "consulta form: ")
     this.submitted = true;
+    this.p = 1
     if (this.expedienteForm.invalid) {
-      this._functionService.imprimirMensaje(this.expedienteForm, "consulta form: ")
+      this._functionService.imprimirMensajeDebug(this.expedienteForm, "consulta form: ")
       return;
-    
     }
     this.spinner.show();
     
     var numeroanio = this.expedienteForm.value.numero
 
-    this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+    this._functionService.imprimirMensajeDebug(numeroanio, "numero anio: ")
 
     
     
     if (this.expedienteForm.value.param_busqueda == 'expediente') {
       
       if(numeroanio.toString().length > 5) {
-        this._functionService.imprimirMensaje(numeroanio.toString().length, "numero anio: ")
+        this._functionService.imprimirMensajeDebug(numeroanio.toString().length, "numero anio: ")
 
         var numero = 0 
         let z = 1
@@ -244,7 +217,7 @@ export class BuscarComponent implements OnInit, OnDestroy {
           
         }
         var anio = numeroanio.toString().slice(-4);
-        this._functionService.imprimirMensaje(numeroanio, "numero anio: ")
+        this._functionService.imprimirMensajeDebug(numeroanio, "numero anio: ")
               //BUSCA POR NUMERO DE EXPEDIENTE Y TRAE EL TRAMITE CON OBSERVACION Y EXPEDIENTE
 
         this.expedienteSub = this._apiService.getExpedienteNumero(numero, anio)
@@ -280,11 +253,14 @@ export class BuscarComponent implements OnInit, OnDestroy {
   }
 
 
-  buscarExpedientes() {
+  buscarExpedientes(page='1') {
     this.spinner.show();
-    this._functionService.imprimirMensaje(this.consultaForm.value, "formulario: ")
+    this.submitted2 = true;
+    this.p = Number(page);
     
-    this.expedientesSub = this._apiService.getExpedientesTramitesFiltros(this.consultaForm.value)
+    this._functionService.imprimirMensajeDebug(this.consultaForm.value, "formulario: ")
+    
+    this.expedientesSub = this._apiService.getExpedientesTramitesFiltros(this.consultaForm.value, page)
       .subscribe((res:any) =>{
         this.expedientes = res
         if (this.expedientes.count == 0) {

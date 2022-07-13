@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { Role } from '../models/role.models';
 import { User } from '../models/user.models';
 import { TokenService } from './token.service';
-import Swal from 'sweetalert2'
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
-import { FunctionsService } from './functions.service';
 
 
 @Injectable({
@@ -18,8 +16,7 @@ export class AuthService {
 
   constructor(private _apiService: ApiService,
     private _tokenService: TokenService,
-    private router: Router,
-    private _functionsService: FunctionsService
+    private router: Router
     ) { }
 
 
@@ -32,23 +29,27 @@ export class AuthService {
     if(this.usert.user_name != null){
       return this.usert;
     }else{
-      
       return false;
     }
-    return true;
   }
 
-  hasRole(role: Role) {
-    return this.isAuthorized() && this.usert.authorities[0].authority === role;
+  hasRole(role: Role[]) {
+    let authority = false;
+    let rolAuth = false;
+    if (this.isAuthorized()) authority = true; else return false;
+    for(var i = 0; i < role.length; i++){
+      if (this.usert.authorities[0].authority === role[i]) rolAuth = true;
+    } 
+    return (authority && rolAuth);
   }
 
 
-  login(user: string, password: string): Promise<boolean> {
+  login(user: string, password: string, responseCaptcha: string): Promise<boolean> {
     var log = false;
-    return this._apiService.getLogin(user.toUpperCase(), password)
-      .then(response => {
-        this._tokenService.setData(response);              
-        this.usert = response['user'];
+    return this._apiService.getLogin(user.toUpperCase(), password, responseCaptcha)
+      .then((response: any )=> {
+        this._tokenService.setData(response);   
+        this.usert = response;
         log = true;
         return log;
         }  

@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Authority } from '../models/authority.models';
-
-
 import { LoginUser } from '../models/login-user.models';
 import { Router } from '@angular/router';
 import { LocalService } from './storage/local.service';
-import { FunctionsService } from './functions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +14,6 @@ export class TokenService {
   constructor(
     private _localService: LocalService,
     private router: Router,
-    private _functionService: FunctionsService
     ) { }
 
 
