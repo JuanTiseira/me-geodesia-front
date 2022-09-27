@@ -86,5 +86,9 @@ export class FunctionsService {
     return this.authService.hasRole([Role.ROL_PROPIETARIO]);
   }
 
+  get canEdit(){
+    return this.isAdmin || this.isEmpleadoCarga || this.isEmpleadoME
+  }
+
 
 }

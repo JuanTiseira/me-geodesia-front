@@ -529,6 +529,7 @@ export class DetalleComponent implements OnInit, OnDestroy{
       this._functionService.configSwal(this.mensajeSwal, `Observación guardada correctamente.`, "success", "Aceptar", "", false, "", "")
       this.mensajeSwal.fire().finally(()=>{
         this.ngOnInit()
+        this.limpiarText()
       })
     })
   }
@@ -540,7 +541,6 @@ export class DetalleComponent implements OnInit, OnDestroy{
 
   showModal(objeto: any){
     this.observacionSelected = objeto
-    console.log(this.observacionSelected)
   }
   guardarDevol(){
     this.submitted = true;

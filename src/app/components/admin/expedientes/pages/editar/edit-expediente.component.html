@@ -1,10 +1,14 @@
 <div class="container">
-    <h2 *ngIf="resultado" style="font-weight: bold;">Detalle Expediente {{resultado.numero}} - {{resultado.anio}}</h2>
-    <br>
     <div class="row">
         <div class="col-12" *ngIf="resultado">
             <div class="col-12">
-                <table class="table table-striped">
+                <table class="table table-sm table-striped">
+                    <thead>
+                      <tr>
+                        <th>Detalle Expediente {{resultado.numero}} - {{resultado.anio}}</th>
+                        <td></td>
+                      </tr>
+                    </thead>
                     <tbody>
                         <tr>
                             <th>Numero</th>
@@ -65,6 +69,26 @@
                         </tr>
                     </tbody>
                 </table>
+                <table class="table table-sm table-striped">
+                    <thead>
+                      <tr>
+                        <th>Documentos</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      </tr>
+                      <tr *ngFor="let documento of resultado.documentos">
+                        <td> - {{documento.descripcion}}</td>
+                      </tr>
+                      <br>
+                      <tr>
+                        <th>Estado: <b *ngIf="resultado.habilitado == true; else inactivo">Activo</b>
+                          <ng-template #inactivo><b>Inactivo</b></ng-template>
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
             </div>
         </div>
         <ngx-spinner></ngx-spinner>
